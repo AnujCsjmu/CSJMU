@@ -1,0 +1,94 @@
+﻿@model CoreLayout.Models.UserManagement.MenuModel
+@{
+    ViewData["Title"] = "Details";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <h2 class="text-info">Menu Details</h2>
+        <form asp-action="Details" method="post">
+            <div class="pd-4 rounded border">
+                <input type="hidden" asp-for="MenuID" />
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Level1"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Level1" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Level1" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Level2"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Level2" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Level2" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Level3"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Level3" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Level3" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Role"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Role" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Controller"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Controller" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Controller" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Action"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Action" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Action" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Status"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Status" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Remarks"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Remarks" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.MenuID" class="btn btn-primary">Edit</a>
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    </body>
+

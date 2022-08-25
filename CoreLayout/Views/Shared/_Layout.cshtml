@@ -1,0 +1,243 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using CoreLayout.Models.Masters
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - CoreLayout</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @*for alert message*@
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    @*for font*@
+    <script src="https://kit.fontawesome.com/0ae5130f6f.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed" style="font-size: 13px;">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <img src="~/Images/logo.jpg" height="50" width="50" /> <a class="navbar-brand ps-3" asp-action="Index" asp-controller="DashBoard">C.S.J.M. University</a>  @**@
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                    @if (@HttpContextAccessor.HttpContext.Session.GetString("Name")?.Length != null)
+                    {
+                        @HttpContextAccessor.HttpContext.Session.GetString("Name")
+                    }
+                    else
+                    {
+                        // return RedirectToActionResult("actionName", "controllerName", null);
+                    }
+                    @*@User.Identity.Name !, Role @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value*@
+                </a>
+                <ul class="dropdown-menu dropdown-menu-sm-start" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item">Role @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">C.S.J.M University</div>
+                        <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+
+
+
+                        @if (Context.Session.GetString("Level1List") != null && Context.Session.GetString("Level2List") != null && Context.Session.GetString("Level3List") != null)
+                        {
+
+                            List<DashboardModel> level1 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level1List"));
+                            List<DashboardModel> level2 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level2List"));
+                            List<DashboardModel> level3 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level3List"));
+
+                            List<String> addedmenu_twolevels = new System.Collections.Generic.List<String>();
+                            <div class="sb-sidenav-menu-heading">@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value Actions</div>
+
+                            // Add Single Level Menu To NAV bar
+                            foreach (DashboardModel list in level1)
+                            {
+                                <a class="nav-link" asp-action="@list.Action" asp-controller="@list.Controller">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    @list.Level1
+                                </a>
+                            }
+
+
+                            // Add Double Level Menu To NAV bar
+                            List<String> ParentHeadingList = level2.Select(x => x.Level1).Distinct().ToList();
+                            foreach (String Parent in ParentHeadingList)
+                            {
+                                List<DashboardModel> filteredlist = level2.Where(ParentHeading => ParentHeading.Level1.Equals(Parent)).ToList();
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts-@Parent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapseLayouts-@Parent.Replace(" ", "-")">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    @Parent
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                foreach (DashboardModel dm in filteredlist)
+                                {
+                                    <div class="collapse" id="collapseLayouts-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.Level2</a>
+                                        </nav>
+                                    </div>
+                                }
+                            }
+
+
+                            //ADD Triple Level Menu To Nav Bar
+
+                            List<String> GrandParentHeadingList = level3.Select(x => x.Level1).Distinct().ToList();
+                            List<String> ParentList;
+                            foreach (String GrandParent in GrandParentHeadingList)
+                            {
+                                List<DashboardModel> filteredParent = level3.Where(GrandParentHeadingList => GrandParentHeadingList.Level1.Equals(GrandParent)).ToList();
+                                ParentList = filteredParent.Select(x => x.Level2).Distinct().ToList();
+                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages-@GrandParent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapsePages-@GrandParent.Replace(" ", "-")">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                    @GrandParent
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+
+
+                                foreach (String Parent in ParentList)
+                                {
+                                    List<DashboardModel> filteredlist = filteredParent.Where(ParentHeading => ParentHeading.Level2.Equals(Parent)).ToList();
+
+                                    <div class="collapse" id="collapsePages-@GrandParent.Replace(" ", "-")" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages-@Parent.Replace(" ", "-")">
+                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth-@Parent.Replace(" ", "-")" aria-expanded="false" aria-controls="pagesCollapseAuth-@Parent.Replace(" ", "-")">
+                                                @Parent
+                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                            </a>
+
+                                            @foreach (DashboardModel dm in filteredlist)
+                                            {
+
+                                                <div class="collapse" id="pagesCollapseAuth-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages-@Parent.Replace(" ", "-")">
+                                                    <nav class="sb-sidenav-menu-nested nav">
+                                                        <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.Level3</a>
+                                                    </nav>
+                                                </div>
+
+                                            }
+                                        </nav>
+                                    </div>
+
+                                }
+
+
+
+                            }
+                        }
+
+                    </div>
+                </div>
+                <div class="py-2 sb-sidenav-footer">
+                    <div class="small">Logged in as : @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content" style="font-size:13px">
+
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+
+            <footer class="py-2 bg-dark mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                        <div>
+                            <a href="#" class="text-light">Privacy Policy</a>
+                            &middot;
+                            <a href="#" class="text-light">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+
+    @* old template *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* new template *@
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="~/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="~/assets/demo/chart-area-demo.js"></script>
+    <script src="~/assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="~/js/datatables-simple-demo.js"></script>
+
+    @*//for validation*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+    <script type="text/javascript" language="javascript">
+        function DisableBackButton() {
+            window.history.forward()
+        }
+        DisableBackButton();
+        window.onload = DisableBackButton;
+        window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+        window.onunload = function () { void (0) }
+    </script>
+
+
+    @*//for msg*@
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var save ='@TempData["success"]'
+        if (save != '') {
+            alertify.success(save)
+        }
+    })
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        var error ='@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    })
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿@using CoreLayout.Models.Masters
+@model IEnumerable<StateModel>
+@{
+    ViewData["title"] = "Index";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <div class="row">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-right">
+                <a asp-action="Create" asp-route-id=@ViewBag.MaxStateId class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New State</a>
+            </div>
+        </div>
+        <br />
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                State List
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CountryId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.StateName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.ModifiedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CountryId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.StateName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.ModifiedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            int sno = 0;
+
+                        }
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @{ sno++; }
+                                @sno
+                            </td>
+                            <td>@item.CountryName</td>
+                            <td>@item.StateName</td>
+                            <td>@item.CreatedBy</td>
+                            <td>@item.CreatedDate</td>
+                            <td>@item.ModifiedDate</td>
+                            <td>
+                                <a asp-action="Edit" id="edit" class="btn btn-primary" asp-route-id=@item.EncryptedId><i class="far fa-edit"></i></a>
+                                <a asp-action="Details" id="details" class="btn btn-success" asp-route-id=@item.EncryptedId><i class="fas fa-list"></i></a>
+                                <a asp-action="Delete" id="delete" class="btn btn-danger" asp-route-id=@item.EncryptedId><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+@section Scripts{
+    @*<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        var save = '@TempData["success"]'
+        if (save != '') {
+            alertify.success(save)
+        }
+    })
+    </script>
+    <script type="text/javascript">
+    $(function () {
+        var error = '@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    })
+    </script>*@
+    <script type="text/javascript">
+        function showMsg(msg, controller, itemid) {
+            mscConfirm(msg, function () {
+                window.location.href = 'State/' + controller + '?StateId=' + itemid;
+            });
+        }
+    </script>
+}
+
+

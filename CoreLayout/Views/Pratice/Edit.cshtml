@@ -1,0 +1,189 @@
+﻿@model CoreLayout.Models.Masters.PraticeModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <h2 class="text-info">Edit Pratice</h2>
+        <form asp-action="Edit" method="post">
+            <div class="pd-4 rounded border">
+                <input type="hidden" asp-for="Id" />
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Name"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Name" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="CountryId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="CountryId"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.CountryList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation-for="CountryId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="StateId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="StateId"
+                                class="form-control" id="StateId" name="StateId"
+                                asp-items="@(new SelectList(ViewBag.StateList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="StateId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="CityId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="CityId"
+                                class="form-control" id="CityId" name="CityId"
+                                asp-items="@(new SelectList(ViewBag.CityList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="departmentid"> </label>
+                    </div>
+                    <div class="col-5">
+
+                        <select asp-for="departmentid" multiple
+                                class="form-control" id="DepartmentId" name="DepartmentId"
+                                asp-items="@(new SelectList(ViewBag.DepartmentList,"Value", "Text"))">
+                        </select>
+
+
+                        @*<table>
+                                @foreach (var dept in ViewBag.DepartmentList)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input id="@dept.Value" type="checkbox" name="DepartmentId" value="@dept.Value" checked="@dept.Selected" />
+                                        </td>
+                                        <td>
+                                            <label asp-for="@dept.Value">@dept.Text</label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>*@
+
+
+                        <span asp-validation-for="departmentid" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="roleid"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="roleid"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
+                        </select>
+                        <span asp-validation-for="roleid" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="gender"> </label>
+                    </div>
+
+                    <div class="col-5">
+                        @Html.DropDownList("gender", new List<SelectListItem>
+                        {
+                             new SelectListItem{ Text="----Select----", Value = string.Empty },
+                             new SelectListItem{ Text="Male", Value = "Male" },
+                             new SelectListItem{ Text="Female", Value = "Female" },
+                             new SelectListItem{ Text="Other", Value = "Other" },
+                        },
+                        new { @class = "form-control" })
+
+                        <span asp-validation-for="gender" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="ProfileImage"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="ProfileImage" class="form-control" />
+                        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <input type="submit" asp-route-id="@Model.Id" class="btn btn-primary" value="Update" />
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+        </form>
+        </div>
+</body>
+
+@section Scripts
+{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CountryId").on("change", function () {
+
+                $("#StateId").empty();
+                $("#CityId").empty();
+
+                var ddlsource = "#CountryId";
+                var url = '@Url.Content("~/")' + "Pratice/GetState?CountryId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                $("#StateId").empty();
+                    $.each(data, function (i, state) {
+                    items += "<option value ='" + state.value + "'>" + state.text + "</option>";
+                });
+                    $('#StateId').html(items);
+            });
+            });
+        });
+
+          $(document).ready(function () {
+              $("#StateId").on("change", function () {
+                  $("#CityId").empty();
+                var ddlsourcecountry = "#CountryId";
+                var ddlsource = "#StateId";
+                var url = '@Url.Content("~/")' + "Pratice/GetCity?CountryId=" + $(ddlsourcecountry).val() + "&StateId=" + $(ddlsource).val();
+                $.getJSON(url, function (data) {
+                var items = '';
+                    $.each(data, function (i, city) {
+                        items += "<option value ='" + city.value + "'>" + city.text + "</option>";
+                });
+                    $('#CityId').html(items);
+            });
+            });
+        });
+
+
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model CoreLayout.Models.UserManagement.SubMenuModel
+@{
+    ViewData["Title"] = "Details";
+}
+<body >
+    <h2 class="text-info">Sub Menu Details</h2>
+    <div style="padding: 30px 30px 30px 30px">
+        <form asp-action="Details" method="post">
+            <div class="pd-4 rounded border">
+                <input type="hidden" asp-for="SubMenuId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="ParentMenuName"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="ParentMenuName" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="ParentMenuName" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="SubMenuName"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="SubMenuName" readonly="readonly" class="form-control" />
+                    </div>
+                    <span asp-validation-for="SubMenuName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.SubMenuId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    </body>
+

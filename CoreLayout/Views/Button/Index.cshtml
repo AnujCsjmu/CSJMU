@@ -1,0 +1,106 @@
+﻿@using CoreLayout.Models.Masters
+@model IEnumerable<ButtonModel>
+@{
+    ViewData["title"] = "Index";
+}
+<body >
+    <div style="padding: 30px 30px 30px 30px">
+        <div class="row">
+
+            <div class="text-right">
+                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Button</a>
+            </div>
+        </div>
+        <br />
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Button List
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.ButtonName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.ButtonName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            int sno = 0;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>@item.ButtonName</td>
+                                <td>@item.CreatedBy</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.ButtonId><i class="far fa-edit"></i></a>
+                                    <a asp-action="Details" class="btn btn-success" asp-route-id=@item.ButtonId><i class="fas fa-list"></i></a>
+                                    <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.ButtonId><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+    @*@section Scripts{
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var save = '@TempData["success"]'
+        if (save != '') {
+            alertify.success(save)
+        }
+    })
+</script>
+<script type="text/javascript">
+    $(function () {
+        var error = '@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    })
+</script>
+
+
+    }*@

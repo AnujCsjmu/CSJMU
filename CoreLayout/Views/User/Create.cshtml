@@ -1,0 +1,134 @@
+﻿@model CoreLayout.Models.UserManagement.RegistrationModel
+@{
+    ViewData["Title"] = "Create";
+}
+<body>
+    <h2 class="text-info">Create User</h2>
+    <div style="padding: 30px 30px 30px 30px">
+
+        <form asp-action="Create" method="post">
+            <div class="pd-4 rounded border">
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="UserName"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="LoginID"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="LoginID" class="form-control" />
+                        <span asp-validation-for="LoginID" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="MobileNo"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="MobileNo" class="form-control" />
+                        <span asp-validation-for="MobileNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="EmailID"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="EmailID" class="form-control" />
+                        <span asp-validation-for="EmailID" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Password"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="ConfirmPassword"> </label>
+                    </div>
+                    <div class="col-5">
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="InstituteId"> </label>
+                    </div>
+                    <div class="col-5">
+                        @*<select asp-for="InstituteId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.InstituteList,"Value", "Text"))">
+                            </select>*@
+                        <select class="form-control" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteId","InstituteName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                        </select>
+
+                        <span asp-validation-for="InstituteId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="IsUserActive"> </label>
+                    </div>
+                    <div class="col-5">
+                        @Html.DropDownList("IsUserActive", new List<SelectListItem>
+                        {
+                             new SelectListItem{ Text="Active", Value = "1" },
+                             new SelectListItem{ Text="InActive", Value = "0" },
+
+                        },
+                        new { @class = "form-control" })
+
+                        <span asp-validation-for="IsUserActive" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="RoleId"> </label>
+                    </div>
+                    <div class="col-5">
+                        @*<select asp-for="RoleId"
+                                    class="form-control"
+                                    asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
+                            </select>*@
+                        <select class="form-control" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                        </select>
+
+                        <span asp-validation-for="RoleId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Save" />
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</body>
+

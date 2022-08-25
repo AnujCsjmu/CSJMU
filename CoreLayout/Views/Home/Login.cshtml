@@ -1,0 +1,170 @@
+﻿@model CoreLayout.Models.UserManagement.LoginModel
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="description" content="Chhatrapati Shahu Ji Maharaj University, Kanpur">
+    <meta name="author" content="CSJMU Kanpur - PMU Team">
+    <meta name="keywords" content="Chhatrapati Shahu Ji Maharaj University, Kanpur, CSJMU, csjmu">
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/images/fevicon.png" type="image/x-icon" />
+
+    <!-- Title -->
+    <title>Chhatrapati Shahu Ji Maharaj University, Kanpur</title>
+
+    <!---bootstrap css-->
+    <link id="style" href="~/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!---Falg-icons css-->
+    <link href="../assets/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+
+    <!--- FONT-ICONS CSS -->
+    <link href="~/css/icons.css" rel="stylesheet">
+
+
+    <!---Style css-->
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/skins.css" rel="stylesheet">
+    <link href="~/css/dark-style.css" rel="stylesheet">
+    <link href="~/css/transparent-style.css" rel="stylesheet">
+    <link href="~/css/boxed.css" rel="stylesheet">
+
+
+
+
+</head>
+
+<body style="background: url(../Images/pgbg.jpg); background-size: cover; background-repeat: no-repeat; ">
+
+    <!-- Loader -->
+    <div id="global-loader">
+        <img src="~/images/loader.svg" class="loader-img" alt="Loader">
+    </div>
+    <!-- End Loader -->
+    <!-- Page -->
+    <div class="page main-signin-wrapper">
+
+        <!-- Row -->
+        <div class="row text-center ps-0 pe-0 ms-0 me-0">
+            <div class=" col-xl-3 col-lg-5 col-md-5 d-block mx-auto">
+                <div class="text-center mb-2">
+                    <a href="index.html">
+                        <img src="~/Images/csjmu-logo.png" class="header-brand-img" alt="logo" style="height:100px !important;">
+                        <img src="~/Images/csjmu-logo.png" class="header-brand-img theme-logos" alt="logo" style="height: 100px !important;">
+                    </a>
+                </div>
+                <div class="card custom-card">
+                    <div class="card-body pd-30">
+                        <h4 class="text-center">CSJMU ERP</h4>
+
+                        <form method="post" asp-controller="Home" asp-action="Login">
+                            <div asp-validation-summary="ModelOnly"></div>
+                            <div class="form-group text-start">
+                                <label asp-for="LoginID">User ID</label>
+                                <input asp-for="LoginID" class="form-control" type="text" placeholder="User ID" />
+
+                                <span class="text-danger" asp-validation-for="LoginID"></span>
+                            </div>
+                            <div class="form-group text-start">
+                                <label asp-for="Password">Password</label>
+                                <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                                <span class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+                            <div class="form-group text-start">
+                                <input asp-for="Remember" class="form-check-input" type="checkbox" value="" />
+                                <label asp-for="Remember" class="form-check-label">Remember Password</label>
+                            </div>
+
+                            <input class="btn ripple btn-main-primary btn-block" type="submit" value="Login" />
+
+                            <div class="mt-0 text-center">
+                                <a class="small" asp-action="Forget">Forgot Password?</a>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
+                                {
+                                    <span class="text-danger">@ViewBag.errormsg</span>
+                                }
+
+                            </div>
+                        </form>
+
+
+                        <div class="mt-0 text-center">
+                            @*  <div class="small"><a asp-action="Registration">Need an account? Sign up!</a></div>*@
+                            <p class="mb-0 small">This is official ERP of CSJM University Kanpur</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Row -->
+
+    </div>
+    <!-- End Page -->
+    <!-- Jquery js-->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap js-->
+    <script src="~/plugins/bootstrap/popper.min.js"></script>
+    <script src="~/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Themecolor js-->
+    <script src="~/js/themeColors.js"></script>
+
+    <!-- Perfect-scrollbar js-->
+    <script src="~/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <!-- Custom js-->
+    <script src="~/js/custom.js"></script>
+
+    @*//for validation*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

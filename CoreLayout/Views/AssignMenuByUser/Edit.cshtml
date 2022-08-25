@@ -1,0 +1,67 @@
+﻿@model CoreLayout.Models.UserManagement.AssignMenuByUserModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <h2 class="text-info">Edit Assign Menu To User</h2>
+        <form asp-action="Edit" method="post">
+            <div class="pd-4 rounded border">
+                <input type="hidden" asp-for="MenuPermissionId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="MenuId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="MenuId"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.MenuList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation-for="MenuId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="UserId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="UserId"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="Active"> </label>
+                    </div>
+                    <div class="col-5">
+                        @Html.DropDownList("Active", new List<SelectListItem>
+                        {
+                             new SelectListItem{ Text="----Select----", Value = string.Empty },
+                             new SelectListItem{ Text="Active", Value = "1" },
+                             new SelectListItem{ Text="InActive", Value = "0" },
+
+                        },
+                        new { @class = "form-control" })
+
+                        <span asp-validation-for="Active" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <input type="submit" asp-route-id="@Model.MenuPermissionId" class="btn btn-primary" value="Update" />
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+        </form>
+        </div>
+</body>

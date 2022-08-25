@@ -1,0 +1,27 @@
+﻿@model CoreLayout.Models.Masters.ButtonModel
+@{
+    ViewData["Title"] = "Delete";
+}
+<br />
+<h2 class="text-info">Delete Button</h2>
+<form asp-action="Delete" method="get">
+    <div class="pd-4 rounded border">
+        <input type="hidden" asp-for="ButtonId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
+        <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ButtonName"> </label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ButtonName" readonly="readonly" class="form-control" />
+            </div>
+            <span asp-validation-for="ButtonName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" asp-route-id="@Model.ButtonId" class="btn btn-danger" value="Delete" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>

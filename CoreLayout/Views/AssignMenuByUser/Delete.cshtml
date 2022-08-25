@@ -1,0 +1,19 @@
+﻿@model CoreLayout.Models.UserManagement.AssignMenuByUserModel
+@{
+    ViewData["Title"] = "Delete";
+}
+<br />
+<h2 class="text-info">Delete Assign User To Role</h2>
+<form asp-action="Delete" method="get">
+    <div class="pd-4 rounded border">
+        <input type="hidden" asp-for="MenuPermissionId" />
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
+       
+        <div class="form-group">
+            <input type="submit" asp-route-id="@Model.MenuPermissionId" class="btn btn-danger" value="Delete" />
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,79 @@
+﻿@model CoreLayout.Models.UserManagement.RegistrationRoleMapping
+@{
+    ViewData["Title"] = "Edit";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <h2 class="text-info">Edit Role Assign</h2>
+        <form asp-action="Edit" method="post">
+            <div class="pd-4 rounded border">
+                <input type="hidden" asp-for="UserRoleId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="RoleUserId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="RoleUserId"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation-for="RoleUserId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="RoleId"> </label>
+                    </div>
+                    <div class="col-5">
+                        <select asp-for="RoleId"
+                                class="form-control"
+                                asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation-for="RoleId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="IsMainRole"> </label>
+                    </div>
+                    <div class="col-5">
+                        @Html.DropDownList("IsMainRole", new List<SelectListItem>
+                        {
+                             new SelectListItem{ Text="No", Value = "0" },
+                             new SelectListItem{ Text="Yes", Value = "1" },
+
+                        },
+                        new { @class = "form-control" })
+                    </div>
+                    <span asp-validation-for="IsMainRole" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label asp-for="IsRoleActive"> </label>
+                    </div>
+                    <div class="col-5">
+                        @Html.DropDownList("IsRoleActive", new List<SelectListItem>
+                        {
+                             new SelectListItem{ Text="Active", Value = "1" },
+                             new SelectListItem{ Text="InActive", Value = "0" },
+
+                        },
+                        new { @class = "form-control" })
+                    </div>
+                    <span asp-validation-for="IsRoleActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" asp-route-id="@Model.UserRoleId" class="btn btn-primary" value="Update" />
+                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+                </div>
+            </div>
+        </form>
+        </div>
+</body>

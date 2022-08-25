@@ -1,0 +1,148 @@
+﻿@using CoreLayout.Models.UserManagement
+@model IEnumerable<AssignMenuByUserModel>
+@{
+    ViewData["title"] = "Index";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+        <div class="row" >
+            <div class="col-6">
+                @*<h2 class="text-info">Role List</h2>*@
+            </div>
+            <div class="col-6 text-right">
+                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Role Assign</a>
+            </div>
+        </div>
+        <br />
+        <div class="card mb-4" >
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Assign Menu To User List
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level1)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level2)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level3)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Active)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.IPAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level1)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level2)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Level3)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Active)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.IPAddress)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedBy)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.CreatedDate)
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            int sno = 0;
+                        }
+                        @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>
+                                @{ sno++; }
+                                @sno
+                            </td>
+                            <td>@item.Level1</td>
+                            <td>@item.Level2</td>
+                            <td>@item.Level3</td>
+                            <td>@item.UserName</td>
+                            <td>@item.Active</td>
+                            <td>@item.IsRecordDeleted</td>
+                            <td>@item.IPAddress</td>
+                            <td>@item.CreatedBy</td>
+                            <td>@item.CreatedDate</td>
+                            <td>
+                                <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.MenuPermissionId><i class="far fa-edit"></i></a>
+                                <a asp-action="Details" class="btn btn-success" asp-route-id=@item.MenuPermissionId><i class="fas fa-list"></i></a>
+                                <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.MenuPermissionId><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+@*@section Scripts{
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        var save ='@TempData["success"]'
+        if (save != '') {
+            alertify.success(save)
+        }
+    })
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        var error ='@TempData["error"]'
+        if (error != '') {
+            alertify.error(error);
+        }
+    })
+    </script>
+
+
+}*@

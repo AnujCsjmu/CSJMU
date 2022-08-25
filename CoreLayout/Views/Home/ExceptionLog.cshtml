@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>500 :: Something went wrong</title>
+
+    <style>
+        .error-page {
+            text-align: center;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+            .error-page h1 {
+                font-size: 7rem;
+                text-shadow: 0 0 8px #999;
+                color: #fff;
+                margin: 30px 0 10px;
+            }
+
+            .error-page p {
+                margin: 10px;
+            }
+    </style>
+
+</head>
+<body>
+    <div class="error-page">
+        <h1>500</h1>
+        <p>Something went wrong</p>
+        <p>Contact your site administrator with trace id: @ViewContext.HttpContext.Request.Query["traceId"] for further assistance.</p>
+        <a asp-action="Index" asp-controller="Dashboard">
+            <i class="fas fa-arrow-left me-1"></i>
+            Return to Dashboard
+        </a>
+    </div>
+</body>
+</html>

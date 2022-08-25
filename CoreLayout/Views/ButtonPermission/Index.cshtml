@@ -1,0 +1,283 @@
+﻿@using CoreLayout.Models.UserManagement
+@model IEnumerable<ButtonPermissionModel>
+@{
+    ViewData["title"] = "Index";
+}
+<body>
+    <div style="padding: 30px 30px 30px 30px">
+
+        <div class="row">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-right">
+                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New ButtonPermission</a>
+            </div>
+        </div>
+        <br />
+        <table>
+            <div class="card mb-4">
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label>Role</label>
+                    </div>
+                    <div class="col-5">
+                        @*@Html.DropDownListFor(m=>m.role, new SelectList(ViewBag.RoleList, "Value", "Text"), new { @class = "form-control" })*@
+                        <select class="form-control" id="RoleId"
+                                asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
+                        </select>
+
+                        <span asp-validation="RoleId" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-2">
+                        <label>User</label>
+                    </div>
+                    <div class="col-5">
+                        <select class="form-control" id="UserId"
+                                asp-items="@(new SelectList(string.Empty,"Value", "Text"))">
+                        </select>
+
+
+                    </div>
+
+                </div>
+                <div style="text-align:center">
+                    @*<input type="button" asp-action="search" class="btn btn-primary" value="Search" />
+                <input type="button" asp-action="save" class="btn btn-primary" value="Save" />*@
+                    <a asp-action="Search" class="btn btn-success"><i class="fas fa accordion"></i>Search</a>
+                    <a asp-action="Save" class="btn btn-success"><i class="fas fa accordion"></i>Save</a>
+                </div>
+
+            </div>
+        </table>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                ButtonPermission List
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple" style="font-size:12px">
+                    <thead>
+                        <tr>
+
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Controller)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Action)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(c => c.URL)
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(c => c.RoleName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.UserName)
+                            </th>
+
+                            <th>
+                                Button Permission
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+
+                            <th>S.No</th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Controller)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.Action)
+                            </th>
+                            @*<th>
+                                    @Html.DisplayNameFor(c => c.URL)
+                                </th>*@
+                            <th>
+                                @Html.DisplayNameFor(c => c.RoleName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(c => c.UserName)
+                            </th>
+
+                            <th>
+                                Button Permission
+                            </th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @{
+                            int sno = 0;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>@item.Controller</td>
+                                <td>@item.Action</td>
+                                @*<td>@item.URL</td>*@
+                                <td>@item.RoleName</td>
+                                <td>@item.UserName</td>
+                                <td>
+                                    <table>
+
+                                        @foreach (var item1 in item.ButtonModelList)
+                                        {
+                                            <tr style="display:inline-block">
+                                                <td>
+                                                    &nbsp;&nbsp;@item1.ButtonName
+                                                    <label class="switch">
+
+                                                        <input type="checkbox" @item1.isChecked>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </td>
+                                @*<td>
+                                        <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.Id><i class="far fa-edit"></i></a>
+                                        <a asp-action="Details" class="btn btn-success" asp-route-id=@item.Id><i class="fas fa-list"></i></a>
+                                        <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.Id><i class="fas fa-trash-alt"></i></a>
+                                    </td>*@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+@*@section Scripts{
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script type="text/javascript">
+        $(function () {
+            var save = '@TempData["success"]'
+            if (save != '') {
+                alertify.success(save)
+            }
+        })
+        </script>
+        <script type="text/javascript">
+        $(function () {
+            var error = '@TempData["error"]'
+            if (error != '') {
+                alertify.error(error);
+            }
+        })
+        </script>
+    }*@
+@section Scripts{
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 20px;
+            width: 50px;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 15px;
+                width: 15px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#RoleId").on("change", function () {
+
+                $("#UserId").empty();
+
+                var ddlsource = "#RoleId";
+                var url = '@Url.Content("~/")' + "ButtonPermission/GetUser?RoleId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                    $("#UserId").empty();
+                    $.each(data, function (i, user) {
+                        items += "<option value ='" + user.value + "'>" + user.text + "</option>";
+                });
+                    $('#UserId').html(items);
+            });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        function ddlValidate() {
+            var ddlsource = "#RoleId";
+            alert("1");
+            if (ddlsource).val() == "") {
+                alert(ddlsource).val());
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
+
+
+
