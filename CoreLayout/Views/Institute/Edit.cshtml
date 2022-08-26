@@ -102,7 +102,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label asp-for="DistrictID" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="DistrictID" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
+                                                <select class="form-control" asp-for="DistrictID" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -115,7 +115,7 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label asp-for="TehsilId" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="TehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
+                                                <select class="form-control" asp-for="TehsilId" asp-items="@(new SelectList(Model.TehsilList,"TehsilId","TehsilName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -187,11 +188,9 @@ namespace CoreLayout.Controllers
                 data.InstituteTypeList = await _instituteTypeService.GetAllInstituteType();
                 data.InstituteCategoryList = await _instituteCategoryService.GetAllInstituteCategory();
                 data.StateList = await _stateService.GetAllState();
-                //data.DistrictList = await _districtService.GetAllDistrict();
-                //data.TehsilList = await _tehsilService.GetAllTehsil();
+                data.DistrictList = await _districtService.GetAllDistrict();
+                data.TehsilList = await _tehsilService.GetAllTehsil();
 
-                JsonResult obj = GetDistrict(data.StateId);
-               
                 if (data == null)
                 {
                     return NotFound();

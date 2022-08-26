@@ -185,7 +185,7 @@ namespace CoreLayout.Repositories.Masters.Institute
                     parameters.Add("Vision", entity.Vision, DbType.String);
                     parameters.Add("Mission", entity.Mission, DbType.String);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                    parameters.Add("UserId", entity.CreatedBy, DbType.Int32);
+                    parameters.Add("UserId", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
