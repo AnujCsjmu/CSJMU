@@ -3879,3 +3879,469 @@
 2022-08-25 23:26:42.3526 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
 2022-08-25 23:26:42.3976 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
 2022-08-25 23:26:43.2112 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 12:25:15.8726 Info Message Template Auto Format enabled
+2022-08-26 12:25:16.0945 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 12:25:16.1051 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 12:25:16.1853 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 12:25:16.2646 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 12:25:18.3771 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 12:26:24.9321 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 12:26:24.9321 Info Message Template Auto Format enabled
+2022-08-26 12:26:24.9321 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 12:26:24.9321 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 12:26:24.9321 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 12:26:24.9321 Info Closing old configuration.
+2022-08-26 12:26:24.9471 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:04:29.8748 Info Message Template Auto Format enabled
+2022-08-26 13:04:29.8918 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:04:29.9029 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:04:29.9354 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:04:29.9711 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:04:30.6245 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:06:36.8830 Info Message Template Auto Format enabled
+2022-08-26 13:06:36.8988 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:06:36.8988 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:06:36.9334 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:06:36.9772 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:06:37.7588 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:06:49.1523 Info Message Template Auto Format enabled
+2022-08-26 13:06:49.1645 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:06:49.1645 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:06:49.1996 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:06:49.2448 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:06:50.0054 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:14:00.2100 Info Message Template Auto Format enabled
+2022-08-26 13:14:00.2244 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:14:00.2318 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:14:00.2603 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:14:00.3068 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:14:01.0810 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:34:44.9466 Info Message Template Auto Format enabled
+2022-08-26 13:34:44.9700 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:34:44.9825 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:34:45.0203 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:34:45.0624 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:34:45.6936 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:37:02.0328 Info Message Template Auto Format enabled
+2022-08-26 13:37:02.0467 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:37:02.0467 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:37:02.0825 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:37:02.1359 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:37:02.8094 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:40:47.2900 Info Message Template Auto Format enabled
+2022-08-26 13:40:47.3063 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:40:47.3063 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:40:47.3472 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:40:47.3917 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:40:48.1328 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:48:18.5939 Info Message Template Auto Format enabled
+2022-08-26 13:48:18.6051 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:48:18.6051 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:48:18.6458 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:48:18.7185 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:48:19.4581 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:55:20.3120 Info Message Template Auto Format enabled
+2022-08-26 13:55:20.3261 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 13:55:20.3261 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 13:55:20.4192 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 13:55:20.4634 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 13:55:21.2065 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:06:06.7385 Info Message Template Auto Format enabled
+2022-08-26 14:06:06.7573 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:06:06.7670 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:06:06.7991 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:06:06.8411 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:06:07.6189 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:13:12.3291 Info Message Template Auto Format enabled
+2022-08-26 14:13:12.3437 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:13:12.3516 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:13:12.4235 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:13:12.4646 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:13:13.1848 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:35:04.1648 Info Message Template Auto Format enabled
+2022-08-26 14:35:04.1648 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:35:04.1866 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:35:04.2119 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:35:04.2473 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:35:05.0043 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:36:20.4844 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:36:20.4844 Info Message Template Auto Format enabled
+2022-08-26 14:36:20.4844 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:36:20.4844 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:36:20.4844 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:36:20.4844 Info Closing old configuration.
+2022-08-26 14:36:20.4943 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:41:13.9622 Info Message Template Auto Format enabled
+2022-08-26 14:41:13.9798 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:41:13.9798 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:41:14.0193 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:41:14.0681 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:41:14.8486 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:53:58.3340 Info Message Template Auto Format enabled
+2022-08-26 14:53:58.3490 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:53:58.3600 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:53:58.3925 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:53:58.4355 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:53:59.1470 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:56:12.3303 Info Message Template Auto Format enabled
+2022-08-26 14:56:12.3485 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:56:12.3588 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:56:12.3893 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:56:12.4246 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:56:13.0988 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:58:47.7874 Info Message Template Auto Format enabled
+2022-08-26 14:58:47.8033 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 14:58:47.8129 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 14:58:47.8419 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 14:58:47.9051 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 14:58:48.6141 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:05:04.0812 Info Message Template Auto Format enabled
+2022-08-26 15:05:04.0946 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:05:04.1023 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:05:04.1276 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:05:04.1865 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:05:04.9209 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:08:49.3153 Info Message Template Auto Format enabled
+2022-08-26 15:08:49.3288 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:08:49.3374 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:08:49.3676 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:08:49.4050 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:08:50.1697 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:11:03.5163 Info Message Template Auto Format enabled
+2022-08-26 15:11:03.5314 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:11:03.5401 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:11:03.5712 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:11:03.6161 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:11:04.3921 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:13:16.1991 Info Message Template Auto Format enabled
+2022-08-26 15:13:16.2209 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:13:16.2329 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:13:16.2594 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:13:16.2952 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:13:17.0404 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:14:42.8482 Info Message Template Auto Format enabled
+2022-08-26 15:14:42.8623 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:14:42.8699 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:14:42.9004 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:14:42.9446 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:14:43.6804 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:15:06.1414 Info Message Template Auto Format enabled
+2022-08-26 15:15:06.1563 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:15:06.1668 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:15:06.2122 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:15:06.2565 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:15:06.9314 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:19:10.9616 Info Message Template Auto Format enabled
+2022-08-26 15:19:10.9616 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:19:10.9859 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:19:11.0236 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:19:11.0594 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:19:11.7853 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:27:17.9147 Info Message Template Auto Format enabled
+2022-08-26 15:27:17.9423 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:27:17.9511 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:27:18.0270 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:27:18.0664 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:27:18.7469 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:38:25.1313 Info Message Template Auto Format enabled
+2022-08-26 15:38:25.1457 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:38:25.1546 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:38:25.1861 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:38:25.2275 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:38:25.8875 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:43:26.2639 Info Message Template Auto Format enabled
+2022-08-26 15:43:26.2808 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:43:26.2898 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:43:26.3167 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:43:26.3841 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:43:27.1200 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:51:48.3807 Info Message Template Auto Format enabled
+2022-08-26 15:51:48.3938 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:51:48.4041 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:51:48.4348 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:51:48.4721 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:51:49.2597 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:54:59.8406 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:54:59.8406 Info Message Template Auto Format enabled
+2022-08-26 15:54:59.8406 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:54:59.8406 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:54:59.8406 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:54:59.8406 Info Closing old configuration.
+2022-08-26 15:54:59.8406 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:59:07.4394 Info Message Template Auto Format enabled
+2022-08-26 15:59:07.4539 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 15:59:07.4635 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 15:59:07.5050 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 15:59:07.5408 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 15:59:08.3110 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:00:14.9482 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:00:14.9482 Info Message Template Auto Format enabled
+2022-08-26 16:00:14.9482 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:00:14.9482 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:00:14.9482 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:00:14.9482 Info Closing old configuration.
+2022-08-26 16:00:14.9482 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:02:49.6387 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:02:49.6387 Info Message Template Auto Format enabled
+2022-08-26 16:02:49.6387 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:02:49.6387 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:02:49.6387 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:02:49.6387 Info Closing old configuration.
+2022-08-26 16:02:49.6489 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:06:03.3632 Info Loading NLog config from XML file: C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:06:03.3632 Info Message Template Auto Format enabled
+2022-08-26 16:06:03.3950 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:06:03.4083 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:06:03.4083 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:06:03.4083 Info Closing old configuration.
+2022-08-26 16:06:03.4083 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:07:50.8490 Info Message Template Auto Format enabled
+2022-08-26 16:07:50.8841 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:07:50.8841 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:07:50.9278 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:07:50.9833 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:07:51.6824 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:16:37.8439 Info Message Template Auto Format enabled
+2022-08-26 16:16:37.8600 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:16:37.8678 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:16:37.8988 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:16:37.9546 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:16:38.6684 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:23:21.2114 Info Message Template Auto Format enabled
+2022-08-26 16:23:21.2114 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:23:21.2336 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:23:21.2782 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:23:21.3266 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:23:22.1042 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:33:13.9081 Info Message Template Auto Format enabled
+2022-08-26 16:33:13.9223 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:33:13.9301 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:33:13.9597 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:33:13.9953 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:33:14.7848 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:50:10.2774 Info Message Template Auto Format enabled
+2022-08-26 16:50:10.2897 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 16:50:10.2897 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 16:50:10.3244 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 16:50:10.3630 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 16:50:11.1533 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:02:47.7839 Info Message Template Auto Format enabled
+2022-08-26 17:02:47.8007 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 17:02:47.8104 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 17:02:47.8394 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 17:02:47.8993 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:02:48.5872 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:14:04.9007 Info Message Template Auto Format enabled
+2022-08-26 17:14:04.9164 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 17:14:04.9164 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 17:14:04.9589 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 17:14:05.0034 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:14:05.8284 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:15:16.2403 Info Message Template Auto Format enabled
+2022-08-26 17:15:16.2555 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 17:15:16.2648 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 17:15:16.2951 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 17:15:16.3312 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:15:17.1224 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:18:54.0937 Info Message Template Auto Format enabled
+2022-08-26 17:18:54.1120 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 17:18:54.1246 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 17:18:54.1593 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 17:18:54.2057 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 17:18:54.8924 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 18:00:49.6149 Info Message Template Auto Format enabled
+2022-08-26 18:00:49.6288 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 18:00:49.6381 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 18:00:49.6701 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 18:00:49.7073 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 18:00:50.3995 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 18:08:22.1956 Info Message Template Auto Format enabled
+2022-08-26 18:08:22.1956 Info Loading assembly: NLog.Web.AspNetCore
+2022-08-26 18:08:22.2193 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Failed to create Target of type: Database
+ ---> System.ArgumentException: Target type-alias is unknown: 'Database'. Extension NLog.Database not included?
+   at NLog.Config.Factory`2.CreateInstance(String itemName)
+   at NLog.Config.LoggingConfigurationParser.FactoryCreateInstance[T](String classType, INamedItemFactory`2 factory)
+   --- End of inner exception stack trace ---
+2022-08-26 18:08:22.2473 Warn Error has been raised. Exception: NLog.NLogConfigurationException: Target 'db' not found for logging rule: *.
+2022-08-26 18:08:22.2827 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config
+2022-08-26 18:08:23.0556 Info Validating config: Targets=0, ConfigItems=2, FilePath=C:\Users\UIETIV86\Desktop\anuj\CoreLayout\CoreLayout\bin\Debug\netcoreapp3.1\nlog.config

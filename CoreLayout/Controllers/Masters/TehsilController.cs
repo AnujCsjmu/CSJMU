@@ -41,7 +41,7 @@ namespace CoreLayout.Controllers
             _logger = logger;
             _stateService = stateService;
             _countryService = countryService;
-            _protector = provider.CreateProtector("District.DistrictController");
+            _protector = provider.CreateProtector("Tehsil.TehsilController");
             _commonService = commonService;
             _env = env;
             _commonController = commonController;

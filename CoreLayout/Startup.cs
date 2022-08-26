@@ -9,6 +9,9 @@ using CoreLayout.Repositories.Masters.Country;
 using CoreLayout.Repositories.Masters.Dashboard;
 using CoreLayout.Repositories.Masters.Deparment;
 using CoreLayout.Repositories.Masters.District;
+using CoreLayout.Repositories.Masters.Institute;
+using CoreLayout.Repositories.Masters.InstituteCategory;
+using CoreLayout.Repositories.Masters.InstituteType;
 using CoreLayout.Repositories.Masters.Pratice;
 using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
@@ -29,6 +32,9 @@ using CoreLayout.Services.Masters.Country;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.Masters.Department;
 using CoreLayout.Services.Masters.District;
+using CoreLayout.Services.Masters.Institute;
+using CoreLayout.Services.Masters.InstituteCategory;
+using CoreLayout.Services.Masters.InstituteType;
 using CoreLayout.Services.Masters.Pratice;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
@@ -204,6 +210,18 @@ namespace CoreLayout
             //Audit
             services.AddScoped<IAuditService, AuditService>();
             services.AddScoped<IAuditRepository, AuditRepository>();
+
+            //Institute
+            services.AddScoped<IInstituteService, InstituteService>();
+            services.AddScoped<IInstituteRepository, InstituteRepository>();
+
+            //Institute Type
+            services.AddScoped<IInstituteTypeService, InstituteTypeService>();
+            services.AddScoped<IInstituteTypeRepository, InstituteTypeRepository>();
+
+            //Institute Category
+            services.AddScoped<IInstituteCategoryService, InstituteCategoryService>();
+            services.AddScoped<IInstituteCategoryRepository, InstituteCategoryRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

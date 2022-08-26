@@ -1,0 +1,295 @@
+﻿@model CoreLayout.Models.Masters.InstituteModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="main-content side-content pt-0">
+    <div class="side-app">
+
+        <div class="main-container container-fluid">
+
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Institute Details</h2>
+                    <hr />
+                </div>
+
+            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Institute Details</h6>
+                                <hr />
+                            </div>
+
+                            <form asp-action="Details" method="post">
+                                <div class="row">
+                                    <input type="hidden" asp-for="InstituteID" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="InstituteCode" class="mg-b-10"> </label>
+                                                <input asp-for="InstituteCode" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="InstituteCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="InstituteName" class="mg-b-10"> </label>
+                                                <input asp-for="InstituteName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="InstituteName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="InstituteTypeId" class="mg-b-10"> </label>
+                                                <input asp-for="InstituteTypeName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="InstituteTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="InstituteCategoryId" class="mg-b-10"> </label>
+                                                <input asp-for="InstituteCategoryName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="InstituteCategoryId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="IsMinority" class="mg-b-10"> </label>
+                                                <input asp-for="IsMinority" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="IsMinority" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Address" class="mg-b-10"> </label>
+                                                <input asp-for="Address" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="StateId" class="mg-b-10"> </label>
+                                                <input asp-for="StateName" class="form-control" readonly="readonly" />
+
+                                                <span asp-validation-for="StateId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DistrictID" class="mg-b-10"> </label>
+                                                <input asp-for="DistrictName" class="form-control" readonly="readonly" />
+
+                                                <span asp-validation-for="DistrictID" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="TehsilId" class="mg-b-10"> </label>
+                                                <input asp-for="TehsilName" class="form-control" readonly="readonly" />
+
+                                                <span asp-validation-for="TehsilId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Pincode" class="mg-b-10"> </label>
+                                                <input asp-for="Pincode" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Pincode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="EmailId" class="mg-b-10"> </label>
+                                                <input asp-for="EmailId" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="EmailId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="MobileNumber" class="mg-b-10"> </label>
+                                                <input asp-for="MobileNumber" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Phone" class="mg-b-10"> </label>
+                                                <input asp-for="Phone" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Phone" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="Fax" class="mg-b-10"> </label>
+                                                <input asp-for="Fax" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="Fax" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="IsActive" class="mg-b-10"> </label>
+                                                <input asp-for="IsActive" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="IsActive" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="IsAffiliated" class="mg-b-10"> </label>
+                                                <input asp-for="IsAffiliated" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="IsAffiliated" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="WebURL" class="mg-b-10"> </label>
+                                                <input asp-for="WebURL" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="WebURL" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="EstablishmentYear" class="mg-b-10"> </label>
+                                                <input asp-for="EstablishmentYear" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="EstablishmentYear" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ChairmanAdhaar" class="mg-b-10"> </label>
+                                                <input asp-for="ChairmanAdhaar" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="ChairmanAdhaar" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ChairmanEmail" class="mg-b-10"> </label>
+                                                <input asp-for="ChairmanEmail" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="ChairmanEmail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ChairmanMobileNumber" class="mg-b-10"> </label>
+                                                <input asp-for="ChairmanMobileNumber" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="ChairmanMobileNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="ChairmanName" class="mg-b-10"> </label>
+                                                <input asp-for="ChairmanName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="ChairmanName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="RegistrarAdhaar" class="mg-b-10"> </label>
+                                                <input asp-for="RegistrarAdhaar" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="RegistrarAdhaar" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="RegistrarEmail" class="mg-b-10"> </label>
+                                                <input asp-for="RegistrarEmail" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="RegistrarEmail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="RegistrarMobileNumber" class="mg-b-10"> </label>
+                                                <input asp-for="RegistrarMobileNumber" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="RegistrarMobileNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="RegistrarName" class="mg-b-10"> </label>
+                                                <input asp-for="RegistrarName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="RegistrarName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DirectorAdhaar" class="mg-b-10"> </label>
+                                                <input asp-for="DirectorAdhaar" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DirectorAdhaar" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DirectorEmail" class="mg-b-10"> </label>
+                                                <input asp-for="DirectorEmail" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DirectorEmail" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DirectorMobileNumber" class="mg-b-10"> </label>
+                                                <input asp-for="DirectorMobileNumber" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DirectorMobileNumber" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label asp-for="DirectorName" class="mg-b-10"> </label>
+                                                <input asp-for="DirectorName" class="form-control" readonly="readonly" />
+                                                <span asp-validation-for="DirectorName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Conetnt End-->
+
+    </div>
+</div>
