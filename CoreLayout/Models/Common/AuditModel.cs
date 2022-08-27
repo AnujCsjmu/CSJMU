@@ -7,7 +7,7 @@ namespace CoreLayout.Models.Common
 {
     public class AuditModel :BaseEntity
     {
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public string SessionId { get; set; }
         public string IpAddress { get; set; }
         public string PageAccessed { get; set; }
@@ -18,7 +18,7 @@ namespace CoreLayout.Models.Common
         public string ActionName { get; set; }
         public string UrlReferrer { get; set; }
         public string Area { get; set; }
-        public string RoleId { get; set; }
+        public int RoleId { get; set; }
         public string AuthorizationToken { get; set; }
         public string Userbrowser { get; set; }
         //public DateTime? ModifiedDate { get; set; }

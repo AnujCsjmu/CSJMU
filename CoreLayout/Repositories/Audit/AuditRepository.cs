@@ -60,7 +60,7 @@ namespace CoreLayout.Repositories.Audit
                     parameters.Add("AuthorizationToken", entity.AuthorizationToken, DbType.String);
                     parameters.Add("Area", entity.Area, DbType.String);
                     parameters.Add("ActionName", entity.ActionName, DbType.String);
-                    parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+                    parameters.Add("CreatedBy", entity.UserId, DbType.Int32);
                     parameters.Add("@Query", 1, DbType.Int32);
                     var Result = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return Result > 0 ? true : false;

@@ -1,6 +1,5 @@
 using CoreLayout.Controllers;
 using CoreLayout.Filters;
-using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Common;
@@ -119,7 +118,10 @@ namespace CoreLayout
                 options.IdleTimeout = TimeSpan.FromMinutes(10);//You can set Time   
                 options.Cookie.HttpOnly = true;
             });
-          
+
+            //common Site contex
+            //services.AddScoped<ISiteContext, SiteContext>();
+
             //login
             services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddScoped<ILoginService, LoginService>();
@@ -236,7 +238,7 @@ namespace CoreLayout
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseAuthentication();
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsStaging())
             {
                 app.UseDeveloperExceptionPage();
             }

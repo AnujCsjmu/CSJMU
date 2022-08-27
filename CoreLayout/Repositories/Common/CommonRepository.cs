@@ -85,5 +85,26 @@ namespace CoreLayout.Repositories.Common
             }
 
         }
+
+        public async Task<int> CreateSMSLogs(SMSModel entity)
+        {
+            try
+            {
+                var query = "SP_InsertSMSLogs";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("ServiceType", entity.ServiceType, DbType.String);
+                    parameters.Add("APIURL", entity.APIURL, DbType.String);
+                    parameters.Add("APIResponse", entity.APIResponse, DbType.String);
+                    var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return res;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

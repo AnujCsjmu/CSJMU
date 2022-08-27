@@ -45,56 +45,56 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            int userid = (int)HttpContext.Session.GetInt32("UserId");
-            int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-            if (roleid != 0 && userid != 0)
-            {
-                _ = RefereshMenuAsync();
-            }
+            //int userid = (int)HttpContext.Session.GetInt32("UserId");
+            //int roleid = (int)HttpContext.Session.GetInt32("RoleId");
+            //if (roleid != 0 && userid != 0)
+            //{
+            //    _ = RefereshMenuAsync();
+            //}
             return View(await _menuService.GetAllMenuAsync());
         }
-        public async Task<ActionResult> RefereshMenuAsync()
-        {
-            var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
-            int userid = (int)HttpContext.Session.GetInt32("UserId");
-            int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-            if (roleid != 0 && userid != 0)
-            {
-                //ViewBag.Menu=   await _dashboardService.GetDashboardByRole(role);
-                //IDashboardService _dashboardService1 = _dashboardService;
-                List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
+        //public async Task<ActionResult> RefereshMenuAsync()
+        //{
+        //    var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
+        //    int userid = (int)HttpContext.Session.GetInt32("UserId");
+        //    int roleid = (int)HttpContext.Session.GetInt32("RoleId");
+        //    if (roleid != 0 && userid != 0)
+        //    {
+        //        //ViewBag.Menu=   await _dashboardService.GetDashboardByRole(role);
+        //        //IDashboardService _dashboardService1 = _dashboardService;
+        //        List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
 
-                List<DashboardModel> level1 = new List<DashboardModel>();
-                List<DashboardModel> level2 = new List<DashboardModel>();
-                List<DashboardModel> level3 = new List<DashboardModel>();
+        //        List<DashboardModel> level1 = new List<DashboardModel>();
+        //        List<DashboardModel> level2 = new List<DashboardModel>();
+        //        List<DashboardModel> level3 = new List<DashboardModel>();
 
-                foreach (DashboardModel dm in alllevels)
-                {
-                    if (dm.Level2.Equals("*") && dm.Level3.Equals("*"))
-                    {
-                        level1.Add(dm);
-                    }
-                    else if (dm.Level2 != "*" && dm.Level3.Equals("*"))
-                    {
-                        level2.Add(dm);
-                    }
-                    else
-                    {
-                        level3.Add(dm);
-                    }
-                }
+        //        foreach (DashboardModel dm in alllevels)
+        //        {
+        //            if (dm.Level2.Equals("*") && dm.Level3.Equals("*"))
+        //            {
+        //                level1.Add(dm);
+        //            }
+        //            else if (dm.Level2 != "*" && dm.Level3.Equals("*"))
+        //            {
+        //                level2.Add(dm);
+        //            }
+        //            else
+        //            {
+        //                level3.Add(dm);
+        //            }
+        //        }
 
-                HttpContext.Session.SetString("Level1List", JsonConvert.SerializeObject(level1));
-                HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
-                HttpContext.Session.SetString("Level3List", JsonConvert.SerializeObject(level3));
+        //        HttpContext.Session.SetString("Level1List", JsonConvert.SerializeObject(level1));
+        //        HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
+        //        HttpContext.Session.SetString("Level3List", JsonConvert.SerializeObject(level3));
 
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
+        //        return View();
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //}
         [AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(int id)
         {

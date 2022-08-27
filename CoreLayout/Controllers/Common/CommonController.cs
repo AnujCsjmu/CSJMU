@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.Masters;
+﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Masters;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
@@ -15,7 +16,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -260,6 +263,87 @@ namespace CoreLayout.Controllers
             byte[] hashBytes = hash.ComputeHash(passwordWithSaltBytes.ToArray());
 
             return Convert.ToBase64String(hashBytes);
+        }
+
+        public bool SendSMSWithTemplateId(string _MobileNo, string _Message, string _TemplateId)
+        {
+            bool rtr = true;
+            try
+            {
+
+                //rtr = false;
+                string result = apicall("https://vsms.minavo.in/api/singlesms.php?auth_key=0a321346-b4d5-4b82-a2ae-ba884f00e3a2"
+                                                                    + "&mobilenumber="
+                                                                    + _MobileNo + "&message="
+                                                                    + _Message + ".&sid=CSJMUK&mtype=N&template_id="
+                                                                    + _TemplateId);
+
+
+                //string result = apicall("http://sms.fennecfoxsolutions.com/sms_api/sendsms.php?username=kanpur&password=kanpur@123"
+                //                                                    + "&mobile="
+                //                                                    + _MobileNo + "&message="
+                //                                                    + _Message + "&sendername=CSJMUK&templateid="
+                //                                                    + _TemplateId);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return rtr;
+        }
+
+        /// <summary>
+        /// To send BULK SMS
+        /// Devbrat Upadhyay
+        /// 01/12/2018
+        /// </summary>
+        /// <param name="List<string> Mobile No"></param>
+        /// <param name="_Message"></param>
+        /// <returns></returns>
+        public static bool SendBulkSMS(List<string> _mobileCollection, string _Message)
+        {
+            bool rtr = true;
+            try
+            {
+                //add api
+                rtr = false;
+
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return rtr;
+        }
+
+
+        public string apicall(string url)
+        {
+            SMSModel sMSModel = new SMSModel();
+            HttpWebRequest httpreq = (HttpWebRequest)WebRequest.Create(url);
+            try
+            {
+                HttpWebResponse httpres = (HttpWebResponse)httpreq.GetResponse();
+                StreamReader sr = new StreamReader(httpres.GetResponseStream());
+                string results = sr.ReadToEnd();
+                sr.Close();
+
+                sMSModel.APIResponse = "Response";
+                sMSModel.APIURL = url;
+                sMSModel.ServiceType = results;
+                var result = _commonService.CreateSMSLogs(sMSModel);
+                //DataRepository.Provider.ExecuteDataSet("cusp_SMSLogs_LogActivity", "Response", url, results);
+                return results;
+            }
+            catch (Exception e)
+            {
+                sMSModel.APIResponse = "Response-Error";
+                sMSModel.APIURL = url;
+                sMSModel.ServiceType = e.Message;
+                var result = _commonService.CreateSMSLogs(sMSModel);
+                //DataRepository.Provider.ExecuteDataSet("cusp_SMSLogs_LogActivity", "Response-Error", url, e.Message);
+                return "0";
+            }
         }
     }
 }

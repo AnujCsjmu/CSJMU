@@ -16,6 +16,7 @@ namespace CoreLayout.Filters
        
         //private readonly ISiteContext _siteContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        
         public AuditFilterAttribute( IAuditService auditService ,IHttpContextAccessor httpContextAccessor)    
         {
            
@@ -34,8 +35,8 @@ namespace CoreLayout.Filters
                 objaudit.ControllerName = filterContext.ActionDescriptor.RouteValues["controller"];
                 objaudit.ActionName = filterContext.ActionDescriptor.RouteValues["action"];
                 objaudit.UrlReferrer = "/" + objaudit.ControllerName + "/";
-                //objaudit.UserId = _siteContext.UserId.ToString();
-                //objaudit.RoleId = _siteContext.RoleId.ToString();
+                objaudit.UserId = (int)filterContext.HttpContext.Session.GetInt32("UserId");
+                objaudit.RoleId = (int)filterContext.HttpContext.Session.GetInt32("RoleId");
                 objaudit.LoginStatus = "A";
                 objaudit.Area = "Exam Master";
                 var actionDescriptorRouteValues = ((ControllerBase)filterContext.Controller)

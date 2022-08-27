@@ -43,6 +43,7 @@ namespace CoreLayout.Controllers
             {
                 ViewBag.errormsg = errormsg;
             }
+            _logger.LogInformation("HomeController.Index method called!!!");
             return View();
         }
         [HttpPost]

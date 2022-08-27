@@ -32,5 +32,10 @@ namespace CoreLayout.Services.Common
         {
             return await _commonRepository.GetMultipleButtonByRoleAndUserAsync(roleid, userid);
         }
+
+        public async Task<int> CreateSMSLogs(SMSModel entity)
+        {
+            return await _commonRepository.CreateSMSLogs(entity);
+        }
     }
 }
