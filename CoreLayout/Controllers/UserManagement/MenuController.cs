@@ -9,6 +9,7 @@ using CoreLayout.Services.UserManagement.Menu;
 using CoreLayout.Services.UserManagement.ParentMenu;
 using CoreLayout.Services.UserManagement.SubMenu;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -31,7 +32,8 @@ namespace CoreLayout.Controllers
         private readonly ICommonService _commonService;
         private readonly IParentMenuService _parentMenuService;
         private readonly ISubMenuService _subMenuService;
-        public MenuController(ILogger<MenuController> logger, IMenuService menuService, IRoleService roleService, ICommonService commonService,IDashboardService dashboardService, IParentMenuService parentMenuService, ISubMenuService subMenuService)
+        private readonly IDataProtector _protector;
+        public MenuController(ILogger<MenuController> logger, IMenuService menuService, IRoleService roleService, ICommonService commonService, IDashboardService dashboardService, IParentMenuService parentMenuService, ISubMenuService subMenuService, IDataProtectionProvider provider)
         {
             _logger = logger;
             _menuService = menuService;
@@ -40,18 +42,38 @@ namespace CoreLayout.Controllers
             _dashboardService = dashboardService;
             _parentMenuService = parentMenuService;
             _subMenuService = subMenuService;
+            _protector = provider.CreateProtector("Menu.MenuController");
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            //int userid = (int)HttpContext.Session.GetInt32("UserId");
-            //int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-            //if (roleid != 0 && userid != 0)
-            //{
-            //    _ = RefereshMenuAsync();
-            //}
-            return View(await _menuService.GetAllMenuAsync());
+            try
+            {
+                //start encrypt id for update, delete & details
+                var menu = await _menuService.GetAllMenuAsync();
+               // _ = RefereshMenuAsync();
+                foreach (var _menu in menu)
+                {
+                    var id = _menu.MenuID.ToString();
+                    _menu.EncryptedId = _protector.Protect(id);
+                }
+                //end
+                //start generate maxid for create button
+                int maxmenuid = 0;
+                foreach (var _menu in menu)
+                {
+                    maxmenuid = _menu.MenuID;
+                }
+                maxmenuid = maxmenuid + 1;
+                ViewBag.MaxMenuId = _protector.Protect(maxmenuid.ToString());
+                return View(menu);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View();
         }
         //public async Task<ActionResult> RefereshMenuAsync()
         //{
@@ -70,11 +92,11 @@ namespace CoreLayout.Controllers
 
         //        foreach (DashboardModel dm in alllevels)
         //        {
-        //            if (dm.Level2.Equals("*") && dm.Level3.Equals("*"))
+        //            if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
         //            {
         //                level1.Add(dm);
         //            }
-        //            else if (dm.Level2 != "*" && dm.Level3.Equals("*"))
+        //            else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
         //            {
         //                level2.Add(dm);
         //            }
@@ -96,28 +118,36 @@ namespace CoreLayout.Controllers
         //    }
         //}
         [AuthorizeContext(ViewAction.Details)]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                return View(await _menuService.GetMenuByIdAsync(id));
+                var guid_id = _protector.Unprotect(id);
+                var data = await _menuService.GetMenuByIdAsync(Convert.ToInt32(guid_id));
+                data.EncryptedId = id;
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
 
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
         public JsonResult GetSubMenu(int ParentMenuId)
         {
             var SubMenuList = (from submenu in _subMenuService.GetAllSubMenuAsync().Result
                                where submenu.ParentMenuId == ParentMenuId
-                             select new SelectListItem()
-                             {
-                                 Text = submenu.SubMenuName,
-                                 Value = submenu.SubMenuId.ToString(),
-                             }).ToList();
+                               select new SelectListItem()
+                               {
+                                   Text = submenu.SubMenuName,
+                                   Value = submenu.SubMenuId.ToString(),
+                               }).ToList();
             SubMenuList.Insert(0, new SelectListItem()
             {
                 Text = "----Select----",
@@ -125,47 +155,57 @@ namespace CoreLayout.Controllers
             });
             return Json(SubMenuList);
         }
-        public void binddropdowns()
-        {
-            var ParentMenuList = (from parentmenu in _parentMenuService.GetAllParentMenuAsync().Result
-                               select new SelectListItem()
-                               {
-                                   Text = parentmenu.ParentMenuName,
-                                   Value = parentmenu.ParentMenuId.ToString(),
-                               }).ToList();
+        //public void binddropdowns()
+        //{
+        //    var ParentMenuList = (from parentmenu in _parentMenuService.GetAllParentMenuAsync().Result
+        //                       select new SelectListItem()
+        //                       {
+        //                           Text = parentmenu.ParentMenuName,
+        //                           Value = parentmenu.ParentMenuId.ToString(),
+        //                       }).ToList();
 
-            ParentMenuList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
+        //    ParentMenuList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
 
 
-            //var SubMenuList = (from submenu in _subMenuService.GetAllSubMenuAsync().Result
-            //                 select new SelectListItem()
-            //                 {
-            //                     Text = submenu.SubMenuName,
-            //                     Value = submenu.SubMenuId.ToString(),
-            //                 }).ToList();
+        //    //var SubMenuList = (from submenu in _subMenuService.GetAllSubMenuAsync().Result
+        //    //                 select new SelectListItem()
+        //    //                 {
+        //    //                     Text = submenu.SubMenuName,
+        //    //                     Value = submenu.SubMenuId.ToString(),
+        //    //                 }).ToList();
 
-            //SubMenuList.Insert(0, new SelectListItem()
-            //{
-            //    Text = "----Select----",
-            //    Value = string.Empty
-            //});
+        //    //SubMenuList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
 
-            ViewBag.ParentMenuList = ParentMenuList;
-            //ViewBag.SubMenuList = SubMenuList;
-        }
+        //    ViewBag.ParentMenuList = ParentMenuList;
+        //    //ViewBag.SubMenuList = SubMenuList;
+        //}
 
         //Create Get Action Method
         [AuthorizeContext(ViewAction.Add)]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync(string id)
         {
-            binddropdowns();
-            List<RoleModel> roleList = _roleService.GetAllRoleAsync().Result.ToList(); ;
-            ViewBag.Listofrole = roleList.Select(l => l.RoleName).ToList();
-            return View();
+            try
+            {
+                MenuModel menuModel = new MenuModel();
+                menuModel.ParentMenuList = await _parentMenuService.GetAllParentMenuAsync();
+                menuModel.SubMenuList = await _subMenuService.GetAllSubMenuAsync();
+                var guid_id = _protector.Unprotect(id);
+
+                return View(menuModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -174,18 +214,18 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(MenuModel menuModel)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
+                menuModel.ParentMenuList = await _parentMenuService.GetAllParentMenuAsync();
+                menuModel.SubMenuList = await _subMenuService.GetAllSubMenuAsync();
                 menuModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                menuModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
                 menuModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
-                menuModel.UserRoleId = (int)HttpContext.Session.GetInt32("UserId");
-                //countryModel.CreatedDate = System.DateTime.Now;
-
-
+                menuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)
                 {
                     var res = await _menuService.CreateMenuAsync(menuModel);
-                    if (res.ToString().Equals("1"))
+                    if (res.Equals(1))
                     {
                         TempData["success"] = "Menu has been saved";
                     }
@@ -197,65 +237,67 @@ namespace CoreLayout.Controllers
                 }
                 return View(menuModel);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return View();
         }
 
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                binddropdowns();
-                List<RoleModel> roleList = _roleService.GetAllRoleAsync().Result.ToList(); ;
-                ViewBag.Listofrole = roleList.Select(l => l.RoleName).ToList();
-                return View(await _menuService.GetMenuByIdAsync(id));
+                var guid_id = _protector.Unprotect(id);
+                var data = await _menuService.GetMenuByIdAsync(Convert.ToInt32(guid_id));
+                data.ParentMenuList = await _parentMenuService.GetAllParentMenuAsync();
+                data.SubMenuList = await _subMenuService.GetAllSubMenuAsync();
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id, MenuModel menuModel)
+        public async Task<IActionResult> Edit(int MenuId, MenuModel menuModel)
         {
+
             try
             {
-                if (HttpContext.Session.GetString("Name") != null)
+                menuModel.ParentMenuList = await _parentMenuService.GetAllParentMenuAsync();
+                menuModel.SubMenuList = await _subMenuService.GetAllSubMenuAsync();
+                menuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                menuModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+                menuModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+
+                if (ModelState.IsValid)
                 {
-                    menuModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                    //countryModel.ModifiedDate = System.DateTime.Now;
-                    if (ModelState.IsValid)
+                    var value = await _menuService.GetMenuByIdAsync(MenuId);
+                    if (await TryUpdateModelAsync<MenuModel>(value))
                     {
-                        var dbMenu = await _menuService.GetMenuByIdAsync(id);
-                        if (await TryUpdateModelAsync<MenuModel>(dbMenu))
+                        var res = await _menuService.UpdateMenuAsync(menuModel);
+                        if (res.Equals(1))
                         {
-                            menuModel.MenuID = (int)HttpContext.Session.GetInt32("Id");
-                            var res = await _menuService.UpdateMenuAsync(dbMenu);
-                            if (res.ToString().Equals("1"))
-                            {
-                                TempData["success"] = "Menu has been updated";
-                            }
-                            else
-                            {
-                                TempData["error"] = "Menu has not been updated";
-                            }
-                            return RedirectToAction(nameof(Index));
+                            TempData["success"] = "Menu has been updated";
                         }
+                        else
+                        {
+                            TempData["error"] = "Menu has not been updated";
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
 
-                }
             }
             catch (Exception ex)
             {
@@ -266,44 +308,64 @@ namespace CoreLayout.Controllers
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
 
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                try
+                var guid_id = _protector.Unprotect(id);
+                var value = await _menuService.GetMenuByIdAsync(Convert.ToInt32(guid_id));
+                if (value != null)
                 {
-                    var dbMenu = await _menuService.GetMenuByIdAsync(id);
-                    if (dbMenu != null)
-                    {
-                        var res = await _menuService.DeleteMenuAsync(dbMenu);
+                    var res = await _menuService.DeleteMenuAsync(value);
 
-                        if (res.ToString().Equals("1"))
-                        {
-                            TempData["error"] = "Menu has been deleted";
-                        }
-                        else
-                        {
-                            TempData["error"] = "Menu has not been deleted";
-                        }
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Menu has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "Some thing went wrong!";
+                        TempData["error"] = "Menu has not been deleted";
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    ModelState.AddModelError("", ex.ToString());
+                    TempData["error"] = "Some thing went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyMenuName(string MenuName)
+        {
+            if (MenuName != "*")
+            {
+                var already = (from menu in _menuService.GetAllMenuAsync().Result
+                               where menu.MenuName == MenuName.Trim()
+                               select new SelectListItem()
+                               {
+                                   Text = menu.MenuName,
+                                   Value = menu.MenuID.ToString(),
+                               }).ToList();
+
+                if (already.Count > 0)
+                {
+                    return Json($"{MenuName} is already in use.");
                 }
 
-                return RedirectToAction(nameof(Index));
+                return Json(true);
             }
             else
             {
-                return RedirectToAction("Login", "Home");
-
+                return Json(false);
             }
+
         }
     }
 }

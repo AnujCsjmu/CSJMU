@@ -10,7 +10,7 @@
                 @*<h2 class="text-info">Role List</h2>*@
             </div>
             <div class="col-6 text-right">
-                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Role Assign</a>
+                <a asp-action="Create"  class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New AssignMenu ByRole</a>
             </div>
         </div>
         <br />
@@ -24,14 +24,9 @@
                     <thead>
                         <tr>
                             <th>S.No</th>
+                          
                             <th>
-                                @Html.DisplayNameFor(c => c.Level1)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.Level2)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.Level3)
+                                @Html.DisplayNameFor(c => c.MenuName)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(c => c.RoleName)
@@ -39,9 +34,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.Active)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                         
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -59,14 +52,9 @@
                     <tfoot>
                         <tr>
                             <th>S.No</th>
+                          
                             <th>
-                                @Html.DisplayNameFor(c => c.Level1)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.Level2)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.Level3)
+                                @Html.DisplayNameFor(c => c.MenuName)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(c => c.RoleName)
@@ -74,9 +62,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.Active)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -102,12 +88,11 @@
                                 @{ sno++; }
                                 @sno
                             </td>
-                            <td>@item.Level1</td>
-                            <td>@item.Level2</td>
-                            <td>@item.Level3</td>
+                          
+                            <td>@item.MenuName</td>
                             <td>@item.RoleName</td>
                             <td>@item.Active</td>
-                            <td>@item.IsRecordDeleted</td>
+                           
                             <td>@item.IPAddress</td>
                             <td>@item.CreatedBy</td>
                             <td>@item.CreatedDate</td>

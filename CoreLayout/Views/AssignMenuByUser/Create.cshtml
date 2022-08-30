@@ -2,49 +2,63 @@
 @{
     ViewData["Title"] = "Create";
 }
-<body>
-    <h2 class="text-info">Assign Menu User Wise</h2>
-    <div style="padding: 30px 30px 30px 30px">
+<div class="main-content side-content pt-0">
+    <div class="side-app">
 
-        <form asp-action="Create" method="post">
-            <div class="pd-4 rounded border">
-                <div asp-validation-summary="ModelOnly" class="text-danger">
+        <div class="main-container container-fluid">
 
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Create Assign Menu By User</h2>
+                    <hr />
                 </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="MenuId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="MenuId"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.MenuList,"Value", "Text"))">
-                        </select>
 
-                        <span asp-validation-for="MenuId" class="text-danger"></span>
-                    </div>
+            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Create Assign Menu By User</h6>
+                                <hr />
+                            </div>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="UserId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="UserId"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
-                        </select>
 
-                        <span asp-validation-for="UserId" class="text-danger"></span>
-                    </div>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Active"> </label>
-                    </div>
-                    <div class="col-5">
-                        @Html.DropDownList("Active", new List<SelectListItem>
+                            <form asp-action="Create" method="post">
+                                <div class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="MenuId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="MenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="UserId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="UserId" asp-items="@(new SelectList(Model.UserList,"UserID","UserName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="UserId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Active" class="mg-b-10"> </label>
+                                            @Html.DropDownList("Active", new List<SelectListItem>
                         {
                              new SelectListItem{ Text="----Select----", Value = string.Empty },
                              new SelectListItem{ Text="Active", Value = "1" },
@@ -52,17 +66,25 @@
 
                         },
                         new { @class = "form-control" })
+                                            <span asp-validation-for="Active" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                        <span asp-validation-for="Active" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+
+                                </div>
+
+                            </form>
+
+                        </div>
                     </div>
-
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Save" />
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
                 </div>
             </div>
+            <!-- Conetnt End-->
 
-        </form>
+        </div>
     </div>
-</body>
+</div>

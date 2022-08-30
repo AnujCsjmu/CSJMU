@@ -2,92 +2,76 @@
 @{
     ViewData["Title"] = "Delete";
 }
-<body>
-    <div style="padding: 30px 30px 30px 30px">
-        <h2 class="text-info">Delete Menu</h2>
-        <form asp-action="Delete" method="get">
-            <div class="pd-4 rounded border">
-                <input type="hidden" asp-for="MenuID" />
-                <div asp-validation-summary="ModelOnly" class="text-danger">
+<div class="main-content side-content pt-0">
+    <div class="side-app">
 
+        <div class="main-container container-fluid">
+
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Delete Menu</h2>
+                    <hr />
                 </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Level1"> </label>
+
+            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Delete Menu</h6>
+                                <hr />
+                            </div>
+
+
+
+                            <form asp-action="Details" method="post">
+                                <div class="row">
+                                    <input type="hidden" asp-for="MenuID" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="ParentMenuId" class="mg-b-10"> </label>
+                                            <input asp-for="ParentMenuName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="ParentMenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="SubMenuId" class="mg-b-10"> </label>
+                                            <input asp-for="SubMenuName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="SubMenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="MenuName" class="mg-b-10"> </label>
+                                            <input asp-for="MenuName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="MenuName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
                     </div>
-                    <div class="col-5">
-                        <input asp-for="Level1" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Level1" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Level2"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Level2" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Level2" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Level3"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Level3" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Level3" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Role"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Role" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Role" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Controller"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Controller" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Controller" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Action"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Action" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Action" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Status"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Status" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Status" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Remarks"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Remarks" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="Remarks" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" asp-route-id="@Model.MenuID" class="btn btn-danger" value="Delete" />
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
                 </div>
             </div>
-        </form>
+            <!-- Conetnt End-->
+
+        </div>
     </div>
-</body>
+</div>

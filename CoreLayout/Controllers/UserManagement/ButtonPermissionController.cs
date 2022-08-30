@@ -4,6 +4,7 @@ using CoreLayout.Models.Masters;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Masters.Country;
 using CoreLayout.Services.Masters.Role;
+using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.ButtonPermission;
 using CoreLayout.Services.UserManagement.Menu;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,8 @@ namespace CoreLayout.Controllers
         private readonly IButtonService _buttonService;
         private readonly CommonController _commonController;
         private readonly IMenuService _menuService;
-        public ButtonPermissionController(ILogger<ButtonPermissionController> logger, IButtonPermissionService buttonPermissionService, IRoleService roleService, IButtonService buttonService, CommonController commonController, IMenuService menuService)
+        private readonly IRegistrationService _registrationService;
+        public ButtonPermissionController(ILogger<ButtonPermissionController> logger, IButtonPermissionService buttonPermissionService, IRoleService roleService, IButtonService buttonService, CommonController commonController, IMenuService menuService, IRegistrationService registrationService)
         {
             _logger = logger;
             _buttonPermissionService = buttonPermissionService;
@@ -36,161 +38,197 @@ namespace CoreLayout.Controllers
             _buttonService = buttonService;
             _commonController = commonController;
             _menuService = menuService;
+            _registrationService = registrationService;
         }
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            bindRoleDropdown();
-            List<ButtonPermissionModel> buttonPermissionModels = new List<ButtonPermissionModel>();
+            List<ButtonPermissionModel> listbuttonPermissionModels = new List<ButtonPermissionModel>();
+            List<ButtonPermissionModel> listbuttonPermissionModels1 = new List<ButtonPermissionModel>();
+            var data = await _buttonPermissionService.DistinctButtonPermissionAsync();
+            ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
             var AllButtonPermissionData = (dynamic)null;
-            if (HttpContext.Session.GetString("SearchList")==null)
+            foreach (var _data in data)
             {
-                 AllButtonPermissionData = await _buttonPermissionService.DistinctButtonPermissionAsync();
+                listbuttonPermissionModels = await _buttonPermissionService.GetAllButtonPermissionMenuWiseAsync(_data.MenuId);
+                //listbuttonPermissionModels1.Add(listbuttonPermissionModels);
             }
-            else
-            {
-                int SearchRoleId = (int)HttpContext.Session.GetInt32("SearchRoleId");
-                int SearchUserId = (int)HttpContext.Session.GetInt32("SearchUserId");
-                 AllButtonPermissionData = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(SearchUserId);
-            }
-            //var AllButtonPermissionData = await _menuService.GetAllMenuAsync();
-            foreach (var _allButtonPermissionData in AllButtonPermissionData)
-            {
-                ButtonPermissionModel buttonPermission = new ButtonPermissionModel();
-                buttonPermission.Controller = _allButtonPermissionData.Controller;
-               // buttonPermission.Action = _allButtonPermissionData.Action;
-                buttonPermission.URL = _allButtonPermissionData.URL;
-                buttonPermission.UserName = _allButtonPermissionData.UserName;
-                buttonPermission.RoleName = _allButtonPermissionData.RoleName;
-                buttonPermission.UserId = _allButtonPermissionData.UserId;
-                buttonPermission.RoleId = _allButtonPermissionData.RoleId;
+            
+            return View(data);
 
-                List<ButtonModel> buttonModellist  = new List<ButtonModel>();
-                ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
-                var ButtonPermissionDataUserWise = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(_allButtonPermissionData.UserId);
-                var AllButtonsData = await _buttonService.GetAllButton();
-                foreach (var _allButtonsData in AllButtonsData)
-                {
-                    ButtonModel buttonModel = new ButtonModel();
-                    buttonModel.ButtonName = _allButtonsData.ButtonName;
-                    foreach (var item3 in ButtonPermissionDataUserWise)
-                    {
-                        if (_allButtonsData.ButtonId == item3.ButtonId )
-                        {
-                            buttonModel.isChecked = "checked";
-                         
-                        }
-                    }
-                    buttonModellist.Add(buttonModel);
 
-                }
 
-                buttonPermission.ButtonModelList = buttonModellist;
-                buttonPermissionModels.Add(buttonPermission);
-            }
-           // HttpContext.Session.SetString("SearchList",null);
-            return View(buttonPermissionModels);
+
+            //bindRoleDropdown();
+            //List<ButtonPermissionModel> buttonPermissionModels = new List<ButtonPermissionModel>();
+            //var AllButtonPermissionData = (dynamic)null;
+            //if (HttpContext.Session.GetString("SearchList") == null)
+            //{
+            //    AllButtonPermissionData = await _buttonPermissionService.DistinctButtonPermissionAsync();
+            //}
+            //else
+            //{
+            //    int SearchRoleId = (int)HttpContext.Session.GetInt32("SearchRoleId");
+            //    int SearchUserId = (int)HttpContext.Session.GetInt32("SearchUserId");
+            //    AllButtonPermissionData = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(SearchUserId);
+            //}
+            ////var AllButtonPermissionData = await _menuService.GetAllMenuAsync();
+            //foreach (var _allButtonPermissionData in AllButtonPermissionData)
+            //{
+            //    ButtonPermissionModel buttonPermission = new ButtonPermissionModel();
+            //    buttonPermission.Controller = _allButtonPermissionData.Controller;
+            //    // buttonPermission.Action = _allButtonPermissionData.Action;
+            //    buttonPermission.URL = _allButtonPermissionData.URL;
+            //    buttonPermission.UserName = _allButtonPermissionData.UserName;
+            //    buttonPermission.RoleName = _allButtonPermissionData.RoleName;
+            //    buttonPermission.UserId = _allButtonPermissionData.UserId;
+            //    buttonPermission.RoleId = _allButtonPermissionData.RoleId;
+
+            //    List<ButtonModel> buttonModellist = new List<ButtonModel>();
+            //    ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
+            //    var ButtonPermissionDataUserWise = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(_allButtonPermissionData.UserId);
+            //    var AllButtonsData = await _buttonService.GetAllButton();
+            //    foreach (var _allButtonsData in AllButtonsData)
+            //    {
+            //        ButtonModel buttonModel = new ButtonModel();
+            //        buttonModel.ButtonName = _allButtonsData.ButtonName;
+            //        foreach (var item3 in ButtonPermissionDataUserWise)
+            //        {
+            //            if (_allButtonsData.ButtonId == item3.ButtonId)
+            //            {
+            //                buttonModel.isChecked = "checked";
+
+            //            }
+            //        }
+            //        buttonModellist.Add(buttonModel);
+
+            //    }
+
+            //    buttonPermission.ButtonModelList = buttonModellist;
+            //    buttonPermissionModels.Add(buttonPermission);
+            //}
+            //HttpContext.Session.SetString("SearchList", null);
+            //return View(buttonPermissionModels);
+            //return View(await _buttonPermissionService.GetAllButtonPermissionAsync());
+
+            //var data = await _buttonPermissionService.DistinctButtonPermissionAsync();
+            //return View(data);
         }
 
         //[HttpGet("[search]")]
-        public async Task<IActionResult> Search()
-        {
-            try
-            {
-                int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
-                int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
+        //public async Task<IActionResult> Search()
+        //{
+        //    try
+        //    {
+        //        int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
+        //        int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
 
-                List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
-                permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
-                var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
-                if (result == null)
-                {
-                    TempData["error"] = "User has not been updated";
-                    return View(result);
-                }
+        //        List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
+        //        permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
+        //        var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
+        //        if (result == null)
+        //        {
+        //            TempData["error"] = "User has not been updated";
+        //            return View(result);
+        //        }
 
-                HttpContext.Session.SetString("SearchList", result.ToString());
-                HttpContext.Session.SetInt32("SearchRoleId", RoleId);
-                HttpContext.Session.SetInt32("SearchUserId", UserId);
-            }
-            catch(Exception ex)
-            {
-                ModelState.AddModelError("", ex.ToString());
-            }
-            return RedirectToAction("Index");
-        }
+        //        HttpContext.Session.SetString("SearchList", result.ToString());
+        //        HttpContext.Session.SetInt32("SearchRoleId", RoleId);
+        //        HttpContext.Session.SetInt32("SearchUserId", UserId);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        ModelState.AddModelError("", ex.ToString());
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
         //[HttpGet("[save]")]
         public IActionResult Save()
         {
             return View();
         }
-        public void bindRoleDropdown()
-        {
-            var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
-                                  select new SelectListItem()
-                                  {
-                                      Text = menu.Controller,
-                                      Value = menu.Controller.ToString(),
-                                  }).ToList();
-            ControllerList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
-            ViewBag.ControllerList = ControllerList;
+        //public void bindRoleDropdown()
+        //{
+        //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
+        //                          select new SelectListItem()
+        //                          {
+        //                              Text = menu.Controller,
+        //                              Value = menu.Controller.ToString(),
+        //                          }).ToList();
+        //    ControllerList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    ViewBag.ControllerList = ControllerList;
 
 
-            var RoleList = (from role in _roleService.GetAllRoleAsync().Result
-                            select new SelectListItem()
-                            {
-                                Text = role.RoleName,
-                                Value = role.RoleID.ToString(),
-                            }).ToList();
-            RoleList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
+        //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
+        //                    select new SelectListItem()
+        //                    {
+        //                        Text = role.RoleName,
+        //                        Value = role.RoleID.ToString(),
+        //                    }).ToList();
+        //    RoleList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
 
-            ViewBag.RoleList = RoleList;
+        //    ViewBag.RoleList = RoleList;
 
-            var GetButtonList = (from button in _buttonService.GetAllButton().Result
-                                 select new SelectListItem()
-                                 {
-                                     Text = button.ButtonName,
-                                     Value = button.ButtonId.ToString(),
-                                 }).ToList();
-            //GetButtonList.Insert(0, new SelectListItem()
-            //{
-            //    Text = "----Select----",
-            //    Value = string.Empty
-            //});
+        //    var GetButtonList = (from button in _buttonService.GetAllButton().Result
+        //                         select new SelectListItem()
+        //                         {
+        //                             Text = button.ButtonName,
+        //                             Value = button.ButtonId.ToString(),
+        //                         }).ToList();
+        //    //GetButtonList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
 
-            ViewBag.GetButtonList = GetButtonList;
-        }
-        public void bindUserDropdown(int RoleId)
-        {
+        //    ViewBag.GetButtonList = GetButtonList;
+        //}
+        //public void bindUserDropdown(int RoleId)
+        //{
 
-            var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
-                               select new SelectListItem()
-                               {
-                                   Text = user.UserName,
-                                   Value = user.UserID.ToString(),
-                               }).ToList();
-            GetUserList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
-            ViewBag.GetUserList = GetUserList;
-        }
+        //    var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
+        //                       select new SelectListItem()
+        //                       {
+        //                           Text = user.UserName,
+        //                           Value = user.UserID.ToString(),
+        //                       }).ToList();
+        //    GetUserList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    ViewBag.GetUserList = GetUserList;
+        //}
         //Create Get Action Method
         [AuthorizeContext(ViewAction.Add)]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync()
         {
-            bindRoleDropdown();
-            return View();
+
+            try
+            {
+                ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
+                buttonPermissionModel.MenuList = await _menuService.GetAllMenuAsync();
+                ViewBag.GetButtonList = await _buttonService.GetAllButton();
+                buttonPermissionModel.RoleList = await _roleService.GetAllRoleAsync();
+                buttonPermissionModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                //var guid_id = _protector.Unprotect(id);
+
+                return View(buttonPermissionModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -199,13 +237,14 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(ButtonPermissionModel buttonPermissionModel)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-
-
-                StringBuilder stringBuilder = new StringBuilder();
+                buttonPermissionModel.MenuList = await _menuService.GetAllMenuAsync();
+                ViewBag.GetButtonList = await _buttonService.GetAllButton();
+                buttonPermissionModel.RoleList = await _roleService.GetAllRoleAsync();
                 buttonPermissionModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 buttonPermissionModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                buttonPermissionModel.UserList = await _registrationService.GetAllRegistrationAsync();
                 int buttons = 0;
                 foreach (int buttonid in buttonPermissionModel.ButtonList)
                 {
@@ -237,11 +276,13 @@ namespace CoreLayout.Controllers
                     string msg = "already permission to this user " + buttonPermissionModel.UserName + " of the this page " + buttonPermissionModel.Controller + "/" + buttonPermissionModel.Action + "";
                     ModelState.AddModelError("", msg);
                 }
-
+                return View(buttonPermissionModel);
             }
-            bindRoleDropdown();
-            bindUserDropdown(buttonPermissionModel.RoleId);
-            return View(buttonPermissionModel);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View();
         }
 
         public JsonResult GetUser(int RoleId)
@@ -282,8 +323,8 @@ namespace CoreLayout.Controllers
             {
                 var list = await _buttonPermissionService.GetButtonPermissionByIdAsync(id);
 
-                bindRoleDropdown();
-                bindUserDropdown(list.RoleId);
+                //bindRoleDropdown();
+               // bindUserDropdown(list.RoleId);
                 return View(list);
             }
             else
@@ -306,9 +347,9 @@ namespace CoreLayout.Controllers
                     buttonPermissionModel.IPAddress = HttpContext.Session.GetString("IPAddress");
 
                     int buttons = 0;
-                    foreach (int buttonid in buttonPermissionModel.ButtonList)
+                    foreach (var buttonid in buttonPermissionModel.ButtonList)
                     {
-                        int result = _commonController.AlreadyExitsButtonPermission(buttonid, (int)buttonPermissionModel.ModifiedBy, buttonPermissionModel.RoleId, buttonPermissionModel.Controller, buttonPermissionModel.Action);
+                        int result = _commonController.AlreadyExitsButtonPermission(Convert.ToInt32(buttonid), (int)buttonPermissionModel.ModifiedBy, buttonPermissionModel.RoleId, buttonPermissionModel.Controller, buttonPermissionModel.Action);
                         if (result > 0)
                         {
                             buttons = 1;
@@ -351,8 +392,8 @@ namespace CoreLayout.Controllers
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            bindRoleDropdown();
-            bindUserDropdown(buttonPermissionModel.RoleId);
+            //bindRoleDropdown();
+            //bindUserDropdown(buttonPermissionModel.RoleId);
             return View(buttonPermissionModel);
         }
 

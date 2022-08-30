@@ -7,13 +7,9 @@
     <div style="padding: 30px 30px 30px 30px">
         <div class="row">
             <div class="col-6">
-                @*<h2 class="text-info">Country List</h2>*@
             </div>
             <div class="col-6 text-right">
-
                 <a asp-action="Create" asp-route-id=@ViewBag.MaxInstituteId class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Institute</a>
-
-
             </div>
         </div>
         <br />
@@ -40,9 +36,9 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.CreatedDate)
                             </th>
-                            <th>
+                            @*<th>
                                 @Html.DisplayNameFor(c => c.ModifiedDate)
-                            </th>
+                            </th>*@
                             <th>
                                 Action
                             </th>
@@ -63,9 +59,9 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.CreatedDate)
                             </th>
-                            <th>
+                            @*<th>
                                 @Html.DisplayNameFor(c => c.ModifiedDate)
-                            </th>
+                            </th>*@
                             <th>
                                 Action
                             </th>
@@ -87,7 +83,7 @@
                             <td>@item.InstituteName</td>
                             <td>@item.CreatedBy</td>
                             <td>@item.CreatedDate</td>
-                            <td>@item.ModifiedDate</td>
+                            @*<td>@item.ModifiedDate</td>*@
                             <td>
                                 <a asp-action="Edit" id="edit" class="btn btn-primary" asp-route-id=@item.EncryptedId><i class="far fa-edit"></i></a>
                                 <a asp-action="Details" id="details" class="btn btn-success" asp-route-id=@item.EncryptedId><i class="fas fa-list"></i></a>

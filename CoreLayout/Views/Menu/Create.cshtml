@@ -19,14 +19,13 @@
 
             </div>
             <!-- End Page Header -->
-
             <!-- Conetnt Start-->
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="card custom-card">
                         <div class="card-body">
                             <div>
-                                <h6 class="card-title mb-1">Create Menus and Submenus</h6>
+                                <h6 class="card-title mb-1">Create Menu</h6>
                                 <hr />
                             </div>
 
@@ -37,65 +36,33 @@
                                     <div asp-validation-summary="ModelOnly" class="text-danger">
 
                                     </div>
-                                    @*<div class="form-group row">
-                                            <div class="col-2">
-                                                <label asp-for="Level1"> </label>
-                                            </div>
-                                            <div class="col-5">
-                                                <input asp-for="Level1" class="form-control" />
-                                                <span asp-validation-for="Level1" class="text-danger"></span>
-                                            </div>
-
-                                        </div>*@
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Level1" class="mg-b-10"> </label>
-                                            <select asp-for="Level1"
-                                                    class="form-control form-select select2"
-                                                    asp-items="@(new SelectList(ViewBag.ParentMenuList,"Value", "Text"))">
+                                        <div>
+                                            <label asp-for="ParentMenuId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="ParentMenuId" asp-items="@(new SelectList(Model.ParentMenuList,"ParentMenuId","ParentMenuName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                             </select>
-
-                                            <span asp-validation-for="Level1" class="text-danger"></span>
+                                            <span asp-validation-for="ParentMenuId" class="text-danger"></span>
                                         </div>
-
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Level2" class="mg-b-10"> </label>
-                                            <select asp-for="Level2"
-                                                    class="form-select form-select select2"
-                                                    asp-items="@(new SelectList(string.Empty,"Value", "Text"))">
+                                        <div>
+                                            <label asp-for="SubMenuId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="SubMenuId" asp-items="@(new SelectList(string.Empty,"SubMenuId","SubMenuName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                             </select>
-                                            <span asp-validation-for="Level2" class="text-danger"></span>
-
+                                            <span asp-validation-for="SubMenuId" class="text-danger"></span>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label asp-for="Level3" class="mg-b-10"> </label>
-                                            <input asp-for="Level3" class="form-control" value="*" />
-                                            <span asp-validation-for="Level3" class="text-danger"></span>
+                                            <label asp-for="MenuName" class="mg-b-10"> </label>
+                                            <input asp-for="MenuName" class="form-control" value="*" />
+                                            <span asp-validation-for="MenuName" class="text-danger"></span>
                                         </div>
                                     </div>
-
-
-
-                                    @*<div class="form-group row">
-                                            <div class="col-2">
-                                                <label asp-for="Role"> </label>
-                                            </div>
-                                            <div class="col-5">
-                                                <select asp-for="Role"
-                                                        class="form-control"
-                                                        asp-items="@(new SelectList(ViewBag.Listofrole))">
-                                                </select>
-                                                <span asp-validation-for="Role" class="text-danger"></span>
-                                            </div>
-
-                                        </div>*@
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Controller" class="mg-b-10"> </label>
@@ -103,49 +70,35 @@
                                             <span asp-validation-for="Controller" class="text-danger"></span>
                                         </div>
                                     </div>
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="Action" class="mg-b-10"> </label>
-                                            <input asp-for="Action" class="form-control" />
+                                            <input asp-for="Action" class="form-control" value="Index" readonly="readonly"  />
                                             <span asp-validation-for="Action" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label asp-for="Status" class="mg-b-10"> </label>
-                                            <div>
-                                                @Html.DropDownList("Status", new List<SelectListItem>
-                                                {
-                                                    new SelectListItem{ Text="Active", Value = "Active" },
-                                                     new SelectListItem{ Text="InActive", Value = "InActive" },
+                                            <label asp-for="Active" class="mg-b-10"> </label>
+                                            @Html.DropDownList("Active", new List<SelectListItem>
+                                            {
+                                            new SelectListItem{ Text="Yes", Value = "1" , Selected = true},
+                                            new SelectListItem{ Text="No", Value = "0" },
 
-                                                },
-                                                new { @class = "form-select form-select select2" })
-                                            </div>
-                                            <span asp-validation-for="Status" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="Remarks" class="mg-b-10"> </label>
-                                            <input asp-for="Remarks" class="form-control" />
-                                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                                            },
+                                            new { @class = "form-control" })
+                                            <span asp-validation-for="Active" class="text-danger"></span>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <input type="submit" class="btn btn-primary" value="Save" />
-                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
-                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                    <a asp-action="Index" class="btn btn-success">Back to List</a>
+
                                 </div>
 
                             </form>
-
-
-
-
-
 
                         </div>
                     </div>
@@ -165,21 +118,45 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#Level1").on("change", function () {
-                $("#Level2").empty();
-                var ddlsource = "#Level1";
+            $("#ParentMenuId").on("change", function () {
+                $("#SubMenuId").empty();
+                var ddlsource = "#ParentMenuId";
                 var url = '@Url.Content("~/")' + "Menu/GetSubMenu?ParentMenuId="+$(ddlsource).val();
 
                 $.getJSON(url, function (data) {
                 var items = '';
-                    $("#Level2").empty();
+                    $("#SubMenuId").empty();
                     $.each(data, function (i, submenu) {
                         items += "<option value ='" + submenu.value + "'>" + submenu.text + "</option>";
                 });
-                    $('#Level2').html(items);
+                    $('#SubMenuId').html(items);
             });
             });
         });
 
+    </script>
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 2,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 2,
+            });
+        });
     </script>
 }

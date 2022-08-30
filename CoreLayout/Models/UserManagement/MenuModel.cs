@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,41 +13,43 @@ namespace CoreLayout.Models.UserManagement
         [Key]
         public int MenuID { get; set; }
 
-        [Display(Name = "Level1 Menu")]
-        [Required(ErrorMessage = "Please enter level1 menu")]
-        public string Level1 { get; set; }
+        [Display(Name = "Parent Menu")]
+        [Required(ErrorMessage = "Please enter parent menu")]
+        public int ParentMenuId { get; set; }
 
-        [Display(Name = "Level2 Menu")]
-        [Required(ErrorMessage = "Please enter level2 menu")]
-        public string Level2 { get; set; }
+        [Display(Name = "Sub Menu")]
+        [Required(ErrorMessage = "Please enter sub menu")]
+        public int SubMenuId { get; set; }
 
-        [Display(Name = "Level3 Menu")]
-        [Required(ErrorMessage = "Please enter level3 menu")]
-        public string Level3 { get; set; }
-
-        [Display(Name = "Role")]
-        //[Required(ErrorMessage = "Please select role")]
-        public string Role { get; set; }
-
-        public int RoleId { get; set; }
-
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [Display(Name = "Controller Name")]
         [Required(ErrorMessage = "Please enter controller name")]
+        [StringLength(20)]
         public string Controller { get; set; }
 
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [Display(Name = "Action Name")]
         [Required(ErrorMessage = "Please enter menu url")]
+        [StringLength(10)]
         public string Action { get; set; }
 
-        [Display(Name = "Status")]
-        [Required(ErrorMessage = "Please enter status")]
-        public string Status { get; set; }
+        public string ParentMenuName { get; set; }
+        public string SubMenuName { get; set; }
 
-        [Display(Name = "Remarks")]
-        [Required(ErrorMessage = "Please enter remarks")]
-        public string Remarks { get; set; }
+        [Display(Name = "Menu Name")]
+        [Required(ErrorMessage = "Please enter menu name")]
+       // [Remote(action: "VerifyMenuName", controller: "Menu")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        [StringLength(50)]
+        public string MenuName { get; set; }
+        public int Active { get; set; }
+        public int IsRecordDeleted { get; set; }
+        public string IPAddress { get; set; }
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
 
-        public int UserRoleId { get; set; }
+        public List<ParentMenuModel> ParentMenuList { get; set; }
+        public List<SubMenuModel> SubMenuList { get; set; }
 
     }
 }

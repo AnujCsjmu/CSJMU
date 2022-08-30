@@ -23,7 +23,6 @@ namespace CoreLayout.Repositories.UserManagement.AssignMenuByRole
                 var query = "SP_InsertUpdateDelete_AssignMenuByRole";
                 using (var connection = CreateConnection())
                 {
-                    entity.IPAddress = ":11";
                     entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("MenuId", entity.MenuId, DbType.Int32);

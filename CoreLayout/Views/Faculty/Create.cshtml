@@ -1,0 +1,67 @@
+﻿@model CoreLayout.Models.Masters.FacultyModel
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="main-content side-content pt-0">
+    <div class="side-app">
+
+        <div class="main-container container-fluid">
+
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Create Faculty</h2>
+                    <hr />
+                </div>
+
+            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Create Faculty</h6>
+                                <hr />
+                            </div>
+
+                            <form asp-action="Create" method="post">
+                                <div class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="ProgramId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="ProgramId" asp-items="@(new SelectList(Model.ProgramList,"ProgramId","ProgramName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="ProgramId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="FacultyName" class="mg-b-10"> </label>
+                                            <input asp-for="FacultyName" class="form-control" />
+                                            <span asp-validation-for="FacultyName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-primary" value="Save" />
+                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Conetnt End-->
+
+        </div>
+    </div>
+</div>

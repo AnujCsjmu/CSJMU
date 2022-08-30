@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,8 +13,11 @@ namespace CoreLayout.Models.UserManagement
         [Key]
         public int SubMenuId { get; set; }
 
-        [Display(Name = "Parent Sub Menu")]
-        [Required(ErrorMessage = "Please enter Sub menu")]
+        [Display(Name = "Sub Menu")]
+        [Required(ErrorMessage = "Please enter sub menu")]
+        [Remote(action: "VerifySubMenuName", controller: "SubMenu")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        [StringLength(50)]
         public string SubMenuName { get; set; }
 
         [Display(Name = "Parent Menu")]
@@ -28,5 +32,7 @@ namespace CoreLayout.Models.UserManagement
         public string IPAddress { get; set; }
 
         public int UserId { get; set; }
+
+        public List<ParentMenuModel> ParentMenuList { get; set; }
     }
 }

@@ -48,6 +48,10 @@ namespace CoreLayout.Services.UserManagement.ButtonPermission
         {
             return await _buttonPermissionRepository.GetAllButtonPermissionUserWiseAsync(userid);
         }
+        public async Task<List<ButtonPermissionModel>> GetAllButtonPermissionMenuWiseAsync(int menuid)
+        {
+            return await _buttonPermissionRepository.GetAllButtonPermissionMenuWiseAsync(menuid);
+        }
         public async Task<List<ButtonPermissionModel>> DistinctButtonPermissionAsync()
         {
             return await _buttonPermissionRepository.DistinctButtonPermissionAsync();

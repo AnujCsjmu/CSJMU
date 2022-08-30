@@ -2,47 +2,69 @@
 @{
     ViewData["Title"] = "Delete";
 }
-<br />
-<h2 class="text-info">Delete Parent Menu</h2>
-<div style ="padding: 30px 30px 30px 30px">
-    <form asp-action="Delete" method="get">
-        <div class="pd-4 rounded border">
-            <input type="hidden" asp-for="ParentMenuId" />
-            <div asp-validation-summary="ModelOnly" class="text-danger">
+<div class="main-content side-content pt-0">
+    <div class="side-app">
+
+        <div class="main-container container-fluid">
+
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Delete Parent Menu</h2>
+                    <hr />
+                </div>
 
             </div>
-            @*<div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="CountryId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="CountryId" readonly="readonly" class="form-control" />
-                    </div>
-                    <span asp-validation-for="CountryId" class="text-danger"></span>
-                </div>*@
-            <div class="form-group row">
-                <div class="col-2">
-                    <label asp-for="ParentMenuName"> </label>
-                </div>
-                <div class="col-5">
-                    <input asp-for="ParentMenuName" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="ParentMenuName" class="text-danger"></span>
-            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Delete Parent Menu</h6>
+                                <hr />
+                            </div>
 
-            <div class="form-group row">
-                <div class="col-2">
-                    <label asp-for="SortBy"> </label>
+
+
+                            <form asp-action="Delete" method="post">
+                                <div class="row">
+                                    <input type="hidden" asp-for="ParentMenuId" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="ParentMenuName" class="mg-b-10"> </label>
+                                            <input asp-for="ParentMenuName" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="ParentMenuName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="SortBy" class="mg-b-10"> </label>
+                                            <input asp-for="SortBy" class="form-control" readonly="readonly" />
+                                            <span asp-validation-for="SortBy" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <a asp-action="Delete" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
+                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
                 </div>
-                <div class="col-5">
-                    <input asp-for="SortBy" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="SortBy" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-danger" value="Delete" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
-            </div>
+            <!-- Conetnt End-->
+
         </div>
-    </form>
     </div>
+</div>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CoreLayout.Models.Masters;
+using CoreLayout.Models.UserManagement;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +18,6 @@ namespace CoreLayout.Models.Common
         public string EncryptedId { get; set; }
 
         public int ButtonMasterId { get; set; }
+
     }
 }

@@ -87,16 +87,16 @@
                             {
                                 <a class="nav-link" asp-action="@list.Action" asp-controller="@list.Controller">
                                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                    @list.Level1
+                                    @list.ParentMenuName
                                 </a>
                             }
 
 
                             // Add Double Level Menu To NAV bar
-                            List<String> ParentHeadingList = level2.Select(x => x.Level1).Distinct().ToList();
+                            List<String> ParentHeadingList = level2.Select(x => x.ParentMenuName).Distinct().ToList();
                             foreach (String Parent in ParentHeadingList)
                             {
-                                List<DashboardModel> filteredlist = level2.Where(ParentHeading => ParentHeading.Level1.Equals(Parent)).ToList();
+                                List<DashboardModel> filteredlist = level2.Where(ParentHeading => ParentHeading.ParentMenuName.Equals(Parent)).ToList();
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts-@Parent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapseLayouts-@Parent.Replace(" ", "-")">
                                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                     @Parent
@@ -106,7 +106,7 @@
                                 {
                                     <div class="collapse" id="collapseLayouts-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.Level2</a>
+                                            <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.SubMenuName</a>
                                         </nav>
                                     </div>
                                 }
@@ -115,12 +115,12 @@
 
                             //ADD Triple Level Menu To Nav Bar
 
-                            List<String> GrandParentHeadingList = level3.Select(x => x.Level1).Distinct().ToList();
+                            List<String> GrandParentHeadingList = level3.Select(x => x.ParentMenuName).Distinct().ToList();
                             List<String> ParentList;
                             foreach (String GrandParent in GrandParentHeadingList)
                             {
-                                List<DashboardModel> filteredParent = level3.Where(GrandParentHeadingList => GrandParentHeadingList.Level1.Equals(GrandParent)).ToList();
-                                ParentList = filteredParent.Select(x => x.Level2).Distinct().ToList();
+                                List<DashboardModel> filteredParent = level3.Where(GrandParentHeadingList => GrandParentHeadingList.ParentMenuName.Equals(GrandParent)).ToList();
+                                ParentList = filteredParent.Select(x => x.SubMenuName).Distinct().ToList();
                                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages-@GrandParent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapsePages-@GrandParent.Replace(" ", "-")">
                                     <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                     @GrandParent
@@ -130,7 +130,7 @@
 
                                 foreach (String Parent in ParentList)
                                 {
-                                    List<DashboardModel> filteredlist = filteredParent.Where(ParentHeading => ParentHeading.Level2.Equals(Parent)).ToList();
+                                    List<DashboardModel> filteredlist = filteredParent.Where(ParentHeading => ParentHeading.SubMenuName.Equals(Parent)).ToList();
 
                                     <div class="collapse" id="collapsePages-@GrandParent.Replace(" ", "-")" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                         <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages-@Parent.Replace(" ", "-")">
@@ -144,7 +144,7 @@
 
                                                 <div class="collapse" id="pagesCollapseAuth-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages-@Parent.Replace(" ", "-")">
                                                     <nav class="sb-sidenav-menu-nested nav">
-                                                        <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.Level3</a>
+                                                        <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.MenuName</a>
                                                     </nav>
                                                 </div>
 
@@ -157,6 +157,10 @@
 
 
                             }
+                        }
+                        else
+                        {
+                            Context.Response.Redirect("Home/Login");
                         }
 
                     </div>
@@ -236,6 +240,31 @@
             alertify.error(error);
         }
     })
+    </script>
+
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 2,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 2,
+            });
+        });
     </script>
 
     @RenderSection("Scripts", required: false)

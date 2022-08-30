@@ -14,13 +14,19 @@ namespace CoreLayout.Models.UserManagement
         [Key]
         public int Id { get; set; }
 
+
+        [Display(Name = " Menu Name")]
+        [Required(ErrorMessage = "Please select Menu")]
+        //public string ButtonId { get; set; }
+        public int MenuId { get; set; }
+
         [Display(Name = "URL")]
         //[Required(ErrorMessage = "Please enter url")]
         [StringLength(50)]
         public string URL { get; set; }
 
         [Display(Name = "Controller")]
-        [Required(ErrorMessage = "Please select controller")]
+        //[Required(ErrorMessage = "Please select controller")]
         public string Controller { get; set; }
 
         [Display(Name = "Index")]
@@ -50,12 +56,15 @@ namespace CoreLayout.Models.UserManagement
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
         public string ButtonName { get; set; }
-        public List<int> ButtonList { get; set; }
+       // public List<int> ButtonList { get; set; }
         public string IPAddress { get; set; }
 
+        public string MenuName { get; set; }
 
         public List<ButtonModel> ButtonModelList { get; set; }
-
-        public SelectList selectrole { get; set; }
+        public List<MenuModel> MenuList { get; set; }
+        public List<int> ButtonList { get; set; }
+        public List<RoleModel> RoleList { get; set; }
+        public List<RegistrationModel> UserList { get; set; }
     }
 }

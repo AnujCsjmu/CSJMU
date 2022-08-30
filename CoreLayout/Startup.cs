@@ -6,12 +6,15 @@ using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
 using CoreLayout.Repositories.Masters.Dashboard;
+using CoreLayout.Repositories.Masters.Degree;
 using CoreLayout.Repositories.Masters.Deparment;
 using CoreLayout.Repositories.Masters.District;
+using CoreLayout.Repositories.Masters.Faculty;
 using CoreLayout.Repositories.Masters.Institute;
 using CoreLayout.Repositories.Masters.InstituteCategory;
 using CoreLayout.Repositories.Masters.InstituteType;
 using CoreLayout.Repositories.Masters.Pratice;
+using CoreLayout.Repositories.Masters.Program;
 using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
@@ -29,12 +32,15 @@ using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
 using CoreLayout.Services.Masters.Dashboard;
+using CoreLayout.Services.Masters.Degree;
 using CoreLayout.Services.Masters.Department;
 using CoreLayout.Services.Masters.District;
+using CoreLayout.Services.Masters.Faculty;
 using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.Masters.InstituteCategory;
 using CoreLayout.Services.Masters.InstituteType;
 using CoreLayout.Services.Masters.Pratice;
+using CoreLayout.Services.Masters.Program;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
@@ -225,11 +231,23 @@ namespace CoreLayout
             services.AddScoped<IInstituteCategoryService, InstituteCategoryService>();
             services.AddScoped<IInstituteCategoryRepository, InstituteCategoryRepository>();
 
+            //Degree
+            services.AddScoped<IDegreeService, DegreeService>();
+            services.AddScoped<IDegreeRepository, DegreeRepository>();
+
+            //Program
+            services.AddScoped<IProgramService, ProgramService>();
+            services.AddScoped<IProgramRepository, ProgramRepository>();
+
+            //Faculty
+            services.AddScoped<IFacultyService, FacultyService>();
+            services.AddScoped<IFacultyRepository, FacultyRepository>();
+
             //add for encrypt value
             services.AddDataProtection();
 
             //add for ip address
-            services.AddMvc();
+            //services.AddMvc();
             services.AddHttpContextAccessor();
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }

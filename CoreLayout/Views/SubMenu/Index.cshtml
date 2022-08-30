@@ -7,10 +7,10 @@
     <div style="padding: 30px 30px 30px 30px">
         <div class="row">
             <div class="col-6">
-               
+
             </div>
             <div class="col-6 text-right">
-                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Sub Menu</a>
+                <a asp-action="Create" asp-route-id=@ViewBag.MaxSubMenuId class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New SubMenu</a>
             </div>
         </div>
         <br />
@@ -31,9 +31,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.SubMenuName)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                          
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -60,9 +58,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.SubMenuName)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -93,15 +89,14 @@
                                 </td>
                                 <td>@item.ParentMenuName</td>
                                 <td>@item.SubMenuName</td>
-                                <td>@item.IsRecordDeleted</td>
                                 <td>@item.IPAddress</td>
                                 <td>@item.UserId</td>
                                 <td>@item.CreatedDate</td>
                                 <td>@item.ModifiedDate</td>
                                 <td>
-                                    <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.SubMenuId><i class="far fa-edit"></i></a>
-                                    <a asp-action="Details" class="btn btn-success" asp-route-id=@item.SubMenuId><i class="fas fa-list"></i></a>
-                                    <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.SubMenuId><i class="fas fa-trash-alt"></i></a>
+                                    <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.EncryptedId><i class="far fa-edit"></i></a>
+                                    <a asp-action="Details" class="btn btn-success" asp-route-id=@item.EncryptedId><i class="fas fa-list"></i></a>
+                                    <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.EncryptedId><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         }

@@ -63,11 +63,11 @@ namespace CoreLayout.Controllers
 
                 foreach (DashboardModel dm in alllevels)
                 {
-                    if (dm.Level2.Equals("*") && dm.Level3.Equals("*"))
+                    if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
                     {
                         level1.Add(dm);
                     }
-                    else if (dm.Level2 != "*" && dm.Level3.Equals("*"))
+                    else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
                     {
                         level2.Add(dm);
                     }

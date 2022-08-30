@@ -10,7 +10,7 @@
                 @*<h2 class="text-info">Country List</h2>*@
             </div>
             <div class="col-6 text-right">
-                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Parent Menu</a>
+                <a asp-action="Create" asp-route-id=@ViewBag.MaxParentMenuId class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Parent Menu</a>
             </div>
         </div>
         <br />
@@ -31,9 +31,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.SortBy)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -60,9 +58,7 @@
                             <th>
                                 @Html.DisplayNameFor(c => c.SortBy)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.IsRecordDeleted)
-                            </th>
+                           
                             <th>
                                 @Html.DisplayNameFor(c => c.IPAddress)
                             </th>
@@ -93,7 +89,7 @@
                                 </td>
                                 <td>@item.ParentMenuName</td>
                                 <td>@item.SortBy</td>
-                                <td>@item.IsRecordDeleted</td>
+                              
                                 <td>@item.IPAddress</td>
                                 <td>@item.UserName</td>
                                 <td>@item.CreatedDate</td>

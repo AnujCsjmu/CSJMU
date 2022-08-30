@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -37,37 +38,70 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            var parentMenus = await _parentMenuService.GetAllParentMenuAsync();
-            foreach (var _parentMenus in parentMenus)
+            try
             {
-                var id = _parentMenus.ParentMenuId.ToString();
-                _parentMenus.EncryptedId = _protector.Protect(id);
+                //start encrypt id for update, delete & details
+                var parentMenus =await _parentMenuService.GetAllParentMenuAsync();
+                foreach (var _parentMenus in parentMenus)
+                {
+                    var id = _parentMenus.ParentMenuId.ToString();
+                    _parentMenus.EncryptedId = _protector.Protect(id);
+                }
+                //end
+                //start generate maxid for create button
+                int maxparentmenuid = 0;
+                foreach (var _parentMenus in parentMenus)
+                {
+                    maxparentmenuid = _parentMenus.ParentMenuId;
+                }
+                maxparentmenuid = maxparentmenuid + 1;
+                ViewBag.MaxParentMenuId = _protector.Protect(maxparentmenuid.ToString());
+                return View(parentMenus);
             }
-            return View(parentMenus);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View();
         }
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
                 var guid_id = _protector.Unprotect(id);
-                var result = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
-                return View(result);
+                var data = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
+                data.EncryptedId = id;
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
 
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
         //Create Get Action Method
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
-            return View();
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -76,17 +110,13 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(ParentMenuModel parentMenuModel)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
                 parentMenuModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 parentMenuModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
                 parentMenuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-
                 if (ModelState.IsValid)
                 {
-                    //get max sort order number
-                    //int getmaxShortNumber=_commonController.assignRoleAlreadyExits()
-
                     var res = await _parentMenuService.CreateParentMenuAsync(parentMenuModel);
                     if (res.Equals(1))
                     {
@@ -100,67 +130,61 @@ namespace CoreLayout.Controllers
                 }
                 return View(parentMenuModel);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return View();
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
                 var guid_id = _protector.Unprotect(id);
-                var parentMenu = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
-
-                return View(parentMenu);
+                var data = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(string id, ParentMenuModel parentMenuModel)
+        public async Task<IActionResult> Edit(int ParentMenuId, ParentMenuModel parentMenuModel)
         {
             try
             {
-                if (HttpContext.Session.GetString("Name") != null)
+                parentMenuModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+                parentMenuModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
+                parentMenuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                if (ModelState.IsValid)
                 {
-                    parentMenuModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                    parentMenuModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
-                    parentMenuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    if (ModelState.IsValid)
+                    var value = await _parentMenuService.GetParentMenuByIdAsync(ParentMenuId);
+                    if (await TryUpdateModelAsync<ParentMenuModel>(value))
                     {
-                        var guid_id = _protector.Unprotect(id);
-                        var dbMenu = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
-                        if (await TryUpdateModelAsync<ParentMenuModel>(dbMenu))
+                        var res = await _parentMenuService.UpdateParentMenuAsync(parentMenuModel);
+                        if (res.Equals(1))
                         {
-                            parentMenuModel.ParentMenuId = (int)HttpContext.Session.GetInt32("Id");
-                            var res = await _parentMenuService.UpdateParentMenuAsync(dbMenu);
-                            if (res.Equals(1))
-                            {
-                                TempData["success"] = "Parent Menu has been updated";
-                            }
-                            else
-                            {
-                                TempData["error"] = "Parent Menu has not been updated";
-                            }
-                            return RedirectToAction(nameof(Index));
+                            TempData["success"] = "Parent Menu has been updated";
                         }
+                        else
+                        {
+                            TempData["error"] = "Parent Menu has not been updated";
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
 
-                }
             }
             catch (Exception ex)
             {
@@ -173,43 +197,54 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Delete)]
         public async Task<IActionResult> Delete(string id)
         {
-
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                try
+                var guid_id = _protector.Unprotect(id);
+                var value = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
+                if (value != null)
                 {
-                    var guid_id = _protector.Unprotect(id);
-                    var dbMenu = await _parentMenuService.GetParentMenuByIdAsync(Convert.ToInt32(guid_id));
-                    if (dbMenu != null)
-                    {
-                        var res = await _parentMenuService.DeleteParentMenuAsync(dbMenu);
+                    var res = await _parentMenuService.DeleteParentMenuAsync(value);
 
-                        if (res.Equals(1))
-                        {
-                            TempData["error"] = "Parent Menu has been deleted";
-                        }
-                        else
-                        {
-                            TempData["error"] = "Parent Menu has not been deleted";
-                        }
+                    if (res.Equals(1))
+                    {
+                        TempData["error"] = "Parent Menu has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "Some thing went wrong!";
+                        TempData["error"] = "Parent Menu has not been deleted";
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    ModelState.AddModelError("", ex.ToString());
+                    TempData["error"] = "Some thing went wrong!";
                 }
-
-                return RedirectToAction(nameof(Index));
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyParentMenuName(string parentMenuName)
+        {
+            var already = (from parentmenu in _parentMenuService.GetAllParentMenuAsync().Result
+                           where parentmenu.ParentMenuName == parentMenuName.Trim()
+                           select new SelectListItem()
+                           {
+                               Text = parentmenu.ParentMenuName,
+                               Value = parentmenu.ParentMenuId.ToString(),
+                           }).ToList();
+
+            if (already.Count > 0)
+            {
+                return Json($"{parentMenuName} is already in use.");
+            }
+
+            return Json(true);
+
         }
     }
 }

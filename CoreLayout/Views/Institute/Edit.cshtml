@@ -36,32 +36,32 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="InstituteCode" class="mg-b-10"> </label>
                                                 <input asp-for="InstituteCode" class="form-control" />
                                                 <span asp-validation-for="InstituteCode" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="InstituteName" class="mg-b-10"> </label>
                                                 <input asp-for="InstituteName" class="form-control" />
                                                 <span asp-validation-for="InstituteName" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="InstituteTypeId" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="InstituteTypeId" asp-items="@(new SelectList(Model.InstituteTypeList,"InstituteTypeID","InstituteTypeName"))">
+                                                <select style="width:250px; height:120px" class="select" asp-for="InstituteTypeId" asp-items="@(new SelectList(Model.InstituteTypeList,"InstituteTypeID","InstituteTypeName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
                                                 <span asp-validation-for="InstituteTypeId" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="InstituteCategoryId" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="InstituteCategoryId" asp-items="@(new SelectList(Model.InstituteCategoryList,"InstituteCategoryID","InstituteCategoryName"))">
+                                                <select style="width:250px; height:120px" class="select" asp-for="InstituteCategoryId" asp-items="@(new SelectList(Model.InstituteCategoryList,"InstituteCategoryID","InstituteCategoryName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
                                                 <span asp-validation-for="InstituteCategoryId" class="text-danger"></span>
@@ -73,12 +73,11 @@
                                             <div class="form-group">
                                                 <label asp-for="IsMinority" class="mg-b-10"> </label>
                                                 @Html.DropDownList("IsMinority", new List<SelectListItem>
-                       {
-                            new SelectListItem{ Text="No", Value = "0" },
-                            new SelectListItem{ Text="Yes", Value = "1" },
-
-                       },
-                       new { @class = "form-control" })
+                                                {
+                                                new SelectListItem{ Text="No", Value = "0" },
+                                                 new SelectListItem{ Text="Yes", Value = "1" },
+                                                },
+                                                new { @class = "form-control" })
                                                 <span asp-validation-for="IsMinority" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -90,9 +89,9 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="StateId" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="StateId" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
+                                                <select style="width:250px; height:120px" class="select" asp-for="StateId" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -100,9 +99,9 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="DistrictID" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="DistrictID" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
+                                                <select style="width:250px; height:120px" class="select" asp-for="DistrictID" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -113,9 +112,9 @@
 
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <div class="form-group">
+                                            <div>
                                                 <label asp-for="TehsilId" class="mg-b-10"> </label>
-                                                <select class="form-control" asp-for="TehsilId" asp-items="@(new SelectList(Model.TehsilList,"TehsilId","TehsilName"))">
+                                                <select style="width:250px; height:120px" class="select" asp-for="TehsilId" asp-items="@(new SelectList(Model.TehsilList,"TehsilId","TehsilName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -166,13 +165,11 @@
                                             <div class="form-group">
                                                 <label asp-for="IsActive" class="mg-b-10"> </label>
                                                 @Html.DropDownList("IsActive", new List<SelectListItem>
-                      {
+                                                {
                                                 new SelectListItem{ Text="Yes", Value = "1",Selected =true },
-                           new SelectListItem{ Text="No", Value = "0" },
-
-
-                      },
-                      new { @class = "form-control" })
+                                                new SelectListItem{ Text="No", Value = "0" },
+                                                },
+                                                new { @class = "form-control" })
                                                 <span asp-validation-for="IsActive" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -180,13 +177,11 @@
                                             <div class="form-group">
                                                 <label asp-for="IsAffiliated" class="mg-b-10"> </label>
                                                 @Html.DropDownList("IsMinority", new List<SelectListItem>
-                      {
+                                                {
                                                 new SelectListItem{ Text="Yes", Value = "1",Selected =true },
-                           new SelectListItem{ Text="No", Value = "0" },
-
-
-                      },
-                      new { @class = "form-control" })
+                                                new SelectListItem{ Text="No", Value = "0" },
+                                                },
+                                                new { @class = "form-control" })
                                                 <span asp-validation-for="IsAffiliated" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -363,6 +358,30 @@
                 });
                     $('#TehsilId').html(items);
             });
+            });
+        });
+    </script>
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 2,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 2,
             });
         });
     </script>

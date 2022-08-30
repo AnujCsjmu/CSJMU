@@ -31,8 +31,14 @@ namespace CoreLayout.Filters
         {
             var controllerName = context.ActionDescriptor.RouteValues["controller"];
             var actionName = context.ActionDescriptor.RouteValues["action"];
-            int userid= (int)context.HttpContext.Session.GetInt32("UserId");
-            int roleid = (int)context.HttpContext.Session.GetInt32("RoleId");
+            int userid = 0;
+            int roleid = 0;
+            if (context.HttpContext.Session.GetInt32("UserId") != null && context.HttpContext.Session.GetInt32("RoleId") != null)
+            {
+                 userid = (int)context.HttpContext.Session.GetInt32("UserId");
+                 roleid = (int)context.HttpContext.Session.GetInt32("RoleId");
+            }
+           
             string url = "/" + controllerName + "/" ;
             var result = await _buttonPermissionService.GetAllButtonActionPermissionAsync(_viewAction, userid, roleid,controllerName);
             //viewAction,_siteContext.RoleId.Value, _configuration.GetSection("ModuleId").Value,url

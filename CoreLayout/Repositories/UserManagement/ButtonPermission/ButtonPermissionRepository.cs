@@ -34,14 +34,15 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                         var res = 0;
 
                         entity.IsRecordDeleted = 0;
-                        entity.URL = "/" + entity.Controller + "/" + entity.Action;
+                        //entity.URL = "/" + entity.Controller + "/" + entity.Action;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("Controller", entity.Controller, DbType.String);
-                        parameters.Add("Action", entity.Action, DbType.String);
-                        parameters.Add("URL", entity.URL, DbType.String);
+                        //parameters.Add("Controller", entity.Controller, DbType.String);
+                        //parameters.Add("Action", entity.Action, DbType.String);
+                        //parameters.Add("URL", entity.URL, DbType.String);
+                        parameters.Add("MenuId", entity.MenuId, DbType.Int32);
                         parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("RoleId", entity.RoleId, DbType.Int32);
-                        parameters.Add("IsRecordActive", entity.IsRecordActive, DbType.Int32);
+                       // parameters.Add("IsRecordActive", entity.IsRecordActive, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
@@ -154,16 +155,17 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                         var query = "Usp_Crud_ButtonPermission";
                         var res = 0;
                         entity.IsRecordDeleted = 0;
-                        entity.URL = "/" + entity.Controller + "/" + entity.Action;
+                        //entity.URL = "/" + entity.Controller + "/" + entity.Action;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("Id", entity.Id, DbType.Int32);
-                        parameters.Add("Controller", entity.Controller, DbType.String);
-                        parameters.Add("Action", entity.Action, DbType.String);
-                        parameters.Add("URL", entity.URL, DbType.String);
+                        //parameters.Add("Controller", entity.Controller, DbType.String);
+                        //parameters.Add("Action", entity.Action, DbType.String);
+                        //parameters.Add("URL", entity.URL, DbType.String);
+                        parameters.Add("MenuId", entity.MenuId, DbType.Int32);
                         parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("ButtonId", entity.ButtonId, DbType.Int32);
                         parameters.Add("RoleId", entity.RoleId, DbType.Int32);
-                        parameters.Add("IsRecordActive", entity.IsRecordActive, DbType.Int32);
+                       // parameters.Add("IsRecordActive", entity.IsRecordActive, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
@@ -230,6 +232,25 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("UserId", userid, DbType.String);
                     parameters.Add("@Query", 12, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<ButtonPermissionModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<ButtonPermissionModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+        public async Task<List<ButtonPermissionModel>> GetAllButtonPermissionMenuWiseAsync(int menuid)
+        {
+            try
+            {
+                var query = "Usp_Crud_ButtonPermission";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("MenuId", menuid, DbType.String);
+                    parameters.Add("@Query", 14, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<ButtonPermissionModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return (List<ButtonPermissionModel>)list;
                 }

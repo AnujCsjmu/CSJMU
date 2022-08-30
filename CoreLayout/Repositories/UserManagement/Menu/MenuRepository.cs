@@ -22,17 +22,18 @@ namespace CoreLayout.Repositories.UserManagement.Menu
                 var query = "SP_InsertUpdateDelete_Menu";
                 using (var connection = CreateConnection())
                 {
+                    entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("Level1", entity.Level1, DbType.String);
-                    parameters.Add("Level2", entity.Level2, DbType.String);
-                    parameters.Add("Level3", entity.Level3, DbType.String);
-                    parameters.Add("RoleId", entity.RoleId, DbType.String);
+                    parameters.Add("ParentMenuId", entity.ParentMenuId, DbType.Int32);
+                    parameters.Add("SubMenuId", entity.SubMenuId, DbType.Int32);
+                    parameters.Add("MenuName", entity.MenuName, DbType.String);
+                    parameters.Add("RoleId", entity.RoleId, DbType.Int32);
                     parameters.Add("Controller", entity.Controller, DbType.String);
                     parameters.Add("Action", entity.Action, DbType.String);
-                    parameters.Add("Status", entity.Status, DbType.String);
-                    parameters.Add("Remarks", entity.Remarks, DbType.String);
+                    parameters.Add("Active", entity.Active, DbType.Int32);
+                    parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                     parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
-                    parameters.Add("UserRoleId", entity.UserRoleId, DbType.String);
                     parameters.Add("@Query", 1, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -51,8 +52,10 @@ namespace CoreLayout.Repositories.UserManagement.Menu
                 var query = "SP_InsertUpdateDelete_Menu";
                 using (var connection = CreateConnection())
                 {
+                    entity.IsRecordDeleted = 1;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("MenuID", entity.MenuID, DbType.Int32);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -111,18 +114,19 @@ namespace CoreLayout.Repositories.UserManagement.Menu
                 var query = "SP_InsertUpdateDelete_Menu";
                 using (var connection = CreateConnection())
                 {
+                    entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("MenuId", entity.MenuID, DbType.Int32);
-                    parameters.Add("Level1", entity.Level1, DbType.String);
-                    parameters.Add("Level2", entity.Level2, DbType.String);
-                    parameters.Add("Level3", entity.Level3, DbType.String);
-                    parameters.Add("RoleId", entity.RoleId, DbType.String);
+                    parameters.Add("ParentMenuId", entity.ParentMenuId, DbType.Int32);
+                    parameters.Add("SubMenuId", entity.SubMenuId, DbType.Int32);
+                    parameters.Add("MenuName", entity.MenuName, DbType.String);
+                    parameters.Add("RoleId", entity.RoleId, DbType.Int32);
                     parameters.Add("Controller", entity.Controller, DbType.String);
                     parameters.Add("Action", entity.Action, DbType.String);
-                    parameters.Add("Status", entity.Status, DbType.String);
-                    parameters.Add("Remarks", entity.Remarks, DbType.String);
+                    parameters.Add("Active", entity.Active, DbType.Int32);
+                    parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                     parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
-                    parameters.Add("UserRoleId", entity.UserRoleId, DbType.String);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;

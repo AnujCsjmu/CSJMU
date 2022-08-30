@@ -14,6 +14,7 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
         Task<List<RegistrationModel>> GetAllUserAsync(int roleid);
 
         Task<List<ButtonPermissionModel>> GetAllButtonPermissionUserWiseAsync(int userid);
+        Task<List<ButtonPermissionModel>> GetAllButtonPermissionMenuWiseAsync(int menuid);
         Task<List<ButtonPermissionModel>> DistinctButtonPermissionAsync();
 
         Task<List<ButtonPermissionModel>> GetAllButtonActionPermissionAsync(ViewAction viewAction, int userid, int roleid, string controller);

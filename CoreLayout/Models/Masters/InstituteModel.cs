@@ -19,7 +19,7 @@ namespace CoreLayout.Models.Masters
 
         [Display(Name = "Institute Name")]
         [Required(ErrorMessage = "Please enter institute name")]
-        [RegularExpression(@"([A-Za-z])+( [A-Za-z]+)*", ErrorMessage = "Use onle character")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(100)]
         public string InstituteName { get; set; }
 
@@ -140,7 +140,7 @@ namespace CoreLayout.Models.Masters
         public string ChairmanMobileNumber { get; set; }
 
         [Display(Name = "Chairman Name")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use onle character")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string ChairmanName { get; set; }
 
@@ -159,7 +159,7 @@ namespace CoreLayout.Models.Masters
         public string RegistrarMobileNumber { get; set; }
 
         [Display(Name = "Registrar Name")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use onle character")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string RegistrarName { get; set; }
 
@@ -181,7 +181,7 @@ namespace CoreLayout.Models.Masters
         public string DirectorMobileNumber { get; set; }
 
         [Display(Name = "Director Name")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use onle character")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string DirectorName { get; set; }
 

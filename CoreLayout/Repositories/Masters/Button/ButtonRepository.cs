@@ -23,7 +23,7 @@ namespace CoreLayout.Repositories.Masters.Country
                 using (var connection = CreateConnection())
                 {
                     entity.IPAddress = ":11";
-                    entity.IsRecordDeleted = 1;
+                    entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("ButtonName", entity.ButtonName, DbType.String);
                     parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
@@ -47,8 +47,10 @@ namespace CoreLayout.Repositories.Masters.Country
                 var query = "SP_InsertUpdateDelete_Button";
                 using (var connection = CreateConnection())
                 {
+                    entity.IsRecordDeleted = 1;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("CountryId", entity.ButtonId, DbType.Int32);
+                    parameters.Add("ButtonId", entity.ButtonId, DbType.Int32);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -129,7 +131,7 @@ namespace CoreLayout.Repositories.Masters.Country
                 using (var connection = CreateConnection())
                 {
                     entity.IPAddress = ":11";
-                    entity.IsRecordDeleted = 1;
+                    entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("ButtonId", entity.ButtonId, DbType.Int32);
                     parameters.Add("ButtonName", entity.ButtonName, DbType.String);

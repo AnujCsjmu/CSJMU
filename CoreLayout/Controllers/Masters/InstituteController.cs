@@ -147,35 +147,43 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(InstituteModel instituteModel)
         {
-            instituteModel.InstituteTypeList = await _instituteTypeService.GetAllInstituteType();
-            instituteModel.InstituteCategoryList = await _instituteCategoryService.GetAllInstituteCategory();
-            instituteModel.StateList = await _stateService.GetAllState();
-            instituteModel.DistrictList = await _districtService.GetAllDistrict();
-            instituteModel.TehsilList = await _tehsilService.GetAllTehsil();
-            instituteModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-            instituteModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-            if (ModelState.IsValid)
+            try
             {
-                int alradyExits = AlreadyExits(instituteModel.InstituteCode.Trim());
-                if (alradyExits == 0)
+                instituteModel.InstituteTypeList = await _instituteTypeService.GetAllInstituteType();
+                instituteModel.InstituteCategoryList = await _instituteCategoryService.GetAllInstituteCategory();
+                instituteModel.StateList = await _stateService.GetAllState();
+                instituteModel.DistrictList = await _districtService.GetAllDistrict();
+                instituteModel.TehsilList = await _tehsilService.GetAllTehsil();
+                instituteModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                instituteModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                if (ModelState.IsValid)
                 {
-                    var res = await _instituteService.CreateInstituteAsync(instituteModel);
-                    if (res.Equals(1))
+                    int alradyExits = AlreadyExits(instituteModel.InstituteCode.Trim());
+                    if (alradyExits == 0)
                     {
-                        TempData["success"] = "Institute has been saved";
+                        var res = await _instituteService.CreateInstituteAsync(instituteModel);
+                        if (res.Equals(1))
+                        {
+                            TempData["success"] = "Institute has been saved";
+                        }
+                        else
+                        {
+                            TempData["error"] = "Institute has not been saved";
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        TempData["error"] = "Institute has not been saved";
+                        ModelState.AddModelError("", "Institute Code already exits");
                     }
-                    return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Institute Code already exits");
-                }
+                return View(instituteModel);
             }
-            return View(instituteModel);
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View();
         }
 
         [AuthorizeContext(ViewAction.Edit)]

@@ -28,16 +28,8 @@ namespace CoreLayout.Models.UserManagement
 
         [Display(Name = "Menu Name")]
         public string MenuName { get; set; }
-        //public int EntryBy { get; set; }
-        //public int UpdateBy { get; set; }
 
-        [Display(Name = "Level1")]
-        public string Level1 { get; set; }
-
-        [Display(Name = "Level2")]
-        public string Level2 { get; set; }
-
-        [Display(Name = "Level3")]
-        public string Level3 { get; set; }
+        public List<MenuModel> MenuList { get; set; }
+        public List<RegistrationModel> UserList { get; set; }
     }
 }

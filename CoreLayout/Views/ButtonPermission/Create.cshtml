@@ -3,112 +3,124 @@
     ViewData["Title"] = "Create";
 }
 
-<body>
-    <div style="padding: 30px 30px 30px 30px">
-        <h4 class="text-info">Create ButtonPermission</h4>
-        <form asp-action="Create" method="post" enctype="multipart/form-data" >
-            <div class="pd-4 rounded border">
-                <div asp-validation-summary="ModelOnly" class="text-danger">
+<div class="main-content side-content pt-0">
+    <div class="side-app">
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Controller"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="Controller"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.ControllerList,"Value", "Text"))">
-                        </select>
-                        <span asp-validation-for="Controller" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="Action"> </label>
-                    </div>
-                    <div class="col-5">
-                        <input asp-for="Action" class="form-control" value="Index" readonly="readonly" />
-                        <span asp-validation-for="Action" class="text-danger"></span>
-                    </div>
+        <div class="main-container container-fluid">
 
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Create Button Permission</h2>
+                    <hr />
                 </div>
-                @*<div class="form-group row">
-            <div class="col-2">
-                <label asp-for="URL"> </label>
+
             </div>
-            <div class="col-5">
-                <input asp-for="URL" class="form-control" />
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Create Button Permission</h6>
+                                <hr />
+                            </div>
+
+
+
+                            <form asp-action="Create" method="post">
+                                <div class="row">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="MenuId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="MenuId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div>
+                                            <label asp-for="Action" class="mg-b-10"> </label>
+                                            <input asp-for="Action" class="form-control" value="Index" readonly="readonly" />
+                                            <span asp-validation-for="Action" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    @*<div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="URL" class="mg-b-10"> </label>
+                <input asp-for="URL" class="form-control"  />
                 <span asp-validation-for="URL" class="text-danger"></span>
             </div>
-
         </div>*@
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ButtonId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="ButtonList" multiple asp-items="@(new SelectList(ViewBag.GetButtonList,"ButtonId","ButtonName"))">
+                                                @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                            </select>
+                                            <span asp-validation-for="ButtonId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="RoleId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="RoleId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="UserId" class="mg-b-10"> </label>
+                                            <select style="width:550px; height:120px" class="select" asp-for="UserId" asp-items="@(new SelectList(string.Empty,"UserID","UserName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="UserId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    @*<div cclass="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="IsRecordActive"> </label>
+                                        
+                                        <div class="col-5">
+                                            @Html.DropDownList("IsRecordActive", new List<SelectListItem>
+                                            {
+                                                 new SelectListItem{ Text="Active", Value = "1" },
+                                                 new SelectListItem{ Text="InActive", Value = "0" },
 
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="ButtonId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="ButtonList" multiple
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.GetButtonList,"Value", "Text"))">
-                        </select>
-                        <span asp-validation-for="ButtonId" class="text-danger"></span>
-                    </div>
-                </div>
+                                            },
+                                            new { @class = "form-control" })
+                                        </div>
+                                        <span asp-validation-for="IsRecordActive" class="text-danger"></span>
+                                            </div>
+                                    </div>*@
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary" value="Save" />
+                                    <a asp-action="Index" class="btn btn-success">Back to List</a>
 
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="RoleId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="RoleId"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
-                        </select>
-                        <span asp-validation-for="RoleId" class="text-danger"></span>
-                    </div>
+                                </div>
 
-                </div>
+                            </form>
 
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="UserId"> </label>
+                        </div>
                     </div>
-                    <div class="col-5">
-                        <select asp-for="UserId"
-                                class="form-control"
-                                asp-items="@(new SelectList(string.Empty,"Value", "Text"))">
-                        </select>
-                        <span asp-validation-for="UserId" class="text-danger"></span>
-                    </div>
-                </div>
-
-
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="IsRecordActive"> </label>
-                    </div>
-                    <div class="col-5">
-                        @Html.DropDownList("IsRecordActive", new List<SelectListItem>
-                        {
-                             new SelectListItem{ Text="Active", Value = "1" },
-                             new SelectListItem{ Text="InActive", Value = "0" },
-
-                        },
-                        new { @class = "form-control" })
-                    </div>
-                    <span asp-validation-for="IsRecordActive" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Save" />
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
                 </div>
             </div>
-        </form>
+            <!-- Conetnt End-->
+
+        </div>
     </div>
-</body>
+</div>
 @section Scripts
 {
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -129,6 +141,31 @@
                 });
                     $('#UserId').html(items);
             });
+            });
+        });
+    </script>
+
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 5,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 5,
             });
         });
     </script>

@@ -5,9 +5,11 @@ using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.Masters.Role;
+using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.AssignMenuByRole;
 using CoreLayout.Services.UserManagement.Menu;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,7 +31,9 @@ namespace CoreLayout.Controllers
         private readonly IMenuService _menuService;
         private readonly ICommonService _commonService;
         private readonly IDashboardService _dashboardService;
-        public AssignMenuByRoleController(ILogger<AssignMenuByRoleController> logger, IAssignMenuByRoleService assignMenuByRoleService, IRoleService roleService, IMenuService menuService, ICommonService commonService, IDashboardService dashboardService)
+        private readonly IDataProtector _protector;
+        private readonly IRegistrationService _registrationService;
+        public AssignMenuByRoleController(ILogger<AssignMenuByRoleController> logger, IAssignMenuByRoleService assignMenuByRoleService, IRoleService roleService, IMenuService menuService, ICommonService commonService, IDashboardService dashboardService, IDataProtectionProvider provider, IRegistrationService registrationService)
         {
             _logger = logger;
             _assignMenuByRoleService = assignMenuByRoleService;
@@ -37,19 +41,31 @@ namespace CoreLayout.Controllers
             _menuService = menuService;
             _commonService = commonService;
             _dashboardService = dashboardService;
+            _registrationService = registrationService;
+            _protector = provider.CreateProtector("AssignMenuByRole.AssignMenuByRoleController");
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            int userid = (int)HttpContext.Session.GetInt32("UserId");
-            int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-            if (roleid != 0 && userid != 0)
+           
+            try
             {
-                //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
-                _ = RefereshMenuAsync();
+                int userid = (int)HttpContext.Session.GetInt32("UserId");
+                int roleid = (int)HttpContext.Session.GetInt32("RoleId");
+                if (roleid != 0 && userid != 0)
+                {
+                    //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
+                    _ = RefereshMenuAsync();
+                }
+                return View(await _assignMenuByRoleService.GetAllMenuAssignByRoleAsync());
             }
-            return View(await _assignMenuByRoleService.GetAllMenuAssignByRoleAsync());
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+          
+            return RedirectToAction(nameof(Index));
         }
         public async Task<ActionResult> RefereshMenuAsync()
         {
@@ -68,11 +84,11 @@ namespace CoreLayout.Controllers
 
                 foreach (DashboardModel dm in alllevels)
                 {
-                    if (dm.Level2.Equals("*") && dm.Level3.Equals("*"))
+                    if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
                     {
                         level1.Add(dm);
                     }
-                    else if (dm.Level2 != "*" && dm.Level3.Equals("*"))
+                    else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
                     {
                         level2.Add(dm);
                     }
@@ -81,6 +97,8 @@ namespace CoreLayout.Controllers
                         level3.Add(dm);
                     }
                 }
+
+
 
                 HttpContext.Session.SetString("Level1List", JsonConvert.SerializeObject(level1));
                 HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
@@ -94,44 +112,56 @@ namespace CoreLayout.Controllers
             }
         }
 
-        public void BindDropDown()
-        {
+        //public void BindDropDown()
+        //{
 
-            var MenuList = (from menu in _menuService.GetAllMenuAsync().Result
-                            select new SelectListItem()
-                            {
-                                Text = menu.Level1 + "-" + menu.Level2 + "-" + menu.Level3,
-                                Value = menu.MenuID.ToString(),
-                            }).ToList();
+        //    var MenuList = (from menu in _menuService.GetAllMenuAsync().Result
+        //                    select new SelectListItem()
+        //                    {
+        //                        Text = menu.ParentMenuName + "-" + menu.SubMenuName + "-" + menu.MenuName,
+        //                        Value = menu.MenuID.ToString(),
+        //                    }).ToList();
 
-            MenuList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
+        //    MenuList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
 
-            var RoleList = (from role in _roleService.GetAllRoleAsync().Result
-                            select new SelectListItem()
-                            {
-                                Text = role.RoleName,
-                                Value = role.RoleID.ToString(),
-                            }).ToList();
+        //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
+        //                    select new SelectListItem()
+        //                    {
+        //                        Text = role.RoleName,
+        //                        Value = role.RoleID.ToString(),
+        //                    }).ToList();
 
-            RoleList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
-            ViewBag.MenuList = MenuList;
-            ViewBag.RoleList = RoleList;
-        }
+        //    RoleList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    ViewBag.MenuList = MenuList;
+        //    ViewBag.RoleList = RoleList;
+        //}
         //Create Get Action Method
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
-        public ActionResult Create()
+        public async Task<ActionResult> CreateAsync(int id)
         {
-            BindDropDown();
-            return View();
+            try
+            {
+                AssignMenuByRoleModel assignMenuByRoleModel = new AssignMenuByRoleModel();
+                assignMenuByRoleModel.MenuList = await _menuService.GetAllMenuAsync();
+                assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
+                //var guid_id = _protector.Unprotect(id);
+
+                return View(assignMenuByRoleModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -140,11 +170,13 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(AssignMenuByRoleModel assignMenuByRoleModel)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
+                assignMenuByRoleModel.MenuList = await _menuService.GetAllMenuAsync();
+                assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
                 assignMenuByRoleModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                
-
+                assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                assignMenuByRoleModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)
                 {
                     var alreadyExit = await _assignMenuByRoleService.AlreadyExitAsync(assignMenuByRoleModel.MenuId, assignMenuByRoleModel.RoleId);
@@ -168,80 +200,90 @@ namespace CoreLayout.Controllers
                 }
                 return View(assignMenuByRoleModel);
             }
-            else
+            catch (Exception ex)
             {
-                TempData["error"] = "Some thing went wrong!";
-                return RedirectToAction(nameof(Index));
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return View();
         }
 
-        [HttpPost]
+
         [AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(int id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                BindDropDown();
-                return View(await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id));
+                //var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
+               // data.EncryptedId = id;
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
 
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-
-                BindDropDown();
-                return View(await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id));
+                //var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
+                data.MenuList = await _menuService.GetAllMenuAsync();
+                data.RoleList = await _roleService.GetAllRoleAsync();
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id, AssignMenuByRoleModel assignMenuByRoleModel)
+        public async Task<IActionResult> Edit(int MenuPermissionId, AssignMenuByRoleModel assignMenuByRoleModel)
         {
             try
             {
-                if (HttpContext.Session.GetString("Name") != null)
+                assignMenuByRoleModel.MenuList = await _menuService.GetAllMenuAsync();
+                assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
+                assignMenuByRoleModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+               //assignMenuByRoleModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
+                assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                assignMenuByRoleModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+
+                if (ModelState.IsValid)
                 {
-                    assignMenuByRoleModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                    //assignMenuByRoleModel.UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-                    if (ModelState.IsValid)
+                    var value = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(MenuPermissionId);
+                    if (await TryUpdateModelAsync<AssignMenuByRoleModel>(value))
                     {
-                        var dbRole = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
-                        if (await TryUpdateModelAsync<AssignMenuByRoleModel>(dbRole))
+                        var res = await _assignMenuByRoleService.UpdateMenuAssignByRoleAsync(assignMenuByRoleModel);
+                        if (res.Equals(1))
                         {
-                            var res = await _assignMenuByRoleService.UpdateMenuAssignByRoleAsync(assignMenuByRoleModel);
-                            if (res.Equals(1))
-                            {
-                                TempData["success"] = "Menu Assign By Role has been updated";
-                            }
-                            else
-                            {
-                                TempData["error"] = "Menu Assign By Role has not been updated";
-                            }
-                            return RedirectToAction(nameof(Index));
+                            TempData["success"] = "Menu Assign By Role has been updated";
                         }
+                        else
+                        {
+                            TempData["error"] = "Menu Assign By Role has not been updated";
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
                 }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
 
-                }
             }
             catch (Exception ex)
             {
@@ -254,42 +296,56 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
-
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                try
+                //var guid_id = _protector.Unprotect(id);
+                var value = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
+                if (value != null)
                 {
-                    var dbRole = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
-                    if (dbRole != null)
-                    {
-                        var res = await _assignMenuByRoleService.DeleteMenuAssignByRoleAsync(dbRole);
+                    var res = await _assignMenuByRoleService.DeleteMenuAssignByRoleAsync(value);
 
-                        if (res.Equals(1))
-                        {
-                            TempData["error"] = "Menu Assign By Role has been deleted";
-                        }
-                        else
-                        {
-                            TempData["error"] = "Menu Assign By Role has not been deleted";
-                        }
+                    if (res.Equals(1))
+                    {
+                        TempData["error"] = "Menu Assign By Role has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "Some thing went wrong!";
+                        TempData["error"] = "Menu Assign By Role has not been deleted";
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    ModelState.AddModelError("", ex.ToString());
+                    TempData["error"] = "Some thing went wrong!";
                 }
-
-                return RedirectToAction(nameof(Index));
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+
+            return RedirectToAction(nameof(Index));
         }
+
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult VerifyAssignMenuByRole(int menuid, int roleid)
+        //{
+            
+        //        var already = (from assignmenubyrole in _assignMenuByRoleService.GetAllMenuAssignByRoleAsync().Result
+        //                       where assignmenubyrole.MenuId == menuid && assignmenubyrole.RoleId==roleid
+        //                       select new SelectListItem()
+        //                       {
+        //                           Text = assignmenubyrole.RoleName,
+        //                           Value = assignmenubyrole.RoleId.ToString(),
+        //                       }).ToList();
+
+        //        if (already.Count > 0)
+        //        {
+        //            return Json($"{menuid} is already assign to user {roleid}.");
+        //        }
+
+        //        return Json(true);
+           
+
+        //}
     }
 }
