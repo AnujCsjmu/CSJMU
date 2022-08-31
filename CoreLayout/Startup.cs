@@ -5,6 +5,8 @@ using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
+using CoreLayout.Repositories.Masters.Course;
+using CoreLayout.Repositories.Masters.CourseDetails;
 using CoreLayout.Repositories.Masters.Dashboard;
 using CoreLayout.Repositories.Masters.Degree;
 using CoreLayout.Repositories.Masters.Deparment;
@@ -31,6 +33,8 @@ using CoreLayout.Services.Audit;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
+using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.Masters.Degree;
 using CoreLayout.Services.Masters.Department;
@@ -242,6 +246,14 @@ namespace CoreLayout
             //Faculty
             services.AddScoped<IFacultyService, FacultyService>();
             services.AddScoped<IFacultyRepository, FacultyRepository>();
+
+            //CourseDetails
+            services.AddScoped<ICourseDetailsService, CourseDetailsService>();
+            services.AddScoped<ICourseDetailsRepository, CourseDetailsRepository>();
+
+            //CourseDetails
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

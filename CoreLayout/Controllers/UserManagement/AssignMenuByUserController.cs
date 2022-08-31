@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Institute")]
     public class AssignMenuByUserController : Controller
     {
         private readonly ILogger<AssignMenuByUserController> _logger;
@@ -47,6 +47,7 @@ namespace CoreLayout.Controllers
             
             try
             {
+                object data = null;
                 int userid = (int)HttpContext.Session.GetInt32("UserId");
                 int roleid = (int)HttpContext.Session.GetInt32("RoleId");
                 if (roleid != 0 && userid != 0)
@@ -54,22 +55,24 @@ namespace CoreLayout.Controllers
                     //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
                     _ = RefereshMenuAsync();
                 }
-                return View(await _assignMenuByUserService.GetAllMenuAssignByUserAsync());
+                if (roleid == 1)
+                {
+                    data = await _assignMenuByUserService.GetAllMenuAssignByUserAsync();
+                }
+                else
+                {
+
+                    data = (from menuassignedByUser in _assignMenuByUserService.GetAllMenuAssignByUserAsync().Result
+                            where menuassignedByUser.UserId == userid
+                            select menuassignedByUser).ToList();
+                }
+                return View(data);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
             return RedirectToAction(nameof(Index));
-
-            //int userid = (int)HttpContext.Session.GetInt32("UserId");
-            //int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-            //if (roleid != 0 && userid != 0)
-            //{
-            //    //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
-            //    _ = RefereshMenuAsync();
-            //}
-            //return View(await _assignMenuByUserService.GetAllMenuAssignByUserAsync());
         }
         public async Task<ActionResult> RefereshMenuAsync()
         {
@@ -118,9 +121,27 @@ namespace CoreLayout.Controllers
         {
             try
             {
+                int? RoleId = HttpContext.Session.GetInt32("RoleId");
+                int? UserId = HttpContext.Session.GetInt32("UserId");
                 AssignMenuByUserModel assignMenuByUserModel = new AssignMenuByUserModel();
-                assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
-                assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                if (RoleId == 1)
+                {
+                    assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
+                    assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                }
+                else
+                {
+
+                    assignMenuByUserModel.MenuList = (from menu in _menuService.GetAllMenuAsync().Result
+                            where menu.UserId == UserId
+                            select menu).ToList();
+
+                    assignMenuByUserModel.UserList = (from registration in _registrationService.GetAllRegistrationAsync().Result
+                                                      where registration.RoleId == RoleId
+                                                      select registration).ToList();
+
+                }
+
                 //var guid_id = _protector.Unprotect(id);
 
                 return View(assignMenuByUserModel);

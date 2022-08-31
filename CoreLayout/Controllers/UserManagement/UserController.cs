@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.UserManagement
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Institute")]
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
@@ -44,7 +44,22 @@ namespace CoreLayout.Controllers.UserManagement
             {
                 ViewBag.errormsg = errormsg;
             }
-            return View(await _registrationService.GetAllRegistrationAsync());
+            object data = null;
+            int? RoleId =  HttpContext.Session.GetInt32("RoleId");
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            if (RoleId == 1)
+            {
+                 data = await _registrationService.GetAllRegistrationAsync();
+            }
+            else
+            {
+
+                data = (from registration in _registrationService.GetAllRegistrationAsync().Result
+                               where registration.CreatedBy == UserId && registration.RoleId==RoleId
+                               select registration).ToList();
+            }
+
+            return View(data);
         }
         //public void BindInstitute()
         //{
@@ -83,7 +98,20 @@ namespace CoreLayout.Controllers.UserManagement
         {
             RegistrationModel registrationModel = new RegistrationModel();
             registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
-            registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+            int? RoleId = HttpContext.Session.GetInt32("RoleId");
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            if (RoleId == 1)
+            {
+                registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+            }
+            else
+            {
+
+                registrationModel.RoleList = (from role in _roleService.GetAllRoleAsync().Result
+                        where role.RoleID== RoleId
+                                              select role).ToList();
+            }
+         
             //BindInstitute();
             return View(registrationModel);
         }

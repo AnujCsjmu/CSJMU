@@ -18,6 +18,8 @@ namespace CoreLayout.Models.Common
         public string EncryptedId { get; set; }
 
         public int ButtonMasterId { get; set; }
+        public string IPAddress { get; set; }
+        public int IsRecordDeleted { get; set; }
 
     }
 }

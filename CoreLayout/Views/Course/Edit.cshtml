@@ -1,0 +1,211 @@
+﻿@model CoreLayout.Models.Masters.CourseModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="main-content side-content pt-0">
+    <div class="side-app">
+        <div class="main-container container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h2 class="main-content-title tx-24 mg-b-5">Edit Course</h2>
+                    <hr />
+                </div>
+            </div>
+            <!-- End Page Header -->
+            <!-- Conetnt Start-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="card custom-card">
+                        <div class="card-body">
+                            <div>
+                                <h6 class="card-title mb-1">Edit Course</h6>
+                                <hr />
+                            </div>
+
+                            <form asp-action="Edit" method="post">
+                                <div class="row">
+                                    <input type="hidden" asp-for="CourseID" />
+                                    <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="CourseCode" class="mg-b-10"> </label>
+                                            <input asp-for="CourseCode" class="form-control" />
+                                            <span asp-validation-for="CourseCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="CourseName" class="mg-b-10"> </label>
+                                            <input asp-for="CourseName" class="form-control" />
+                                            <span asp-validation-for="CourseName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="HindiName" class="mg-b-10"> </label>
+                                            <input asp-for="HindiName" class="form-control" />
+                                            <span asp-validation-for="HindiName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="MinDuration" class="mg-b-10"> </label>
+                                            <input asp-for="MinDuration" class="form-control" type="number" />
+                                            <span asp-validation-for="MinDuration" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="MaxDuration" class="mg-b-10"> </label>
+                                            <input asp-for="MaxDuration" class="form-control" type="number" />
+                                            <span asp-validation-for="MaxDuration" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="ProgramId" class="mg-b-10"> </label>
+                                            <select style="width:260px" class="select" asp-for="ProgramId" asp-items="@(new SelectList(Model.ProgramList,"ProgramId","ProgramName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="ProgramId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="CourseTypeId" class="mg-b-10"> </label>
+                                            <select style="width:260px" class="select" asp-for="CourseTypeId" asp-items="@(new SelectList(Model.CourseTypeList,"CourseTypeId","CourseTypeName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            <span asp-validation-for="CourseTypeId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="ShortName" class="mg-b-10"> </label>
+                                            <input asp-for="ShortName" class="form-control" />
+                                            <span asp-validation-for="ShortName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="AffOnline" class="mg-b-10"> </label>
+                                            @Html.DropDownList("AffOnline", new List<SelectListItem>
+                                          {
+                                           new SelectListItem{ Text="N", Value = "N" },
+                                           new SelectListItem{ Text="Y", Value = "Y" },
+                                          },
+                                          new { @class = "form-control" })
+                                            <span asp-validation-for="AffOnline" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="NominalDuration" class="mg-b-10"> </label>
+                                            <input asp-for="NominalDuration" class="form-control" type="number" />
+                                            <span asp-validation-for="NominalDuration" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="OnCampus" class="mg-b-10"> </label>
+                                            @Html.DropDownList("OnCampus", new List<SelectListItem>
+                                          {
+                                           new SelectListItem{ Text="No", Value = "0" },
+                                           new SelectListItem{ Text="Yes", Value = "1" },
+                                          },
+                                          new { @class = "form-control" })
+                                            <span asp-validation-for="OnCampus" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="OffCampus" class="mg-b-10"> </label>
+                                            @Html.DropDownList("OffCampus", new List<SelectListItem>
+                                            {
+                                             new SelectListItem{ Text="No", Value = "0" },
+                                             new SelectListItem{ Text="Yes", Value = "1" },
+                                            },
+                                            new { @class = "form-control" })
+                                            <span asp-validation-for="OffCampus" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="CertificateName" class="mg-b-10"> </label>
+                                            <input asp-for="CertificateName" class="form-control" />
+                                            <span asp-validation-for="CertificateName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="CertificateHindiName" class="mg-b-10"> </label>
+                                            <input asp-for="CertificateHindiName" class="form-control" />
+                                            <span asp-validation-for="CertificateHindiName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="DisplayName" class="mg-b-10"> </label>
+                                            <input asp-for="DisplayName" class="form-control" />
+                                            <span asp-validation-for="DisplayName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="IsNEP" class="mg-b-10"> </label>
+                                            @Html.DropDownList("IsNEP", new List<SelectListItem>
+                                           {
+                                            new SelectListItem{ Text="No", Value = "0" },
+                                            new SelectListItem{ Text="Yes", Value = "1" },
+                                           },
+                                           new { @class = "form-control" })
+                                            <span asp-validation-for="IsNEP" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="IsActive" class="mg-b-10"> </label>
+                                            @Html.DropDownList("IsActive", new List<SelectListItem>
+                                            {
+                                             new SelectListItem{ Text="No", Value = "0" },
+                                             new SelectListItem{ Text="Yes", Value = "1" },
+                                            },
+                                            new { @class = "form-control" })
+                                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label asp-for="IsLateralAllowed" class="mg-b-10"> </label>
+                                            @Html.DropDownList("IsLateralAllowed", new List<SelectListItem>
+                                            {
+                                             new SelectListItem{ Text="No", Value = "0" },
+                                             new SelectListItem{ Text="Yes", Value = "1" },
+                                            },
+                                            new { @class = "form-control" })
+                                            <span asp-validation-for="IsLateralAllowed" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
+                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Conetnt End-->
+
+        </div>
+    </div>
+</div>

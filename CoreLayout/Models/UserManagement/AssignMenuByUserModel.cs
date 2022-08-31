@@ -23,7 +23,7 @@ namespace CoreLayout.Models.UserManagement
         public int IsRecordDeleted { get; set; }
         public string IPAddress { get; set; }
 
-
+        public int RoleId { get; set; }
         public string UserName { get; set; }
 
         [Display(Name = "Menu Name")]

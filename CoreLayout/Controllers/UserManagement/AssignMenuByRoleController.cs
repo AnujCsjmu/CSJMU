@@ -175,7 +175,7 @@ namespace CoreLayout.Controllers
                 assignMenuByRoleModel.MenuList = await _menuService.GetAllMenuAsync();
                 assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
                 assignMenuByRoleModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                //assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
                 assignMenuByRoleModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)
                 {
@@ -263,7 +263,7 @@ namespace CoreLayout.Controllers
                 assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
                 assignMenuByRoleModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                //assignMenuByRoleModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
-                assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                //assignMenuByRoleModel.RoleId = (int)HttpContext.Session.GetInt32("RoleId");
                 assignMenuByRoleModel.IPAddress = HttpContext.Session.GetString("IPAddress");
 
                 if (ModelState.IsValid)
