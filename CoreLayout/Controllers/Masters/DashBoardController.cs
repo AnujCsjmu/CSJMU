@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
@@ -39,30 +40,31 @@ namespace CoreLayout.Controllers
                     //List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRole(role);
                     List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
 
-                    List<DashboardModel> level1 = new List<DashboardModel>();
-                    List<DashboardModel> level2 = new List<DashboardModel>();
-                    List<DashboardModel> level3 = new List<DashboardModel>();
+                    //List<DashboardModel> level1 = new List<DashboardModel>();
+                    // List<DashboardModel> level2 = new List<DashboardModel>();
+                    //List<DashboardModel> level3 = new List<DashboardModel>();
 
-                    foreach (DashboardModel dm in alllevels)
-                    {
-                        if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
-                        {
-                            level1.Add(dm);
-                        }
-                        else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
-                        {
-                            level2.Add(dm);
-                        }
-                        else
-                        {
-                            level3.Add(dm);
-                        }
-                    }
+                    //foreach (DashboardModel dm in alllevels)
+                    //{
+                    //    if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
+                    //    {
+                    //        level1.Add(dm);
+                    //    }
+                    //    else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
+                    //    {
+                    //        level2.Add(dm);
+                    //    }
+                    //    else
+                    //    {
+                    //        level3.Add(dm);
+                    //    }
+                    //}
 
-                    HttpContext.Session.SetString("Level1List", JsonConvert.SerializeObject(level1));
-                    HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
-                    HttpContext.Session.SetString("Level3List", JsonConvert.SerializeObject(level3));
-
+                    HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
+                    //HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
+                    //HttpContext.Session.SetString("Level3List", JsonConvert.SerializeObject(level3));
+                    //ViewBag.AllLevelList = alllevels;
+                   
                     return View();
                 }
                 else

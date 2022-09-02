@@ -73,7 +73,7 @@ namespace CoreLayout.Controllers
                 ViewBag.MaxStateId = _protector.Protect(maxstateid.ToString());
                 //end
                 return View(state);
-
+                //return RedirectToAction("Index", "State", new { area = "Admin" });
             }
 
             catch (Exception ex)

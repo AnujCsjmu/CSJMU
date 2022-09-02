@@ -1,0 +1,137 @@
+	
+
+/* ########## bootstrap OVERRIDES ########## */
+
+@import "variables";
+
+@import "bootstrap/accordion";
+@import "bootstrap/alert";
+@import "bootstrap/badge";
+@import "bootstrap/bootstrap styles";
+@import "bootstrap/breadcrumb";
+@import "bootstrap/button";
+@import "bootstrap/card";
+@import "bootstrap/carousel";
+@import "bootstrap/dropdowns";
+@import "bootstrap/input-group";
+@import "bootstrap/list";
+@import "bootstrap/media";
+@import "bootstrap/modal";
+@import "bootstrap/navigation";
+@import "bootstrap/pagination";
+@import "bootstrap/panels";
+@import "bootstrap/popover";
+@import "bootstrap/progress";
+@import "bootstrap/scrollspy";
+@import "bootstrap/tabs";
+@import "bootstrap/tooltip";
+
+
+/* ############### COMPONENTS ############### */
+@import "components/chat";
+@import "components/colorpicker";
+@import "components/datepicker";
+@import "components/jqvmap";
+@import "components/Profile";
+@import "components/rangesilder";
+@import "components/rating";
+@import "components/spinner";
+@import "components/tables";
+@import "components/select";
+
+
+/* ########## CUSTOM  STYLES ########## */
+
+@import "custom/font/font";
+@import "custom/custom-control";
+@import "custom/custom-pages";
+@import "custom/custom-styles";
+@import "custom/avatar";
+
+
+/* ############### LAYOUTS STYLES ############### */
+@import "layouts/container";
+@import "layouts/footer";
+@import "layouts/grid";
+@import "layouts/header";
+@import "layouts/main menu";
+@import "layouts/rtl";
+@import "layouts/sidebar";
+@import "layouts/sidemenu";
+
+
+/* ############### LIBRARY ############### */
+@import "library/calendar";
+@import "library/checkbox";
+@import "library/contact";
+@import "library/content";
+@import "library/form-editor";
+@import "library/forms";
+@import "library/form-wizard";
+@import "library/iconbar";
+@import "library/invoice";
+@import "library/mail";
+@import "library/radiobox";
+@import "library/table";
+
+
+/* ############### PLUGIN STYLES ############### */
+@import "plugins/amazeui.datetimepicker";
+@import "plugins/daterangepicker";
+@import "plugins/calendar";
+@import "plugins/jquery-ui-darggable";
+@import "plugins/dataTables.bootstrap5";
+@import "plugins/buttons.bootstrap5.min";
+@import "plugins/responsive.dataTables.min";
+@import "plugins/dtree";
+@import "plugins/edit-table";
+@import "plugins/fancy_fileupload";
+// @import "plugins/feather";
+@import "plugins/fileuploads";
+@import "plugins/fullcalendar";
+@import "plugins/gallery";
+@import "plugins/inputtags";
+@import "plugins/ion.rangeSlider";
+@import "plugins/ion.rangeSlider.skinFlat";
+@import "plugins/jquery.countdown";
+@import "plugins/jquery.simple-dtpicker";
+@import "plugins/jqvmap";
+@import "plugins/leaflet";
+@import "plugins/lightslider";
+@import "plugins/morris";
+@import "plugins/multiple-select";
+@import "plugins/multislider";
+@import "plugins/jquery.growl";
+@import "plugins/notifIt";
+@import "plugins/owl.carousel";
+@import "plugins/perfect-scrollbar";
+@import "plugins/picker";
+@import "plugins/prism";
+@import "plugins/quill.snow";
+@import "plugins/quill.bubble";
+@import "plugins/ratings-2";
+@import "plugins/select2";
+@import "plugins/sidebar";
+@import "plugins/spectrum-colorpicker";
+@import "plugins/summernote";
+@import "plugins/sumoselect";
+@import "plugins/sweetalert";
+@import "plugins/tabs";
+@import "plugins/telephoneinput";
+@import "plugins/timeline";
+@import "plugins/tree-view";
+@import "plugins/richtext";
+
+
+/* ############### UTILITIES CLASSES ############### */
+@import "utlities/alingments";
+@import "utlities/background";
+@import "utlities/border";
+@import "utlities/display";
+@import "utlities/height";
+@import "utlities/marrgin";
+@import "utlities/opacity";
+@import "utlities/padding";
+@import "utlities/potitions";
+@import "utlities/trypography";
+@import "utlities/width";

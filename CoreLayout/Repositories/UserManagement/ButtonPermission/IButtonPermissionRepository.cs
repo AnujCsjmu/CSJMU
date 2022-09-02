@@ -20,5 +20,7 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
         Task<List<ButtonPermissionModel>> GetAllButtonActionPermissionAsync(ViewAction viewAction, int userid, int roleid, string controller);
 
         Task<List<ButtonPermissionModel>> CheckAllButtonActionPermissionAsync(int buttonid, int userid, int roleid, string controller, string index);
+
+        Task<List<ButtonPermissionModel>> AlreadyExit(int buttonid, int userid, int roleid, int menuid);
     }
 }

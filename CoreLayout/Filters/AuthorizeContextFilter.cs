@@ -48,7 +48,7 @@ namespace CoreLayout.Filters
             //    hasPermission = true;
             //}
 
-            if (result.Count != 0)
+            if (result.Count == 0)
             {
                 context.Result = new RedirectToRouteResult(
                         new RouteValueDictionary(new

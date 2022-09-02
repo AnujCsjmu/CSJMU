@@ -1,0 +1,62 @@
+/*---  Footer  ---*/
+
+.main-footer {
+  background-color: $white;
+  margin-top: auto;
+
+  .container {
+    font-size: 14px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .container-fluid {
+    font-size: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.main-footer-app {
+  .container,
+  .container-fluid {
+    border-top-width: 0;
+  }
+}
+
+.main-footer-demo {
+  background-color: #0c025b;
+  color: rgba(255, 255, 255, 0.4);
+  height: 60px;
+
+  .container {
+    border-top-width: 0;
+  }
+
+  a {
+    color: rgba(255, 255, 255, 0.5);
+
+    &:hover,
+    &:focus {
+      color: $white;
+    }
+  }
+}
+.footer-social-list li a {
+  width: 29px;
+  height: 29px;
+  display: block;
+  border: 1px solid $primary;
+  line-height: 25px;
+  border-radius: 3px;
+  color: $primary;
+  text-align: center;
+  line-height: 2;
+}
+@media (min-width: 992px) {
+  .main-footer {
+    display: block;
+  }
+}

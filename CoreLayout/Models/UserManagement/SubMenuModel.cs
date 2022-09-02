@@ -16,7 +16,7 @@ namespace CoreLayout.Models.UserManagement
         [Display(Name = "Sub Menu")]
         [Required(ErrorMessage = "Please enter sub menu")]
         [Remote(action: "VerifySubMenuName", controller: "SubMenu")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string SubMenuName { get; set; }
 

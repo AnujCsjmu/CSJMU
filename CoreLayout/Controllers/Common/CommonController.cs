@@ -207,6 +207,23 @@ namespace CoreLayout.Controllers
             }
             return result;
         }
+        public int AlreadyExitsButtonPermissionNew(int buttonid, int userid, int roleid, int menuid)
+        {
+            int result = 0;
+            try
+            {
+                var already = _buttonPermissionService.AlreadyExit(buttonid, userid, roleid, menuid);
+                if (already.Result.Count > 0)
+                {
+                    result = 1;
+                }
+            }
+            catch (Exception)
+            {
+                result = 2;
+            }
+            return result;
+        }
 
         public int getMaxSortNumber()
         {

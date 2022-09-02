@@ -248,7 +248,8 @@ namespace CoreLayout.Controllers
                 int buttons = 0;
                 foreach (int buttonid in buttonPermissionModel.ButtonList)
                 {
-                    int res = _commonController.AlreadyExitsButtonPermission(buttonid, (int)buttonPermissionModel.CreatedBy, buttonPermissionModel.RoleId, buttonPermissionModel.Controller, buttonPermissionModel.Action);
+                    int res = _commonController.AlreadyExitsButtonPermissionNew(buttonid, (int)buttonPermissionModel.CreatedBy, buttonPermissionModel.RoleId, buttonPermissionModel.MenuId);
+                    //int res = await _buttonPermissionService.AlreadyExit(buttonid, (int)buttonPermissionModel.CreatedBy, buttonPermissionModel.RoleId, buttonPermissionModel.MenuId);
                     if (res > 0)
                     {
                         buttons = 1;

@@ -1,0 +1,113 @@
+/*---  Tables  ---*/
+
+.table {
+  thead {
+    th, td {
+      color: $color;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      border-bottom-width: 1px;
+      border-top-width: 0;
+      padding: 0 15px 5px;
+    }
+  }
+  
+  tbody tr {
+    background-color: rgba(255, 255, 255, 0.5);
+
+    th {
+      font-weight: 500;
+    }
+  }
+}
+
+.table.dataTable th, .table.dataTable td {
+  border-left: 1px solid $border;
+}
+
+.table-bordered thead th, .table-bordered thead td {
+  border-top-width: 1px;
+  padding-top: 12px;
+  padding-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.table-striped tbody tr:nth-of-type(2n+1) {
+  background-color: #f1f2f9;
+}
+
+.table-invoice {
+  thead > tr > {
+    th, td {
+      font-size: 11px;
+      font-weight: 700;
+      color: $color;
+    }
+  }
+
+  tbody > tr > {
+    th:first-child, td:first-child {
+      color: $color;
+      font-weight: 500;
+    }
+
+    th:first-child .invoice-notes, td:first-child .invoice-notes {
+      margin-right: 20px;
+    }
+
+    th:first-child .invoice-notes .section-label-sm, td:first-child .invoice-notes .section-label-sm {
+      font-weight: 600;
+    }
+
+    th:first-child .invoice-notes p, td:first-child .invoice-notes p {
+      font-size: 13px;
+      font-weight: 400;
+      color: $color;
+    }
+  }
+}
+
+.table-responsive > .table-bordered {
+  border: 0;
+}
+
+@media print {
+  .table {
+    border-collapse: collapse !important;
+
+    td, th {
+      background-color: $white !important;
+    }
+  }
+
+  .table-bordered {
+    th, td {
+      border: 1px solid $border !important;
+    }
+  }
+
+  .table-dark {
+    color: inherit;
+
+    th, td, thead th, tbody + tbody {
+      border-color:$border;
+    }
+  }
+
+  .table .thead-dark th {
+    color: inherit;
+    border-color:$border;
+  }
+}
+.table>:not(:first-child) {
+  border-top: 0px solid currentColor;
+}
+tbody, td, tfoot, th, thead, tr {
+ border-style: none;
+}
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  --bs-table-accent-bg: #f1f2f9;
+  color: var(--bs-table-striped-color);
+}

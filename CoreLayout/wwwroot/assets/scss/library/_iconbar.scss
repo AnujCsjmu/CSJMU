@@ -1,0 +1,296 @@
+/*---  Iconbar  ---*/
+
+.main-iconbar-aside {
+  width: 230px;
+  height: 100%;
+  background-color: $white;
+  border-right: 1px solid $border;
+  border-top: 1px solid $border;
+  position: fixed;
+  top: 63px;
+  left: 64px;
+  overflow-y: auto;
+  z-index: 600;
+  display: none;
+}
+
+.main-iconbar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  padding-left: 0;
+
+  .main-logo {
+    line-height: 1;
+  }
+}
+
+.main-iconbar-toggle-menu {
+  display: block;
+  position: relative;
+  line-height: 0;
+  color: $color;
+  font-size: 28px;
+  opacity: .5;
+
+  &:hover, &:focus {
+    opacity: 1;
+    color: $color;
+  }
+
+  i:first-child {
+    display: none;
+  }
+}
+
+.main-iconbar-body {
+  padding: 20px;
+  height: calc(100vh - 68px);
+
+  .nav {
+    flex-direction: column;
+    padding-top: 10px;
+  }
+
+  .nav-item {
+    position: relative;
+    display: block;
+
+    + .nav-item {
+      margin-top: -1px;
+      border-top: 1px dotted $border;
+    }
+
+    &.active .nav-link {
+      color: $primary;
+
+      i {
+        color: $primary;
+      }
+    }
+
+    &.show .nav-sub {
+      display: block;
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    color: $color;
+    font-size: 13px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 38px;
+
+    i {
+      color: $muted;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 0;
+      margin-right: 10px;
+
+      &.typcn {
+        line-height: .9;
+
+        &::before {
+          width: auto;
+        }
+      }
+    }
+
+    &:hover, &:focus, &:hover i, &:focus i {
+      color: $primary;
+    }
+
+    &.with-sub {
+      justify-content: space-between;
+
+      &::after {
+        content: '\f3d0';
+        font-family: 'Ionicons';
+        font-size: 11px;
+        font-weight: 400;
+        display: inline-block;
+        position: relative;
+        margin-left: auto;
+        color: $muted;
+      }
+    }
+  }
+
+  .nav-sub {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px dotted $border;
+    display: none;
+
+    .nav-sub-item {
+      position: relative;
+      display: block;
+      margin-left: 15px;
+
+      + .nav-sub-item {
+        border-top: 1px dotted $border;
+      }
+
+      &.active > .nav-sub-link {
+        color: $primary;
+      }
+    }
+
+    .nav-sub-link {
+      display: flex;
+      align-items: center;
+      height: 36px;
+      color: $color;
+      &:hover, &:focus {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.main-iconbar-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $color;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.main-iconbar-text {
+  display: block;
+  font-size: 12px;
+  color: $muted;
+  margin-bottom: 12px;
+}
+
+.main-iconbar-pane {
+  margin-bottom: 20px;
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}
+
+.main-iconbar-primary {
+  background-color: #7c59e6;
+  padding-top: 0;
+
+  .main-img-user::after {
+    box-shadow: none;
+  }
+
+
+  .nav {
+    justify-content: center;
+  }
+
+  .nav-link {
+    width: 42px;
+    height: 42px;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover, &:focus {
+      color: $white;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &.active {
+      color: $white;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .main-iconbar-help {
+    color: rgba(255, 255, 255, 0.5);
+
+    &:hover, &:focus {
+      color: $white;
+    }
+  }
+}
+
+.main-iconbar-aside-primary {
+  width: 250px;
+  background-color: #f1f2f9;
+  box-shadow: 0 0 16px rgba(28, 39, 60, 0.08);
+  border-right: 1px solid $border;
+
+  .main-iconbar-header {
+    padding: 18px 25px;
+    background-color: $white;
+    border-bottom: 1px solid $border;
+  }
+
+  .main-iconbar-body {
+    padding: 20px 25px;
+
+    .nav {
+      padding-top: 0;
+      padding-left: 0;
+      border-left-width: 0;
+    }
+
+    .nav-item + .nav-item, .nav-sub, .nav-sub-item + .nav-sub-item {
+      border-top-color:$border;
+    }
+
+    .nav-link {
+      &:hover, &:focus, &.active {
+        color: $primary;
+      }
+    }
+  }
+
+  .main-iconbar-toggle-menu {
+    display: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .main-iconbar {
+    display: flex;
+  }
+
+  .main-iconbar-aside.show {
+    display: block;
+  }
+
+  .main-iconbar-body .nav-link.with-sub::after {
+    margin-left: 4px;
+    font-size: 12px;
+  }
+
+  .main-icon-group i {
+    font-size: 18px;
+  }
+
+  .main-iconbar-aside-primary.show + .main-content {
+    margin-left: 64px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .main-iconbar-show {
+    .main-iconbar {
+      display: flex;
+    }
+
+    .main-iconbar-aside {
+      display: block;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-iconbar-primary .nav-link {
+    transition: none;
+  }
+}

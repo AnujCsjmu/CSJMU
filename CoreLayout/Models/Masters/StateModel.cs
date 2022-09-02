@@ -19,6 +19,7 @@ namespace CoreLayout.Models.Masters
 
         [Display(Name = "State Name")]
         [Required(ErrorMessage = "Please enter state name")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string StateName { get; set; }
         public string IPAddress { get; set; }

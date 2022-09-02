@@ -64,5 +64,10 @@ namespace CoreLayout.Services.UserManagement.ButtonPermission
         {
             return await _buttonPermissionRepository.CheckAllButtonActionPermissionAsync(buttonid, userid, roleid, controller, index);
         }
+
+        public async Task<List<ButtonPermissionModel>> AlreadyExit(int buttonid, int userid, int roleid, int menuid)
+        {
+            return await _buttonPermissionRepository.AlreadyExit(buttonid, userid, roleid, menuid);
+        }
     }
 }

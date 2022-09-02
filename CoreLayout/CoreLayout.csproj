@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
+    <Folder Include="Views\Admin\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

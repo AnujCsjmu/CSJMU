@@ -1,0 +1,202 @@
+/*---  Pagination  ---*/
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: $primary;
+  background-color: $white;
+  border: 1px solid $border;
+  color: $color;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem .75rem;
+  border-width: 0;
+  border: 1px solid $border;
+  font-weight: 400;
+}
+
+.page-item {
+  &.active .page-link {
+    color: $white;
+    background-color: $primary;
+    border-color: $primary;
+    background-color: $primary;
+  }
+
+  &.disabled .page-link {
+    color: $muted;
+    pointer-events: none;
+    cursor: auto;
+    background-color: $white;
+    border-color:$border;
+  }
+}
+
+.page-link {
+  &:hover {
+    z-index: 2;
+    color: #7c59e6;
+    text-decoration: none;
+    background-color:$border;
+    border-color:$border;
+  }
+
+  &:focus {
+    z-index: 2;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(135, 96, 251, 0.25);
+  }
+}
+
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+}
+
+.pagination-lg .page-link {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.09375rem;
+  line-height: 1.5;
+}
+
+.pagination-sm .page-link {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.76562rem;
+  line-height: 1.5;
+}
+
+.pagination-dark {
+  .page-item.active .page-link {
+    background-color: $primary;
+    color: $white;
+  }
+
+  .page-link {
+    font-weight: 400;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover, &:focus {
+      color: $white;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+.pagination-primary .page-item.active .page-link {
+  background-color: $primary;
+}
+
+.pagination-success .page-item.active .page-link {
+  background-color: $success;
+  border-color: $success;
+}
+
+.pagination-circled {
+  .page-item {
+    + .page-item {
+      margin-left: 5px;
+    }
+
+    &:first-child .page-link, &:last-child .page-link {
+      border-radius: 100%;
+    }
+  }
+
+  .page-link {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+  }
+}
+
+.page-item {
+  &.active .page-link {
+    color: $white;
+    background-color: $primary;
+    border-color: $primary;
+    background-color: $primary;
+  }
+
+  &.disabled .page-link {
+    color: $muted;
+    pointer-events: none;
+    cursor: auto;
+    background-color: $white;
+    border-color:$border;
+  }
+}
+
+.page-link {
+  i {
+    font-size: 15px;
+    line-height: 0;
+  }
+
+  &:hover, &:focus {
+    color: $primary;
+    background-color:$border;
+    box-shadow: none;
+  }
+}
+
+.main-page-header {
+  position: relative;
+  padding: 30px 0 40px;
+  border-bottom: 1px solid #dee2ef;
+  margin-bottom: 40px;
+}
+
+.main-page-title {
+  font-weight: 700;
+  font-size: 40px;
+  font-family: "Raleway", sans-serif;
+  margin-bottom: 15px;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+
+.main-page-text {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.main-page-content-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+
+    + li {
+      margin-top: 5px;
+    }
+
+    i {
+      margin-right: 10px;
+      font-size: 10px;
+      line-height: 0;
+      color: $muted;
+      text-indent: 1px;
+    }
+  }
+}
+
+.main-page-label {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  letter-spacing: -.2px;
+}

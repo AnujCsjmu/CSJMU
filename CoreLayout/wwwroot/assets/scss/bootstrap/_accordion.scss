@@ -1,0 +1,212 @@
+/*---  Accordation  ---*/
+
+.accordion {
+  > .card {
+    overflow: hidden;
+
+    &:not(:first-of-type) {
+      .card-header:first-child {
+        border-radius: 0;
+      }
+
+      &:not(:last-of-type) {
+        border-bottom: 0;
+        border-radius: 0;
+      }
+    }
+
+    &:first-of-type {
+      border-bottom: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:last-of-type {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    .card-header {
+      margin-bottom: -1px;
+    }
+  }
+
+  .card {
+    border-width: 0;
+
+    + .card {
+      margin-top: 1px;
+    }
+  }
+
+  .card-header {
+    padding: 0;
+    background-color: transparent;
+    font-weight: 500;
+
+    a {
+      display: block;
+      padding: 14px 20px;
+      color: $color;
+      position: relative;
+      font-weight: 500;
+      font-size: 14px;
+      background-color: $background;
+
+      &:hover, &:focus {
+        color: $color;
+      }
+
+      &.collapsed {
+        color: #596882;
+        background-color: $background;
+        border-bottom-color: transparent;
+
+        &:hover, &:focus {
+          color: $color;
+          background-color:$border;
+        }
+      }
+    }
+  }
+
+  .card-body {
+    padding: 15px;
+    background-color: $white;
+    transition: none;
+    border: 1px solid $border;
+  }
+}
+.accordionjs {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+
+    .acc_section {
+        border: 1px solid #eee;
+        position: relative;
+        z-index: 1;
+        margin-top: -1px;
+        overflow: hidden;
+
+        .acc_head {
+            position: relative;
+            background: #fff;
+            padding: 10px;
+            display: block;
+            cursor: pointer;
+
+            h3 {
+                line-height: 1;
+                margin: 5px;
+                font-size: 14px;
+                padding-left: 25px;
+            }
+        }
+
+        .acc_content {
+            padding: 10px;
+        }
+
+        &:first-of-type {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+
+            .acc_head {
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+            }
+        }
+
+        &:last-of-type {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+
+            .acc_content {
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+        }
+
+        &.acc_active {
+            > {
+                .acc_content {
+                    display: block;
+                }
+
+                .acc_head {
+                    border-bottom: 1px solid #eee;
+                    color: #fff;
+                }
+            }
+
+            .acc_head h3:before {
+                content: "\e995";
+                position: absolute;
+                font-family: "feather" !important;
+                left: 13px;
+                color: #fff;
+                top: 14px;
+                font-size: 15px;
+                transition: all 0.5s;
+                transform: scale(1);
+            }
+        }
+
+        .acc_head h3:before {
+            content: "\e9b0";
+            position: absolute;
+            font-family: "feather" !important;
+            left: 12px;
+            top: 14px;
+            font-size: 15px;
+            transition: all 0.5s;
+            transform: scale(1);
+        }
+    }
+}
+#accordion .panel-default>.panel-heading {
+  border: 0px solid $border;
+}
+.accordion-button:not(.collapsed) {
+  color: $primary;
+  box-shadow: none;
+  background: #f6f6fb;
+}
+.accordionjs .acc_section.acc_active>.acc_head {
+  background: $primary;
+  color: #fff !important;
+}
+.panel-title1 a {
+  background: $primary !important;
+}
+.panel-heading1 a.active {
+  border-radius: 5px 5px 0 0;
+}
+.accordion-button:not(.collapsed)::after {
+  background-image: none;
+  margin-right: 5px;
+}
+.accordion-button::after {
+  background-image: none;
+  content: "\e92d" !important;
+  font-family: feather !important;
+}
+.accordion-button::after {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  content: "";
+  background-size: 1.25rem;
+  transition: transform .2s ease-in-out;
+}
+.accordion-button:focus {
+  z-index: 3;
+  border-color: $border;
+  outline: 0;
+  box-shadow:none;
+}

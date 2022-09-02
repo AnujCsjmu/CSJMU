@@ -5,212 +5,360 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - CoreLayout</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-    <link href="~/css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
 
-    @*for alert message*@
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
-    @*for font*@
-    <script src="https://kit.fontawesome.com/0ae5130f6f.js" crossorigin="anonymous"></script>
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="description" content="Dashlead -  Admin Panel HTML Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords"
+          content="sales dashboard, admin dashboard, bootstrap 4 admin template, html admin template, admin panel design, admin panel design, bootstrap 4 dashboard, admin panel template, html dashboard template, bootstrap admin panel, sales dashboard design, best sales dashboards, sales performance dashboard, html5 template, dashboard template">
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/assets/img/brand/favicon.ico" type="image/x-icon" />
+
+    <!-- Title -->
+    <title>@ViewData["Title"] -CSJMU</title>
+
+    <!---bootstrap css-->
+    <link id="style" href="~/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--- FONT-ICONS CSS -->
+    <link href="~/assets/css/icons.css" rel="stylesheet">
+
+    <!---Falg-icons css-->
+    <link href="~/assets/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+
+    <!---Style css-->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/assets/css/skins.css" rel="stylesheet">
+    <link href="~/assets/css/dark-style.css" rel="stylesheet">
+    <link href="~/assets/css/transparent-style.css" rel="stylesheet">
+    <link href="~/assets/css/boxed.css" rel="stylesheet">
+
 </head>
 
-<body class="sb-nav-fixed" style="font-size: 13px;">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-        <!-- Navbar Brand-->
-        <img src="~/Images/logo.jpg" height="50" width="50" /> <a class="navbar-brand ps-3" asp-action="Index" asp-controller="DashBoard">C.S.J.M. University</a>  @**@
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-        <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-            <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-            </div>
-        </form>
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user fa-fw"></i>
-                    @if (@HttpContextAccessor.HttpContext.Session.GetString("Name")?.Length != null)
-                    {
-                        @HttpContextAccessor.HttpContext.Session.GetString("Name")
-                    }
-                    else
-                    {
-                        // return RedirectToActionResult("actionName", "controllerName", null);
-                    }
-                    @*@User.Identity.Name !, Role @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value*@
-                </a>
-                <ul class="dropdown-menu dropdown-menu-sm-start" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item">Role @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" asp-action="Logout" asp-controller="Home">Logout</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">C.S.J.M University</div>
-                        <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
+<body class="ltr">
 
+    <!-- Loader -->
+    <div id="global-loader">
+        <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
+    </div>
+    <!-- End Loader -->
+    <!-- Page -->
+    <div class="page">
 
-
-                        @if (Context.Session.GetString("Level1List") != null && Context.Session.GetString("Level2List") != null && Context.Session.GetString("Level3List") != null)
-                        {
-
-                            List<DashboardModel> level1 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level1List"));
-                            List<DashboardModel> level2 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level2List"));
-                            List<DashboardModel> level3 = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("Level3List"));
-
-                            List<String> addedmenu_twolevels = new System.Collections.Generic.List<String>();
-                            <div class="sb-sidenav-menu-heading">@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value Actions</div>
-
-                            // Add Single Level Menu To NAV bar
-                            foreach (DashboardModel list in level1)
-                            {
-                                <a class="nav-link" asp-action="@list.Action" asp-controller="@list.Controller">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                    @list.ParentMenuName
-                                </a>
-                            }
-
-
-                            // Add Double Level Menu To NAV bar
-                            List<String> ParentHeadingList = level2.Select(x => x.ParentMenuName).Distinct().ToList();
-                            foreach (String Parent in ParentHeadingList)
-                            {
-                                List<DashboardModel> filteredlist = level2.Where(ParentHeading => ParentHeading.ParentMenuName.Equals(Parent)).ToList();
-                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts-@Parent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapseLayouts-@Parent.Replace(" ", "-")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                    @Parent
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-                                foreach (DashboardModel dm in filteredlist)
-                                {
-                                    <div class="collapse" id="collapseLayouts-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.SubMenuName</a>
-                                        </nav>
+        <!-- Main Header-->
+        <div class="main-header side-header sticky">
+            <div class="container-fluid main-container">
+                <div class="main-header-left sidemenu">
+                    <a class="main-header-menu-icon" href="" id="mainSidebarToggle"><span></span></a>
+                </div>
+                <a class="main-header-menu-icon  horizontal  d-lg-none" href="" id="mainNavShow"><span></span></a>
+                <div class="main-header-left horizontal">
+                    <a class="main-logo" href="index.html">
+                        <img src="~/assets/img/brand/logo.png" class="header-brand-img desktop-logo" alt="logo">
+                        <img src="~/assets/img/brand/logo-light.png" class="header-brand-img desktop-logo theme-logo" alt="logo">
+                    </a>
+                </div>
+                <div class="main-header-right">
+                    <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                            aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon fe fe-more-vertical "></span>
+                    </button>
+                    <div class="navbar navbar-expand-lg navbar-collapse responsive-navbar p-0">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                            <ul class="nav nav-item header-icons navbar-nav-right ms-auto">
+                                <!-- Theme-Layout -->
+                                <div class="dropdown  d-flex">
+                                    <a class="nav-link icon theme-layout nav-link-bg layout-setting">
+                                        <span class="dark-layout"><i class="fe fe-moon"></i></span>
+                                        <span class="light-layout"><i class="fe fe-sun"></i></span>
+                                    </a>
+                                </div>
+                                <!-- Theme-Layout -->
+                                <li class="dropdown header-search">
+                                    <a class="nav-link icon header-search">
+                                        <i class="fe fe-search"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="main-form-search p-2">
+                                            <input class="form-control" placeholder="Search" type="search">
+                                            <button class="btn"><i class="fe fe-search"></i></button>
+                                        </div>
                                     </div>
-                                }
-                            }
-
-
-                            //ADD Triple Level Menu To Nav Bar
-
-                            List<String> GrandParentHeadingList = level3.Select(x => x.ParentMenuName).Distinct().ToList();
-                            List<String> ParentList;
-                            foreach (String GrandParent in GrandParentHeadingList)
-                            {
-                                List<DashboardModel> filteredParent = level3.Where(GrandParentHeadingList => GrandParentHeadingList.ParentMenuName.Equals(GrandParent)).ToList();
-                                ParentList = filteredParent.Select(x => x.SubMenuName).Distinct().ToList();
-                                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages-@GrandParent.Replace(" ", "-")" aria-expanded="false" aria-controls="collapsePages-@GrandParent.Replace(" ", "-")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                    @GrandParent
-                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                </a>
-
-
-                                foreach (String Parent in ParentList)
-                                {
-                                    List<DashboardModel> filteredlist = filteredParent.Where(ParentHeading => ParentHeading.SubMenuName.Equals(Parent)).ToList();
-
-                                    <div class="collapse" id="collapsePages-@GrandParent.Replace(" ", "-")" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages-@Parent.Replace(" ", "-")">
-                                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#pagesCollapseAuth-@Parent.Replace(" ", "-")" aria-expanded="false" aria-controls="pagesCollapseAuth-@Parent.Replace(" ", "-")">
-                                                @Parent
-                                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                            </a>
-
-                                            @foreach (DashboardModel dm in filteredlist)
-                                            {
-
-                                                <div class="collapse" id="pagesCollapseAuth-@Parent.Replace(" ", "-")" aria-labelledby="headingOne" data-parent="#sidenavAccordionPages-@Parent.Replace(" ", "-")">
-                                                    <nav class="sb-sidenav-menu-nested nav">
-                                                        <a class="nav-link" asp-action=@dm.Action asp-controller=@dm.Controller>@dm.MenuName</a>
-                                                    </nav>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="nav-link icon full-screen-link">
+                                        <i class="fe fe-maximize fullscreen-button"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown main-header-notification">
+                                    <a class="nav-link icon" href="">
+                                        <i class="fe fe-bell"></i>
+                                        <span class="pulse bg-danger"></span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="header-navheading">
+                                            <p class="main-notification-text">
+                                                You have 1 unread notification<span class="badge bg-pill badge-primary ms-3">View all</span>
+                                            </p>
+                                        </div>
+                                        <div class="main-notification-list">
+                                            <a href="view-mail.html" class="media new">
+                                                <div class="main-img-user online">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/5.jpg">
                                                 </div>
-
-                                            }
-                                        </nav>
+                                                <div class="media-body">
+                                                    <p>
+                                                        Congratulate <strong>Olivia James</strong> for New template
+                                                        start
+                                                    </p>
+                                                    <span>Oct 15 12:32pm</span>
+                                                </div>
+                                            </a>
+                                            <a href="view-mail.html" class="media">
+                                                <div class="main-img-user">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/2.jpg">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p><strong>Joshua Gray</strong> New Message Received</p>
+                                                    <span>
+                                                        Oct 13
+                                                        02:56am
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <a href="view-mail.html" class="media">
+                                                <div class="main-img-user online">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/3.jpg">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p>
+                                                        <strong>Elizabeth Lewis</strong> added new schedule realease
+                                                    </p><span>
+                                                        Oct
+                                                        12 10:40pm
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-footer">
+                                            <a href="mail-inbox.html">View All Notifications</a>
+                                        </div>
                                     </div>
-
-                                }
-
-
-
-                            }
-                        }
-                        else
-                        {
-                            Context.Response.Redirect("Home/Login");
-                        }
-
-                    </div>
-                </div>
-                <div class="py-2 sb-sidenav-footer">
-                    <div class="small">Logged in as : @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</div>
-                </div>
-            </nav>
-        </div>
-        <div id="layoutSidenav_content" style="font-size:13px">
-
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-
-            <footer class="py-2 bg-dark mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2022</div>
-                        <div>
-                            <a href="#" class="text-light">Privacy Policy</a>
-                            &middot;
-                            <a href="#" class="text-light">Terms &amp; Conditions</a>
+                                </li>
+                                <li class="dropdown main-profile-menu">
+                                    <a class="main-img-user" href="">
+                                        <img alt="avatar"
+                                             src="~/assets/img/users/1.jpg">
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="header-navheading">
+                                            <h6 class="main-notification-title">@HttpContextAccessor.HttpContext.Session.GetString("Name")</h6>
+                                            <p class="main-notification-text">@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value</p>
+                                        </div>
+                                        <a class="dropdown-item border-top text-wrap" href="#">
+                                            <i class="fe fe-user"></i> My Profile
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-edit"></i> Edit Profile
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-settings"></i> Settings
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-activity"></i> Activity
+                                        </a>
+                                        <a class="dropdown-item text-wrap" asp-action="Logout" asp-controller="Home">
+                                            <i class="fe fe-power"></i> Sign Out
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </footer>
+            </div>
         </div>
 
+        <!-- End Main Header-->
+        <!-- Sidemenu -->
+        <div class="main-sidebar main-sidemenu main-sidebar-sticky side-menu">
+            <div class="sidemenu-logo">
+                <a class="main-logo" href="index.html">
+                    <img src="~/assets/img/brand/logo.png" class="header-brand-img desktop-logo" alt="logo">
+                    <img src="~/assets/img/brand/icon.png" class="header-brand-img icon-logo" alt="logo">
+                    <img src="~/assets/img/brand/logo-light.png" class="header-brand-img desktop-logo theme-logo"
+                         alt="logo">
+                    <img src="~/assets/img/brand/icon-light.png" class="header-brand-img icon-logo theme-logo"
+                         alt="logo">
+                </a>
+            </div>
+            <div class="main-sidebar-body">
+                <div class="slide-left disabled" id="slide-left">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                    </svg>
+                </div>
+                <ul class="nav hor-menu">
+                    <li class="nav-label">Dashboard</li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
+                            <i class="fe fe-airplay"></i><span class="sidemenu-label">Dashboard</span>
+                        </a>
+
+                    <li class="nav-label">Components</li>
+
+
+
+                    @if (Context.Session.GetString("AllLevelList") != null)
+                    {
+                        List<DashboardModel> parentList = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("AllLevelList"));
+                        List<String> ParentHeadingList = parentList.Select(x => x.ParentMenuName).Distinct().ToList();
+
+                        @foreach (String Parent in ParentHeadingList)
+                        {
+                            List<DashboardModel> subParentlist = parentList.Where(ParentHeading => ParentHeading.ParentMenuName.Equals(Parent)).ToList();
+                            List<String> SubParentHeadingList = subParentlist.Select(x => x.SubMenuName).Distinct().ToList();
+                            <li class="nav-item">
+                                <a class="nav-link with-sub" href="#">
+                                    <i class="fe fe-compass"></i><span class="sidemenu-label"> @Parent</span><i class="angle fe fe-chevron-right"></i>
+                                </a>
+                                <ul class="nav-sub">
+                                    <li class="side-menu-label1"><a href="javascript:void(0)">Components</a></li>
+
+                                    @foreach (String subparent in SubParentHeadingList)
+                                    {
+                                        List<DashboardModel> subParentChildlist = subParentlist.Where(ParentHeading => ParentHeading.SubMenuName.Equals(subparent)).ToList();
+                                        List<String> SubParentChildHeadingList = subParentChildlist.Select(x => x.MenuName).Distinct().ToList();
+                                        if (SubParentChildHeadingList[0] != "*")
+                                        {
+                                            <li class="nav-sub-item">
+                                                <a class="nav-sub-link with-sub1" href="#">
+                                                    <span class="sidemenu-label">@subparent</span><i class="angle1 fe fe-chevron-right"></i>
+                                                </a>
+                                                <ul class="nav-sub1">
+                                                    @foreach (String subparentchild in SubParentChildHeadingList)
+                                                    {
+                                                        List<DashboardModel> a = parentList.Where(ParentHeading => ParentHeading.MenuName.Equals(subparentchild)).Distinct().ToList();
+
+                                                        <li class="nav-sub-item">
+                                                            <a class="nav-sub-link" asp-action=@a[0].Action asp-controller=@a[0].Controller>@subparentchild</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            List<DashboardModel> a = parentList.Where(ParentHeading => ParentHeading.SubMenuName.Equals(subparent)).Distinct().ToList();
+
+                                            <li class="nav-sub-item">
+                                                <a class="nav-sub-link" asp-action=@a[0].Action asp-controller=@a[0].Controller>@subparent</a>
+                                            </li>
+                                        }
+
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+
+                </ul>
+
+
+
+
+            </div>
+        </div>
+        <!-- End Sidemenu -->
+        <!-- Main Content-->
+        <div class="main-content side-content pt-0">
+            <div id="layoutSidenav_content" class="side-app">
+                <div class="main-container container-fluid" role="main">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!-- End Main Content-->
+        <!-- Main Footer-->
+        <div class="main-footer text-center">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span>
+                            Copyright © 2022 @*<a href="#" class="text-primary">Dashlead</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="https://www.spruko.com/"
+                                class="text-primary">Spruko</a>*@
+                            All rights reserved.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Footer-->
+
     </div>
+    <!-- End Page -->
+    <!-- Back-to-top -->
+    <a href="#top" id="back-to-top"><i class="fe fe-arrow-up"></i></a>
 
-    @* old template *@
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @* new template *@
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    <script src="~/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="~/assets/demo/chart-area-demo.js"></script>
-    <script src="~/assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="~/js/datatables-simple-demo.js"></script>
+    <!-- Jquery js-->
+    <script src="~/assets/plugins/jquery/jquery.min.js"></script>
 
-    @*//for validation*@
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <!-- Bootstrap js-->
+    <script src="~/assets/plugins/bootstrap/popper.min.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
 
+    <!-- Flot js-->
+    <script src="~/assets/plugins/jquery.flot/jquery.flot.js"></script>
+    <script src="~/assets/plugins/jquery.flot/jquery.flot.resize.js"></script>
+    <script src="~/assets/js/chart.flot.sampledata.js"></script>
+
+    <!-- Chart.Bundle js-->
+    <script src="~/assets/plugins/chart.js/Chart.bundle.min.js"></script>
+
+    <!-- Peity js-->
+    <script src="~/assets/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Jquery-Ui js-->
+    <script src="~/assets/plugins/jquery-ui/ui/widgets/datepicker.js"></script>
+
+    <!-- Select2 js-->
+    <script src="~/assets/plugins/select2/js/select2.min.js"></script>
+
+    <!--MutipleSelect js-->
+    <script src="~/assets/plugins/multipleselect/multiple-select.js"></script>
+    <script src="~/assets/plugins/multipleselect/multi-select.js"></script>
+
+    <!-- Perfect-scrollbar js-->
+    <script src="~/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <!-- Sidemenu js-->
+    <script src="~/assets/plugins/sidemenu/sidemenu.js"></script>
+
+    <!-- Sidebar js-->
+    <script src="~/assets/plugins/sidebar/sidebar.js"></script>
+
+    <!-- Sticky js-->
+    <script src="~/assets/js/sticky.js"></script>
+
+    <!-- Dashboard js-->
+    <script src="~/assets/js/index.js"></script>
+
+    <!-- Themecolor js-->
+    <script src="~/assets/js/themeColors.js"></script>
+
+    <!-- Custom js-->
+    <script src="~/assets/js/custom.js"></script>
 
     <script type="text/javascript" language="javascript">
         function DisableBackButton() {
@@ -242,30 +390,16 @@
     })
     </script>
 
-    @*select 2 dropdown script and css*@
+    @*//for select2 dropdown*@
+    @section Scripts{
+        <!-- Custom js-->
+        <script src="~/assets/js/select2.js"></script>
+    }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!--These jQuery libraries for
-       chosen need to be included-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
-
-    <!--These jQuery libraries for select2
-        need to be included-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
-    <script>
-        $(document).ready(function () {
-            //Select2
-            $(".select").select2({
-                maximumSelectionLength: 2,
-            });
-            //Chosen
-            $(".select1").chosen({
-                max_selected_options: 2,
-            });
-        });
-    </script>
+    @*//for validation*@
+    <script src="~/assets/lib/jquery/dist/jquery.js"></script>
+    <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

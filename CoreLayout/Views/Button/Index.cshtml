@@ -3,104 +3,91 @@
 @{
     ViewData["title"] = "Index";
 }
-<body >
-    <div style="padding: 30px 30px 30px 30px">
-        <div class="row">
 
-            <div class="text-right">
-                <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New Button</a>
-            </div>
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2 class="main-content-title tx-24 mg-b-5">Button List</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Button</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Index</li>
+            </ol>
         </div>
-        <br />
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Button List
-            </div>
-            <div class="card-body">
-                <table id="datatablesSimple">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.ButtonName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.CreatedBy)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.CreatedDate)
-                            </th>
-                            <th>
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <th>S.No</th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.ButtonName)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(c => c.CreatedBy)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(c => c.CreatedDate)
-                            </th>
-                            <th>
-                                Action
-                            </th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        @{
-                            int sno = 0;
-                        }
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td>@item.ButtonName</td>
-                                <td>@item.CreatedBy</td>
-                                <td>@item.CreatedDate</td>
-                                <td>
-                                    <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.ButtonId><i class="far fa-edit"></i></a>
-                                    <a asp-action="Details" class="btn btn-success" asp-route-id=@item.ButtonId><i class="fas fa-list"></i></a>
-                                    <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.ButtonId><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+        <div class="btn btn-list">
+            <a class="btn ripple btn-primary" href="#"><i class="fe fe-external-link"></i> Export</a>
+            <a class="btn ripple btn-secondary" href="#"><i class="fe fe-download"></i> Download</a>
+            <a class="btn ripple btn-info" href="#"><i class="fe fe-help-circle"></i> Help</a>
+            <a class="btn ripple btn-danger dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fe fe-settings"></i> Settings <i class="fas fa-caret-down ml-1"></i>
+            </a>
+            <div class="dropdown-menu tx-13">
+                <a class="dropdown-item" href="#"><i class="fe fe-eye mr-2"></i>View</a>
+                <a class="dropdown-item" href="#"><i class="fe fe-plus-circle mr-2"></i>Add</a>
+                <a class="dropdown-item" href="#"><i class="fe fe-mail mr-2"></i>Email</a>
+                <a class="dropdown-item" href="#"><i class="fe fe-folder-plus mr-2"></i>Save</a>
+                <a class="dropdown-item" href="#"><i class="fe fe-trash-2 mr-2"></i>Remove</a>
+                <a class="dropdown-item" href="#"><i class="fe fe-settings mr-2"></i>More</a>
             </div>
         </div>
     </div>
-</body>
-
-    @*@section Scripts{
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-        var save = '@TempData["success"]'
-        if (save != '') {
-            alertify.success(save)
-        }
-    })
-</script>
-<script type="text/javascript">
-    $(function () {
-        var error = '@TempData["error"]'
-        if (error != '') {
-            alertify.error(error);
-        }
-    })
-</script>
-
-
-    }*@
+    <!-- End Page Header -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    @*<div>
+                        <h6 class="card-title mb-1">Responsive DataTable</h6>
+                        <p class="text-muted card-sub-title">Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.</p>
+                    </div>*@
+                    <div class="table-responsive">
+                        <table class="table" id="example2">
+                            <thead>
+                                <tr>
+                                    <th class="wd-5p">S.No</th>
+                                    <th class="wd-20p">
+                                        @Html.DisplayNameFor(c => c.ButtonName)
+                                    </th>
+                                    <th class="wd-20p">
+                                        @Html.DisplayNameFor(c => c.CreatedBy)
+                                    </th>
+                                    <th class="wd-20p">
+                                        @Html.DisplayNameFor(c => c.CreatedDate)
+                                    </th>
+                                    <th class="wd-20p">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                @{
+                                    int sno = 0;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @{ sno++; }
+                                            @sno
+                                        </td>
+                                        <td>@item.ButtonName</td>
+                                        <td>@item.CreatedBy</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            <a asp-action="Edit" class="btn btn-primary" asp-route-id=@item.ButtonId><i class="far fa-edit"></i></a>
+                                            <a asp-action="Details" class="btn btn-success" asp-route-id=@item.ButtonId><i class="fas fa-list"></i></a>
+                                            <a asp-action="Delete" class="btn btn-danger" asp-route-id=@item.ButtonId><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

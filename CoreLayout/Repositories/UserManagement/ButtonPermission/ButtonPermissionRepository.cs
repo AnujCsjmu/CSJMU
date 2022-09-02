@@ -324,6 +324,28 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<ButtonPermissionModel>> AlreadyExit(int buttonid, int userid, int roleid, int menuid)
+        {
+            try
+            {
+                var query = "Usp_Crud_ButtonPermission";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("ButtonId", buttonid, DbType.Int32);
+                    parameters.Add("UserId", userid, DbType.Int32);
+                    parameters.Add("RoleId", roleid, DbType.Int32);
+                    parameters.Add("MenuId", menuid, DbType.Int32);
+                    parameters.Add("@Query", 15, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<ButtonPermissionModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<ButtonPermissionModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
 

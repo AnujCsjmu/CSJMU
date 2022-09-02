@@ -1,0 +1,57 @@
+
+.nav-pills .nav-link.active{
+    color: #fff !important;
+}
+.dropdown-menu>li>a {
+    display: block;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.428571429;
+    color: #76839a !important;
+    white-space: nowrap;
+}
+.dropdown-item {
+    width: 100%;
+    text-align: inherit;
+    background-color: transparent;
+    border: 0;
+}
+.dropdown-item.active{
+    color: $primary !important;
+}
+.dropdown-item.active {
+    text-decoration: none;
+    background-color: #f6f6fb;
+}
+.navbar-light .navbar-brand {
+    color: rgba(0,0,0,.9) !important;
+}
+#navbar-example3 .nav-link {
+    padding: 0.75rem;
+    color: #282f53 !important;
+}
+
+#navbar-example3 .nav-link.active {
+    color: #fff !important;
+}
+.scrollspy-example-2 {
+    position: relative;
+    height: 409px;
+    overflow: auto;
+    padding: 0.75rem;
+    border: 1px solid #e9edf4;
+    border-radius: 0 5px 5px 0;
+}
+
+.scrollspy-example-2 .nav-link {
+    padding: 10px;
+}
+.scrollspy-example {
+    position: relative;
+    height: 200px;
+    overflow: auto;
+    padding: 0.75rem;
+    border-right: 1px solid #e9edf4;
+    border-left: 1px solid #e9edf4;
+    border-bottom: 1px solid #e9edf4;
+}

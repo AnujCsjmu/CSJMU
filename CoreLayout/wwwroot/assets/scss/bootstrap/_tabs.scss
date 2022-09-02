@@ -1,0 +1,116 @@
+.tabs-menu ul li a {
+    padding: 10px 12px 11px 13px;
+    display: block;
+    color: #282f53;
+}
+.tab-menu-heading {
+    padding: 0px;
+    border-bottom: 1px solid #e9edf4;
+    font-size: 15px;
+    font-weight: 500;
+}
+.nav.panel-tabs a.active {
+    color: $primary;
+}
+.panel-body {
+    padding: 15px;
+}
+.tabs-menu1 ul li .active {
+    border-bottom: 1px solid $primary;
+}
+.tabs-menu1 ul li a {
+    padding: 10px 20px 11px 20px;
+    display: block;
+    color: #282f53;
+}
+.nav.panel-tabs a.active {
+    color:  $primary;
+}
+.tabs-menu-boxed ul li .active {
+    border: 1px solid #e9edf4;
+    border-bottom-color: transparent;
+}
+.tabs-menu-boxed ul li a {
+    padding: 10px 20px 11px 20px;
+    display: block;
+    color: #282f53;
+    border-bottom: 1px solid #e9edf4;
+}
+.tabs-menu-border ul li .active {
+    border: 1px solid #e9edf4;
+    border-radius: 3px;
+}
+.tab-menu-heading.tab-menu-heading-boxed {
+    border-bottom: 0 !important;
+}
+.nav.panel-tabs.panel-secondary a.active {
+    background-color: #eb6f33 !important;
+    color: #fff;
+    border-radius: 3px !important;
+}
+.nav.panel-tabs.panel-secondary a {
+    color: #eb6f33;
+}
+.nav.panel-tabs.panel-danger a.active {
+    background-color: #ff473d !important;
+    color: #fff;
+    border-radius: 3px !important;
+}
+.nav.panel-tabs.panel-danger a {
+    color: #ff473d;
+}
+.nav.panel-tabs.panel-success a.active {
+    background-color: #03c895 !important;
+    color: #fff;
+    border-radius: 3px !important;
+}
+.nav.panel-tabs.panel-success a {
+    color: #03c895;
+}
+.nav.panel-tabs.panel-info a.active {
+    background-color: #01b8ff !important;
+    color: #fff;
+    border-radius: 3px !important;
+}
+.nav.panel-tabs.panel-info a {
+    color: #01b8ff;
+}
+.tab_wrapper.right_side > ul li {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 12px 18px;
+    border-width: 1px;
+    border-right: 0;
+    border-left: 1px solid #e9edf4;
+    text-align: right;
+    bottom: 6px;
+}
+.tab_wrapper > ul li {
+    float: left;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 8px 18px;
+    text-transform: uppercase;
+    border: 1px solid #e9edf4;
+    font-size: 1.05em;
+    border-bottom: 0;
+    position: relative;
+    border-top: 1px solid #e9edf4;
+    margin: 0 5px 0 0;
+    border-radius: 3px 3px 0px 0px;
+}
+.tab_wrapper.right_side .content_wrapper {
+    border-radius: 3px;
+    
+}
+
+.tab_wrapper > ul li.active {
+    background: $primary;
+    border-color: $primary;
+}
+ul {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}

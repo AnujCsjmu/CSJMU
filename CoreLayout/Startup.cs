@@ -89,6 +89,7 @@ namespace CoreLayout
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 
             services.AddControllersWithViews();
+            services.AddRazorPages();
             services.AddMvcCore().AddDataAnnotations();
 
             //start from old projects
@@ -120,6 +121,7 @@ namespace CoreLayout
                 option.Filters.Add(typeof(ExceptionLogFilter));
                 option.Filters.Add(typeof(AuditFilterAttribute));
             });
+            services.AddMvc(options => options.EnableEndpointRouting = false);
             //end
 
 
@@ -284,13 +286,25 @@ namespace CoreLayout
             app.UseSession();
 
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=Home}/{action=Login}");
+            //});
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                   name: "Admin",
+                   areaName: "Admin",
+                   pattern: "Admin/{controller=State}/{action=Index}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Login}");
-            });
+                    pattern: "{controller=Home}/{action=Login}/{id?}");
 
+                endpoints.MapRazorPages();
+            });
 
         }
     }
