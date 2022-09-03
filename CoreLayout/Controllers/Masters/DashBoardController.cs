@@ -35,36 +35,8 @@ namespace CoreLayout.Controllers
                 int roleid = (int)HttpContext.Session.GetInt32("RoleId");
                 if (roleid != 0 && userid != 0)
                 {
-                    //ViewBag.Menu=   await _dashboardService.GetDashboardByRole(role);
-
-                    //List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRole(role);
                     List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
-
-                    //List<DashboardModel> level1 = new List<DashboardModel>();
-                    // List<DashboardModel> level2 = new List<DashboardModel>();
-                    //List<DashboardModel> level3 = new List<DashboardModel>();
-
-                    //foreach (DashboardModel dm in alllevels)
-                    //{
-                    //    if (dm.SubMenuName.Equals("*") && dm.MenuName.Equals("*"))
-                    //    {
-                    //        level1.Add(dm);
-                    //    }
-                    //    else if (dm.SubMenuName != "*" && dm.MenuName.Equals("*"))
-                    //    {
-                    //        level2.Add(dm);
-                    //    }
-                    //    else
-                    //    {
-                    //        level3.Add(dm);
-                    //    }
-                    //}
-
                     HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
-                    //HttpContext.Session.SetString("Level2List", JsonConvert.SerializeObject(level2));
-                    //HttpContext.Session.SetString("Level3List", JsonConvert.SerializeObject(level3));
-                    //ViewBag.AllLevelList = alllevels;
-                   
                     return View();
                 }
                 else

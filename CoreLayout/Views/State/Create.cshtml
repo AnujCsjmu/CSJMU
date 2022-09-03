@@ -33,18 +33,17 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="CountryId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select2" id="StateName" asp-for="CountryId" asp-items="@(new SelectList(Model.CountryList,"CountryId","CountryName"))" required>
+                                <select class="form-control select2" id="StateName" asp-for="CountryId" asp-items="@(new SelectList(Model.CountryList,"CountryId","CountryName"))">
                                     <option label="Select Country"></option>
                                 </select>
-                                <span asp-validation-for="CountryId" class="text-danger"></span>
+                                <span class="parsley-errors-list filled" asp-validation-for="CountryId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="StateName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="StateName" class="form-control" required >
-                                <div class="help-block with-errors"></div>
-                                <span role="alert" asp-validation-for="StateName" class="text-danger"></span>
+                                <input asp-for="StateName" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="StateName"></span>
                             </div>
                         </div>
                         

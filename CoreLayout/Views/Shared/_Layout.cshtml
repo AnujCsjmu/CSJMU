@@ -14,6 +14,8 @@
     <meta name="author" content="Spruko Technologies Private Limited">
     <meta name="keywords"
           content="sales dashboard, admin dashboard, bootstrap 4 admin template, html admin template, admin panel design, admin panel design, bootstrap 4 dashboard, admin panel template, html dashboard template, bootstrap admin panel, sales dashboard design, best sales dashboards, sales performance dashboard, html5 template, dashboard template">
+    @*for alert message*@
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
 
     <!-- Favicon -->
     <link rel="icon" href="~/assets/img/brand/favicon.ico" type="image/x-icon" />
@@ -360,6 +362,8 @@
     <!-- Custom js-->
     <script src="~/assets/js/custom.js"></script>
 
+
+
     <script type="text/javascript" language="javascript">
         function DisableBackButton() {
             window.history.forward()
@@ -400,6 +404,31 @@
     <script src="~/assets/lib/jquery/dist/jquery.js"></script>
     <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 2,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 2,
+            });
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

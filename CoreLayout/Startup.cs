@@ -3,9 +3,11 @@ using CoreLayout.Filters;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Common;
+using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
 using CoreLayout.Repositories.Masters.Course;
+using CoreLayout.Repositories.Masters.CourseBranchMapping;
 using CoreLayout.Repositories.Masters.CourseDetails;
 using CoreLayout.Repositories.Masters.Dashboard;
 using CoreLayout.Repositories.Masters.Degree;
@@ -31,9 +33,11 @@ using CoreLayout.Repositories.UserManagement.Registration;
 using CoreLayout.Repositories.UserManagement.SubMenu;
 using CoreLayout.Services.Audit;
 using CoreLayout.Services.Common;
+using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
 using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.CourseBranchMapping;
 using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.Masters.Degree;
@@ -256,6 +260,14 @@ namespace CoreLayout
             //CourseDetails
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+
+            //BranchDetails
+            services.AddScoped<IBranchService, BranchService>();
+            services.AddScoped<IBranchRepository, BranchRepository>();
+
+            //BranchDetails
+            services.AddScoped<ICourseBranchMappingService, CourseBranchMappingService>();
+            services.AddScoped<ICourseBranchMappingRepository, CourseBranchMappingRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

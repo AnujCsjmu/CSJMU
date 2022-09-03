@@ -14,12 +14,11 @@ namespace CoreLayout.Models.Common
         public int? CreatedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         public int? ModifiedBy { get; set; }
-
         public string EncryptedId { get; set; }
-
         public int ButtonMasterId { get; set; }
         public string IPAddress { get; set; }
         public int IsRecordDeleted { get; set; }
+        public int UserId { get; set; }
 
     }
 }

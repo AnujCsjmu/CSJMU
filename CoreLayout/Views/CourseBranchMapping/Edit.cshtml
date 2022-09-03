@@ -1,4 +1,4 @@
-﻿@model CoreLayout.Models.Masters.StateModel
+﻿@model CoreLayout.Models.Masters.CourseBranchMappingModel
 @{
     ViewData["Title"] = "Edit";
 }
@@ -6,9 +6,9 @@
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Edit State Master</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Edit CourseBranch Mapping</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">State</a></li>
+            <li class="breadcrumb-item"><a href="#">CourseBranchMapping</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </div>
@@ -27,24 +27,26 @@
 
                 <form asp-action="Edit" method="post">
                     <div class="row">
-                        <input type="hidden" asp-for="StateId" />
+                        <input type="hidden" asp-for="CBId" />
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CountryId" class="mg-b-10"> </label>
-                                <select class="form-control" asp-for="CountryId" asp-items="@(new SelectList(Model.CountryList,"CountryId","CountryName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select2" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                    <option label="Select Country"></option>
                                 </select>
-                                <span asp-validation-for="CountryId" class="parsley-errors-list filled"></span>
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="StateName" class="mg-b-10"> </label>
-                                <input asp-for="StateName" class="form-control" />
-                                <span asp-validation-for="StateName" class="parsley-errors-list filled"></span>
+                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select2" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                    <option label="Select Country"></option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
                             </div>
                         </div>
                         <div class="form-group">

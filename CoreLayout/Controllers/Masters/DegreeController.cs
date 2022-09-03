@@ -98,24 +98,7 @@ namespace CoreLayout.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //public void BindCountry()
-        //{
-        //    var countryList = (from country in _countryService.GetAllCountry().Result
-        //                       select new SelectListItem()
-        //                       {
-        //                           Text = country.CountryName,
-        //                           Value = country.CountryId.ToString(),
-        //                       }).ToList();
-
-        //    countryList.Insert(0, new SelectListItem()
-        //    {
-        //        Text = "----Select----",
-        //        Value = string.Empty
-        //    });
-        //    ViewBag.CountryList = countryList;//roleList.Select(l => l.CountryId).ToList();
-        //}
-
-        //Create Get Action Method
+        
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
         public IActionResult Create(string id)

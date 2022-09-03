@@ -2,78 +2,95 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<body>
-    <div style="padding: 30px 30px 30px 30px">
-        <h2 class="text-info">Edit Role Assign</h2>
-        <form asp-action="Edit" method="post">
-            <div class="pd-4 rounded border">
-                <input type="hidden" asp-for="UserRoleId" />
-                <div asp-validation-summary="ModelOnly" class="text-danger">
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Edit Role Assign</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">AssignRole</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+    </div>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="RoleUserId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="RoleUserId"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
-                        </select>
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Edit State</h6>
+                        <hr />
+                    </div>*@
+                <form asp-action="Edit" method="post">
+                    <div class="row">
+                        <input type="hidden" asp-for="UserRoleId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
 
-                        <span asp-validation-for="RoleUserId" class="text-danger"></span>
-                    </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="RoleUserId"> </label>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="RoleId"> </label>
-                    </div>
-                    <div class="col-5">
-                        <select asp-for="RoleId"
-                                class="form-control"
-                                asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
-                        </select>
+                                <select asp-for="RoleUserId"
+                                        style="width:545px" class="select"
+                                        asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
+                                </select>
 
-                        <span asp-validation-for="RoleId" class="text-danger"></span>
-                    </div>
+                                <span asp-validation-for="RoleUserId" class="parsley-errors-list filled"></span>
+                            </div>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="IsMainRole"> </label>
-                    </div>
-                    <div class="col-5">
-                        @Html.DropDownList("IsMainRole", new List<SelectListItem>
-                        {
-                             new SelectListItem{ Text="No", Value = "0" },
-                             new SelectListItem{ Text="Yes", Value = "1" },
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="RoleId"> </label>
 
-                        },
-                        new { @class = "form-control" })
-                    </div>
-                    <span asp-validation-for="IsMainRole" class="text-danger"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <label asp-for="IsRoleActive"> </label>
-                    </div>
-                    <div class="col-5">
-                        @Html.DropDownList("IsRoleActive", new List<SelectListItem>
-                        {
-                             new SelectListItem{ Text="Active", Value = "1" },
-                             new SelectListItem{ Text="InActive", Value = "0" },
+                                <select asp-for="RoleId"
+                                        style="width:545px" class="select"
+                                        asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
+                                </select>
 
-                        },
-                        new { @class = "form-control" })
+                                <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="IsMainRole"> </label>
+
+                                @Html.DropDownList("IsMainRole", new List<SelectListItem>
+                                {
+                                     new SelectListItem{ Text="No", Value = "0" },
+                                     new SelectListItem{ Text="Yes", Value = "1" },
+
+                                },
+                                new { @class = "form-control" })
+                            </div>
+                            <span asp-validation-for="IsMainRole" class="parsley-errors-list filled"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="IsRoleActive"> </label>
+
+                                @Html.DropDownList("IsRoleActive", new List<SelectListItem>
+                                {
+                                     new SelectListItem{ Text="Active", Value = "1", Selected=true },
+                                     new SelectListItem{ Text="InActive", Value = "0" },
+
+                                },
+                                new { @class = "form-control" })
+                            </div>
+                            <span asp-validation-for="IsRoleActive" class="parsley-errors-list filled"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" asp-route-id="@Model.UserRoleId" class="btn btn-primary" value="Update" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
                     </div>
-                    <span asp-validation-for="IsRoleActive" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" asp-route-id="@Model.UserRoleId" class="btn btn-primary" value="Update" />
-                    <a asp-action="Index" class="btn btn-success">Back to List</a>
-                </div>
+                </form>
             </div>
-        </form>
         </div>
-</body>
+    </div>
+</div>
+<!-- Conetnt End-->

@@ -45,6 +45,8 @@ namespace CoreLayout.Models.UserManagement
         public string ConfirmPassword { get; set; }
         public string Salt { get; set; }
         public string SaltedHash { get; set; }
+
+        [Display(Name = "IsUser Active")]
         public int IsUserActive { get; set; }
 
         public int IsRoleActive { get; set; }
