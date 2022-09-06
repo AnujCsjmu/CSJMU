@@ -73,8 +73,8 @@ namespace CoreLayout.Controllers.QPDetails
                 id = id + 1;
                 ViewBag.MaxQPMasterId = _protector.Protect(id.ToString());
                 //end
-                return View(data);
-                //return View("~/Views/QPDetails/QPMaster/Index.cshtml", data);
+                //return View(data);
+                return View("~/Views/QPDetails/QPMaster/Index.cshtml", data);
 
             }
 
@@ -82,8 +82,8 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View();
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml");
+            //return View();
+            return View("~/Views/QPDetails/QPMaster/Index.cshtml");
         }
 
         [HttpGet]
@@ -99,16 +99,14 @@ namespace CoreLayout.Controllers.QPDetails
                 {
                     return NotFound();
                 }
-                return View(data);
-                //return View("~/Views/QPDetails/QPMaster/Details.cshtml", data);
+                return View("~/Views/QPDetails/QPMaster/Details.cshtml", data);
 
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-             return RedirectToAction(nameof(Index));
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml");
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -116,7 +114,7 @@ namespace CoreLayout.Controllers.QPDetails
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> CreateAsync(string id)
         {
-            
+
             try
             {
                 QPMasterModel qPMasterModel = new QPMasterModel();
@@ -127,15 +125,14 @@ namespace CoreLayout.Controllers.QPDetails
                 qPMasterModel.SessionList = await _courseDetailsService.GetAllSession();//course
                 qPMasterModel.GradeList = await _gradeDefinitionService.GetAllGradeDefinition();//course
                 var guid_id = _protector.Unprotect(id);
-                return View(qPMasterModel);
-                //return View("~/Views/QPDetails/QPMaster/Create.cshtml", qPMasterModel);
+                return View("~/Views/QPDetails/QPMaster/Create.cshtml", qPMasterModel);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
+
             return RedirectToAction(nameof(Index));
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml");
         }
 
         //Create Post Action Method
@@ -163,11 +160,9 @@ namespace CoreLayout.Controllers.QPDetails
                 {
                     TempData["error"] = "QPMaster has not been saved";
                 }
-                 return RedirectToAction(nameof(Index));
-                //return View("~/Views/QPDetails/QPMaster/Create.cshtml", qPMasterModel);
+                return RedirectToAction("Create");
             }
-             return View(qPMasterModel);
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml", qPMasterModel);
+            return View("~/Views/QPDetails/QPMaster/Create.cshtml", qPMasterModel);
         }
 
         [AuthorizeContext(ViewAction.Edit)]
@@ -188,15 +183,13 @@ namespace CoreLayout.Controllers.QPDetails
                 {
                     return NotFound();
                 }
-                return View(data);
-                //return View("~/Views/QPDetails/QPMaster/Edit.cshtml", data);
+                return View("~/Views/QPDetails/QPMaster/Edit.cshtml", data);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(Index));
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml");
+            return View("~/Views/QPDetails/QPMaster/Index.cshtml");
         }
 
         [HttpPost]
@@ -229,7 +222,6 @@ namespace CoreLayout.Controllers.QPDetails
                             TempData["error"] = "QPMaster has not been updated";
                         }
                         return RedirectToAction(nameof(Index));
-                        //return Redirect("~/Views/QPDetails/QPMaster/Index.cshtml");
                     }
                 }
             }
@@ -237,8 +229,7 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View(qPMasterModel);
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml", qPMasterModel);
+            return View("~/Views/QPDetails/QPMaster/Edit.cshtml", qPMasterModel);
         }
 
         [HttpGet]
@@ -270,9 +261,7 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-
             return RedirectToAction(nameof(Index));
-            //return View("~/Views/QPDetails/QPMaster/Index.cshtml");
         }
 
 
