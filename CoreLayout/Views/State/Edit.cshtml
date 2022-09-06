@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CountryId" class="mg-b-10"> </label>
+                                <label asp-for="CountryId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control" asp-for="CountryId" asp-items="@(new SelectList(Model.CountryList,"CountryId","CountryName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="StateName" class="mg-b-10"> </label>
+                                <label asp-for="StateName" class="mg-b-10"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="StateName" class="form-control" />
                                 <span asp-validation-for="StateName" class="parsley-errors-list filled"></span>
                             </div>

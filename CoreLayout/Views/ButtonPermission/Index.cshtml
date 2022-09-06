@@ -15,6 +15,9 @@
     <div class="btn btn-list">
         <a asp-action="Create" class="btn ripple btn-success btn-sm"><i class="fe fe-plus"></i>&nbsp;New Button Permission</a>
     </div>
+    <div class="btn btn-list">
+        <a asp-action="Save" class="btn ripple btn-success btn-sm"><i class="fe fe-plus"></i>&nbsp;Save</a>
+    </div>
 </div>
 
 <!-- Row -->
@@ -29,7 +32,7 @@
                             <tr>
 
                                 <th>S.No</th>
-                                <th>
+                                <th width="85px">
                                     @Html.DisplayNameFor(c => c.MenuName)
                                 </th>
                                 @*<th>
@@ -70,19 +73,19 @@
                                     <td>
                                         <table>
 
-                                                @foreach (var item1 in item.ButtonModelList)
-                                                {
-                                                    <tr style="display:inline-block">
-                                                        <td>
-                                                            &nbsp;&nbsp;@item1.ButtonName
-                                                            <label class="switch">
-                                                                <input type="checkbox" @item1.isChecked>
-                                                                <span class="slider round"></span>
-                                                            </label>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </table>
+                                            @foreach (var item1 in item.ButtonModelList)
+                                            {
+                                                <tr style="display:inline-block">
+                                                    <td width="50px">
+                                                        @item1.ButtonName
+                                                        <label class="switch">
+                                                            <input type="checkbox" @item1.isChecked>
+                                                            <span class="slider round"></span>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
                                     </td>
                                     <td>
                                         <div class="table-actions text-center">
@@ -128,8 +131,8 @@
     <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script type="text/javascript">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#RoleId").on("change", function () {
 
@@ -148,7 +151,73 @@
             });
             });
         });
-</script>
+    </script>
+
+@*//css for scrolling radio button*@
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 20px;
+            width: 50px;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 15px;
+                width: 15px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+
 }
 
 

@@ -48,17 +48,36 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-           
             try
             {
-                int userid = (int)HttpContext.Session.GetInt32("UserId");
-                int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-                if (roleid != 0 && userid != 0)
+                //start encrypt id for update,delete & details
+                var data = await _assignMenuByRoleService.GetAllMenuAssignByRoleAsync();
+                foreach (var _data in data)
                 {
-                    //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
-                    _ = RefereshMenuAsync();
+                    var stringId = _data.MenuPermissionId.ToString();
+                    _data.EncryptedId = _protector.Protect(stringId);
                 }
-                return View(await _assignMenuByRoleService.GetAllMenuAssignByRoleAsync());
+                //end
+
+                //start generate maxid for create button
+                int id = 0;
+                foreach (var _data in data)
+                {
+                    id = _data.MenuPermissionId;
+                }
+                id = id + 1;
+                ViewBag.MaxMenuPermissionId = _protector.Protect(id.ToString());
+                //end
+               int result=RefereshMenuAsync();
+                if(result==1)
+                {
+                    return View(data);
+                }
+                else
+                {
+                    return RedirectToAction("Logout", "Home");
+                }
+                
             }
             catch (Exception ex)
             {
@@ -67,34 +86,32 @@ namespace CoreLayout.Controllers
           
             return RedirectToAction(nameof(Index));
         }
-        public async Task<ActionResult> RefereshMenuAsync()
+        public int RefereshMenuAsync()
         {
+            int result = 0;
             var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
             int userid = (int)HttpContext.Session.GetInt32("UserId");
             int roleid = (int)HttpContext.Session.GetInt32("RoleId");
             if (roleid != 0 && userid != 0)
             {
-                List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
+                List<DashboardModel> alllevels = _dashboardService.GetDashboardByRoleAndUser(roleid, userid).Result;
                 HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
-                return View();
+                result = 1;
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return result;
         }
 
         
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
-        public async Task<ActionResult> CreateAsync(int id)
+        public async Task<ActionResult> CreateAsync(string id)
         {
             try
             {
                 AssignMenuByRoleModel assignMenuByRoleModel = new AssignMenuByRoleModel();
                 assignMenuByRoleModel.MenuList = await _menuService.GetAllMenuAsync();
                 assignMenuByRoleModel.RoleList = await _roleService.GetAllRoleAsync();
-                //var guid_id = _protector.Unprotect(id);
+                var guid_id = _protector.Unprotect(id);
 
                 return View(assignMenuByRoleModel);
             }
@@ -150,13 +167,13 @@ namespace CoreLayout.Controllers
 
 
         [AuthorizeContext(ViewAction.Details)]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
-               // data.EncryptedId = id;
+                var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(Convert.ToInt32(guid_id));
+                data.EncryptedId = id;
                 if (data == null)
                 {
                     return NotFound();
@@ -172,12 +189,12 @@ namespace CoreLayout.Controllers
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
+                var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(Convert.ToInt32(guid_id));
                 data.MenuList = await _menuService.GetAllMenuAsync();
                 data.RoleList = await _roleService.GetAllRoleAsync();
                 if (data == null)
@@ -235,12 +252,12 @@ namespace CoreLayout.Controllers
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var value = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(id);
+                var guid_id = _protector.Unprotect(id);
+                var value = await _assignMenuByRoleService.GetMenuAssignByRoleByIdAsync(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
                     var res = await _assignMenuByRoleService.DeleteMenuAssignByRoleAsync(value);

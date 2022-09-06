@@ -107,11 +107,7 @@ namespace CoreLayout.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        //[HttpGet("[save]")]
-        public IActionResult Save()
-        {
-            return View();
-        }
+    
         //public void bindRoleDropdown()
         //{
         //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
@@ -195,8 +191,16 @@ namespace CoreLayout.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Create Post Action Method
-        [HttpPost]
+        public ActionResult Save()
+        {
+            ButtonPermissionModel BPM = new ButtonPermissionModel();
+
+
+            return RedirectToAction(nameof(Index));
+        }
+
+            //Create Post Action Method
+            [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(ButtonPermissionModel buttonPermissionModel)

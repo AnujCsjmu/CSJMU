@@ -73,7 +73,6 @@ namespace CoreLayout.Controllers.QPDetails
                 id = id + 1;
                 ViewBag.MaxQPMasterId = _protector.Protect(id.ToString());
                 //end
-                //return View(data);
                 return View("~/Views/QPDetails/QPMaster/Index.cshtml", data);
 
             }
@@ -82,7 +81,6 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            //return View();
             return View("~/Views/QPDetails/QPMaster/Index.cshtml");
         }
 

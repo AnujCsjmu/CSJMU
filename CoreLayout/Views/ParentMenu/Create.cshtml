@@ -2,69 +2,64 @@
 @{
     ViewData["Title"] = "Create";
 }
-<div class="main-content side-content pt-0">
-    <div class="side-app">
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Create Parent Menu</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">ParentMenu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
 
-        <div class="main-container container-fluid">
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
 
 
-            <!-- Page Header -->
-            <div class="page-header">
-                <div>
-                    <h2 class="main-content-title tx-24 mg-b-5">Create Parent Menu</h2>
-                    <hr />
-                </div>
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
-            </div>
-            <!-- End Page Header -->
-            <!-- Conetnt Start-->
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <div>
-                                <h6 class="card-title mb-1">Create Parent Menu</h6>
-                                <hr />
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ParentMenuName" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ParentMenuName" class="form-control" />
+                                <span asp-validation-for="ParentMenuName" class="parsley-errors-list filled"></span>
                             </div>
+                        </div>
 
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SortBy" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="SortBy" class="form-control" />
+                                <span asp-validation-for="SortBy" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
 
-
-                            <form asp-action="Create" method="post">
-                                <div class="row">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger">
-
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div>
-                                            <label asp-for="ParentMenuName" class="mg-b-10"> </label>
-                                            <input asp-for="ParentMenuName" class="form-control" />
-                                            <span asp-validation-for="ParentMenuName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="SortBy" class="mg-b-10"> </label>
-                                            <input asp-for="SortBy" class="form-control" />
-                                            <span asp-validation-for="SortBy" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" class="btn btn-primary" value="Save" />
-                                    <a asp-action="Index" class="btn btn-success">Back to List</a>
-
-                                </div>
-
-                            </form>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
 
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Conetnt End-->
 
+                </form>
+            </div>
         </div>
     </div>
 </div>
+<!-- Conetnt End-->
+@section Scripts{
+
+}

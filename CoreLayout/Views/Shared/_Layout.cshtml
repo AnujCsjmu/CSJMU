@@ -218,9 +218,6 @@
                         </a>
 
                     <li class="nav-label">Components</li>
-
-
-
                     @if (Context.Session.GetString("AllLevelList") != null)
                     {
                         List<DashboardModel> parentList = JsonConvert.DeserializeObject<List<DashboardModel>>(Context.Session.GetString("AllLevelList"));
@@ -272,6 +269,10 @@
                                 </ul>
                             </li>
                         }
+                    }
+                    else
+                    {
+                        Context.Response.Redirect("/./Home/Logout");
                     }
 
                 </ul>
