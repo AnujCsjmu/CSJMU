@@ -63,6 +63,8 @@ namespace CoreLayout.Models.UserManagement
 
         public List<ButtonModel> ButtonModelList { get; set; }
         public List<MenuModel> MenuList { get; set; }
+
+        public List<ButtonPermissionModel> MenuModelList { get; set; }
         public List<int> ButtonList { get; set; }
         public List<RoleModel> RoleList { get; set; }
         public List<RegistrationModel> UserList { get; set; }

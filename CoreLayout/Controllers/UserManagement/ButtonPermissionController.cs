@@ -43,76 +43,40 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            List<ButtonPermissionModel> listbuttonPermissionModels = new List<ButtonPermissionModel>();
-            List<ButtonPermissionModel> listbuttonPermissionModels1 = new List<ButtonPermissionModel>();
+            List<ButtonPermissionModel> buttonPermissionModels = new List<ButtonPermissionModel>();
             var data = await _buttonPermissionService.DistinctButtonPermissionAsync();
-            ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
-            var AllButtonPermissionData = (dynamic)null;
             foreach (var _data in data)
             {
-                listbuttonPermissionModels = await _buttonPermissionService.GetAllButtonPermissionMenuWiseAsync(_data.MenuId);
-                //listbuttonPermissionModels1.Add(listbuttonPermissionModels);
+                //var checkedbuttons = await _buttonPermissionService.GetAllButtonPermissionMenuWiseAsync(_data.MenuId);
+                ButtonPermissionModel buttonPermission = new ButtonPermissionModel();
+                buttonPermission.MenuName = _data.MenuName;
+                buttonPermission.UserName = _data.UserName;
+                buttonPermission.RoleName = _data.RoleName;
+                buttonPermission.UserId = _data.UserId;
+                buttonPermission.RoleId = _data.RoleId;
+                List<ButtonModel> buttonModellist = new List<ButtonModel>();
+                var ButtonPermissionDataUserWise = await _buttonPermissionService.GetAllButtonPermissionMenuWiseAsync(_data.MenuId);
+                var AllButtonsData = await _buttonService.GetAllButton();
+                foreach (var _allButtonsData in AllButtonsData)
+                {
+                    ButtonModel buttonModel = new ButtonModel();
+                    buttonModel.ButtonName = _allButtonsData.ButtonName;
+                    foreach (var item3 in ButtonPermissionDataUserWise)
+                    {
+                        if (_allButtonsData.ButtonId == item3.ButtonId)
+                        {
+                            buttonModel.isChecked = "checked";
+
+                        }
+                    }
+                    buttonModellist.Add(buttonModel);
+
+                }
+                buttonPermission.ButtonModelList = buttonModellist;
+                buttonPermissionModels.Add(buttonPermission);
             }
-            
-            return View(data);
 
-
-
-
-            //bindRoleDropdown();
-            //List<ButtonPermissionModel> buttonPermissionModels = new List<ButtonPermissionModel>();
-            //var AllButtonPermissionData = (dynamic)null;
-            //if (HttpContext.Session.GetString("SearchList") == null)
-            //{
-            //    AllButtonPermissionData = await _buttonPermissionService.DistinctButtonPermissionAsync();
-            //}
-            //else
-            //{
-            //    int SearchRoleId = (int)HttpContext.Session.GetInt32("SearchRoleId");
-            //    int SearchUserId = (int)HttpContext.Session.GetInt32("SearchUserId");
-            //    AllButtonPermissionData = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(SearchUserId);
-            //}
-            ////var AllButtonPermissionData = await _menuService.GetAllMenuAsync();
-            //foreach (var _allButtonPermissionData in AllButtonPermissionData)
-            //{
-            //    ButtonPermissionModel buttonPermission = new ButtonPermissionModel();
-            //    buttonPermission.Controller = _allButtonPermissionData.Controller;
-            //    // buttonPermission.Action = _allButtonPermissionData.Action;
-            //    buttonPermission.URL = _allButtonPermissionData.URL;
-            //    buttonPermission.UserName = _allButtonPermissionData.UserName;
-            //    buttonPermission.RoleName = _allButtonPermissionData.RoleName;
-            //    buttonPermission.UserId = _allButtonPermissionData.UserId;
-            //    buttonPermission.RoleId = _allButtonPermissionData.RoleId;
-
-            //    List<ButtonModel> buttonModellist = new List<ButtonModel>();
-            //    ButtonPermissionModel buttonPermissionModel = new ButtonPermissionModel();
-            //    var ButtonPermissionDataUserWise = await _buttonPermissionService.GetAllButtonPermissionUserWiseAsync(_allButtonPermissionData.UserId);
-            //    var AllButtonsData = await _buttonService.GetAllButton();
-            //    foreach (var _allButtonsData in AllButtonsData)
-            //    {
-            //        ButtonModel buttonModel = new ButtonModel();
-            //        buttonModel.ButtonName = _allButtonsData.ButtonName;
-            //        foreach (var item3 in ButtonPermissionDataUserWise)
-            //        {
-            //            if (_allButtonsData.ButtonId == item3.ButtonId)
-            //            {
-            //                buttonModel.isChecked = "checked";
-
-            //            }
-            //        }
-            //        buttonModellist.Add(buttonModel);
-
-            //    }
-
-            //    buttonPermission.ButtonModelList = buttonModellist;
-            //    buttonPermissionModels.Add(buttonPermission);
-            //}
-            //HttpContext.Session.SetString("SearchList", null);
-            //return View(buttonPermissionModels);
-            //return View(await _buttonPermissionService.GetAllButtonPermissionAsync());
-
-            //var data = await _buttonPermissionService.DistinctButtonPermissionAsync();
-            //return View(data);
+            return View(buttonPermissionModels);
         }
 
         //[HttpGet("[search]")]
@@ -325,7 +289,7 @@ namespace CoreLayout.Controllers
                 var list = await _buttonPermissionService.GetButtonPermissionByIdAsync(id);
 
                 //bindRoleDropdown();
-               // bindUserDropdown(list.RoleId);
+                // bindUserDropdown(list.RoleId);
                 return View(list);
             }
             else

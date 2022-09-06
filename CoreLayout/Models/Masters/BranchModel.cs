@@ -31,5 +31,7 @@ namespace CoreLayout.Models.Masters
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
+        public int UserId { get; set; }
+
     }
 }

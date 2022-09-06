@@ -29,5 +29,8 @@ namespace CoreLayout.Models.Masters
         public List<CourseModel> CourseList { get; set; }
 
         public List<BranchModel> BranchList { get; set; }
+
+        public int UserId { get; set; }
+        
     }
 }

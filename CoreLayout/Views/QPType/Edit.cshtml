@@ -1,17 +1,18 @@
-﻿@model CoreLayout.Models.Masters.ButtonModel
+﻿@model CoreLayout.Models.QPDetails.QPTypeModel
 @{
     ViewData["Title"] = "Edit";
 }
+
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Edit Button</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Edit QP Type</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Button</a></li>
+            <li class="breadcrumb-item"><a href="#">QPType</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </div>
-
+  
 </div>
 <!-- End Page Header -->
 <!-- Conetnt Start-->
@@ -20,28 +21,30 @@
         <div class="card custom-card">
             <div class="card-body">
                 @*<div>
-                        <h6 class="card-title mb-1">Edit State</h6>
-                        <hr />
-                    </div>*@
+                    <h6 class="card-title mb-1">Edit State</h6>
+                    <hr />
+                </div>*@
+
                 <form asp-action="Edit" method="post">
                     <div class="row">
-                        <input type="hidden" asp-for="ButtonId" />
-                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+                        <input type="hidden" asp-for="QPTypeId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+                       
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="ButtonName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="ButtonName" class="form-control" />
-                                <span asp-validation-for="ButtonName" class="parsley-errors-list filled"></span>
+                                <label asp-for="QPTypeName" class="mg-b-10"> </label>
+                                <input asp-for="QPTypeName" class="form-control" />
+                                <span asp-validation-for="QPTypeName" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <input type="submit" asp-route-id="@Model.ButtonId" class="btn btn-primary" value="Update" />
+                            <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
                     </div>
+
                 </form>
 
             </div>

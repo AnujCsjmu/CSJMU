@@ -22,6 +22,9 @@ using CoreLayout.Repositories.Masters.Program;
 using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
+using CoreLayout.Repositories.QPDetails.GradeDefinition;
+using CoreLayout.Repositories.QPDetails.QPMaster;
+using CoreLayout.Repositories.QPDetails.QPType;
 using CoreLayout.Repositories.UserManagement.AssignMenuByRole;
 using CoreLayout.Repositories.UserManagement.AssignMenuByUser;
 using CoreLayout.Repositories.UserManagement.AssignRole;
@@ -52,6 +55,9 @@ using CoreLayout.Services.Masters.Program;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
+using CoreLayout.Services.QPDetails.GradeDefinition;
+using CoreLayout.Services.QPDetails.QPMaster;
+using CoreLayout.Services.QPDetails.QPType;
 using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.AssignMenuByRole;
 using CoreLayout.Services.UserManagement.AssignMenuByUser;
@@ -268,6 +274,19 @@ namespace CoreLayout
             //BranchDetails
             services.AddScoped<ICourseBranchMappingService, CourseBranchMappingService>();
             services.AddScoped<ICourseBranchMappingRepository, CourseBranchMappingRepository>();
+
+            //QP Type
+            services.AddScoped<IQPTypeService, QPTypeService>();
+            services.AddScoped<IQPTypeRepository, QPTypeRepository>();
+
+            //QP Master
+            services.AddScoped<IQPMasterService, QPMasterService>();
+            services.AddScoped<IQPMasterRepository, QPMasterRepository>();
+
+            //QP Master
+            services.AddScoped<IGradeDefinitionService, GradeDefinitionService>();
+            services.AddScoped<IGradeDefinitionRepository, GradeDefinitionRepository>();
+
 
             //add for encrypt value
             services.AddDataProtection();

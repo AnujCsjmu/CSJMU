@@ -1,17 +1,18 @@
-﻿@model CoreLayout.Models.Masters.ButtonModel
+﻿@model CoreLayout.Models.QPDetails.QPTypeModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create New QP Type";
 }
+
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Create Button</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Create QP Type</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Button</a></li>
+            <li class="breadcrumb-item"><a href="#">QPType</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create</li>
         </ol>
     </div>
-
+   
 </div>
 <!-- End Page Header -->
 <!-- Conetnt Start-->
@@ -20,35 +21,39 @@
         <div class="card custom-card">
             <div class="card-body">
                 @*<div>
-                        <h6 class="card-title mb-1">Create State</h6>
-                        <hr>
-                    </div>*@
+                    <h6 class="card-title mb-1">Create State</h6>
+                    <hr>
+                </div>*@
 
                 <form asp-action="Create" method="post">
                     <div class="row">
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+                       
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="ButtonName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="ButtonName" class="form-control" />
-                                <span asp-validation-for="ButtonName" class="parsley-errors-list filled"></span>
+                                <label asp-for="QPTypeName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="QPTypeName" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="QPTypeName"></span>
                             </div>
-
                         </div>
+                        
                         <div class="form-group">
+                            <hr>
                             <input type="submit" class="btn btn-primary" value="Save" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
                     </div>
+
                 </form>
+
             </div>
         </div>
     </div>
 </div>
 <!-- Conetnt End-->
-<!--@section Scripts{-->
-<!-- Custom js-->
-<!--<script src="~/assets/js/select2.js"></script>
-}-->
+@section Scripts{
+    <!-- Custom js-->
+    <script src="~/assets/js/select2.js"></script>
+}
