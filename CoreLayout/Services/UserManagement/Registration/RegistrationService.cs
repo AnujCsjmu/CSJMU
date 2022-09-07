@@ -26,6 +26,7 @@ namespace CoreLayout.Services.Registration
         {
             return await _registrationRepository.CreateAsync(registrationModel);
         }
+
         public async Task<int> UpdateRegistrationAsync(RegistrationModel registrationModel)
         {
             return await _registrationRepository.UpdateAsync(registrationModel);

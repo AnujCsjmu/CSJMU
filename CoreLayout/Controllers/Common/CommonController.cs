@@ -3,6 +3,7 @@ using CoreLayout.Models.Masters;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
+using CoreLayout.Services.PSP;
 using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.AssignRole;
 using CoreLayout.Services.UserManagement.ButtonPermission;
@@ -35,7 +36,8 @@ namespace CoreLayout.Controllers
         private readonly IAssignRoleService _assignRoleService;
         private readonly IParentMenuService _parentMenuService;
         private readonly IButtonPermissionService _buttonPermissionService;
-        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService)
+        private readonly IPSPRegistrationService _pSPRegistrationService;
+        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPSPRegistrationService pSPRegistrationService)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -44,6 +46,7 @@ namespace CoreLayout.Controllers
             _assignRoleService = assignRoleService;
             _parentMenuService = parentMenuService;
             _buttonPermissionService = buttonPermissionService;
+            _pSPRegistrationService = pSPRegistrationService;
         }
         public async  Task<ActionResult> RefereshMenuAsync()
         {
@@ -143,6 +146,29 @@ namespace CoreLayout.Controllers
             }
             return result;
         }
+        public int emailAlreadyExitsPSP(string EmailID)
+        {
+            int result = 0;
+            try
+            {
+                var already = (from user in _pSPRegistrationService.GetAllPSPRegistration().Result
+                               where user.EmailID == EmailID
+                               select new SelectListItem()
+                               {
+                                   Text = user.EmailID,
+                                   Value = user.UserID.ToString(),
+                               }).ToList();
+                if (already.Count > 0)
+                {
+                    result = 1;
+                }
+            }
+            catch (Exception)
+            {
+                result = 2;
+            }
+            return result;
+        }
         public int mobileAlreadyExits(string MobileNo)
         {
             int result = 0;
@@ -156,6 +182,29 @@ namespace CoreLayout.Controllers
                                      Value = user.UserID.ToString(),
                                  }).ToList();
                 if (already.Count>0)
+                {
+                    result = 1;
+                }
+            }
+            catch (Exception)
+            {
+                result = 2;
+            }
+            return result;
+        }
+        public int mobileAlreadyExitsPSP(string MobileNo)
+        {
+            int result = 0;
+            try
+            {
+                var already = (from user in _pSPRegistrationService.GetAllPSPRegistration().Result
+                               where user.MobileNo == MobileNo
+                               select new SelectListItem()
+                               {
+                                   Text = user.MobileNo,
+                                   Value = user.UserID.ToString(),
+                               }).ToList();
+                if (already.Count > 0)
                 {
                     result = 1;
                 }

@@ -1,5 +1,6 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
+using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.Login;
 using Microsoft.AspNetCore.Authentication;
@@ -12,6 +13,7 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,14 +26,18 @@ namespace CoreLayout.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ILoginService _userService;
         private readonly IRegistrationService _registrationService;
-        private static string errormsg = "";
         private IHttpContextAccessor _httpContextAccessor;
-        public HomeController(ILogger<HomeController> logger, ILoginService userService, IRegistrationService registrationService, IHttpContextAccessor httpContextAccessor)
+        private readonly IRoleService _roleService;
+        private readonly CommonController _commonController;
+        private static string errormsg = "";
+        public HomeController(ILogger<HomeController> logger, ILoginService userService, IRegistrationService registrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController)
         {
             _logger = logger;
             _userService = userService;
             _registrationService = registrationService;
             _httpContextAccessor = httpContextAccessor;
+            _roleService = roleService;
+            _commonController = commonController;
         }
 
         [HttpGet]
@@ -117,13 +123,17 @@ namespace CoreLayout.Controllers
         }
 
         [HttpGet]
-        public IActionResult Registration()
+        public async Task<IActionResult> Registration()
         {
             if (errormsg != "")
             {
                 ViewBag.errormsg = errormsg;
             }
-            return View();
+            RegistrationModel registrationModel = new RegistrationModel();
+            registrationModel.RoleList = (from role in await _roleService.GetAllRoleAsync()
+                                          where role.RoleID ==19
+                                          select role).ToList();
+            return View(registrationModel);
         }
 
         public static string CreateSalt()
@@ -174,27 +184,37 @@ namespace CoreLayout.Controllers
                 registrationModel.Salt = salt;
                 registrationModel.SaltedHash = saltedHash;
                 registrationModel.IPAddress = ipAddress;
+                //registrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
-                if (ModelState.IsValid)
+                int emailAlreadyExit = _commonController.emailAlreadyExits(registrationModel.EmailID);
+                int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
+                if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
                 {
-                    //registrationModel.Id = (int)HttpContext.Session.GetInt32("Id");
-                    var res = await _registrationService.CreateRegistrationAsync(registrationModel);
-                    if (res.ToString().Equals("-1"))
+                    if (ModelState.IsValid)
                     {
-                        //success
-                        errormsg = "Successfully Saved.";
+                        //registrationModel.Id = (int)HttpContext.Session.GetInt32("Id");
+                        var res = await _registrationService.CreateRegistrationAsync(registrationModel);
+                        if (res.Equals(1))
+                        {
+                            //success
+                            errormsg = "Successfully Saved.";
+                        }
+                        else
+                        {
+                            //falure
+                            errormsg = "Data Not Saved!";
+                        }
+                       
                     }
                     else
                     {
-                        //falure
-                        errormsg = "Data Not Saved!";
+                        ModelState.AddModelError("", "Some thing went wrong!");
                     }
-                    return RedirectToAction(nameof(Registration));
                 }
                 else
                 {
-                    errormsg = "Model state is invalid!";
-                    return RedirectToAction("Registration", "Home");
+                    ModelState.AddModelError("", "Mobile or Email already exits!");
+                    return View(registrationModel);
                 }
             }
             catch (Exception ex)
@@ -202,6 +222,7 @@ namespace CoreLayout.Controllers
                 errormsg = ex.StackTrace.ToString();
                 return RedirectToAction("Registration", "Home");
             }
+            return RedirectToAction(nameof(Registration));
         }
         public IActionResult Forget()
         {

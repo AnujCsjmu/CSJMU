@@ -177,18 +177,20 @@ namespace CoreLayout.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id, SubMenuModel subMenuModel)
+        public async Task<IActionResult> Edit(int SubMenuId, SubMenuModel subMenuModel)
         {
             try
             {
                 subMenuModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 subMenuModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+                subMenuModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
+                subMenuModel.ParentMenuList = await _parentMenuService.GetAllParentMenuAsync();
                 if (ModelState.IsValid)
                 {
-                    var value = await _subMenuService.GetSubMenuByIdAsync(id);
+                    var value = await _subMenuService.GetSubMenuByIdAsync(SubMenuId);
                     if (await TryUpdateModelAsync<SubMenuModel>(value))
                     {
-                        var res = await _subMenuService.UpdateSubMenuAsync(value);
+                        var res = await _subMenuService.UpdateSubMenuAsync(subMenuModel);
                         if (res.Equals(1))
                         {
                             TempData["success"] = "Sub Menu has been updated";

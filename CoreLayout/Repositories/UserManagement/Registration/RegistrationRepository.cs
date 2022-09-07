@@ -94,7 +94,7 @@ namespace CoreLayout.Repositories.UserManagement.Registration
 
         }
 
-
+       
         //public void InsertChildRecord(RegistrationModel registrationModel,int retrunUserId)
         //{
         //    try
