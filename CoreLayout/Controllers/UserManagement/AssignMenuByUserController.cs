@@ -47,26 +47,33 @@ namespace CoreLayout.Controllers
             
             try
             {
-                object data = null;
-                int userid = (int)HttpContext.Session.GetInt32("UserId");
-                int roleid = (int)HttpContext.Session.GetInt32("RoleId");
-                if (roleid != 0 && userid != 0)
+                //start encrypt id for update,delete & details
+                var data = await _assignMenuByUserService.GetAllMenuAssignByUserAsync();
+                foreach (var _data in data)
                 {
-                    //_ = _commonService.GetDashboardByRoleAndUser(roleid, userid);
-                    _ = RefereshMenuAsync();
+                    var stringId = _data.MenuPermissionId.ToString();
+                    _data.EncryptedId = _protector.Protect(stringId);
                 }
-                if (roleid == 1)
+                //end
+
+                //start generate maxid for create button
+                int id = 0;
+                foreach (var _data in data)
                 {
-                    data = await _assignMenuByUserService.GetAllMenuAssignByUserAsync();
+                    id = _data.MenuPermissionId;
+                }
+                id = id + 1;
+                ViewBag.MaxMenuPermissionId = _protector.Protect(id.ToString());
+                //end
+                int result = RefereshMenuAsync();
+                if (result == 1)
+                {
+                    return View(data);
                 }
                 else
                 {
-
-                    data = (from menuassignedByUser in _assignMenuByUserService.GetAllMenuAssignByUserAsync().Result
-                            where menuassignedByUser.UserId == userid
-                            select menuassignedByUser).ToList();
+                    return RedirectToAction("Logout", "Home");
                 }
-                return View(data);
             }
             catch (Exception ex)
             {
@@ -74,50 +81,30 @@ namespace CoreLayout.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        public async Task<ActionResult> RefereshMenuAsync()
+        public int RefereshMenuAsync()
         {
+            int result = 0;
             var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
             int userid = (int)HttpContext.Session.GetInt32("UserId");
             int roleid = (int)HttpContext.Session.GetInt32("RoleId");
             if (roleid != 0 && userid != 0)
             {
-                List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
+                List<DashboardModel> alllevels = _dashboardService.GetDashboardByRoleAndUser(roleid, userid).Result;
                 HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
-                return View();
+                result = 1;
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            return result;
         }
         //Create Get Action Method
         [AuthorizeContext(ViewAction.Add)]
-        public async Task<ActionResult> CreateAsync(int id)
+        public async Task<ActionResult> CreateAsync(string id)
         {
             try
             {
-                int? RoleId = HttpContext.Session.GetInt32("RoleId");
-                int? UserId = HttpContext.Session.GetInt32("UserId");
                 AssignMenuByUserModel assignMenuByUserModel = new AssignMenuByUserModel();
-                if (RoleId == 1)
-                {
-                    assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
-                    assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
-                }
-                else
-                {
-
-                    assignMenuByUserModel.MenuList = (from menu in _menuService.GetAllMenuAsync().Result
-                            where menu.UserId == UserId
-                            select menu).ToList();
-
-                    assignMenuByUserModel.UserList = (from registration in _registrationService.GetAllRegistrationAsync().Result
-                                                      where registration.RoleId == RoleId
-                                                      select registration).ToList();
-
-                }
-
-                //var guid_id = _protector.Unprotect(id);
+                assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
+                assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                var guid_id = _protector.Unprotect(id);
 
                 return View(assignMenuByUserModel);
             }
@@ -149,11 +136,11 @@ namespace CoreLayout.Controllers
                         var res = await _assignMenuByUserService.CreateMenuAssignByUserAsync(assignMenuByUserModel);
                         if (res.Equals(1))
                         {
-                            TempData["success"] = "Menu Assign By User has been saved";
+                            TempData["success"] = "MenuAssignByUser has been saved";
                         }
                         else
                         {
-                            TempData["error"] = "Menu Assign By User has not been saved";
+                            TempData["error"] = "MenuAssignByUser has not been saved";
                         }
                         
                     }
@@ -173,13 +160,13 @@ namespace CoreLayout.Controllers
         }
 
         [AuthorizeContext(ViewAction.Details)]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var data = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(id);
-                //data.EncryptedId = id;
+                var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(Convert.ToInt32(guid_id));
+                data.EncryptedId = id;
                 if (data == null)
                 {
                     return NotFound();
@@ -194,12 +181,12 @@ namespace CoreLayout.Controllers
             return RedirectToAction(nameof(Index));
         }
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var data = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(id);
+                var guid_id = _protector.Unprotect(id);
+                var data = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(Convert.ToInt32(guid_id));
                 data.MenuList = await _menuService.GetAllMenuAsync();
                 data.UserList = await _registrationService.GetAllRegistrationAsync();
                 if (data == null)
@@ -237,11 +224,11 @@ namespace CoreLayout.Controllers
                         var res = await _assignMenuByUserService.UpdateMenuAssignByUserAsync(assignMenuByUserModel);
                         if (res.Equals(1))
                         {
-                            TempData["success"] = "Menu Assign By User has been updated";
+                            TempData["success"] = "MenuAssignByUser has been updated";
                         }
                         else
                         {
-                            TempData["error"] = "Menu Assign By User has not been updated";
+                            TempData["error"] = "MenuAssignByUser has not been updated";
                         }
                         return RedirectToAction(nameof(Index));
                     }
@@ -257,23 +244,23 @@ namespace CoreLayout.Controllers
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                //var guid_id = _protector.Unprotect(id);
-                var value = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(id);
+                var guid_id = _protector.Unprotect(id);
+                var value = await _assignMenuByUserService.GetMenuAssignByUserByIdAsync(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
                     var res = await _assignMenuByUserService.DeleteMenuAssignByUserAsync(value);
 
                     if (res.Equals(1))
                     {
-                        TempData["error"] = "Menu Assign By User has been deleted";
+                        TempData["error"] = "MenuAssignByUser has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "Menu Assign By User has not been deleted";
+                        TempData["error"] = "MenuAssignByUser has not been deleted";
                     }
                 }
                 else

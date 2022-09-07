@@ -143,11 +143,11 @@ namespace CoreLayout.Controllers
                         var res = await _assignMenuByRoleService.CreateMenuAssignByRoleAsync(assignMenuByRoleModel);
                         if (res.Equals(1))
                         {
-                            TempData["success"] = "Menu Assign By Role has been saved";
+                            TempData["success"] = "MenuAssignByRole has been saved";
                         }
                         else
                         {
-                            TempData["error"] = "Menu Assign By Role has not been saved";
+                            TempData["error"] = "MenuAssignByRole has not been saved";
                         }
                     }
                     else
@@ -232,11 +232,11 @@ namespace CoreLayout.Controllers
                         var res = await _assignMenuByRoleService.UpdateMenuAssignByRoleAsync(assignMenuByRoleModel);
                         if (res.Equals(1))
                         {
-                            TempData["success"] = "Menu Assign By Role has been updated";
+                            TempData["success"] = "MenuAssignByRole has been updated";
                         }
                         else
                         {
-                            TempData["error"] = "Menu Assign By Role has not been updated";
+                            TempData["error"] = "MenuAssignByRole has not been updated";
                         }
                         return RedirectToAction(nameof(Index));
                     }
@@ -264,11 +264,11 @@ namespace CoreLayout.Controllers
 
                     if (res.Equals(1))
                     {
-                        TempData["error"] = "Menu Assign By Role has been deleted";
+                        TempData["error"] = "MenuAssignByRole has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "Menu Assign By Role has not been deleted";
+                        TempData["error"] = "MenuAssignByRole has not been deleted";
                     }
                 }
                 else

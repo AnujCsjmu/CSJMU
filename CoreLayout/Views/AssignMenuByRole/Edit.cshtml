@@ -34,7 +34,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="MenuId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
-                                <select style="width:550px; height:120px" class="select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
+                                <select class="form-control select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="MenuId" class="parsley-errors-list filled"></span>
@@ -43,7 +43,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="RoleId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
-                                <select style="width:550px; height:120px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
+                                <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
