@@ -1,12 +1,13 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
+using CoreLayout.Models.QPDetails;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreLayout.Models.PSP
+namespace CoreLayout.Models.PCP
 {
-    public class PSPRegistrationModel :BaseEntity
+    public class PCPRegistrationModel :BaseEntity
     {
         [Key]
         public int UserID { get; set; }
@@ -71,5 +72,38 @@ namespace CoreLayout.Models.PSP
      
         [NotMapped]
         public List<RoleModel> RoleList { get; set; }
+
+        [NotMapped]
+        public List<QPMasterModel> QPCodeList { get; set; }
+
+        [Display(Name = "QP Code")]
+        [Required(ErrorMessage = "Please enter qp code")]
+        public int QPId { get; set; }
+
+        public string QPCode { get; set; }
+
+        public string QPName { get; set; }
+
+        [NotMapped]
+        public List<CourseModel> CourseList { get; set; }
+
+        [Display(Name = "Course Name")]
+        [Required(ErrorMessage = "Please enter course name")]
+        public int CourseID { get; set; }
+        public string CourseName { get; set; }
+
+        [NotMapped]
+        public List<BranchModel> BranchList { get; set; }
+
+        [Display(Name = "Subject Name")]
+        [Required(ErrorMessage = "Please enter subject name")]
+        public int BranchID { get; set; }
+        public string BranchName { get; set; }
+
+        public List<string> UserList { get; set; }
+
+        public int? IsApproved { get; set; }
+
+        public int? RefUserId { get; set; }
     }
 }

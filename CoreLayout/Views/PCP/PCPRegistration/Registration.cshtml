@@ -1,4 +1,4 @@
-﻿@model CoreLayout.Models.PSP.PSPRegistrationModel
+﻿@model CoreLayout.Models.PCP.PCPRegistrationModel
 @{
     Layout = null;
 }
@@ -6,15 +6,15 @@
 <!DOCTYPE html>
 <html lang="en">
 @*<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Register</title>
-    <link href="~/css/styles.css" rel="stylesheet" />
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-</head>*@
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Register</title>
+        <link href="~/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    </head>*@
 <head>
 
     <meta charset="utf-8">
@@ -60,7 +60,7 @@
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
                                 <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
                                 <div class="card-body">
-                                    <form method="post" asp-controller="PSPRegistration" asp-action="Registration">
+                                    <form method="post" asp-controller="PCPRegistration" asp-action="Registration">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
@@ -105,12 +105,29 @@
                                         </div>
                                         <!--<div class="form-floating mb-6">
 
-                                            <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>-->
-                                            @*<label asp-for="RoleId">Role</label>*@
-                                            <!--<span class="text-danger" asp-validation-for="RoleId"></span>
+                                        <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPCodeList,"QPId","QPCode"))">
+                                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                        </select>-->
+                                        @*<label asp-for="QPCode">Role</label>*@
+                                        <!--<span class="text-danger" asp-validation-for="QPId"></span>
                                         </div>-->
+                                        <div class="form-floating mb-6">
+
+                                            <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            @*<label asp-for="QPCode">Role</label>*@
+                                            <span class="text-danger" asp-validation-for="CourseID"></span>
+                                        </div>
+                                        <br />
+                                        <div class="form-floating mb-6">
+
+                                            <select class="form-control select" asp-for="BranchID" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                            </select>
+                                            @*<label asp-for="QPCode">Role</label>*@
+                                            <span class="text-danger" asp-validation-for="BranchID"></span>
+                                        </div>
                                         <div class="mt-4 mb-0">
                                             <div class="d-grid">
                                                 @*<a class="btn btn-primary btn-block" href="login.html">Create Account</a>*@

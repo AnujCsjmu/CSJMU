@@ -1,33 +1,41 @@
-﻿using CoreLayout.Models.PSP;
+﻿using CoreLayout.Models.PCP;
+using CoreLayout.Services.Masters.Branch;
+using CoreLayout.Services.Masters.Course;
 using CoreLayout.Services.Masters.Role;
-using CoreLayout.Services.PSP;
+using CoreLayout.Services.PCP.PCPRegistration;
+using CoreLayout.Services.QPDetails.QPMaster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PSP
 {
-    public class PSPRegistrationController : Controller
+    public class PCPRegistrationController : Controller
     {
-        private readonly ILogger<PSPRegistrationController> _logger;
-        private readonly IPSPRegistrationService _pSPRegistrationService;
+        private readonly ILogger<PCPRegistrationController> _logger;
+        private readonly IPCPRegistrationService _pCPRegistrationService;
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IRoleService _roleService;
         private readonly CommonController _commonController;
         private static string errormsg = "";
-        public PSPRegistrationController(ILogger<PSPRegistrationController> logger, IPSPRegistrationService pSPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController)
+        private readonly IQPMasterService _qPMasterService;
+        private readonly ICourseService _courseService;
+        private readonly IBranchService _branchService;
+        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService)
         {
             _logger = logger;
-            _pSPRegistrationService = pSPRegistrationService;
+            _pCPRegistrationService = pCPRegistrationService;
             _httpContextAccessor = httpContextAccessor;
             _roleService = roleService;
             _commonController = commonController;
+            _qPMasterService = qPMasterService;
+            _courseService = courseService;
+            _branchService = branchService;
         }
 
         [HttpGet]
@@ -37,41 +45,42 @@ namespace CoreLayout.Controllers.PSP
             {
                 ViewBag.errormsg = errormsg;
             }
-            PSPRegistrationModel pSPRegistrationModel = new PSPRegistrationModel();
-            pSPRegistrationModel.RoleList = (from role in await _roleService.GetAllRoleAsync()
-                                          where role.RoleID == 19
-                                          select role).ToList();
+            PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
+            pCPRegistrationModel.QPCodeList =await _qPMasterService.GetAllQPMaster();
+            pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
+            pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
             //return View(pSPRegistrationModel);
-            return View("~/Views/PSP/PSPRegistration/Registration.cshtml", pSPRegistrationModel);
+            return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Registration(PSPRegistrationModel pSPRegistrationModel)
+        public async Task<IActionResult> Registration(PCPRegistrationModel pCPRegistrationModel)
         {
             try
             {
                 string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                 string salt = CreateSalt();
-                string saltedHash = ComputeSaltedHash(pSPRegistrationModel.Password, salt);
-                pSPRegistrationModel.Salt = salt;
-                pSPRegistrationModel.SaltedHash = saltedHash;
-                pSPRegistrationModel.IPAddress = ipAddress;
+                string saltedHash = ComputeSaltedHash(pCPRegistrationModel.Password, salt);
+                pCPRegistrationModel.Salt = salt;
+                pCPRegistrationModel.SaltedHash = saltedHash;
+                pCPRegistrationModel.IPAddress = ipAddress;
                 //registrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                pSPRegistrationModel.RoleList = (from role in await _roleService.GetAllRoleAsync()
-                                                 where role.RoleID == 19
-                                                 select role).ToList();
-                int emailAlreadyExit = _commonController.emailAlreadyExitsPSP(pSPRegistrationModel.EmailID);
-                int mobileAlreadyExit = _commonController.mobileAlreadyExitsPSP(pSPRegistrationModel.MobileNo);
+                pCPRegistrationModel.QPCodeList = await _qPMasterService.GetAllQPMaster();
+                pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
+                pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
+                int emailAlreadyExit = _commonController.emailAlreadyExitsPSP(pCPRegistrationModel.EmailID);
+                int mobileAlreadyExit = _commonController.mobileAlreadyExitsPSP(pCPRegistrationModel.MobileNo);
                 if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
                 {
                     if (ModelState.IsValid)
                     {
-                        var res = await _pSPRegistrationService.CreatePSPRegistrationAsync(pSPRegistrationModel);
+                        var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
                         if (res.Equals(1))
                         {
                             //success
                             errormsg = "Successfully Saved.";
+                            return View("~/Views/Home/Login.cshtml");
                         }
                         else
                         {
@@ -89,9 +98,9 @@ namespace CoreLayout.Controllers.PSP
                 else
                 {
                     ModelState.AddModelError("", "Mobile or Email already exits!");
-                    //errormsg = "Mobile or Email already exits!";
+                    errormsg = "Mobile or Email already exits!";
                     //return View(pSPRegistrationModel);
-                    return View("~/Views/PSP/PSPRegistration/Registration.cshtml", pSPRegistrationModel);
+                    return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                 }
             }
             catch (Exception ex)
@@ -100,7 +109,7 @@ namespace CoreLayout.Controllers.PSP
                 return RedirectToAction("Registration", "PSPRegistration");
             }
             //return RedirectToAction(nameof(Registration));
-            return View("~/Views/PSP/PSPRegistration/Registration.cshtml", pSPRegistrationModel);
+            return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
 
         public static string CreateSalt()

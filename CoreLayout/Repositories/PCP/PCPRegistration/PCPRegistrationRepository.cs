@@ -1,4 +1,4 @@
-﻿using CoreLayout.Models.PSP;
+﻿using CoreLayout.Models.PCP;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -7,14 +7,14 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Repositories.PSP
+namespace CoreLayout.Repositories.PCP.PCPRegistration
 {
-    public class PSPRegistrationRepository : BaseRepository, IPSPRegistrationRepository
+    public class PCPRegistrationRepository : BaseRepository, IPCPRegistrationRepository
     {
-        public PSPRegistrationRepository(IConfiguration configuration)
+        public PCPRegistrationRepository(IConfiguration configuration)
 : base(configuration)
         { }
-        public async Task<int> CreateAsync(PSPRegistrationModel entity)
+        public async Task<int> CreateAsync(PCPRegistrationModel entity)
         {
             using (var connection = CreateConnection())
             {
@@ -36,11 +36,13 @@ namespace CoreLayout.Repositories.PSP
                         parameters.Add("Salt", entity.Salt, DbType.String);
                         parameters.Add("SaltedHash", entity.SaltedHash, DbType.String);
                         parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
-                        parameters.Add("RefType", entity.RefType, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("InstituteId", entity.InstituteId, DbType.Int32);
-
+                        parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("CourseId", entity.CourseID, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
                         parameters.Add("@Query", 1, DbType.Int32);
+
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
 
                         if (res == 1)
@@ -72,17 +74,17 @@ namespace CoreLayout.Repositories.PSP
 
         }
 
-        public async Task<int> DeleteAsync(PSPRegistrationModel entity)
+        public async Task<int> DeleteAsync(PCPRegistrationModel entity)
         {
             try
             {
                 var query = "SP_InsertUpdateDelete_PCP";
                 using (var connection = CreateConnection())
                 {
-                    entity.IsRecordDeleted = 1;
+                    entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("UserID", entity.UserID, DbType.Int32);
-                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                    parameters.Add("IsUserActive", entity.IsUserActive, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -94,7 +96,7 @@ namespace CoreLayout.Repositories.PSP
             }
         }
 
-        public async Task<List<PSPRegistrationModel>> GetAllAsync()
+        public async Task<List<PCPRegistrationModel>> GetAllAsync()
         {
             try
             {
@@ -103,8 +105,8 @@ namespace CoreLayout.Repositories.PSP
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 4, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<PSPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<PSPRegistrationModel>)list;
+                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPRegistrationModel>)list;
                 }
             }
             catch (Exception ex)
@@ -113,7 +115,7 @@ namespace CoreLayout.Repositories.PSP
             }
         }
 
-        public async Task<PSPRegistrationModel> GetByIdAsync(int UserID)
+        public async Task<PCPRegistrationModel> GetByIdAsync(int UserID)
         {
             try
             {
@@ -123,7 +125,7 @@ namespace CoreLayout.Repositories.PSP
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("UserID", UserID, DbType.Int32);
                     parameters.Add("@Query", 5, DbType.Int32);
-                    var lst = await SqlMapper.QueryAsync<PSPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    var lst = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return lst.FirstOrDefault();
                 }
             }
@@ -133,7 +135,7 @@ namespace CoreLayout.Repositories.PSP
             }
         }
 
-        public async Task<int> UpdateAsync(PSPRegistrationModel entity)
+        public async Task<int> UpdateAsync(PCPRegistrationModel entity)
         {
             using (var connection = CreateConnection())
             {
@@ -164,9 +166,11 @@ namespace CoreLayout.Repositories.PSP
                             parameters.Add("IsPasswordChange", 0, DbType.Int32);
                         }
                         parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
-                        parameters.Add("RefType", entity.RefType, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress);
                         parameters.Add("InstituteId", entity.InstituteId);
+                        parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("CourseId", entity.CourseID, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)

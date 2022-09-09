@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
 {
-    //[Authorize(Roles = "Administrator,Institute,Controller Of Examination")]
+    [Authorize(Roles = "Administrator,Institute,Controller Of Examination,Paper Setter")]
     public class DashBoardController : Controller
     {
        

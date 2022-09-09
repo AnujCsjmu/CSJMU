@@ -1,17 +1,14 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
-using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
-using CoreLayout.Services.PSP;
+using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.AssignRole;
 using CoreLayout.Services.UserManagement.ButtonPermission;
 using CoreLayout.Services.UserManagement.ParentMenu;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -36,8 +33,8 @@ namespace CoreLayout.Controllers
         private readonly IAssignRoleService _assignRoleService;
         private readonly IParentMenuService _parentMenuService;
         private readonly IButtonPermissionService _buttonPermissionService;
-        private readonly IPSPRegistrationService _pSPRegistrationService;
-        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPSPRegistrationService pSPRegistrationService)
+        private readonly IPCPRegistrationService _pCPRegistrationService;
+        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -46,7 +43,7 @@ namespace CoreLayout.Controllers
             _assignRoleService = assignRoleService;
             _parentMenuService = parentMenuService;
             _buttonPermissionService = buttonPermissionService;
-            _pSPRegistrationService = pSPRegistrationService;
+            _pCPRegistrationService = pCPRegistrationService;
         }
         public async  Task<ActionResult> RefereshMenuAsync()
         {
@@ -151,7 +148,7 @@ namespace CoreLayout.Controllers
             int result = 0;
             try
             {
-                var already = (from user in _pSPRegistrationService.GetAllPSPRegistration().Result
+                var already = (from user in _pCPRegistrationService.GetAllPCPRegistration().Result
                                where user.EmailID == EmailID
                                select new SelectListItem()
                                {
@@ -197,7 +194,7 @@ namespace CoreLayout.Controllers
             int result = 0;
             try
             {
-                var already = (from user in _pSPRegistrationService.GetAllPSPRegistration().Result
+                var already = (from user in _pCPRegistrationService.GetAllPCPRegistration().Result
                                where user.MobileNo == MobileNo
                                select new SelectListItem()
                                {

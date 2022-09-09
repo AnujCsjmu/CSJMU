@@ -22,7 +22,8 @@ using CoreLayout.Repositories.Masters.Program;
 using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
-using CoreLayout.Repositories.PSP;
+using CoreLayout.Repositories.PCP.PCPApproval;
+using CoreLayout.Repositories.PCP.PCPRegistration;
 using CoreLayout.Repositories.QPDetails.GradeDefinition;
 using CoreLayout.Repositories.QPDetails.QPMaster;
 using CoreLayout.Repositories.QPDetails.QPType;
@@ -56,7 +57,8 @@ using CoreLayout.Services.Masters.Program;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
-using CoreLayout.Services.PSP;
+using CoreLayout.Services.PCP.PCPApproval;
+using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.QPDetails.GradeDefinition;
 using CoreLayout.Services.QPDetails.QPMaster;
 using CoreLayout.Services.QPDetails.QPType;
@@ -290,9 +292,12 @@ namespace CoreLayout
             services.AddScoped<IGradeDefinitionRepository, GradeDefinitionRepository>();
 
             //PSP registration
-            services.AddScoped<IPSPRegistrationService, PSPRegistrationService>();
-            services.AddScoped<IPSPRegistrationRepository, PSPRegistrationRepository>();
+            services.AddScoped<IPCPRegistrationService, PCPRegistrationService>();
+            services.AddScoped<IPCPRegistrationRepository, PCPRegistrationRepository>();
 
+            //PSP registration
+            services.AddScoped<IPCPApprovalService, PCPApprovalService>();
+            services.AddScoped<IPCPApprovalRepository, PCPApprovalRepository>();
 
             //add for encrypt value
             services.AddDataProtection();
