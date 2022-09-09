@@ -52,7 +52,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <label asp-for="InstituteTypeId" class="mg-b-10"> </label>
-                                                <select style="width:250px; height:120px" class="select" asp-for="InstituteTypeId" asp-items="@(new SelectList(Model.InstituteTypeList,"InstituteTypeID","InstituteTypeName"))">
+                                                <select  class="form-control select" asp-for="InstituteTypeId" asp-items="@(new SelectList(Model.InstituteTypeList,"InstituteTypeID","InstituteTypeName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
                                                 <span asp-validation-for="InstituteTypeId" class="text-danger"></span>
@@ -61,7 +61,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <label asp-for="InstituteCategoryId" class="mg-b-10"> </label>
-                                                <select style="width:250px; height:120px" class="select" asp-for="InstituteCategoryId" asp-items="@(new SelectList(Model.InstituteCategoryList,"InstituteCategoryID","InstituteCategoryName"))">
+                                                <select   class="form-control select" asp-for="InstituteCategoryId" asp-items="@(new SelectList(Model.InstituteCategoryList,"InstituteCategoryID","InstituteCategoryName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
                                                 <span asp-validation-for="InstituteCategoryId" class="text-danger"></span>
@@ -91,7 +91,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <label asp-for="StateId" class="mg-b-10"> </label>
-                                                <select style="width:250px; height:120px" class="select" asp-for="StateId" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
+                                                <select   class="form-control select" asp-for="StateId" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -101,7 +101,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <label asp-for="DistrictID" class="mg-b-10"> </label>
-                                                <select style="width:250px; height:120px" class="select" asp-for="DistrictID" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
+                                                <select   class="form-control select" asp-for="DistrictID" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 
@@ -114,7 +114,7 @@
                                         <div class="col-md-3">
                                             <div>
                                                 <label asp-for="TehsilId" class="mg-b-10"> </label>
-                                                <select style="width:250px; height:120px" class="select" asp-for="TehsilId" asp-items="@(new SelectList(Model.TehsilList,"TehsilId","TehsilName"))">
+                                                <select   class="form-control select" asp-for="TehsilId" asp-items="@(new SelectList(Model.TehsilList,"TehsilId","TehsilName"))">
                                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                                 </select>
 

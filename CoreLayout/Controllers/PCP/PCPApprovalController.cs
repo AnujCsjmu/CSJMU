@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
@@ -31,11 +32,16 @@ namespace CoreLayout.Controllers
             _protector = provider.CreateProtector("PCPApproval.PCPApprovalController");
             _pCPApprovalService = pCPApprovalService;
         }
+
+        [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> IndexAsync()
         {
             try
             {
                 //start encrypt id for update,delete & details
+                //var data = (from reg in _pCPRegistrationService.GetAllPCPRegistration().Result
+                //            where reg.IsApproved == 1
+                //            select reg).ToList();
                 var data = await _pCPRegistrationService.GetAllPCPRegistration();
 
                 foreach (var _data in data)
@@ -85,7 +91,7 @@ namespace CoreLayout.Controllers
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAsync));
         }
 
         [HttpGet]
@@ -117,7 +123,7 @@ namespace CoreLayout.Controllers
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAsync));
         }
         [AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
@@ -165,7 +171,7 @@ namespace CoreLayout.Controllers
                         {
                             TempData["error"] = "User has not been updated";
                         }
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(IndexAsync));
                     }
                 }
             }
@@ -184,7 +190,7 @@ namespace CoreLayout.Controllers
             string msg = string.Empty;
             if (uid != null)
             {
-                PCPRegistrationModel pCPRegistrationModel  = new PCPRegistrationModel();
+                PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
                 List<string> list = new List<string>();
 
                 String[] array = uid.Split(",");
@@ -208,11 +214,11 @@ namespace CoreLayout.Controllers
                     pCPRegistrationModel.RoleId = 19;
                     pCPRegistrationModel.IsApproved = 1;
 
-                     result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
+                    result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
                 }
                 //pCPRegistrationModel.UserList = list;
                 //var data = _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
-                if(result == 1)
+                if (result == 1)
                 {
                     msg = "saved";
                 }
@@ -223,6 +229,11 @@ namespace CoreLayout.Controllers
                 msg = "error";
             }
             return Json(msg);
+        }
+
+        public JsonResult SendReminder(string uid)
+        {
+            return Json(uid);
         }
     }
 }

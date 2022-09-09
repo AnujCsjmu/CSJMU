@@ -24,6 +24,7 @@ using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
 using CoreLayout.Repositories.PCP.PCPApproval;
 using CoreLayout.Repositories.PCP.PCPRegistration;
+using CoreLayout.Repositories.PCP.PCPUploadPaper;
 using CoreLayout.Repositories.QPDetails.GradeDefinition;
 using CoreLayout.Repositories.QPDetails.QPMaster;
 using CoreLayout.Repositories.QPDetails.QPType;
@@ -59,6 +60,7 @@ using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
 using CoreLayout.Services.PCP.PCPApproval;
 using CoreLayout.Services.PCP.PCPRegistration;
+using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.GradeDefinition;
 using CoreLayout.Services.QPDetails.QPMaster;
 using CoreLayout.Services.QPDetails.QPType;
@@ -291,13 +293,17 @@ namespace CoreLayout
             services.AddScoped<IGradeDefinitionService, GradeDefinitionService>();
             services.AddScoped<IGradeDefinitionRepository, GradeDefinitionRepository>();
 
-            //PSP registration
+            //PCP registration
             services.AddScoped<IPCPRegistrationService, PCPRegistrationService>();
             services.AddScoped<IPCPRegistrationRepository, PCPRegistrationRepository>();
 
-            //PSP registration
+            //PCP Approval
             services.AddScoped<IPCPApprovalService, PCPApprovalService>();
             services.AddScoped<IPCPApprovalRepository, PCPApprovalRepository>();
+
+            //PCP File Upload
+            services.AddScoped<IPCPUploadPaperService, PCPUploadPaperService>();
+            services.AddScoped<IPCPUploadPaperRepository, PCPUploadPaperRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

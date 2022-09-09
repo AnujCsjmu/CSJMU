@@ -48,7 +48,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="ButtonId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="ButtonList" multiple asp-items="@(new SelectList(ViewBag.GetButtonList,"ButtonId","ButtonName"))">
+                                <select class="form-control select" asp-for="ButtonList" multiple asp-items="@(new SelectList(ViewBag.GetButtonList,"ButtonId","ButtonName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="ButtonId" class="text-danger"></span>
@@ -57,7 +57,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
+                                <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="RoleId" class="text-danger"></span>
@@ -66,7 +66,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="UserId" asp-items="@(new SelectList(string.Empty,"UserID","UserName"))">
+                                <select class="form-control select" asp-for="UserId" asp-items="@(new SelectList(string.Empty,"UserID","UserName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="UserId" class="text-danger"></span>

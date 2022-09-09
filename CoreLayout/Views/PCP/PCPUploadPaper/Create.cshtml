@@ -1,0 +1,85 @@
+﻿@model CoreLayout.Models.PCP.PCPUploadPaperModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Upload Paper</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">UploadPape</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperCode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PaperCode" class="form-control" />
+                                <span asp-validation-for="PaperCode" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PaperName" class="form-control" />
+                                <span asp-validation-for="PaperName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperHindiName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PaperHindiName" class="form-control" />
+                                <span asp-validation-for="PaperHindiName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperPassword"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PaperPassword" class="form-control" />
+                                <span asp-validation-for="PaperPassword" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UploadPaper"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="UploadPaper" class="form-control" />
+                                <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Save" />
+                        <a asp-action="Index" class="btn btn-success">Back to List</a>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Conetnt End-->
+@section Scripts{
+
+}
+

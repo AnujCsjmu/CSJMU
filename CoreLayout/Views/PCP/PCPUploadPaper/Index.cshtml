@@ -1,18 +1,18 @@
-﻿@using CoreLayout.Models.Masters
-@model IEnumerable<InstituteModel>
+﻿@using CoreLayout.Models.PCP
+@model IEnumerable<PCPUploadPaperModel>
 @{
     ViewData["title"] = "Index";
 }
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Institute List</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Upload Paper List</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Institute</a></li>
+            <li class="breadcrumb-item"><a href="#">UploadPaper</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </div>
     <div class="btn btn-list">
-        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxInstituteId><i class="fe fe-plus"></i> Add New</a>
+        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxPaperId><i class="fe fe-plus"></i> Upload Paper</a>
     </div>
 </div>
 
@@ -27,10 +27,16 @@
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.InstituteCode)
+                                    @Html.DisplayNameFor(c => c.PaperName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.InstituteName)
+                                    @Html.DisplayNameFor(c => c.PaperCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperHindiName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPath)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
@@ -38,9 +44,6 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                @*<th>
-                    @Html.DisplayNameFor(c => c.ModifiedDate)
-                </th>*@
                                 <th>
                                     Action
                                 </th>
@@ -50,28 +53,31 @@
                         <tbody>
                             @{
                                 int sno = 0;
-
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td>@item.InstituteCode</td>
-                                    <td>@item.InstituteName</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td>@item.CreatedDate</td>
-                                    @*<td>@item.ModifiedDate</td>*@
-                                    <td>
-                                        <div class="table-actions text-center">
-                                            <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>@item.PaperName</td>
+                                <td>@item.PaperCode</td>
+                                <td>@item.PaperHindiName</td>
+                                <td>
+                                    <img src="~/UploadPaper/@item.PaperPath" alt="" height=50 width=50 /><br />
+                                    <a asp-action="Download" asp-route-id="@item.EncryptedId">Download</a>
+                                </td>
+                                <td>@item.CreatedBy</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    <div class="table-actions text-center">
+                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -98,4 +104,3 @@
     <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 }
-

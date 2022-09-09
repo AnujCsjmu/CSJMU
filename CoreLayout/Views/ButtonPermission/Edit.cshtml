@@ -34,7 +34,7 @@
                                 <label asp-for="Controller"> </label><span class="tx-danger"> *</span>
 
                                 <select asp-for="Controller"
-                                        class="form-control"
+                                          class="form-control select"
                                         asp-items="@(new SelectList(ViewBag.ControllerList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="Controller" class="parsley-errors-list filled"></span>
@@ -63,7 +63,7 @@
                                 <label asp-for="ButtonId"> </label><span class="tx-danger"> *</span>
 
                                 <select asp-for="ButtonList"
-                                        style="width:545px" class="select"
+                                         class="form-control select"
                                         asp-items="@(new SelectList(ViewBag.GetButtonList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="ButtonId" class="parsley-errors-list filled"></span>
@@ -73,7 +73,7 @@
                             <div class="form-group">
                                 <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="RoleId"
-                                        style="width:545px" class="select"
+                                       class="form-control select"
                                         asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
@@ -84,7 +84,7 @@
                                 <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
 
                                 <select asp-for="UserId"
-                                        style="width:545px" class="select"
+                                       class="form-control select"
                                         asp-items="@(new SelectList(ViewBag.GetUserList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>

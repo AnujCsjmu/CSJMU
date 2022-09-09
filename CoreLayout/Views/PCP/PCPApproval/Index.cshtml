@@ -25,13 +25,11 @@
             <div class="card-body">
                 <div class="table-responsive-sm">
 
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th>S.No</th>
-
-
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
@@ -59,9 +57,9 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                <th>
+                                @*<th>
                                     @Html.DisplayNameFor(c => c.ModifiedDate)
-                                </th>
+                                </th>*@
                                 <th>
                                     Action
                                 </th>
@@ -75,7 +73,18 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td><input type="checkbox" id="chkid" value="@item.UserID" /></td>
+                                    <td>
+                                        @if (item.IsApproved == 1)
+                                        {
+                                            <input type="checkbox" disabled="disabled" id="chkid" value="@item.UserID"  />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" id="chkid" value="@item.UserID" />
+                                        }
+
+
+                                    </td>
                                     <td>
                                         @{ sno++; }
                                         @sno
@@ -89,7 +98,7 @@
                                     <td>@item.IPAddress</td>
                                     @*<td>@item.InstituteName</td>*@
                                     <td>@item.CreatedDate</td>
-                                    <td>@item.ModifiedDate</td>
+                                    @*<td>@item.ModifiedDate</td>*@
                                     <td>
                                         <div class="table-actions text-center">
                                             @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
@@ -102,7 +111,8 @@
                         </tbody>
                     </table>
                     <div class="form-group">
-                        <input type="button" id="btnSend" name="Submit" value="Submit" class="btn btn-success" />
+                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to proceed?')" />
+                        <input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />
                         <a asp-action="Index" class="btn btn-success">Back to List</a>
                     </div>
                 </div>
@@ -179,19 +189,63 @@
                 $("#exportexample tbody input[type=checkbox]:checked").each(function () {
                     userid[i] = $(this).val();
                     i++;
+                });
+                if (userid[i] != null) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PCPApproval/GetJsonData?uid=' + userid,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
 
+                            /*alert(data);*/
+                        },
+                        error: function (data) {
+                            /*alert("error!");*/
+                        }
+                    });
+                }
+                else {
+                    alert("Select atleast one checkbox/ No approval pending");
+                }
+
+            });
+
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#btnReminder").click(function () {
+                var userid = [];
+                var i = 0;
+                //Loop through all checked CheckBoxes in GridView.
+                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                    userid[i] = $(this).val();
+                    i++;
                 });
-                $.ajax({
-                    type: 'POST',
-                    url: '/PCPApproval/GetJsonData?uid=' + userid,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        alert("success");
-                    },
-                    error: function (result) {
-                        alert("error!");
-                    }
-                });
+
+                if (userid.length > 0 ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PCPApproval/SendReminder?uid=' + userid,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            /*alert(data);*/
+                        },
+                        error: function (data) {
+                            /*alert("error!");*/
+                        }
+                    });
+                }
+                else {
+                    alert("Select atleast one checkbox");
+                }
 
             });
 
