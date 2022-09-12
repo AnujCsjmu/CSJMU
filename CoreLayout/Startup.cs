@@ -1,5 +1,6 @@
 using CoreLayout.Controllers;
 using CoreLayout.Filters;
+using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Common;
@@ -307,6 +308,10 @@ namespace CoreLayout
 
             //add for encrypt value
             services.AddDataProtection();
+
+            //add mail setting
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, Services.Common.MailService>();
 
             //add for ip address
             //services.AddMvc();

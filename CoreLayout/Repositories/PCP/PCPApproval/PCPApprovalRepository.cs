@@ -106,7 +106,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
         {
             try
             {
-                var query = "";
+                var query = "SP_InsertUpdateDelete_PCPApproval";
                 using (var connection = CreateConnection())
                 {
                     entity.IsRecordDeleted = 0;
@@ -128,7 +128,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
         {
             try
             {
-                var query = "";
+                var query = "SP_InsertUpdateDelete_PCPApproval";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
@@ -147,7 +147,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
         {
             try
             {
-                var query = "";
+                var query = "SP_InsertUpdateDelete_PCPApproval";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
@@ -174,7 +174,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                 {
                     try
                     {
-                        var query = "";
+                        var query = "SP_InsertUpdateDelete_PCPApproval";
                         var res = 0;
                         entity.IsUserActive = 1;
                         DynamicParameters parameters = new DynamicParameters();
@@ -225,6 +225,85 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                     }
                 }
             }
+        }
+
+        public async Task<List<PCPRegistrationModel>> GetReminderById(int UserID)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCPApproval";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("UserID", UserID, DbType.Int32);
+                    parameters.Add("@Query", 10, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPRegistrationModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<int> CreateReminderAsync(PCPRegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPApproval";
+                        var res = 0;
+                        entity.IsRecordDeleted = 0;
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("UserId", entity.UserID, DbType.Int32);
+                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
+                        parameters.Add("EmailID", entity.EmailID, DbType.String);
+                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+
+                        parameters.Add("EmailReminder", entity.EmailReminder, DbType.String);
+                        parameters.Add("MobileReminder", entity.MobileReminder, DbType.String);
+                        parameters.Add("MobileStatus", entity.MobileStatus, DbType.String);
+                        parameters.Add("EmailStatus", entity.EmailStatus, DbType.String);
+
+                        parameters.Add("@Query", 9, DbType.Int32);
+                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                     
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
         }
     }
 }

@@ -105,5 +105,10 @@ namespace CoreLayout.Models.PCP
         public int? IsApproved { get; set; }
 
         public int? RefUserId { get; set; }
+
+        public string EmailReminder { get; set; }
+        public string MobileReminder { get; set; }
+        public string MobileStatus { get; set; }
+        public string EmailStatus { get; set; }
     }
 }

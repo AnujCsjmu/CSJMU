@@ -23,9 +23,19 @@ namespace CoreLayout.Services.PCP.PCPApproval
             return await _pCPApprovalRepository.GetByIdAsync(id);
         }
 
+        public async Task<List<PCPRegistrationModel>> GetReminderById(int id)
+        {
+            return await _pCPApprovalRepository.GetReminderById(id);
+        }
+
         public async Task<int> CreatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel)
         {
             return await _pCPApprovalRepository.CreateAsync(pCPRegistrationModel);
+        }
+
+        public async Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel)
+        {
+            return await _pCPApprovalRepository.CreateReminderAsync(pCPRegistrationModel);
         }
 
         public async Task<int> UpdatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel)

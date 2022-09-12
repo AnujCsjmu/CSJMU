@@ -8,7 +8,10 @@ namespace CoreLayout.Services.PCP.PCPApproval
     {
         public Task<List<PCPRegistrationModel>> GetAllPCPApproval();
         public Task<PCPRegistrationModel> GetPCPApprovalById(int id);
+
+        public Task<List<PCPRegistrationModel>> GetReminderById(int id);
         public Task<int> CreatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel);
+        public Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel);
         public Task<int> UpdatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel);
         public Task<int> DeletePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel);
     }

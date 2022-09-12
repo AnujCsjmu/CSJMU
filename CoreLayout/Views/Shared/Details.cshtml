@@ -1,0 +1,49 @@
+﻿@using CoreLayout.Models.PCP
+@model IEnumerable<PCPRegistrationModel>
+@{
+    ViewData["title"] = "Details";
+}
+
+
+<table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+    <thead>
+        <tr>
+            <th></th>
+            <th>S.No</th>
+
+            <th>
+                @Html.DisplayNameFor(c => c.UserID)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(c => c.MobileNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(c => c.EmailID)
+            </th>
+
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            int sno = 0;
+        }
+        @foreach (var item in ViewBag.ViewReminder)
+        {
+            <tr>
+
+                <td>
+                    @{ sno++; }
+                    @sno
+                </td>
+                <td>@item.UserID</td>
+
+                <td>@item.MobileNo</td>
+                <td>@item.EmailID</td>
+
+            </tr>
+        }
+    </tbody>
+</table>
