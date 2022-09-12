@@ -25,7 +25,7 @@
             <div class="card-body">
                 <div class="table-responsive-sm">
 
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
                                 <th></th>
@@ -33,9 +33,7 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.LoginID)
-                                </th>
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.MobileNo)
                                 </th>
@@ -43,23 +41,24 @@
                                     @Html.DisplayNameFor(c => c.EmailID)
                                 </th>
                                 <th>
+                                    @Html.DisplayNameFor(c => c.InstituteCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.BranchCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CourseCode)
+                                </th>
+                                <th>
                                     @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.QPName)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.IPAddress)
-                                </th>
-                                @*<th>
-                                        @Html.DisplayNameFor(c => c.InstituteId)
-                                    </th>*@
+
+
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                @*<th>
-                                    @Html.DisplayNameFor(c => c.ModifiedDate)
-                                </th>*@
+
                                 <th>
                                     Action
                                 </th>
@@ -74,31 +73,23 @@
                             {
                                 <tr>
                                     <td>
-                                        @if (item.IsApproved == 1)
-                                        {
-                                            <input type="checkbox" disabled="disabled" id="chkid" value="@item.UserID"  />
-                                        }
-                                        else
-                                        {
-                                            <input type="checkbox" id="chkid" value="@item.UserID" />
-                                        }
-
-
+                                        <input type="checkbox" id="chkid" value="@item.PCPRegID" />
                                     </td>
                                     <td>
                                         @{ sno++; }
                                         @sno
                                     </td>
                                     <td>@item.UserName</td>
-                                    <td>@item.LoginID</td>
+
                                     <td>@item.MobileNo</td>
                                     <td>@item.EmailID</td>
+                                    <td>@item.InstituteCode</td>
+                                    <td>@item.BranchCode</td>
+                                    <td>@item.CourseCode</td>
                                     <td>@item.QPCode</td>
-                                    <td>@item.QPName</td>
-                                    <td>@item.IPAddress</td>
-                                    @*<td>@item.InstituteName</td>*@
+
                                     <td>@item.CreatedDate</td>
-                                    @*<td>@item.ModifiedDate</td>*@
+
                                     <td>
                                         <div class="table-actions text-center">
                                             @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
@@ -111,8 +102,8 @@
                         </tbody>
                     </table>
                     <div class="form-group">
-                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to proceed?')" />
-                        <input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />
+                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
+                        @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
                         <a asp-action="Index" class="btn btn-success">Back to List</a>
                     </div>
                 </div>
@@ -124,15 +115,6 @@
 
 @section Scripts{
 
-    <script type="text/javascript">
-        function showMsg(msg, controller) {
-            mscConfirm(msg, function () {
-                window.location.href = 'Students/' + controller;
-            });
-        }
-
-
-    </script>
     <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
     <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
@@ -147,41 +129,12 @@
     <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 
-    @*<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                //Assign Click event to Button.
-                $("#btnGet").click(function () {
-                    var message = "Id";
-
-                    //Loop through all checked CheckBoxes in GridView.
-                    $("#exportexample input[type=checkbox]:checked").each(function () {
-                        var row = $(this).closest("tr")[0];
-                        message += row.cells[1].innerHTML;
-                        //message += "   " + row.cells[2].innerHTML;
-                        //message += "   " + row.cells[3].innerHTML;
-                        //message += "\n";
-                    });
-
-                    //Display selected Row data in Alert Box.
-                    $.ajax({
-            url: '@Url.Action("Submit", "PSPApproval")',
-            data: { id: id },
-            type: "GET"
-        }).done(function() {
-            console.log("Done");
-        });
-        return false;
-                });
-            });
-        </script>*@
+    @*checkbox*@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>
-
     <script type="text/javascript">
 
         $(document).ready(function () {
-
             $("#btnSend").click(function () {
                 var userid = [];
                 var i = 0;
@@ -190,7 +143,7 @@
                     userid[i] = $(this).val();
                     i++;
                 });
-                if (userid[i] != null) {
+                if (userid.length > 0) {
                     $.ajax({
                         type: 'POST',
                         url: '/PCPApproval/GetJsonData?uid=' + userid,
@@ -205,7 +158,7 @@
                     });
                 }
                 else {
-                    alert("Select atleast one checkbox/ No approval pending");
+                    alert("Select atleast one checkbox");
                 }
 
             });
@@ -229,7 +182,7 @@
                     i++;
                 });
 
-                if (userid.length > 0 ) {
+                if (userid.length > 0) {
                     $.ajax({
                         type: 'POST',
                         url: '/PCPApproval/SendReminder?uid=' + userid,

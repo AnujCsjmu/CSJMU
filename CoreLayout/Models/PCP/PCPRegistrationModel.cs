@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,16 +11,16 @@ namespace CoreLayout.Models.PCP
     public class PCPRegistrationModel :BaseEntity
     {
         [Key]
-        public int UserID { get; set; }
+        public int PCPRegID { get; set; }
 
         [Display(Name = "User Name")]
         [Required(ErrorMessage = "Please enter user name")]
         [StringLength(50)]
         public string UserName { get; set; }
 
-        [Display(Name = "Login ID")]
-        [Required(ErrorMessage = "Please enter login id")]
-        [StringLength(50)]
+        //[Display(Name = "Login ID")]
+        //[Required(ErrorMessage = "Please enter login id")]
+        //[StringLength(50)]
         public string LoginID { get; set; }
 
         [Display(Name = "Mobile No")]
@@ -34,15 +35,15 @@ namespace CoreLayout.Models.PCP
         [StringLength(50)]
         public string EmailID { get; set; }
 
-        [Display(Name = "Password")]
-        [Required(ErrorMessage = "Please enter password")]
-        [DataType(DataType.Password)]
+        //[Display(Name = "Password")]
+        //[Required(ErrorMessage = "Please enter password")]
+        //[DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Confirm Password")]
-        [Required(ErrorMessage = "Confirmation Password is required.")]
-        [Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
-        [DataType(DataType.Password)]
+        //[Display(Name = "Confirm Password")]
+        //[Required(ErrorMessage = "Confirmation Password is required.")]
+        //[Compare("Password", ErrorMessage = "Password and Confirmation Password must match.")]
+        //[DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         public string Salt { get; set; }
         public string SaltedHash { get; set; }
@@ -57,7 +58,7 @@ namespace CoreLayout.Models.PCP
         public string RefType { get; set; }
         public string RoleName { get; set; }
 
-        [Required(ErrorMessage = "Role is required.")]
+        //[Required(ErrorMessage = "Role is required.")]
         [Display(Name = "Role Name")]
         public int RoleId { get; set; }
 
@@ -65,6 +66,10 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please enter institute name")]
         public int InstituteId { get; set; }
         public string InstituteName { get; set; }
+
+        [Display(Name = "Institute Code")]
+        public string InstituteCode { get; set; }
+
         public string IsPasswordChange { get; set; }
         public int ReturnUserId { get; set; }
         public int UserRoleId { get; set; }
@@ -72,6 +77,9 @@ namespace CoreLayout.Models.PCP
      
         [NotMapped]
         public List<RoleModel> RoleList { get; set; }
+
+        [NotMapped]
+        public List<InstituteModel> InstituteList { get; set; }
 
         [NotMapped]
         public List<QPMasterModel> QPCodeList { get; set; }
@@ -92,6 +100,9 @@ namespace CoreLayout.Models.PCP
         public int CourseID { get; set; }
         public string CourseName { get; set; }
 
+        [Display(Name = "Course Code")]
+        public string CourseCode { get; set; }
+
         [NotMapped]
         public List<BranchModel> BranchList { get; set; }
 
@@ -100,15 +111,79 @@ namespace CoreLayout.Models.PCP
         public int BranchID { get; set; }
         public string BranchName { get; set; }
 
+        [Display(Name = "Subject Code")]
+        public string BranchCode { get; set; }
         public List<string> UserList { get; set; }
 
         public int? IsApproved { get; set; }
 
-        public int? RefUserId { get; set; }
+        public int? IsApprovedBy { get; set; }
 
-        public string EmailReminder { get; set; }
-        public string MobileReminder { get; set; }
-        public string MobileStatus { get; set; }
-        public string EmailStatus { get; set; }
+        public int? UserId { get; set; }
+
+        public string IsEmailReminder { get; set; }
+        public string IsMobileReminder { get; set; }
+
+
+        [Display(Name = "Father's Name")]
+        [Required(ErrorMessage = "Please enter father name")]
+        [StringLength(50)]
+        public string FatherName { get; set; }
+
+        [Display(Name = "Full Address")]
+        [Required(ErrorMessage = "Please enter full address")]
+        [StringLength(200)]
+        public string Address { get; set; }
+
+        [Display(Name = "Teaching Experience in Year")]
+        [Required(ErrorMessage = "Please enter teaching experience")]
+        public int? TeachingExp { get; set; }
+
+        [Display(Name = "Aadhar")]
+        [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid valid aadhar.")]
+        [Required(ErrorMessage = "Please enter aadhar")]
+        [StringLength(12)]
+        public string Aadhar { get; set; }
+
+        [Display(Name = "PAN")]
+        [StringLength(12)]
+        [Required(ErrorMessage = "Please enter pan")]
+        public string PAN { get; set; }
+
+        [Display(Name = "Bank Details")]
+        [Required(ErrorMessage = "Please enter bank details")]
+        public string BankDetails { get; set; }
+
+        [Display(Name = "Type of Employeement")]
+        [Required(ErrorMessage = "Please enter type of employeement")]
+        public string TypeOfEmployeement { get; set; }
+
+        [Display(Name = "Paper Setting Experience")]
+        [Required(ErrorMessage = "Please enter paper setting experience")]
+        public int? PaperSettingExp { get; set; }
+
+        //[Display(Name = "Collage Details")]
+        //[Required(ErrorMessage = "Please enter collage details")]
+        //public string CollageDetails { get; set; }
+
+        //[Display(Name = "Subject")]
+        //[Required(ErrorMessage = "Please enter subject")]
+        //public string Subject { get; set; }
+
+        //[Display(Name = "Course")]
+        //[Required(ErrorMessage = "Please enter course")]
+        //public string Course { get; set; }
+
+        [Display(Name = "Specilization")]
+        [Required(ErrorMessage = "Please enter specilization")]
+        public string Specilization { get; set; }
+
+        public string Remarks { get; set; }
+
+        public string UploadFileName { set; get; }
+
+        [Required(ErrorMessage = "Please choose photo")]
+        [Display(Name = "Photo")]
+        public IFormFile ProfileImage { get; set; }
     }
 }

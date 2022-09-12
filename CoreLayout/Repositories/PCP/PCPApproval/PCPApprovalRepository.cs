@@ -66,9 +66,12 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
 
                         if(res == 1 && res1 == 1 && newID != 0)
                         {
-                            parameters.Add("UserID", entity.UserID, DbType.Int32);
+                            parameters.Add("PCPRegID", entity.PCPRegID, DbType.Int32);
                             parameters.Add("IsApproved", entity.IsApproved, DbType.Int32);
-                            parameters.Add("RefUserId", newID, DbType.Int32);
+                            parameters.Add("IsApprovedBy", entity.IsApprovedBy, DbType.Int32);
+                            parameters.Add("IsMobileReminder", entity.IsMobileReminder, DbType.String);
+                            parameters.Add("IsEmailReminder", entity.IsEmailReminder, DbType.String);
+                            parameters.Add("UserId", newID, DbType.Int32);
                             parameters.Add("@Query", 8, DbType.Int32);
                             res2 = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         }
@@ -111,7 +114,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                 {
                     entity.IsRecordDeleted = 0;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("UserID", entity.UserID, DbType.Int32);
+                    parameters.Add("PCPRegID", entity.PCPRegID, DbType.Int32);
                     parameters.Add("IsUserActive", entity.IsUserActive, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
@@ -178,7 +181,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                         var res = 0;
                         entity.IsUserActive = 1;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("UserID", entity.UserID, DbType.Int32);
+                        parameters.Add("PCPRegID", entity.PCPRegID, DbType.Int32);
                         parameters.Add("UserName", entity.UserName, DbType.String);
                         parameters.Add("LoginID", entity.LoginID, DbType.String);
                         parameters.Add("MobileNo", entity.MobileNo, DbType.String);
@@ -262,17 +265,15 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                         var res = 0;
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("UserId", entity.UserID, DbType.Int32);
+                        parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("MobileNo", entity.MobileNo, DbType.String);
                         parameters.Add("EmailID", entity.EmailID, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
 
-                        parameters.Add("EmailReminder", entity.EmailReminder, DbType.String);
-                        parameters.Add("MobileReminder", entity.MobileReminder, DbType.String);
-                        parameters.Add("MobileStatus", entity.MobileStatus, DbType.String);
-                        parameters.Add("EmailStatus", entity.EmailStatus, DbType.String);
+                        parameters.Add("IsMobileReminder", entity.IsEmailReminder, DbType.String);
+                        parameters.Add("IsEmailReminder", entity.IsMobileReminder, DbType.String);
 
                         parameters.Add("@Query", 9, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);

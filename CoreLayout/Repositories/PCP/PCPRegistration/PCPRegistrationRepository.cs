@@ -30,17 +30,24 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                         entity.IsUserActive = 1;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("UserName", entity.UserName, DbType.String);
-                        parameters.Add("LoginID", entity.LoginID, DbType.String);
-                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
-                        parameters.Add("EmailID", entity.EmailID, DbType.String);
-                        parameters.Add("Salt", entity.Salt, DbType.String);
-                        parameters.Add("SaltedHash", entity.SaltedHash, DbType.String);
-                        parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
-                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("FatherName", entity.FatherName, DbType.String);
+                        parameters.Add("Address", entity.Address, DbType.String);
+                        parameters.Add("TeachingExp", entity.TeachingExp, DbType.Int32);
+                        parameters.Add("Aadhar", entity.Aadhar, DbType.String);
+                        parameters.Add("PAN", entity.PAN, DbType.String);
+                        parameters.Add("BankDetails", entity.BankDetails, DbType.String);
+                        parameters.Add("TypeOfEmployeement", entity.TypeOfEmployeement, DbType.String);
+                        parameters.Add("PaperSettingExp", entity.PaperSettingExp, DbType.Int32);
+                        parameters.Add("Photo", entity.UploadFileName, DbType.String);
                         parameters.Add("InstituteId", entity.InstituteId, DbType.Int32);
-                        parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("CourseId", entity.CourseID, DbType.Int32);
                         parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
+                        parameters.Add("Specilization", entity.Specilization, DbType.String);
+                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
+                        parameters.Add("EmailID", entity.EmailID, DbType.String);
+                        parameters.Add("Remarks", entity.Remarks, DbType.String);
+                        parameters.Add("IsUserActive", entity.IsUserActive, DbType.Int32);
+                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
 
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
@@ -81,9 +88,9 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                 var query = "SP_InsertUpdateDelete_PCP";
                 using (var connection = CreateConnection())
                 {
-                    entity.IsRecordDeleted = 0;
+                    entity.IsUserActive = 0;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("UserID", entity.UserID, DbType.Int32);
+                    parameters.Add("PCPRegID", entity.PCPRegID, DbType.Int32);
                     parameters.Add("IsUserActive", entity.IsUserActive, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
@@ -115,7 +122,7 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
             }
         }
 
-        public async Task<PCPRegistrationModel> GetByIdAsync(int UserID)
+        public async Task<PCPRegistrationModel> GetByIdAsync(int PCPRegID)
         {
             try
             {
@@ -123,7 +130,7 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("UserID", UserID, DbType.Int32);
+                    parameters.Add("PCPRegID", PCPRegID, DbType.Int32);
                     parameters.Add("@Query", 5, DbType.Int32);
                     var lst = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return lst.FirstOrDefault();
@@ -150,7 +157,7 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                         var res = 0;
                         entity.IsUserActive = 1;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("UserID", entity.UserID, DbType.Int32);
+                        parameters.Add("PCPRegID", entity.PCPRegID, DbType.Int32);
                         parameters.Add("UserName", entity.UserName, DbType.String);
                         parameters.Add("LoginID", entity.LoginID, DbType.String);
                         parameters.Add("MobileNo", entity.MobileNo, DbType.String);

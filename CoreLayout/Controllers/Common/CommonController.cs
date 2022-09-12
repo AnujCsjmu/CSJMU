@@ -153,7 +153,7 @@ namespace CoreLayout.Controllers
                                select new SelectListItem()
                                {
                                    Text = user.EmailID,
-                                   Value = user.UserID.ToString(),
+                                   Value = user.PCPRegID.ToString(),
                                }).ToList();
                 if (already.Count > 0)
                 {
@@ -199,7 +199,7 @@ namespace CoreLayout.Controllers
                                select new SelectListItem()
                                {
                                    Text = user.MobileNo,
-                                   Value = user.UserID.ToString(),
+                                   Value = user.PCPRegID.ToString(),
                                }).ToList();
                 if (already.Count > 0)
                 {
@@ -379,8 +379,8 @@ namespace CoreLayout.Controllers
             return rtr;
         }
 
-
-        public string apicall(string url)
+    
+            public string apicall(string url)
         {
             SMSModel sMSModel = new SMSModel();
             HttpWebRequest httpreq = (HttpWebRequest)WebRequest.Create(url);

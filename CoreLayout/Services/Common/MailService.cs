@@ -17,8 +17,9 @@ namespace CoreLayout.Services.Common
             _mailSettings = mailSettings.Value;
         }
 
-        public async Task<string> SendEmailAsync(MailRequest mailRequest)
+        public async Task<bool> SendEmailAsync(MailRequest mailRequest)
         {
+            bool result = false;
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
@@ -47,7 +48,11 @@ namespace CoreLayout.Services.Common
             smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
             string succes = await smtp.SendAsync(email);
             smtp.Disconnect(true);
-            return await Task.FromResult(succes);
+            if(succes!=null)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }

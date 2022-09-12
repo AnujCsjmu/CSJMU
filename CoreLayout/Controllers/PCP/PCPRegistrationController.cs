@@ -1,14 +1,18 @@
 ﻿using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.QPDetails.QPMaster;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +30,12 @@ namespace CoreLayout.Controllers.PSP
         private readonly IQPMasterService _qPMasterService;
         private readonly ICourseService _courseService;
         private readonly IBranchService _branchService;
-        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService)
+        private readonly IInstituteService _instituteService;
+        [Obsolete]
+        private readonly IHostingEnvironment hostingEnvironment;//for file upload
+
+        [Obsolete]
+        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService, IInstituteService instituteService, IHostingEnvironment environment)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -36,6 +45,8 @@ namespace CoreLayout.Controllers.PSP
             _qPMasterService = qPMasterService;
             _courseService = courseService;
             _branchService = branchService;
+            _instituteService = instituteService;
+            hostingEnvironment = environment;
         }
 
         [HttpGet]
@@ -49,56 +60,79 @@ namespace CoreLayout.Controllers.PSP
             pCPRegistrationModel.QPCodeList =await _qPMasterService.GetAllQPMaster();
             pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
             pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
+            pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
             //return View(pSPRegistrationModel);
             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Obsolete]
         public async Task<IActionResult> Registration(PCPRegistrationModel pCPRegistrationModel)
         {
             try
             {
                 string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                string salt = CreateSalt();
-                string saltedHash = ComputeSaltedHash(pCPRegistrationModel.Password, salt);
-                pCPRegistrationModel.Salt = salt;
-                pCPRegistrationModel.SaltedHash = saltedHash;
+                //string salt = CreateSalt();
+                //string saltedHash = ComputeSaltedHash(pCPRegistrationModel.Password, salt);
+                //pCPRegistrationModel.Salt = salt;
+                //pCPRegistrationModel.SaltedHash = saltedHash;
                 pCPRegistrationModel.IPAddress = ipAddress;
                 //registrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPRegistrationModel.QPCodeList = await _qPMasterService.GetAllQPMaster();
                 pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
                 pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
+                pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
                 int emailAlreadyExit = _commonController.emailAlreadyExitsPSP(pCPRegistrationModel.EmailID);
                 int mobileAlreadyExit = _commonController.mobileAlreadyExitsPSP(pCPRegistrationModel.MobileNo);
                 if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
                 {
-                    if (ModelState.IsValid)
+                    if (pCPRegistrationModel.ProfileImage != null)
                     {
-                        var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
-                        if (res.Equals(1))
+                        var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
+                        var fileExt = System.IO.Path.GetExtension(pCPRegistrationModel.ProfileImage.FileName).Substring(1);
+                        if (!supportedTypes.Contains(fileExt))
                         {
-                            //success
-                            errormsg = "Successfully Saved.";
-                            return View("~/Views/Home/Login.cshtml");
+                            ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
+                            return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                         }
                         else
                         {
-                            //falure
-                            errormsg = "Data Not Saved!";
+                            var uniqueFileName = UploadedFile(pCPRegistrationModel);
+                            pCPRegistrationModel.UploadFileName = uniqueFileName;
+                            if (ModelState.IsValid)
+                            {
+                                var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
+                                if (res.Equals(1))
+                                {
+                                    //success
+                                    ModelState.AddModelError("", "Data saved!");
+                                    
+                                }
+                                else
+                                {
+                                    //falure
+                                    ModelState.AddModelError("", "Data Not Saved!!");
+                                }
+                               
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Some thing went wrong!");
+                                //errormsg = "Some thing went wrong!";
+                            }
                         }
-
                     }
                     else
                     {
-                        //ModelState.AddModelError("", "Some thing went wrong!");
-                        errormsg = "Some thing went wrong!";
+                        ModelState.AddModelError("", "Please select photo!");
+                        //errormsg = "Please select photo";
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Mobile or Email already exits!");
-                    errormsg = "Mobile or Email already exits!";
+                    //errormsg = "Mobile or Email already exits!";
                     //return View(pSPRegistrationModel);
                     return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                 }
@@ -106,46 +140,38 @@ namespace CoreLayout.Controllers.PSP
             catch (Exception ex)
             {
                 errormsg = ex.StackTrace.ToString();
-                return RedirectToAction("Registration", "PSPRegistration");
+                ModelState.AddModelError("", errormsg.ToString());
+                //return RedirectToAction("Registration", "PSPRegistration");
             }
             //return RedirectToAction(nameof(Registration));
             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
 
-        public static string CreateSalt()
+        [Obsolete]
+        private string UploadedFile(PCPRegistrationModel model)
         {
-            // Define salt sizes
-            int minSaltSize = 4;
-            int maxSaltSize = 8;
-            byte[] saltBytes;
+            try
+            {
+                string uniqueFileName = null;
 
-            // Generate a random number for the size of the salt.
-            Random random = new Random();
-            int saltSize = random.Next(minSaltSize, maxSaltSize);
-            saltBytes = new byte[saltSize];
-            // Initialize a random number generator.
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            // Fill the salt with cryptographically strong byte values.
-            rng.GetNonZeroBytes(saltBytes);
-            return Convert.ToBase64String(saltBytes);
-        }
-        public static string ComputeSaltedHash(string password, string salt)
-        {
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("password");
-            if (string.IsNullOrEmpty(password))
-                throw new ArgumentNullException("salt");
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
-
-            HashAlgorithm hash = new SHA1Managed();
-
-            List<byte> passwordWithSaltBytes = new List<byte>(passwordBytes);
-            passwordWithSaltBytes.AddRange(saltBytes);
-
-            byte[] hashBytes = hash.ComputeHash(passwordWithSaltBytes.ToArray());
-
-            return Convert.ToBase64String(hashBytes);
+                if (model.ProfileImage != null)
+                {
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto");
+                    string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    //int mobile = (int)HttpContext.Session.GetInt32("UserId");
+                    uniqueFileName = model.MobileNo + "_" + datetime + "_" + model.ProfileImage.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        model.ProfileImage.CopyTo(fileStream);
+                    }
+                }
+                return uniqueFileName;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

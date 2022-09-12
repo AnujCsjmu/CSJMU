@@ -8,6 +8,6 @@ namespace CoreLayout.Services.Common
 {
     public interface IMailService
     {
-        Task<string> SendEmailAsync(MailRequest mailRequest);
+        Task<bool> SendEmailAsync(MailRequest mailRequest);
     }
 }
