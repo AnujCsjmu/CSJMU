@@ -34,7 +34,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="ParentMenuId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="ParentMenuId"> </label><span class="tx-danger"> *</span>
                                 <select  class="form-control select" asp-for="ParentMenuId" asp-items="@(new SelectList(Model.ParentMenuList,"ParentMenuId","ParentMenuName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="SubMenuId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="SubMenuId"> </label><span class="tx-danger"> *</span>
                                 <select  class="form-control select" asp-for="SubMenuId" asp-items="@(new SelectList(Model.SubMenuList,"SubMenuId","SubMenuName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
@@ -53,28 +53,28 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="MenuName" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="MenuName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="MenuName" class="form-control" />
                                 <span asp-validation-for="MenuName" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Controller" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="Controller"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="Controller" class="form-control" />
                                 <span asp-validation-for="Controller" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Action" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="Action"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="Action" class="form-control" value="Index" readonly="readonly" />
                                 <span asp-validation-for="Action" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Active" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="Active"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("Active", new List<SelectListItem>
                                 {
                                 new SelectListItem{ Text="Yes", Value = "1" , Selected = true},

@@ -3,6 +3,7 @@ using CoreLayout.Filters;
 using CoreLayout.Models.Masters;
 using CoreLayout.Services.Masters.Role;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,39 +17,83 @@ namespace CoreLayout.Controllers
     {
         private readonly ILogger<RoleController> _logger;
         private readonly IRoleService _roleService;
-        public RoleController(ILogger<RoleController> logger, IRoleService roleMService)
+        private readonly IDataProtector _protector;
+        public RoleController(ILogger<RoleController> logger, IRoleService roleMService, IDataProtectionProvider provider)
         {
             _logger = logger;
             _roleService = roleMService;
+            _protector = provider.CreateProtector("Role.RoleController");
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            return View(await _roleService.GetAllRoleAsync());
+            try
+            {
+                //start encrypt id for update, delete & details
+                var data = await _roleService.GetAllRoleAsync();
+                // _ = RefereshMenuAsync();
+                foreach (var _data in data)
+                {
+                    var id = _data.RoleID.ToString();
+                    _data.EncryptedId = _protector.Protect(id);
+                }
+                //end
+                //start generate maxid for create button
+                int maxid = 0;
+                foreach (var _data in data)
+                {
+                    maxid = _data.RoleID;
+                }
+                maxid = maxid + 1;
+                ViewBag.MaxRoleId = _protector.Protect(maxid.ToString());
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View();
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                return View(await _roleService.GetRoleByIdAsync(id));
+                var guid_id = _protector.Unprotect(id);
+                var data = await _roleService.GetRoleByIdAsync(Convert.ToInt32(guid_id));
+                data.EncryptedId = id;
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
-            {
-                return RedirectToAction("Login", "Home");
 
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
 
         //Create Get Action Method
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
-            return View();
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -57,69 +102,74 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(RoleModel roleModel)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                roleModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                roleModel.UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
-                //countryModel.CreatedDate = System.DateTime.Now;
+               
+                    roleModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    roleModel.UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+                    //countryModel.CreatedDate = System.DateTime.Now;
 
 
-                if (ModelState.IsValid)
-                {
-                    var res = await _roleService.CreateRoleAsync(roleModel);
-                    if (res.ToString().Equals("1"))
+                    if (ModelState.IsValid)
                     {
-                        TempData["success"] = "Role has been saved";
+                        var res = await _roleService.CreateRoleAsync(roleModel);
+                        if (res.Equals(1))
+                        {
+                            TempData["success"] = "Role has been saved";
+                        }
+                        else
+                        {
+                            TempData["error"] = "Role has not been saved";
+                        }
+                        return RedirectToAction(nameof(Index));
                     }
-                    else
-                    {
-                        TempData["error"] = "Role has not been saved";
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(roleModel);
+                    return View(roleModel);
+                
             }
-            else
+            catch (Exception ex)
             {
-                TempData["error"] = "Some thing went wrong!";
-                return RedirectToAction(nameof(Index));
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return View();
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
-            if (HttpContext.Session.GetString("Name") != null)
+            try
             {
-                return View(await _roleService.GetRoleByIdAsync(id));
+                var guid_id = _protector.Unprotect(id);
+                var data = await _roleService.GetRoleByIdAsync(Convert.ToInt32(guid_id));
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return View(data);
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Home");
-
+                ModelState.AddModelError("", ex.ToString());
             }
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id, RoleModel roleModel)
+        public async Task<IActionResult> Edit(int Roleid, RoleModel roleModel)
         {
             try
             {
-                if (HttpContext.Session.GetString("Name") != null)
-                {
+               
                     roleModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                    roleModel.RoleID = id;
                     if (ModelState.IsValid)
                     {
-                        var dbRole = await _roleService.GetRoleByIdAsync(id);
+                        var dbRole = await _roleService.GetRoleByIdAsync(Roleid);
                         if (await TryUpdateModelAsync<RoleModel>(dbRole))
                         {
                             roleModel.UserId = (int)HttpContext.Session.GetInt32("Id");
                             var res = await _roleService.UpdateRoleAsync(roleModel);
-                            if (res.ToString().Equals("1"))
+                            if (res.Equals(1))
                             {
                                 TempData["success"] = "Role has been updated";
                             }
@@ -130,12 +180,7 @@ namespace CoreLayout.Controllers
                             return RedirectToAction(nameof(Index));
                         }
                     }
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
-
-                }
+               
             }
             catch (Exception ex)
             {
@@ -146,19 +191,17 @@ namespace CoreLayout.Controllers
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-
-            if (HttpContext.Session.GetString("Name") != null)
-            {
                 try
                 {
-                    var dbRole = await _roleService.GetRoleByIdAsync(id);
+                var guid_id = _protector.Unprotect(id);
+                var dbRole = await _roleService.GetRoleByIdAsync(Convert.ToInt32(guid_id));
                     if (dbRole != null)
                     {
                         var res = await _roleService.DeleteRoleAsync(dbRole);
 
-                        if (res.ToString().Equals("1"))
+                        if (res.Equals(1))
                         {
                             TempData["error"] = "Role has been deleted";
                         }
@@ -178,12 +221,7 @@ namespace CoreLayout.Controllers
                 }
 
                 return RedirectToAction(nameof(Index));
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-
-            }
+          
         }
     }
 }
