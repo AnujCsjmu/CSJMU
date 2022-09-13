@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Masters;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,15 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please choose paper")]
         [Display(Name = "Upload Paper")]
         public IFormFile UploadPaper { get; set; }
+
+
+        [Required(ErrorMessage = "Please enter session")]
+        [Display(Name = "Session")]
+        public int SessionId { get; set; }
+        public string Session { get; set; }
+        public List<SessionModel> SessionList { get; set; }
+
+        public string SessionType { get; set; }
 
     }
 }

@@ -14,9 +14,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreLayout.Controllers.PCP
 {
+    [Authorize(Roles = "Controller Of Examination")]
     public class PCPApprovedController : Controller
     {
         private readonly ILogger<PCPApprovedController> _logger;
@@ -45,7 +47,7 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 //start encrypt id for update,delete & details
-                var data = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                var data = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
                             where reg.IsApproved != null
                             select reg).ToList();
                 //var data = await _pCPRegistrationService.GetAllPCPRegistration();

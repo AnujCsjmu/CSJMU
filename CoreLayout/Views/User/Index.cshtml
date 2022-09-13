@@ -45,18 +45,14 @@
                                     @Html.DisplayNameFor(c => c.RoleName)
                                 </th>
 
-                                <th>
-                                    @Html.DisplayNameFor(c => c.IPAddress)
-                                </th>
+                               
                                 <th>
                                     @Html.DisplayNameFor(c => c.InstituteId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.ModifiedDate)
-                                </th>
+                               
                                 <th>
                                     Action
                                 </th>
@@ -79,10 +75,10 @@
                                     <td>@item.MobileNo</td>
                                     <td>@item.EmailID</td>
                                     <td>@item.RoleName</td>
-                                    <td>@item.IPAddress</td>
+                                  
                                     <td>@item.InstituteName</td>
                                     <td>@item.CreatedDate</td>
-                                    <td>@item.ModifiedDate</td>
+                                    
                                     <td>
                                         <div class="table-actions text-center">
                                             <a asp-action="Edit" id="edit" asp-route-id=@item.UserID data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>

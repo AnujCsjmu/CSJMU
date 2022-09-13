@@ -60,7 +60,7 @@
                                 </th>
 
                                 <th>
-                                    View Reminder
+                                    Details/ Reminder
                                 </th>
                             </tr>
                         </thead>
@@ -73,7 +73,10 @@
                             {
                             <tr>
                                 <td>
+                                    @if (item.QPCode != null)
+                                    {
                                     <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+                                    }
                                 </td>
 
 
@@ -90,9 +93,10 @@
                                 <td>@item.QPCode</td>
                                 <td>@item.CreatedDate</td>
                                 <td>
-                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                    <input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />
-                                    <input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />
+                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                    @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
+                                    <a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder"  onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                    @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
                                 </td>
                             </tr>
                             }

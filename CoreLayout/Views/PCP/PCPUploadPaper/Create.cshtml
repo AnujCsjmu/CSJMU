@@ -64,6 +64,28 @@
                                 <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="SessionId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SessionType"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("SessionType", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Odd", Value = "Odd" , Selected = true},
+                                new SelectListItem{ Text="Even", Value = "Even" },
+
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="SessionType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
                     </div>
 
 

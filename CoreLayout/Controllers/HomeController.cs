@@ -90,36 +90,45 @@ namespace CoreLayout.Controllers
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("", "User is not active");
-                                    return View();
+                                    //errormsg = "User is not active!";
+                                    ModelState.AddModelError("", "User is not active!");
+                                    //return View();
                                 }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Invalid password!");
+                                // errormsg = "Invalid password!!";
+                                //return View();
                             }
                         }
                         else
                         {
                             ModelState.AddModelError("", "Invalid UserName or Password");
-                            return View();
+                            //return View();
                         }
                     }
                     else
                     {
                         ModelState.AddModelError("", "Enter UserName or Password");
-                        return View();
+                        //return View();
                     }
                 }
                 else
                 {
-                    errormsg = "Model state is invalid!";
-                    return RedirectToAction("Login", "Home");
+                    //errormsg = "Model state is invalid!";
+                    ModelState.AddModelError("", "Model state is invalid!");
+                    // return RedirectToAction("Login", "Home");
                 }
             }
             catch (Exception ex)
             {
-                errormsg = ex.StackTrace.ToString();
-                return RedirectToAction("Login", "Home");
+                //errormsg = ex.StackTrace.ToString();
+                //return RedirectToAction("Login", "Home");
+                ModelState.AddModelError("", ex.ToString());
             }
-            errormsg = "some thing went wrong!";
-            return RedirectToAction("Login", "Home");
+            //errormsg = "some thing went wrong!";
+              return View();
         }
 
         [HttpGet]

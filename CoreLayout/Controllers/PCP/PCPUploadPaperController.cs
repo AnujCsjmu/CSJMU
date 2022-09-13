@@ -1,7 +1,9 @@
 ﻿using CoreLayout.Enum;
 using CoreLayout.Filters;
 using CoreLayout.Models.PCP;
+using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.PCP.PCPUploadPaper;
+using CoreLayout.Services.QPDetails.QPMaster;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
@@ -28,17 +30,19 @@ namespace CoreLayout.Controllers.PCP
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IDataProtector _protector;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
+        private readonly ICourseDetailsService _courseDetailsService;//for session
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
         [Obsolete]
-        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment)
+        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
             _protector = provider.CreateProtector("PCPUploadPaper.PCPUploadPaperController");
             _pCPUploadPaperService = pCPUploadPaperService;
             hostingEnvironment = environment;
+            _courseDetailsService = courseDetailsService;
         }
 
         [HttpGet]
@@ -100,11 +104,12 @@ namespace CoreLayout.Controllers.PCP
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Add)]
-        public IActionResult Create(string id)
+        public async Task<IActionResult> CreateAsync(string id)
         {
             try
             {
                 PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+                pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
             }
@@ -123,7 +128,7 @@ namespace CoreLayout.Controllers.PCP
         {
             pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
-
+            pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
             if (pCPUploadPaper.UploadPaper != null)
             {
                 //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
@@ -170,6 +175,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+                data.SessionList = await _courseDetailsService.GetAllSession();
                 if (data == null)
                 {
                     return NotFound();
@@ -186,34 +192,56 @@ namespace CoreLayout.Controllers.PCP
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
+        [Obsolete]
         public async Task<IActionResult> Edit(int PaperId, PCPUploadPaperModel pCPUploadPaperModel)
         {
             try
             {
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                if (ModelState.IsValid)
+                pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
+                if (pCPUploadPaperModel.UploadPaper != null)
                 {
-                    var value = await _pCPUploadPaperService.GetPCPUploadPaperById(PaperId);
-                    if (await TryUpdateModelAsync<PCPUploadPaperModel>(value))
+                    var supportedTypes = new[] { "pdf", "PDF" };
+                    var fileExt = System.IO.Path.GetExtension(pCPUploadPaperModel.UploadPaper.FileName).Substring(1);
+                    if (!supportedTypes.Contains(fileExt))
                     {
-                        var res = await _pCPUploadPaperService.UpdatePCPUploadPaperAsync(pCPUploadPaperModel);
-                        if (res.Equals(1))
-                        {
-                            TempData["success"] = "Paper has been updated";
-                        }
-                        else
-                        {
-                            TempData["error"] = "Paper has not been updated";
-                        }
-                        return RedirectToAction(nameof(Index));
+                        ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
+                        return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
                     }
+                    else
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            var uniqueFileName = UploadedFile(pCPUploadPaperModel);
+                            pCPUploadPaperModel.PaperPath = uniqueFileName;
+                            var value = await _pCPUploadPaperService.GetPCPUploadPaperById(PaperId);
+                            if (await TryUpdateModelAsync<PCPUploadPaperModel>(value))
+                            {
+                                var res = await _pCPUploadPaperService.UpdatePCPUploadPaperAsync(pCPUploadPaperModel);
+                                if (res.Equals(1))
+                                {
+                                    TempData["success"] = "Paper has been updated";
+                                }
+                                else
+                                {
+                                    TempData["error"] = "Paper has not been updated";
+                                }
+                                return RedirectToAction(nameof(Index));
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
                 }
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
+
             return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
         }
 

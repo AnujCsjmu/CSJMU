@@ -24,6 +24,7 @@ using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
 using CoreLayout.Repositories.PCP.PCPApproval;
+using CoreLayout.Repositories.PCP.PCPAssignedQP;
 using CoreLayout.Repositories.PCP.PCPRegistration;
 using CoreLayout.Repositories.PCP.PCPUploadPaper;
 using CoreLayout.Repositories.QPDetails.GradeDefinition;
@@ -60,6 +61,7 @@ using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
 using CoreLayout.Services.PCP.PCPApproval;
+using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.GradeDefinition;
@@ -305,6 +307,10 @@ namespace CoreLayout
             //PCP File Upload
             services.AddScoped<IPCPUploadPaperService, PCPUploadPaperService>();
             services.AddScoped<IPCPUploadPaperRepository, PCPUploadPaperRepository>();
+
+            //PCP assigned qp
+            services.AddScoped<IPCPAssignedQPService, PCPAssignedQPService>();
+            services.AddScoped<IPCPAssignedQPRepository, PCPAssignedQPRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

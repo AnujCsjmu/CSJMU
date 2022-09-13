@@ -32,7 +32,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="MenuId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
+                                <select class="form-control select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="MenuId" class="parsley-errors-list filled"></span>
@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 <label asp-for="ButtonId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="ButtonList" multiple asp-items="@(new SelectList(ViewBag.GetButtonList,"ButtonId","ButtonName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
                                 <span asp-validation-for="ButtonId" class="text-danger"></span>
                             </div>

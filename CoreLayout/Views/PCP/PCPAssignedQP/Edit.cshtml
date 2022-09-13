@@ -1,0 +1,65 @@
+﻿@model CoreLayout.Models.PCP.PCPAssignedQPModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Edit Assigned QP</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">AssignedQP</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Edit State</h6>
+                        <hr />
+                    </div>*@
+
+                <form asp-action="Edit" method="post">
+                    <div class="row">
+                        <input type="hidden" asp-for="AssignedQPId" />
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
+                                <select  class="form-control select" multiple asp-for="QPList" asp-items="@(new SelectList(ViewBag.QPList,"QPId","QPName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PCPRegID"> </label><span class="tx-danger"> *</span>
+                                <select  class="form-control select" asp-for="PCPRegID" asp-items="@(new SelectList(Model.UserList,"PCPRegID","UserName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PCPRegID" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Conetnt End-->

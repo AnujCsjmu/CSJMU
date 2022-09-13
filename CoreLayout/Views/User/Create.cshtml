@@ -76,7 +76,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteId","InstituteName"))">
+                                <select class="form-control select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteId","InstituteName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
@@ -88,7 +88,7 @@
                                 @Html.DropDownList("IsUserActive", new List<SelectListItem>
                                 {
                                       new SelectListItem{ Text="Active", Value = "1", Selected=true },
-                                     new SelectListItem{ Text="InActive", Value = "0" },
+                                      new SelectListItem{ Text="InActive", Value = "0" },
                                 },
                                 new { @class = "form-control" })
                                 <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
@@ -96,7 +96,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                @*<label asp-for="RoleId"> </label><span class="tx-danger"> *</span>*@
+                                <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>

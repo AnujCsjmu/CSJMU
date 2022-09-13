@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
 {
-    [Authorize(Roles = "Administrator,Institute,Controller Of Examination,Paper Setter")]
+    [Authorize(Roles = "Administrator,Institute,Controller Of Examination,Paper Setter,QPAssign")]
     public class DashBoardController : Controller
     {
        
@@ -25,7 +25,7 @@ namespace CoreLayout.Controllers
             _dashboardService = dashboardService;
         }
         [HttpGet]
-        [AuthorizeContext(ViewAction.View)]
+        //[AuthorizeContext(ViewAction.View)]
         public async Task<ActionResult> IndexAsync()
         {
             //var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;

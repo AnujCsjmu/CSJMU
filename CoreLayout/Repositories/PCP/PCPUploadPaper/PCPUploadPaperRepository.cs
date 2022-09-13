@@ -26,7 +26,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                 {
                     try
                     {
-                        var query = "SP_InsertUpdateDelete_PSPUploadPaper";
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                         var res = 0;
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
@@ -35,6 +35,8 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
                         parameters.Add("PaperPath", entity.PaperPath, DbType.String);
                         parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
+                        parameters.Add("SessionId", entity.SessionId, DbType.Int32);
+                        parameters.Add("SessionType", entity.SessionType, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
@@ -76,7 +78,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PSPUploadPaper";
+                var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                 using (var connection = CreateConnection())
                 {
                     entity.IsRecordDeleted = 1;
@@ -98,7 +100,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PSPUploadPaper";
+                var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
@@ -117,7 +119,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PSPUploadPaper";
+                var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
@@ -144,7 +146,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                 {
                     try
                     {
-                        var query = "SP_InsertUpdateDelete_PSPUploadPaper";
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                         var res = 0;
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
@@ -154,6 +156,8 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
                         parameters.Add("PaperPath", entity.PaperPath, DbType.String);
                         parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
+                        parameters.Add("SessionId", entity.SessionId, DbType.Int32);
+                        parameters.Add("SessionType", entity.SessionType, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
