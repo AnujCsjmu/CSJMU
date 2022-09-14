@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Models.QPDetails;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -33,6 +34,7 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         parameters.Add("PCPRegID", entity.PCPRegID, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
                         StringBuilder stringBuilder = new StringBuilder();
@@ -153,6 +155,7 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         parameters.Add("PCPRegID", entity.PCPRegID, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
                         parameters.Add("@Query", 2, DbType.Int32);
                         foreach (int qpid in entity.QPList)
@@ -188,7 +191,7 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
             }
         }
 
-        public async Task<List<PCPAssignedQPModel>> GetAllQPByUserAsync(int PCPRegID)
+        public async Task<List<PCPAssignedQPModel>> GetAllQPByPCPRegIdAsync(int PCPRegID)
         {
             try
             {
@@ -198,6 +201,26 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("PCPRegID", PCPRegID, DbType.String);
                     parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<PCPAssignedQPModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPAssignedQPModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCPAssignedQP";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("Userid", Userid, DbType.String);
+                    parameters.Add("@Query", 7, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<PCPAssignedQPModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return (List<PCPAssignedQPModel>)list;
                 }

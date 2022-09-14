@@ -71,34 +71,84 @@
                             }
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @if (item.QPCode != null)
-                                    {
-                                    <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-                                    }
-                                </td>
+                                <tr>
+                                    <td>
+                                        @foreach (var item1 in ViewBag.QPList)
+                                        {
+                                            foreach (var list in item1)
+                                            {
+                                                if (list.PCPRegID == item.PCPRegID)
+                                                {
+                                                    <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+     
+                                                }
 
+                                            }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.MobileNo</td>
+                                    <td>@item.EmailID</td>
+                                    <td>@item.InstituteCode</td>
+                                    <td>@item.BranchCode</td>
+                                    <td>@item.CourseCode</td>
+                                    <td style="display:block">
+                                        @*@if (ViewBag.QPList.Count() > 0)*@
 
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td>@item.UserName</td>
-                                <td>@item.MobileNo</td>
-                                <td>@item.EmailID</td>
-                                <td>@item.InstituteCode</td>
-                                <td>@item.BranchCode</td>
-                                <td>@item.CourseCode</td>
-                                <td>@item.QPCode</td>
-                                <td>@item.CreatedDate</td>
-                                <td>
-                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                    @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
-                                    <a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder"  onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                    @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
-                                </td>
-                            </tr>
+                                        <table>
+                                            @*<thead>
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>
+                                                            @Html.DisplayNameFor(c => c.QPCode)
+                                                        </th>
+                                                        <th>
+                                                            @Html.DisplayNameFor(c => c.QPName)
+                                                        </th>
+                                                    </tr>
+                                                </thead>*@
+                                            <tbody>
+                                                @{
+                                                    int sno1 = 0;
+                                                }
+                                                @foreach (var item1 in ViewBag.QPList)
+                                                {
+                                                    foreach (var list in item1)
+                                                    {
+                                                        if (list.PCPRegID == item.PCPRegID)
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @{ sno1++; }
+                                                                    @sno1
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPCode
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPName
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
+                                        <a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder" onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -112,7 +162,7 @@
                                 <div class="modal-header">
                                     <h3 id="myModalLabel">Modal 2</h3>
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                  
+
                                 </div>
                                 <div class="modal-body">
 
@@ -200,15 +250,15 @@
                         contentType: "application/json; charset=utf-8",
                         data: $(this).serialize(),
                         success: function (data) {
-                           // var html = '';
-                           // alert(data);
-                           // $.each(data, function (key,item) {
-                           //     html += '<tr>';
-                           //     html += '<td>' + item.userid + '</td>';
-                           //     html += '<td>' + item.email + '</td>';
-                           //     html += '</tr>';
-                           // });
-                           //alert(html);
+                            // var html = '';
+                            // alert(data);
+                            // $.each(data, function (key,item) {
+                            //     html += '<tr>';
+                            //     html += '<td>' + item.userid + '</td>';
+                            //     html += '<td>' + item.email + '</td>';
+                            //     html += '</tr>';
+                            // });
+                            //alert(html);
                             //alert(data[0].email);
                         },
 

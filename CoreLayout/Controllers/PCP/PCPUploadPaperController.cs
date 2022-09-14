@@ -2,11 +2,13 @@
 using CoreLayout.Filters;
 using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.CourseDetails;
+using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.QPMaster;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +25,7 @@ using Document = iTextSharp.text.Document;
 
 namespace CoreLayout.Controllers.PCP
 {
+    [Authorize(Roles = "Paper Setter")]
     public class PCPUploadPaperController : Controller
     {
         private readonly ILogger<PCPUploadPaperController> _logger;
@@ -31,11 +34,12 @@ namespace CoreLayout.Controllers.PCP
         private readonly IDataProtector _protector;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         private readonly ICourseDetailsService _courseDetailsService;//for session
+        private readonly IPCPAssignedQPService _pCPAssignedQPService;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
         [Obsolete]
-        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService)
+        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
@@ -43,15 +47,18 @@ namespace CoreLayout.Controllers.PCP
             _pCPUploadPaperService = pCPUploadPaperService;
             hostingEnvironment = environment;
             _courseDetailsService = courseDetailsService;
+            _pCPAssignedQPService = pCPAssignedQPService;
         }
 
         [HttpGet]
-        [AuthorizeContext(ViewAction.View)]
+        //[AuthorizeContext(ViewAction.View)]
+        [Obsolete]
         public async Task<IActionResult> Index()
         {
             try
             {
                 //start encrypt id for update,delete & details
+               
                 var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
                 foreach (var _data in data)
                 {
@@ -80,13 +87,15 @@ namespace CoreLayout.Controllers.PCP
             return View("~/Views/PCP/PCPUploadPaper/Index.cshtml");
         }
         [HttpGet]
-        [AuthorizeContext(ViewAction.Details)]
+        //[AuthorizeContext(ViewAction.Details)]
+        [Obsolete]
         public async Task<IActionResult> Details(string id)
         {
             try
             {
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+
                 data.EncryptedId = id;
                 if (data == null)
                 {
@@ -103,13 +112,17 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [HttpGet]
-        [AuthorizeContext(ViewAction.Add)]
+        //[AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> CreateAsync(string id)
         {
             try
             {
+                
                 PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+                pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
+                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaperModel.CreatedBy);
+
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
             }
@@ -122,13 +135,14 @@ namespace CoreLayout.Controllers.PCP
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Add)]
+        //[AuthorizeContext(ViewAction.Add)]
         [Obsolete]
         public async Task<IActionResult> CreateAsync(PCPUploadPaperModel pCPUploadPaper)
         {
             pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
             pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
+            pCPUploadPaper.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaper.CreatedBy);
             if (pCPUploadPaper.UploadPaper != null)
             {
                 //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
@@ -168,7 +182,7 @@ namespace CoreLayout.Controllers.PCP
             return RedirectToAction(nameof(Index));
         }
 
-        [AuthorizeContext(ViewAction.Edit)]
+        //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
         {
             try
@@ -176,6 +190,7 @@ namespace CoreLayout.Controllers.PCP
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
                 data.SessionList = await _courseDetailsService.GetAllSession();
+                data.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)data.CreatedBy);
                 if (data == null)
                 {
                     return NotFound();
@@ -191,7 +206,7 @@ namespace CoreLayout.Controllers.PCP
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Edit)]
+        //[AuthorizeContext(ViewAction.Edit)]
         [Obsolete]
         public async Task<IActionResult> Edit(int PaperId, PCPUploadPaperModel pCPUploadPaperModel)
         {
@@ -200,6 +215,7 @@ namespace CoreLayout.Controllers.PCP
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
+                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaperModel.ModifiedBy);
                 if (pCPUploadPaperModel.UploadPaper != null)
                 {
                     var supportedTypes = new[] { "pdf", "PDF" };
@@ -246,7 +262,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [HttpGet]
-        [AuthorizeContext(ViewAction.Delete)]
+        //[AuthorizeContext(ViewAction.Delete)]
         public async Task<IActionResult> Delete(string id)
         {
             try

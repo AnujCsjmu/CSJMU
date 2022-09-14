@@ -2,6 +2,7 @@
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,6 +27,7 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Mobile No")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         [Required(ErrorMessage = "Please enter mobile")]
+        [Remote(action: "VerifyMobile", controller: "PCPRegistration")]
         [StringLength(10)]
         public string MobileNo { get; set; }
 
@@ -33,6 +35,7 @@ namespace CoreLayout.Models.PCP
         [EmailAddress]
         [Required(ErrorMessage = "Please enter email")]
         [StringLength(50)]
+        [Remote(action: "VerifyEmail", controller: "PCPRegistration")]
         public string EmailID { get; set; }
 
         //[Display(Name = "Password")]
@@ -64,10 +67,11 @@ namespace CoreLayout.Models.PCP
 
         [Display(Name = "Institute Name")]
         [Required(ErrorMessage = "Please enter institute name")]
-        public int InstituteId { get; set; }
+        //public int InstituteId { get; set; }
         public string InstituteName { get; set; }
 
         [Display(Name = "Institute Code")]
+        [Required(ErrorMessage = "Please enter institute code")]
         public string InstituteCode { get; set; }
 
         public string IsPasswordChange { get; set; }
@@ -104,11 +108,11 @@ namespace CoreLayout.Models.PCP
         public string CourseCode { get; set; }
 
         [NotMapped]
-        public List<BranchModel> BranchList { get; set; }
+        public List<CourseBranchMappingModel> BranchList { get; set; }
 
         [Display(Name = "Subject Name")]
         [Required(ErrorMessage = "Please enter subject name")]
-        public int BranchID { get; set; }
+        public int BranchId { get; set; }
         public string BranchName { get; set; }
 
         [Display(Name = "Subject Code")]
@@ -143,16 +147,35 @@ namespace CoreLayout.Models.PCP
         [RegularExpression(@"^([0-9]{12})$", ErrorMessage = "Invalid valid aadhar.")]
         [Required(ErrorMessage = "Please enter aadhar")]
         [StringLength(12)]
+        [Remote(action: "VerifyAadhar", controller: "PCPRegistration")]
         public string Aadhar { get; set; }
 
         [Display(Name = "PAN")]
         [StringLength(12)]
         [Required(ErrorMessage = "Please enter pan")]
+        [Remote(action: "VerifyPan", controller: "PCPRegistration")]
         public string PAN { get; set; }
 
-        [Display(Name = "Bank Details")]
-        [Required(ErrorMessage = "Please enter bank details")]
-        public string BankDetails { get; set; }
+        [Display(Name = "Bank Name")]
+        [Required(ErrorMessage = "Please enter bank name")]
+        [StringLength(50)]
+        public string BankName { get; set; }
+
+        [Display(Name = "IFSC Code")]
+        [Required(ErrorMessage = "Please enter ifsc code")]
+        [StringLength(15)]
+        public string IFSC { get; set; }
+
+        [Display(Name = "Account No")]
+        [Required(ErrorMessage = "Please enter account no")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid account no.")]
+        public string AccountNo { get; set; }
+
+        [Display(Name = "Branch address")]
+        [Required(ErrorMessage = "Please enter branch address")]
+        [StringLength(50)]
+        public string BranchAddress { get; set; }
+
 
         [Display(Name = "Type of Employeement")]
         [Required(ErrorMessage = "Please enter type of employeement")]

@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Models.QPDetails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace CoreLayout.Services.PCP.PCPAssignedQP
         public Task<int> UpdatePCPAssignedQPAsync(PCPAssignedQPModel pCPAssignedQPModel);
         public Task<int> DeletePCPAssignedQPAsync(PCPAssignedQPModel pCPAssignedQPModel);
 
-        public Task<List<PCPAssignedQPModel>> GetAllQPByUserAsync(int id);
+        public Task<List<PCPAssignedQPModel>> GetAllQPByPCPRegIdAsync(int PCPRegid);
+
+        public Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);
     }
 }

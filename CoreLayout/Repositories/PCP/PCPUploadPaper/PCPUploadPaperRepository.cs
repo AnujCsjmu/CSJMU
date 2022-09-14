@@ -40,7 +40,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                       
+                        parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("@Query", 1, DbType.Int32);
 
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
@@ -161,6 +161,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)

@@ -49,12 +49,7 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CourseCode)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.QPCode)
-                                </th>
-
-
-
+                               
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
@@ -86,8 +81,6 @@
                                     <td>@item.InstituteCode</td>
                                     <td>@item.BranchCode</td>
                                     <td>@item.CourseCode</td>
-                                    <td>@item.QPCode</td>
-
                                     <td>@item.CreatedDate</td>
 
                                     <td>
@@ -102,10 +95,12 @@
                         </tbody>
                     </table>
                     <div class="form-group">
-                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
-                        @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
-                        <a asp-action="Index" class="btn btn-success">Back to List</a>
-                    </div>
+                       
+                            <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
+                            @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
+                            @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
+                        
+                        </div>
                 </div>
             </div>
         </div>

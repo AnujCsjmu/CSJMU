@@ -1,5 +1,6 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
+using CoreLayout.Models.QPDetails;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,12 @@ namespace CoreLayout.Models.PCP
         [StringLength(50)]
         public string PaperCode { get; set; }
 
-        [Display(Name = "PaperName")]
+        [Display(Name = "Paper Name")]
         [Required(ErrorMessage = "Please enter paper name")]
         [StringLength(100)]
         public string PaperName { get; set; }
 
+        [Display(Name = "Paper Hindi Name")]
         public string PaperHindiName { get; set; }
 
         [Display(Name = "Paper Password")]
@@ -31,6 +33,7 @@ namespace CoreLayout.Models.PCP
         [StringLength(50)]
         public string PaperPassword { get; set; }
 
+        [Display(Name = "Paper Path")]
         public string PaperPath { set; get; }
 
         [Required(ErrorMessage = "Please choose paper")]
@@ -44,7 +47,16 @@ namespace CoreLayout.Models.PCP
         public string Session { get; set; }
         public List<SessionModel> SessionList { get; set; }
 
+        public List<PCPAssignedQPModel> QPList { get; set; }
         public string SessionType { get; set; }
+
+        public string UserName { get; set; }
+
+        [Display(Name = "QP Name")]
+        [Required(ErrorMessage = "Please enter qp name")]
+        public int QPId { get; set; }
+        public string QPName { get; set; }
+        public string QPCode { get; set; }
 
     }
 }

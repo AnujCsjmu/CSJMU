@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" multiple asp-for="QPList" asp-items="@(new SelectList(ViewBag.QPList,"QPId","QPName"))">
-                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>

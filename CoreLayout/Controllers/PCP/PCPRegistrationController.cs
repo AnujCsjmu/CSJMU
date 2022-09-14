@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.CourseBranchMapping;
 using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.PCP.PCPRegistration;
@@ -8,6 +9,7 @@ using CoreLayout.Services.QPDetails.QPMaster;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,11 +33,12 @@ namespace CoreLayout.Controllers.PSP
         private readonly ICourseService _courseService;
         private readonly IBranchService _branchService;
         private readonly IInstituteService _instituteService;
+        private readonly ICourseBranchMappingService _courseBranchMappingService;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
         [Obsolete]
-        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService, IInstituteService instituteService, IHostingEnvironment environment)
+        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService, IInstituteService instituteService, IHostingEnvironment environment, ICourseBranchMappingService courseBranchMappingService)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -47,6 +50,7 @@ namespace CoreLayout.Controllers.PSP
             _branchService = branchService;
             _instituteService = instituteService;
             hostingEnvironment = environment;
+            _courseBranchMappingService = courseBranchMappingService;
         }
 
         [HttpGet]
@@ -59,8 +63,8 @@ namespace CoreLayout.Controllers.PSP
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             pCPRegistrationModel.QPCodeList =await _qPMasterService.GetAllQPMaster();
             pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
-            pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
-            pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
+            //pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
+            //pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
             //return View(pSPRegistrationModel);
             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
@@ -81,8 +85,8 @@ namespace CoreLayout.Controllers.PSP
                 //registrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPRegistrationModel.QPCodeList = await _qPMasterService.GetAllQPMaster();
                 pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
-                pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
-                pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
+                pCPRegistrationModel.BranchList = await _courseBranchMappingService.GetAllCourseBranchMapping();
+                //pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
                 int emailAlreadyExit = _commonController.emailAlreadyExitsPSP(pCPRegistrationModel.EmailID);
                 int mobileAlreadyExit = _commonController.mobileAlreadyExitsPSP(pCPRegistrationModel.MobileNo);
                 if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
@@ -107,7 +111,7 @@ namespace CoreLayout.Controllers.PSP
                                 {
                                     //success
                                     ModelState.AddModelError("", "Data saved!");
-                                    
+                                    return RedirectToAction("Login", "Home");
                                 }
                                 else
                                 {
@@ -119,22 +123,17 @@ namespace CoreLayout.Controllers.PSP
                             else
                             {
                                 ModelState.AddModelError("", "Some thing went wrong!");
-                                //errormsg = "Some thing went wrong!";
                             }
                         }
                     }
                     else
                     {
                         ModelState.AddModelError("", "Please select photo!");
-                        //errormsg = "Please select photo";
                     }
                 }
                 else
                 {
                     ModelState.AddModelError("", "Mobile or Email already exits!");
-                    //errormsg = "Mobile or Email already exits!";
-                    //return View(pSPRegistrationModel);
-                    return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                 }
             }
             catch (Exception ex)
@@ -172,6 +171,72 @@ namespace CoreLayout.Controllers.PSP
             {
                 throw ex;
             }
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyMobile(string mobileNo)
+        {
+            var already = (from data in _pCPRegistrationService.GetAllPCPRegistration().Result
+                           where data.MobileNo == mobileNo.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{mobileNo} is already in use.");
+            }
+            return Json(true);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyEmail(string emailID)
+        {
+            var already = (from data in _pCPRegistrationService.GetAllPCPRegistration().Result
+                           where data.EmailID == emailID.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{emailID} is already in use.");
+            }
+            return Json(true);
+        }
+
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyAadhar(string aadhar)
+        {
+            var already = (from data in _pCPRegistrationService.GetAllPCPRegistration().Result
+                           where data.Aadhar == aadhar.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{aadhar} is already in use.");
+            }
+            return Json(true);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyPan(string pan)
+        {
+            var already = (from data in _pCPRegistrationService.GetAllPCPRegistration().Result
+                           where data.PAN == pan.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{pan} is already in use.");
+            }
+            return Json(true);
+        }
+
+        public JsonResult GetBranch(int CourseId)
+        {
+            //var branch = _branchService.GetCourseBranchMappingByIdAsync(CourseId);
+            var BranchList = (from brn in _courseBranchMappingService.GetAllCourseBranchMapping().Result
+                          where brn.CourseId == CourseId
+                          select new SelectListItem()
+                               {
+                                   Text = brn.BranchName,
+                                   Value = brn.BranchId.ToString(),
+                               }).ToList();
+            return Json(BranchList);
         }
     }
 }

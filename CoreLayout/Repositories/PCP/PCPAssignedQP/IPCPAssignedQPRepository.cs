@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Models.QPDetails;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
 {
     public interface IPCPAssignedQPRepository : IRepository<PCPAssignedQPModel>
     {
-        Task<List<PCPAssignedQPModel>> GetAllQPByUserAsync(int PCPRegID);
+        Task<List<PCPAssignedQPModel>> GetAllQPByPCPRegIdAsync(int PCPRegID);
+
+        Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);
     }
 }

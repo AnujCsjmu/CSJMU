@@ -115,15 +115,36 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="BankDetails"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="BankDetails" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="BankDetails" class="parsley-errors-list filled"></span>
+                                <label asp-for="BankName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="BankName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="BankName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="IFSC"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="IFSC" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="IFSC" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AccountNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AccountNo" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="AccountNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="BranchAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="BranchAddress" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="BranchAddress" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UploadFileName"> </label><span class="tx-danger"> *</span>
-                               <img src="~/PCPPhoto/9999605823_20220912155649_image.jpg" />
+                                <img src="@Url.Content(Model.UploadFileName)" alt="Image" height="70" width="70" />
                                 <span asp-validation-for="UploadFileName" class="parsley-errors-list filled"></span>
                             </div>
                         </div>

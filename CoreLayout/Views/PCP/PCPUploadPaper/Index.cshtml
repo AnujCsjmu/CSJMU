@@ -22,10 +22,13 @@
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
                 <div class="table-responsive-sm">
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
                                 <th>S.No</th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.QPId)
+                                </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperName)
                                 </th>
@@ -37,6 +40,15 @@
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperPath)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPassword)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.SessionId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.SessionType)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
@@ -61,14 +73,18 @@
                                     @{ sno++; }
                                     @sno
                                 </td>
+                                <td>@item.QPName</td>
                                 <td>@item.PaperName</td>
                                 <td>@item.PaperCode</td>
                                 <td>@item.PaperHindiName</td>
                                 <td>
-                                    <img src="~/UploadPaper/@item.PaperPath" alt="" height=50 width=50 /><br />
+                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
                                     <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                 </td>
-                                <td>@item.CreatedBy</td>
+                                <td>@item.PaperPassword</td>
+                                <td>@item.Session</td>
+                                <td>@item.SessionType</td>
+                                <td>@item.UserName</td>
                                 <td>@item.CreatedDate</td>
                                 <td>
                                     <div class="table-actions text-center">

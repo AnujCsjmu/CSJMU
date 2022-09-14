@@ -15,6 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using CoreLayout.Services.PCP.PCPAssignedQP;
 
 namespace CoreLayout.Controllers.PCP
 {
@@ -23,6 +26,7 @@ namespace CoreLayout.Controllers.PCP
     {
         private readonly ILogger<PCPApprovedController> _logger;
         private readonly IPCPRegistrationService _pCPRegistrationService;
+        private readonly IPCPAssignedQPService _pCPAssignedQPService;
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IRoleService _roleService;
         private readonly IDataProtector _protector;
@@ -30,7 +34,11 @@ namespace CoreLayout.Controllers.PCP
         private readonly IMailService _mailService;
         private readonly CommonController _commonController;
         private static string errormsg = "";
-        public PCPApprovedController(ILogger<PCPApprovedController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, IMailService mailService, CommonController commonController)
+        [Obsolete]
+        private readonly IHostingEnvironment hostingEnvironment;//for file upload
+
+        [Obsolete]
+        public PCPApprovedController(ILogger<PCPApprovedController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, IMailService mailService, CommonController commonController, IHostingEnvironment environment, IPCPAssignedQPService pCPAssignedQPService)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -40,18 +48,42 @@ namespace CoreLayout.Controllers.PCP
             _pCPApprovalService = pCPApprovalService;
             _mailService = mailService;
             _commonController = commonController;
+            hostingEnvironment = environment;
+            _pCPAssignedQPService = pCPAssignedQPService;
         }
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> IndexAsync()
         {
             try
             {
-                //start encrypt id for update,delete & details
+                
                 var data = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
                             where reg.IsApproved != null
                             select reg).ToList();
-                //var data = await _pCPRegistrationService.GetAllPCPRegistration();
 
+                //get how much qp assign to the user
+                List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
+                List<List<PCPAssignedQPModel>> qPMasterModels = new List<List<PCPAssignedQPModel>>();
+                PCPAssignedQPModel pCPAssignedQPModel = new PCPAssignedQPModel();
+                foreach (var _data in data)
+                {
+                    List<PCPAssignedQPModel> qpmodelt = new List<PCPAssignedQPModel>();
+                    string id = _data.PCPRegID.ToString();
+                    var data1 = await _pCPAssignedQPService.GetAllQPByPCPRegIdAsync(Convert.ToInt32(id));
+                    foreach (var _data1 in data1)
+                    {
+
+                        qpmodelt.Add(_data1);
+                    }
+                    qPMasterModels.Add(qpmodelt);
+                    
+                }
+                //pCPAssignedQPModel.QPListForGrid = qPMasterModels;
+                ViewBag.QPList = qPMasterModels;
+
+                //end
+
+                //start encrypt id for update,delete & details
                 foreach (var _data in data)
                 {
                     var stringId = _data.PCPRegID.ToString();
@@ -72,12 +104,18 @@ namespace CoreLayout.Controllers.PCP
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
+        [Obsolete]
         public async Task<IActionResult> Details(string id)
         {
             try
             {
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(guid_id));
+
+                // string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto");
+                //string filePath = Path.Combine(uploadsFolder, data.UploadFileName);
+                string filePath = "~/PCPPhoto/" + data.UploadFileName;
+                data.UploadFileName = filePath;
                 data.EncryptedId = id;
                 if (data == null)
                 {
@@ -90,7 +128,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(IndexAsync));
+            return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> SendReminderAsync(string uid)
         {

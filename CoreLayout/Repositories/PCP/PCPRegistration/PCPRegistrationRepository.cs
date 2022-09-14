@@ -35,13 +35,17 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                         parameters.Add("TeachingExp", entity.TeachingExp, DbType.Int32);
                         parameters.Add("Aadhar", entity.Aadhar, DbType.String);
                         parameters.Add("PAN", entity.PAN, DbType.String);
-                        parameters.Add("BankDetails", entity.BankDetails, DbType.String);
+                        parameters.Add("BankName", entity.BankName, DbType.String);
+                        parameters.Add("IFSC", entity.IFSC, DbType.String);
+                        parameters.Add("AccountNo", entity.AccountNo, DbType.String);
+                        parameters.Add("BranchAddress", entity.BranchAddress, DbType.String);
                         parameters.Add("TypeOfEmployeement", entity.TypeOfEmployeement, DbType.String);
                         parameters.Add("PaperSettingExp", entity.PaperSettingExp, DbType.Int32);
                         parameters.Add("Photo", entity.UploadFileName, DbType.String);
-                        parameters.Add("InstituteId", entity.InstituteId, DbType.Int32);
+                        parameters.Add("InstituteName", entity.InstituteName, DbType.String);
+                        parameters.Add("InstituteCode", entity.InstituteCode, DbType.String);
                         parameters.Add("CourseId", entity.CourseID, DbType.Int32);
-                        parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
                         parameters.Add("Specilization", entity.Specilization, DbType.String);
                         parameters.Add("MobileNo", entity.MobileNo, DbType.String);
                         parameters.Add("EmailID", entity.EmailID, DbType.String);
@@ -174,10 +178,10 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                         }
                         parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress);
-                        parameters.Add("InstituteId", entity.InstituteId);
+                        parameters.Add("InstituteName", entity.InstituteName);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("CourseId", entity.CourseID, DbType.Int32);
-                        parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)

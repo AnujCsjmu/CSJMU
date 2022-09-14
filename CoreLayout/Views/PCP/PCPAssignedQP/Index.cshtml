@@ -55,7 +55,7 @@
                                         @{ sno++; }
                                         @sno
                                     </td>
-                                    <td>
+                                    <td style="display:block">
 
                                         <table>
                                             <thead>
@@ -75,18 +75,24 @@
                                                 }
                                                 @foreach (var item1 in ViewBag.QPList)
                                                 {
-                                                <tr>
-                                                    <td>
-                                                        @{ sno1++; }
-                                                        @sno1
-                                                    </td>
-                                                    <td>
-                                                        @item1.QPCode
-                                                    </td>
-                                                    <td>
-                                                        @item1.QPName
-                                                    </td>
-                                                </tr>
+                                                    foreach (var list in item1)
+                                                    {
+                                                        if (list.PCPRegID == item.PCPRegID)
+                                                        {
+                                                            <tr >
+                                                                <td>
+                                                                    @{ sno1++; }
+                                                                    @sno1
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPCode
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPName
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
                                                 }
                                             </tbody>
                                         </table>

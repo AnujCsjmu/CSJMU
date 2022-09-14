@@ -2,6 +2,7 @@
 using CoreLayout.Filters;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.PCP;
+using CoreLayout.Models.QPDetails;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
@@ -40,25 +41,28 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
-                List<PCPAssignedQPModel> pCPAssignedQPModels1 = new List<PCPAssignedQPModel>();
-                PCPAssignedQPModel qpmodelt = new PCPAssignedQPModel();
-                //start encrypt id for update, delete & details
-                object data1 = null;
+             
                 var data = await _pCPAssignedQPService.GetAllPCPAssignedQP();
+
+                //get how much qp assign to the user
+                List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
+                List<List<PCPAssignedQPModel>> qPMasterModels = new List<List<PCPAssignedQPModel>>();
+                PCPAssignedQPModel pCPAssignedQPModel = new PCPAssignedQPModel();
                 foreach (var _data in data)
                 {
-                   
+                    List<PCPAssignedQPModel> qpmodelt = new List<PCPAssignedQPModel>();
                     string id = _data.PCPRegID.ToString();
-                    data1 = await _pCPAssignedQPService.GetAllQPByUserAsync(Convert.ToInt32(id));
-                    //pCPAssignedQPModels.Add(pCPAssignedQPModels1);
+                    var data1 = await _pCPAssignedQPService.GetAllQPByPCPRegIdAsync(Convert.ToInt32(id));
+                    foreach (var _data1 in data1)
+                    {
+                        qpmodelt.Add(_data1);
+                    }
+                    qPMasterModels.Add(qpmodelt);
                 }
-                ViewBag.QPList = data1;
+                ViewBag.QPList = qPMasterModels;
+                //end
 
-                //(from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
-                // where reg.IsApproved != null
-                // select reg).ToList();
-
+                //start encrypt id for update, delete & details
                 foreach (var _data in data)
                 {
                     var id = _data.AssignedQPId.ToString();
@@ -118,11 +122,11 @@ namespace CoreLayout.Controllers.PCP
                 var guid_id = _protector.Unprotect(id);
                 PCPAssignedQPModel pCPAssignedQP = new PCPAssignedQPModel();
                 ViewBag.QPList = await _qPMasterService.GetAllQPMaster();
-               // pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
+                // pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
                 //pCPAssignedQP.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 pCPAssignedQP.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
-                            where reg.IsApproved != null
-                            select reg).ToList();
+                                          where reg.IsApproved != null
+                                          select reg).ToList();
                 // return View(pCPAssignedQP);
                 return View("~/Views/PCP/PCPAssignedQP/Create.cshtml", pCPAssignedQP);
             }
@@ -141,12 +145,12 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                  ViewBag.QPList = await _qPMasterService.GetAllQPMaster();
+                ViewBag.QPList = await _qPMasterService.GetAllQPMaster();
                 //pCPAssignedQPModel.QPList = await _qPMasterService.GetAllQPMaster();
                 // pCPAssignedQPModel.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 pCPAssignedQPModel.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                          where reg.IsApproved != null
-                                          select reg).ToList();
+                                               where reg.IsApproved != null
+                                               select reg).ToList();
                 pCPAssignedQPModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)
@@ -183,8 +187,8 @@ namespace CoreLayout.Controllers.PCP
                 //data.QPList = await _qPMasterService.GetAllQPMaster();
                 //data.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 data.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                               where reg.IsApproved != null
-                                               select reg).ToList();
+                                 where reg.IsApproved != null
+                                 select reg).ToList();
                 if (data == null)
                 {
                     return NotFound();
@@ -210,8 +214,8 @@ namespace CoreLayout.Controllers.PCP
                 //pCPAssignedQPModel.QPList = await _qPMasterService.GetAllQPMaster();
                 //pCPAssignedQPModel.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 pCPAssignedQPModel.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
-                                 where reg.IsApproved != null
-                                 select reg).ToList();
+                                               where reg.IsApproved != null
+                                               select reg).ToList();
                 pCPAssignedQPModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)

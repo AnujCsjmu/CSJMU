@@ -67,14 +67,14 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="UserName" type="text" placeholder="Enter your name" />
+                                                    <input class="form-control" asp-for="UserName" type="text" placeholder="Enter your name" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="UserName">Name</label>
                                                     <span class="text-danger" asp-validation-for="UserName"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <input class="form-control" asp-for="FatherName" type="text" placeholder="Enter your father" />
+                                                    <input class="form-control" asp-for="FatherName" type="text" placeholder="Enter your father" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="FatherName">FatherName</label>
                                                     <span class="text-danger" asp-validation-for="FatherName"></span>
                                                 </div>
@@ -83,7 +83,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="Address" type="text" placeholder="Enter your user name" />
+                                                    <input class="form-control" asp-for="Address" type="text" placeholder="Enter your address" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="Address">Address</label>
                                                     <span class="text-danger" asp-validation-for="Address"></span>
                                                 </div>
@@ -121,14 +121,14 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="Aadhar" type="text" maxlength="12" placeholder="Enter your aadhar" />
+                                                    <input class="form-control" asp-for="Aadhar" type="text" maxlength="12" placeholder="Enter your aadhar" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="Aadhar">Aadhar</label>
                                                     <span class="text-danger" asp-validation-for="Aadhar"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <input class="form-control" asp-for="PAN" type="text" maxlength="12" placeholder="Enter your pan" />
+                                                    <input class="form-control" asp-for="PAN" type="text" maxlength="12" placeholder="Enter your pan" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="PAN">PAN</label>
                                                     <span class="text-danger" asp-validation-for="PAN"></span>
                                                 </div>
@@ -137,14 +137,14 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="MobileNo" type="number" placeholder="Enter your mobile number" />
+                                                    <input class="form-control" asp-for="MobileNo" type="number" maxlength="10" placeholder="Enter your mobile number" />
                                                     <label asp-for="MobileNo">Mobile Number</label>
                                                     <span class="text-danger" asp-validation-for="MobileNo"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <input class="form-control" asp-for="EmailID" type="email" placeholder="name@example.com" />
+                                                    <input class="form-control" asp-for="EmailID" type="email" placeholder="name@example.com" onkeydown="upperCaseF(this)" />
                                                     <label asp-for="EmailID">Email address</label>
                                                     <span class="text-danger" asp-validation-for="EmailID"></span>
                                                 </div>
@@ -153,20 +153,17 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="Specilization" type="tel" placeholder="please enter specilization" />
-                                                    <label asp-for="Specilization">Specilization</label>
-                                                    <span class="text-danger" asp-validation-for="Specilization"></span>
+                                                    <input class="form-control" asp-for="InstituteCode" type="text" maxlength="10" placeholder="please enter institute code" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="InstituteCode">Institute Code</label>
+                                                    <span class="text-danger" asp-validation-for="InstituteCode"></span>
 
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
-                                                    <label asp-for="InstituteId">Specilization</label>
-                                                    <select class="form-control select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteID","InstituteName"))">
-                                                        <option selected="selected" disabled="disabled" value="">--Select Collage-- </option>
-                                                    </select>
-
-                                                    <span class="text-danger" asp-validation-for="InstituteId"></span>
+                                                    <input class="form-control" asp-for="InstituteName" type="text" placeholder="please enter institute name" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="InstituteName">Institute Name</label>
+                                                    <span class="text-danger" asp-validation-for="InstituteName"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -183,22 +180,47 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     @*subject*@
-                                                    <select class="form-control select" asp-for="BranchID" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                                    <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
                                                         <option selected="selected" disabled="disabled" value="">--Select Subject-- </option>
                                                     </select>
 
-                                                    <span class="text-danger" asp-validation-for="BranchID"></span>
+                                                    <span class="text-danger" asp-validation-for="BranchId"></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="BankDetails" type="text" placeholder="Enter your bank details" />
-                                                    <label asp-for="BankDetails">Bank Details</label>
-                                                    <span class="text-danger" asp-validation-for="BankDetails"></span>
+                                                    <input class="form-control" asp-for="BankName" type="text" placeholder="Enter your bank name" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="BankName">Bank Name</label>
+                                                    <span class="text-danger" asp-validation-for="BankName"></span>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" asp-for="IFSC" type="text" maxlength="10" placeholder="Enter your ifsc code" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="IFSC">IFSC</label>
+                                                    <span class="text-danger" asp-validation-for="IFSC"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" asp-for="AccountNo" maxlength="10" placeholder="Enter your account no" />
+                                                    <label asp-for="AccountNo">Account No</label>
+                                                    <span class="text-danger" asp-validation-for="AccountNo"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" asp-for="BranchAddress" type="text" placeholder="Enter your branch address" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="BranchAddress">Branch Address</label>
+                                                    <span class="text-danger" asp-validation-for="BranchAddress"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input asp-for="ProfileImage" class="form-control" />
@@ -206,16 +228,23 @@
                                                     <span class="text-danger" asp-validation-for="ProfileImage"></span>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
 
+                                                    <input class="form-control" asp-for="Specilization" type="tel" placeholder="please enter specilization" onkeydown="upperCaseF(this)" />
+                                                    <label asp-for="Specilization">Specilization</label>
+                                                    <span class="text-danger" asp-validation-for="Specilization"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" asp-for="Remarks" type="text" placeholder="Enter your remarks" />
+                                            <input class="form-control" asp-for="Remarks" type="text" placeholder="Enter your remarks" onkeydown="upperCaseF(this)" />
                                             <label asp-for="Remarks">Remarks</label>
                                             <span class="text-danger" asp-validation-for="Remarks"></span>
 
                                         </div>
                                         <div>
-                                            <input class="btn btn-primary btn-block" type="submit" value="Create Account" />
+                                            <input class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to delete this?')" />
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
@@ -297,5 +326,37 @@
             });
         });
     </script>
+
+    @*upper case*@
+    <script type="text/javascript">
+        function upperCaseF(a) {
+            setTimeout(function () {
+                a.value = a.value.toUpperCase();
+            }, 1);
+        }
+    </script>
+
+    @*bind branch on selected value of course*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CourseID").on("change", function () {
+                $("#BranchId").empty();
+                var ddlsource = "#CourseID";
+                var url = '@Url.Content("~/")' + "PCPRegistration/GetBranch?CourseId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                    
+                    $.each(data, function (i, branch) {
+                        items += "<option value ='" + branch.value + "'>" + branch.text + "</option>";
+                });
+                    $('#BranchId').html(items);
+            });
+            });
+        });
+
+    </script>
+
 </body>
 </html>

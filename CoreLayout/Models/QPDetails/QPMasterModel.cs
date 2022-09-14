@@ -113,6 +113,11 @@ namespace CoreLayout.Models.QPDetails
         [NotMapped]
         public List<GradeDefinitionModel> GradeList { get; set; }//used grade definition table
         public string GradeName { get; set; }
-        
+
+
+        public List<QPMasterModel> QPListForGrid { get; set; }
+
+
+
     }
 }

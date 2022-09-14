@@ -42,7 +42,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                         parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
                         parameters.Add("RefType", entity.RefType, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        parameters.Add("InstituteId", entity.InstituteId, DbType.Int32);
+                        //parameters.Add("InstituteId", entity.InstituteId, DbType.Int32);
                         parameters.Add("ReturnUserId", entity.ReturnUserId, DbType.Int32, direction: ParameterDirection.Output);
 
 
@@ -198,7 +198,7 @@ namespace CoreLayout.Repositories.PCP.PCPApproval
                         }
                         parameters.Add("IsUserActive", entity.IsUserActive, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress);
-                        parameters.Add("InstituteId", entity.InstituteId);
+                        //parameters.Add("InstituteId", entity.InstituteId);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);

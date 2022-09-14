@@ -42,7 +42,7 @@ namespace CoreLayout.Controllers
         }
 
         [AuthorizeContext(ViewAction.View)]
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
             try
             {
@@ -87,6 +87,8 @@ namespace CoreLayout.Controllers
             {
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(guid_id));
+                string filePath = "~/PCPPhoto/" + data.UploadFileName;
+                data.UploadFileName = filePath;
                 data.EncryptedId = id;
                 if (data == null)
                 {
@@ -99,7 +101,7 @@ namespace CoreLayout.Controllers
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(IndexAsync));
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -172,7 +174,7 @@ namespace CoreLayout.Controllers
                     pCPRegistrationModel.RefID = data.RefID;
                     pCPRegistrationModel.RefType = data.RefType;
                     pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    pCPRegistrationModel.InstituteId = data.InstituteId;
+                    //pCPRegistrationModel.InstituteId = data.InstituteId;
                     pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                     pCPRegistrationModel.RoleId = 19;
                     pCPRegistrationModel.IsApproved = 1;
@@ -209,8 +211,10 @@ namespace CoreLayout.Controllers
                         TempData["error"] = "User has been not approved successfully";
                     }
                 }
+               
             }
-            return View("~/Views/PCP/PCPApproval/Index.cshtml");
+            //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
+            return RedirectToAction(nameof(Index));
         }
 
         public JsonResult SendReminder(string uid)

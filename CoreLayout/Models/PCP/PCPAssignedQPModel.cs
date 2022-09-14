@@ -28,6 +28,7 @@ namespace CoreLayout.Models.PCP
         public List<PCPRegistrationModel> UserList { get; set; }
         public string UserName { get; set; }
 
-
+        public int? UserId { get; set; }
+        public List<List<PCPAssignedQPModel>> QPListForGrid { get; set; }
     }
 }
