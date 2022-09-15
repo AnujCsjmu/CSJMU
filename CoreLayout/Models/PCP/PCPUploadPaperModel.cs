@@ -58,5 +58,11 @@ namespace CoreLayout.Models.PCP
         public string QPName { get; set; }
         public string QPCode { get; set; }
 
+        public int? UserId { get; set; }
+
+        public int? PCPRegID { get; set; }
+
+        
+
     }
 }

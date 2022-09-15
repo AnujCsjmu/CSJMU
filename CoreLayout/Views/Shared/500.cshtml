@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>404 Error - SB Admin</title>
-        <link href="css/styles.css" rel="stylesheet" />
+        <link href="~/assets/css/style.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -20,9 +20,13 @@
                                 <div class="text-center mt-4">
                                     <h1 class="display-1">500</h1>
                                     <p class="lead">Internal Server Error</p>
-                                    <a href="index.html">
+                                    <a asp-action="Index" asp-controller="Dashboard">
                                         <i class="fas fa-arrow-left me-1"></i>
                                         Return to Dashboard
+                                    </a>
+                                    <a asp-action="Logout" asp-controller="Home">
+                                        <i class="fas fa-arrow-left me-1"></i>
+                                        Return to Login
                                     </a>
                                 </div>
                             </div>

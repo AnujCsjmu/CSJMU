@@ -14,7 +14,7 @@ namespace CoreLayout.Models.PCP
         [Key]
         public int PCPRegID { get; set; }
 
-        [Display(Name = "User Name")]
+        [Display(Name = "Paper Setter")]
         [Required(ErrorMessage = "Please enter user name")]
         [StringLength(50)]
         public string UserName { get; set; }
@@ -235,6 +235,10 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Paper Pwd")]
         public string PaperPassword { get; set; }
 
+        [Display(Name = "Paper Code")]
+        public string PaperCode { get; set; }
 
+        [Display(Name = "Paper Name")]
+        public string PaperName { get; set; }
     }
 }

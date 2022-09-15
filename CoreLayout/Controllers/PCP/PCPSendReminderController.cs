@@ -63,15 +63,43 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
+                List<PCPUploadPaperModel> PCPUploadPaperlist = new List<PCPUploadPaperModel>();
+                PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+                var allAssignedQP = await _pCPSendReminderService.GetAllAssingedQP();
+                var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
 
-                var data = (from reg in await _pCPSendReminderService.GetAllAssingedQP()
-                            //where reg.IsApproved != null
-                            select reg).ToList();
+                //get how much qp assign to the user
+                //foreach(var _allAssignedQP in allAssignedQP)
+                //{
+                //    foreach (var _allUploadedQP in allUploadedQP)
+                //    {
+                //        if (_allAssignedQP.PCPRegID == _allUploadedQP.PCPRegID)
+                //        {
+                //            pCPUploadPaperModel.QPId = _allUploadedQP.QPId;
+                //            pCPUploadPaperModel.QPName = _allUploadedQP.QPName;
+                //            pCPUploadPaperModel.PaperId = _allUploadedQP.PaperId;
+                //            pCPUploadPaperModel.PaperName = _allUploadedQP.PaperName;
+                //            pCPUploadPaperModel.PaperCode = _allUploadedQP.PaperCode;
+                //            pCPUploadPaperModel.PaperPath = _allUploadedQP.PaperPath;
+                //            //pCPUploadPaperModel.UploadPaper = _allUploadedQP.UploadPaper;
+                //            pCPUploadPaperModel.CreatedDate = _allUploadedQP.CreatedDate;
+                //            pCPUploadPaperModel.UserName = _allUploadedQP.UserName;
+                //            pCPUploadPaperModel.PaperPassword = _allUploadedQP.PaperPassword;
+                //        }
+                //        PCPUploadPaperlist.Add(pCPUploadPaperModel);
+                //    }
 
+                //}
+                ViewBag.PaperUploadedlist = allUploadedQP;
                 //end
 
                 //start encrypt id for update,delete & details
-                foreach (var _data in data)
+                foreach (var _data in allUploadedQP)
+                {
+                    var stringId = _data.PaperId.ToString();
+                    _data.EncryptedId = _protector.Protect(stringId);
+                }
+                foreach (var _data in allUploadedQP)
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
@@ -79,7 +107,7 @@ namespace CoreLayout.Controllers.PCP
                 //end
 
 
-                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
+                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", allAssignedQP);
 
             }
 
