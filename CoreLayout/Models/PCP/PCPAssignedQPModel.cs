@@ -30,5 +30,9 @@ namespace CoreLayout.Models.PCP
 
         public int? UserId { get; set; }
         public List<List<PCPAssignedQPModel>> QPListForGrid { get; set; }
+
+        //display qp details
+        public string QPCreatedDate { get; set; }
+        public string QPCreatedBy { get; set; }
     }
 }

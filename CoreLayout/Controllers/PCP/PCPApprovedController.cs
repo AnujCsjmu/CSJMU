@@ -153,26 +153,31 @@ namespace CoreLayout.Controllers.PCP
                         pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                         pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
+                        #region Send email and sms
                         //send message
-                        bool res= SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                        if(res==true)
-                        {
-                            pCPRegistrationModel.IsMobileReminder = "Y";
-                        }
-                        else
+                        bool messageResult = false;
+                        messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                        if (messageResult == false)
                         {
                             pCPRegistrationModel.IsMobileReminder = "N";
                         }
-                        //send mail
-                        bool res1= SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                        if (res1 == true)
-                        {
-                            pCPRegistrationModel.IsEmailReminder = "Y";
-                        }
                         else
+                        {
+                            pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
+                        }
+
+                        //send mail
+                        bool emailResult = false;
+                        emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                        if (emailResult == false)
                         {
                             pCPRegistrationModel.IsEmailReminder = "N";
                         }
+                        else
+                        {
+                            pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
+                        }
+                        #endregion
 
                         var finaldata = await _pCPApprovalService.CreateReminderAsync(pCPRegistrationModel);
                         if (finaldata.Equals(1))
@@ -225,7 +230,6 @@ namespace CoreLayout.Controllers.PCP
 
         public bool SendRegistraionMail(string username, string email, string loginid, string password)
         {
-            bool result = false;
             MailRequest request = new MailRequest();
 
             request.Subject = "Gentel Reminder!!";
@@ -233,8 +237,7 @@ namespace CoreLayout.Controllers.PCP
                    "<br/> Please upload paper as soon as possible.";
             //request.Attachments = "";
             request.ToEmail = email;
-            _mailService.SendEmailAsync(request);
-            return result;
+            return _mailService.SendEmailAsync(request);
         }
 
 

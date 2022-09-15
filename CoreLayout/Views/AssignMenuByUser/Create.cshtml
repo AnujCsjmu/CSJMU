@@ -31,7 +31,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="MenuId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="MenuId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="MenuId" asp-items="@(new SelectList(Model.MenuList,"MenuID","MenuName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="UserId" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="UserId" asp-items="@(new SelectList(Model.UserList,"UserID","UserName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>

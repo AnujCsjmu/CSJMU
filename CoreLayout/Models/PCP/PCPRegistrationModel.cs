@@ -86,12 +86,14 @@ namespace CoreLayout.Models.PCP
         public List<InstituteModel> InstituteList { get; set; }
 
         [NotMapped]
+        [Display(Name = "QP Code")]
         public List<QPMasterModel> QPCodeList { get; set; }
 
         [Display(Name = "QP Code")]
         [Required(ErrorMessage = "Please enter qp code")]
         public int QPId { get; set; }
 
+        [Display(Name = "QP Code")]
         public string QPCode { get; set; }
 
         public string QPName { get; set; }
@@ -102,6 +104,8 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Course Name")]
         [Required(ErrorMessage = "Please enter course name")]
         public int CourseID { get; set; }
+
+        [Display(Name = "Course Name")]
         public string CourseName { get; set; }
 
         [Display(Name = "Course Code")]
@@ -113,6 +117,9 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Subject Name")]
         [Required(ErrorMessage = "Please enter subject name")]
         public int BranchId { get; set; }
+
+
+        [Display(Name = "Subject Name")]
         public string BranchName { get; set; }
 
         [Display(Name = "Subject Code")]
@@ -161,17 +168,17 @@ namespace CoreLayout.Models.PCP
         [StringLength(50)]
         public string BankName { get; set; }
 
-        [Display(Name = "IFSC Code")]
+        [Display(Name = "Bank IFSC Code")]
         [Required(ErrorMessage = "Please enter ifsc code")]
         [StringLength(15)]
         public string IFSC { get; set; }
 
-        [Display(Name = "Account No")]
+        [Display(Name = "Bank Account No")]
         [Required(ErrorMessage = "Please enter account no")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid account no.")]
         public string AccountNo { get; set; }
 
-        [Display(Name = "Branch address")]
+        [Display(Name = "Bank Branch address")]
         [Required(ErrorMessage = "Please enter branch address")]
         [StringLength(50)]
         public string BranchAddress { get; set; }
@@ -208,5 +215,26 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please choose photo")]
         [Display(Name = "Photo")]
         public IFormFile ProfileImage { get; set; }
+
+
+        //for send reminder view 
+        [Display(Name = "Paper")]
+        public string PaperPath { set; get; }
+
+        [Display(Name = "Paper Created By")]
+        public string PaperCreatedBy { get; set; }
+
+        [Display(Name = "Paper Created Date")]
+        public string PaperCreatedDate { get; set; }
+
+        public int? PaperId { get; set; }
+        public string Session { get; set; }
+
+        public string SessionType { get; set; }
+
+        [Display(Name = "Paper Pwd")]
+        public string PaperPassword { get; set; }
+
+
     }
 }

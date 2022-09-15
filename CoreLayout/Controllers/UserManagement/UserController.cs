@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.UserManagement
 {
-    [Authorize(Roles = "Administrator,Institute")]
+    [Authorize(Roles = "Administrator,Institute,Controller Of Examination")]
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
@@ -104,9 +104,14 @@ namespace CoreLayout.Controllers.UserManagement
             {
                 registrationModel.RoleList = await _roleService.GetAllRoleAsync();
             }
-            else
+            else if (RoleId == 3)
             {
-
+                registrationModel.RoleList = (from role in _roleService.GetAllRoleAsync().Result
+                                              where role.RoleID == 20
+                                              select role).ToList();
+            }
+            else 
+            {
                 registrationModel.RoleList = (from role in _roleService.GetAllRoleAsync().Result
                         where role.RoleID== RoleId
                                               select role).ToList();

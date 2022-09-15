@@ -34,7 +34,7 @@
                                 <label asp-for="RoleUserId"> </label>
 
                                 <select asp-for="RoleUserId"
-                                        style="width:545px" class="select"
+                                         class="form-control select" 
                                         asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
                                 </select>
 
@@ -47,7 +47,7 @@
                                 <label asp-for="RoleId"> </label>
 
                                 <select asp-for="RoleId"
-                                        style="width:545px" class="select"
+                                         class="form-control select" 
                                         asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
                                 </select>
 

@@ -33,7 +33,7 @@ namespace CoreLayout.Models.PCP
         [StringLength(50)]
         public string PaperPassword { get; set; }
 
-        [Display(Name = "Paper Path")]
+        [Display(Name = "Paper")]
         public string PaperPath { set; get; }
 
         [Required(ErrorMessage = "Please choose paper")]

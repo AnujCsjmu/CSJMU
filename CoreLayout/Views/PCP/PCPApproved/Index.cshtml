@@ -28,7 +28,7 @@
                     <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
-                                <th></th>
+                                @*<th></th>*@
                                 <th>S.No</th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
@@ -60,7 +60,7 @@
                                 </th>
 
                                 <th>
-                                    Details/ Reminder
+                                    Details
                                 </th>
                             </tr>
                         </thead>
@@ -72,20 +72,20 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>
-                                        @foreach (var item1 in ViewBag.QPList)
-                                        {
-                                            foreach (var list in item1)
+                                    @*<td>
+                                            @foreach (var item1 in ViewBag.QPList)
                                             {
-                                                if (list.PCPRegID == item.PCPRegID)
+                                                foreach (var list in item1)
                                                 {
-                                                    <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-     
-                                                }
+                                                    if (list.PCPRegID == item.PCPRegID)
+                                                    {
+                                                        <input type="checkbox" id="chkid" value="@item.PCPRegID" />
 
+                                                    }
+
+                                                }
                                             }
-                                        }
-                                    </td>
+                                        </td>*@
                                     <td>
                                         @{ sno++; }
                                         @sno
@@ -99,18 +99,34 @@
                                     <td style="display:block">
                                         @*@if (ViewBag.QPList.Count() > 0)*@
 
-                                        <table>
-                                            @*<thead>
-                                                    <tr>
-                                                        <th>S.No</th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(c => c.QPCode)
-                                                        </th>
-                                                        <th>
-                                                            @Html.DisplayNameFor(c => c.QPName)
-                                                        </th>
-                                                    </tr>
-                                                </thead>*@
+                                        <table class="table table-sm table-bordered key-buttons text-wrap w-100">
+                                            <thead>
+                                                @foreach (var item1 in ViewBag.QPList)
+                                                {
+                                                    foreach (var list in item1)
+                                                    {
+                                                        if (list.PCPRegID == item.PCPRegID)
+                                                        {
+                                                            <tr>
+                                                                <th>S.No</th>
+                                                                <th>
+                                                                    @Html.DisplayNameFor(c => c.QPCode)
+                                                                </th>
+                                                                <th>
+                                                                    @Html.DisplayNameFor(c => c.QPName)
+                                                                </th>
+                                                                <th>
+                                                                    @Html.DisplayNameFor(c => c.CreatedBy)
+                                                                </th>
+                                                                <th>
+                                                                    @Html.DisplayNameFor(c => c.CreatedDate)
+                                                                </th>
+                                                            </tr>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            </thead>
                                             <tbody>
                                                 @{
                                                     int sno1 = 0;
@@ -119,7 +135,7 @@
                                                 {
                                                     foreach (var list in item1)
                                                     {
-                                                        if (list.PCPRegID == item.PCPRegID)
+                                                        @if (list.PCPRegID == item.PCPRegID)
                                                         {
                                                             <tr>
                                                                 <td>
@@ -131,6 +147,12 @@
                                                                 </td>
                                                                 <td>
                                                                     @list.QPName
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPCreatedBy
+                                                                </td>
+                                                                <td>
+                                                                    @list.QPCreatedDate
                                                                 </td>
                                                             </tr>
                                                         }
@@ -145,35 +167,18 @@
                                     <td>
                                         <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
                                         @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
-                                        <a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder" onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        @*<a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder" onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>*@
                                         @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                    <div class="form-group">
-                        <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
-                    </div>
-
-                    <div id="modalTable" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h3 id="myModalLabel">Modal 2</h3>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-
-                                </div>
-                                <div class="modal-body">
+                    @*<div class="form-group">
+                            <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
+                        </div>*@
 
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
             </div>
@@ -199,80 +204,80 @@
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnReminder").click(function () {
-                var userid = [];
-                var i = 0;
-                //Loop through all checked CheckBoxes in GridView.
-                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
-                    userid[i] = $(this).val();
-                    i++;
-                });
-
-                if (userid.length > 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/PCPApproved/SendReminder?uid=' + userid,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-
-                            /*alert(data);*/
-                        },
-                        error: function (data) {
-                            /*alert("error!");*/
-                        }
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#btnReminder").click(function () {
+                    var userid = [];
+                    var i = 0;
+                    //Loop through all checked CheckBoxes in GridView.
+                    $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                        userid[i] = $(this).val();
+                        i++;
                     });
-                }
-                else {
-                    alert("Select atleast one checkbox");
-                }
-            });
-        });
-    </script>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnViewReminder").click(function () {
-                var userid = [];
-                var i = 0;
-                //Loop through all checked CheckBoxes in GridView.
-                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
-                    userid[i] = $(this).val();
+                    if (userid.length > 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/PCPApproved/SendReminder?uid=' + userid,
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+
+                                /*alert(data);*/
+                            },
+                            error: function (data) {
+                                /*alert("error!");*/
+                            }
+                        });
+                    }
+                    else {
+                        alert("Select atleast one checkbox");
+                    }
                 });
-                if (userid.length > 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/PCPApproved/ViewReminder?uid=' + userid,
-                        contentType: "application/json; charset=utf-8",
-                        data: $(this).serialize(),
-                        success: function (data) {
-                            // var html = '';
-                            // alert(data);
-                            // $.each(data, function (key,item) {
-                            //     html += '<tr>';
-                            //     html += '<td>' + item.userid + '</td>';
-                            //     html += '<td>' + item.email + '</td>';
-                            //     html += '</tr>';
-                            // });
-                            //alert(html);
-                            //alert(data[0].email);
-                        },
-
-                        error: function (data) {
-                            /*alert("error!");*/
-                        }
-                    });
-                }
-                else {
-                    alert("Select atleast one checkbox");
-                }
             });
-        });
-    </script>
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#btnViewReminder").click(function () {
+                    var userid = [];
+                    var i = 0;
+                    //Loop through all checked CheckBoxes in GridView.
+                    $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                        userid[i] = $(this).val();
+                    });
+                    if (userid.length > 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/PCPApproved/ViewReminder?uid=' + userid,
+                            contentType: "application/json; charset=utf-8",
+                            data: $(this).serialize(),
+                            success: function (data) {
+                                // var html = '';
+                                // alert(data);
+                                // $.each(data, function (key,item) {
+                                //     html += '<tr>';
+                                //     html += '<td>' + item.userid + '</td>';
+                                //     html += '<td>' + item.email + '</td>';
+                                //     html += '</tr>';
+                                // });
+                                //alert(html);
+                                //alert(data[0].email);
+                            },
+
+                            error: function (data) {
+                                /*alert("error!");*/
+                            }
+                        });
+                    }
+                    else {
+                        alert("Select atleast one checkbox");
+                    }
+                });
+            });
+        </script>*@
 
 
 }

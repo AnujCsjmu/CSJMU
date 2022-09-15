@@ -1,0 +1,225 @@
+﻿@using CoreLayout.Models.PCP
+@model IEnumerable<PCPRegistrationModel>
+@{
+    ViewData["title"] = "Index";
+}
+
+
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Send Reminder List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">SendReminder</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List</li>
+        </ol>
+    </div>
+    @*<div class="btn btn-list">
+            <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxRoleId><i class="fe fe-plus"></i> Add New</a>
+        </div>*@
+</div>
+
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div class="table-responsive-sm">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>S.No</th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.UserName)
+                                </th>
+
+                                @*<th>
+                                    @Html.DisplayNameFor(c => c.MobileNo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.EmailID)
+                                </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(c => c.InstituteCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.BranchCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CourseCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.QPCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPath)
+                                </th>
+
+
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperCreatedBy)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperCreatedDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Session) <br /> @Html.DisplayNameFor(c => c.SessionType)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPassword)
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int sno = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.PaperPath == null)
+                                        {
+                                            <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.UserName</td>
+                                    @*<td>@item.MobileNo</td>
+                                    <td>@item.EmailID</td>*@
+                                    <td>@item.InstituteCode</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.QPName</td>
+                                    <td>
+                                        @if (item.PaperPath != null)
+                                        {
+                                            <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        }
+                                    </td>
+                                    <td>@item.PaperCreatedBy</td>
+                                    <td>@item.PaperCreatedDate</td>
+                                    <td>@item.Session <br /> @item.SessionType</td>
+                                    <td>@item.PaperPassword</td>
+
+                                    <!--<td>
+                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>-->
+                                    @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
+                                    <!--<a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder" onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>-->
+                                    @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
+                                    <!--</td>-->
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+        <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
+    </div>
+<!-- End Row -->
+
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>*@
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnReminder").click(function () {
+                var userid = [];
+                var i = 0;
+                //Loop through all checked CheckBoxes in GridView.
+                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                    userid[i] = $(this).val();
+                    i++;
+                });
+
+                if (userid.length > 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PCPSendReminder/SendReminder?uid=' + userid,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            /*alert(data);*/
+                        },
+                        error: function (data) {
+                            /*alert("error!");*/
+                        }
+                    });
+                }
+                else {
+                    alert("Select atleast one checkbox");
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnViewReminder").click(function () {
+                var userid = [];
+                var i = 0;
+                //Loop through all checked CheckBoxes in GridView.
+                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                    userid[i] = $(this).val();
+                });
+                if (userid.length > 0) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/PCPSendReminder/ViewReminder?uid=' + userid,
+                        contentType: "application/json; charset=utf-8",
+                        data: $(this).serialize(),
+                        success: function (data) {
+
+                        },
+
+                        error: function (data) {
+                            /*alert("error!");*/
+                        }
+                    });
+                }
+                else {
+                    alert("Select atleast one checkbox");
+                }
+            });
+        });
+    </script>
+    @*<script>
+        $(document).ready(function () {
+            $('#exportexample').dataTable({
+                "sScrollX": "100%",
+                "sScrollXInner": "110%",
+                "bScrollCollapse": true
+            });
+        });
+    </script>*@
+
+
+}

@@ -26,6 +26,8 @@ using CoreLayout.Repositories.Masters.Tehsil;
 using CoreLayout.Repositories.PCP.PCPApproval;
 using CoreLayout.Repositories.PCP.PCPAssignedQP;
 using CoreLayout.Repositories.PCP.PCPRegistration;
+using CoreLayout.Repositories.PCP.PCPSendPaper;
+using CoreLayout.Repositories.PCP.PCPSendReminder;
 using CoreLayout.Repositories.PCP.PCPUploadPaper;
 using CoreLayout.Repositories.QPDetails.GradeDefinition;
 using CoreLayout.Repositories.QPDetails.QPMaster;
@@ -63,6 +65,8 @@ using CoreLayout.Services.Masters.Tehsil;
 using CoreLayout.Services.PCP.PCPApproval;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
+using CoreLayout.Services.PCP.PCPSendPaper;
+using CoreLayout.Services.PCP.PCPSendReminder;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.GradeDefinition;
 using CoreLayout.Services.QPDetails.QPMaster;
@@ -311,6 +315,14 @@ namespace CoreLayout
             //PCP assigned qp
             services.AddScoped<IPCPAssignedQPService, PCPAssignedQPService>();
             services.AddScoped<IPCPAssignedQPRepository, PCPAssignedQPRepository>();
+
+            //PCP send Reminder
+            services.AddScoped<IPCPSendReminderService, PCPSendReminderService>();
+            services.AddScoped<IPCPSendReminderRepository, PCPSendReminderRepository>();
+
+            //PCP send paper
+            services.AddScoped<IPCPSendPaperService, PCPSendPaperService>();
+            services.AddScoped<IPCPSendPaperRepository, PCPSendPaperRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

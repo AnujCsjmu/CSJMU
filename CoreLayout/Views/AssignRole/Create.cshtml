@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label asp-for="RoleUserId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="RoleUserId"
-                                        style="width:545px" class="select"
+                                         class="form-control select" 
                                         asp-items="@(new SelectList(ViewBag.UserList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="RoleUserId" class="parsley-errors-list filled"></span>
@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="RoleId"
-                                        style="width:545px" class="select"
+                                         class="form-control select" 
                                         asp-items="@(new SelectList(ViewBag.RoleList,"Value", "Text"))">
                                 </select>
                                 <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>

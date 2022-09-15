@@ -44,12 +44,20 @@ namespace CoreLayout.Controllers
         [AllowAnonymous]
         public IActionResult Login(string ReturnURL)
         {
-            HttpContext.Session.Clear();
-            if (errormsg != "")
-            {
-                ViewBag.errormsg = errormsg;
-            }
             _logger.LogInformation("HomeController.Index method called!!!");
+            try
+            {
+                HttpContext.Session.Clear();
+                if (errormsg != "")
+                {
+                    ViewBag.errormsg = errormsg;
+                }
+            }
+            catch(Exception)
+            {
+                _logger.LogError("Exception through...");
+            }
+            
             return View();
         }
         [HttpPost]

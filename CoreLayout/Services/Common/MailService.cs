@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
+using System;
 
 namespace CoreLayout.Services.Common
 {
@@ -17,42 +18,45 @@ namespace CoreLayout.Services.Common
             _mailSettings = mailSettings.Value;
         }
 
-        public async Task<bool> SendEmailAsync(MailRequest mailRequest)
+        public bool SendEmailAsync(MailRequest mailRequest)
         {
-            bool result = false;
-            var email = new MimeMessage();
-            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-            email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
-            email.Subject = mailRequest.Subject;
-            var builder = new BodyBuilder();
-            if (mailRequest.Attachments != null)
+            try
             {
-                byte[] fileBytes;
-                foreach (var file in mailRequest.Attachments)
+                var email = new MimeMessage();
+                email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+                email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
+                email.Subject = mailRequest.Subject;
+                var builder = new BodyBuilder();
+                if (mailRequest.Attachments != null)
                 {
-                    if (file.Length > 0)
+                    byte[] fileBytes;
+                    foreach (var file in mailRequest.Attachments)
                     {
-                        using (var ms = new MemoryStream())
+                        if (file.Length > 0)
                         {
-                            file.CopyTo(ms);
-                            fileBytes = ms.ToArray();
+                            using (var ms = new MemoryStream())
+                            {
+                                file.CopyTo(ms);
+                                fileBytes = ms.ToArray();
+                            }
+                            builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
                         }
-                        builder.Attachments.Add(file.FileName, fileBytes, ContentType.Parse(file.ContentType));
                     }
                 }
+                builder.HtmlBody = mailRequest.Body;
+                email.Body = builder.ToMessageBody();
+                using var smtp = new MailKit.Net.Smtp.SmtpClient();
+                smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
+                smtp.SendAsync(email);
+                smtp.Disconnect(true);
+                return true;
             }
-            builder.HtmlBody = mailRequest.Body;
-            email.Body = builder.ToMessageBody();
-            using var smtp = new MailKit.Net.Smtp.SmtpClient();
-            smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Mail, _mailSettings.Password);
-            string succes = await smtp.SendAsync(email);
-            smtp.Disconnect(true);
-            if(succes!=null)
+            catch (Exception ex)
             {
-                result = true;
+                //Log Exception Details
+                return false;
             }
-            return result;
         }
     }
 }

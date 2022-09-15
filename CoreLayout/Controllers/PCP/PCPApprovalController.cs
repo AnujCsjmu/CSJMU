@@ -179,28 +179,31 @@ namespace CoreLayout.Controllers
                     pCPRegistrationModel.RoleId = 19;
                     pCPRegistrationModel.IsApproved = 1;
                     pCPRegistrationModel.IsApprovedBy = HttpContext.Session.GetInt32("UserId");
-
+                    #region Send email and sms
                     //send message
-                    bool res = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                    if (res == true)
-                    {
-                        pCPRegistrationModel.IsMobileReminder = "Y";
-                    }
-                    else
+                    bool messageResult =false;
+                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                    if(messageResult == false)
                     {
                         pCPRegistrationModel.IsMobileReminder = "N";
                     }
-                    //send mail
-                    bool res1 = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                    if (res1 == true)
-                    {
-                        pCPRegistrationModel.IsEmailReminder = "Y";
-                    }
                     else
+                    {
+                        pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
+                    }
+
+                    //send mail
+                    bool emailResult = false;
+                    emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                    if (emailResult == false)
                     {
                         pCPRegistrationModel.IsEmailReminder = "N";
                     }
-
+                    else
+                    {
+                        pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
+                    }
+                    #endregion
                     result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
                     if (result.Equals(1))
                     {
@@ -211,7 +214,7 @@ namespace CoreLayout.Controllers
                         TempData["error"] = "User has been not approved successfully";
                     }
                 }
-               
+                return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
             }
             //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
             return RedirectToAction(nameof(Index));
@@ -293,7 +296,6 @@ namespace CoreLayout.Controllers
 
         public bool SendRegistraionMail(string username, string email, string loginid, string password)
         {
-            bool result = false;
             MailRequest request = new MailRequest();
 
             request.Subject = "Paper setter Registration!!";
@@ -302,8 +304,7 @@ namespace CoreLayout.Controllers
                    "<br/><br/> Your loginid is " + loginid + " and password is " + password + "</a>";
             //request.Attachments = "";
             request.ToEmail = email;
-            _mailService.SendEmailAsync(request);
-            return result;
+            return _mailService.SendEmailAsync(request);
         }
 
        
