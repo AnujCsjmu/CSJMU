@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
+using CoreLayout.Models.UserManagement;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace CoreLayout.Models.PCP
 
         public int? PCPRegID { get; set; }
 
-        
-
+ 
+     
     }
 }

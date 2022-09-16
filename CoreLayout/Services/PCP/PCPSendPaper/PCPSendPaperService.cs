@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.PCP.PCPSendPaper;
 using System;
 using System.Collections.Generic;
@@ -39,5 +40,11 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         {
             return await _pCPSendPaperRepository.DeleteAsync(pCPSendPaperModel);
         }
+
+        public async Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync()
+        {
+            return await _pCPSendPaperRepository.GetAllPCPUser_UploadPaperAsync();
+        }
+
     }
 }

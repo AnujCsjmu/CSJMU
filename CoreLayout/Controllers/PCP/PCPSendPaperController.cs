@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -81,11 +82,11 @@ namespace CoreLayout.Controllers.PCP
 
                 PCPSendPaperModel pCPSendPaperModel = new PCPSendPaperModel();
                 pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
-                                               where reg.RoleId == 21
-                                               select reg).ToList();
-                pCPSendPaperModel.PaperList = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                                                //where reg.RoleId == 21
+                                                where reg.RoleId == 21
                                                 select reg).ToList();
+                pCPSendPaperModel.PaperSetterList = (from reg in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                     where reg.RoleId == 19
+                                                     select reg).ToList();
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
             }
@@ -107,9 +108,9 @@ namespace CoreLayout.Controllers.PCP
             pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
                                             where reg.RoleId == 21
                                             select reg).ToList();
-            pCPSendPaperModel.PaperList = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                                               //where reg.RoleId == 21
-                                           select reg).ToList();
+            pCPSendPaperModel.PaperSetterList = (from reg in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                 where reg.RoleId == 19
+                                                 select reg).ToList();
             if (ModelState.IsValid)
             {
 
@@ -127,6 +128,25 @@ namespace CoreLayout.Controllers.PCP
             }
             return View(pCPSendPaperModel);
 
+        }
+        public JsonResult GetPaper(int PaperSetterId)
+        {
+            var GetUserList = (from user in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                               where user.CreatedBy== PaperSetterId
+                               select new SelectListItem()
+                               {
+                                   Text = user.PaperName,
+                                   Value = user.PaperId.ToString(),
+                               }).ToList();
+            GetUserList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+
+            //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
+
+            return Json(GetUserList);
         }
     }
 }

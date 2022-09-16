@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Models.UserManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         public Task<int> CreatePCPSendPaperAsync(PCPSendPaperModel pCPSendPaperModel);
         public Task<int> UpdatePCPSendPaperAsync(PCPSendPaperModel pCPSendPaperModel);
         public Task<int> DeletePCPSendPaperAsync(PCPSendPaperModel pCPSendPaperModel);
+
+        public Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync();
     }
 }

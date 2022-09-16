@@ -40,6 +40,7 @@ using CoreLayout.Repositories.UserManagement.Login;
 using CoreLayout.Repositories.UserManagement.Menu;
 using CoreLayout.Repositories.UserManagement.ParentMenu;
 using CoreLayout.Repositories.UserManagement.Registration;
+using CoreLayout.Repositories.UserManagement.RoleToRoleMapping;
 using CoreLayout.Repositories.UserManagement.SubMenu;
 using CoreLayout.Services.Audit;
 using CoreLayout.Services.Common;
@@ -79,6 +80,7 @@ using CoreLayout.Services.UserManagement.ButtonPermission;
 using CoreLayout.Services.UserManagement.Login;
 using CoreLayout.Services.UserManagement.Menu;
 using CoreLayout.Services.UserManagement.ParentMenu;
+using CoreLayout.Services.UserManagement.RoleToRoleMapping;
 using CoreLayout.Services.UserManagement.SubMenu;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -323,6 +325,10 @@ namespace CoreLayout
             //PCP send paper
             services.AddScoped<IPCPSendPaperService, PCPSendPaperService>();
             services.AddScoped<IPCPSendPaperRepository, PCPSendPaperRepository>();
+
+            //PCP send paper
+            services.AddScoped<IRoleToRoleMappingService, RoleToRoleMappingService>();
+            services.AddScoped<IRoleToRoleMappingRepository, RoleToRoleMappingRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

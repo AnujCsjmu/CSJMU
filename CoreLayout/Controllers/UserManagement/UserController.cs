@@ -5,6 +5,7 @@ using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Registration;
+using CoreLayout.Services.UserManagement.RoleToRoleMapping;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.UserManagement
 {
-    [Authorize(Roles = "Administrator,Institute,Controller Of Examination")]
+    [Authorize(Roles = "Administrator,Institute,Controller Of Examination,Institute")]
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
@@ -33,6 +34,7 @@ namespace CoreLayout.Controllers.UserManagement
             _logger = logger;
             _registrationService = registrationService;
             _commonController = commonController;
+
         }
 
         [HttpGet]
@@ -55,7 +57,7 @@ namespace CoreLayout.Controllers.UserManagement
             {
 
                 data = (from registration in _registrationService.GetAllRegistrationAsync().Result
-                               where registration.CreatedBy == UserId && registration.RoleId==RoleId
+                               where registration.CreatedBy == UserId /*&& registration.RoleId==RoleId*/
                                select registration).ToList();
             }
 
@@ -98,23 +100,15 @@ namespace CoreLayout.Controllers.UserManagement
         {
             RegistrationModel registrationModel = new RegistrationModel();
             registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
-            int? RoleId = HttpContext.Session.GetInt32("RoleId");
-            int? UserId = HttpContext.Session.GetInt32("UserId");
+            int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
             if (RoleId == 1)
             {
                 registrationModel.RoleList = await _roleService.GetAllRoleAsync();
             }
-            else if (RoleId == 3)
-            {
-                registrationModel.RoleList = (from role in _roleService.GetAllRoleAsync().Result
-                                              where role.RoleID == 20
-                                              select role).ToList();
-            }
             else 
             {
-                registrationModel.RoleList = (from role in _roleService.GetAllRoleAsync().Result
-                        where role.RoleID== RoleId
-                                              select role).ToList();
+                registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
             }
          
             //BindInstitute();
@@ -129,20 +123,29 @@ namespace CoreLayout.Controllers.UserManagement
             try
             {
                 registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
-                registrationModel.RoleList = await _roleService.GetAllRoleAsync();
-
+                // registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                if (RoleId == 1)
+                {
+                    registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                }
+                else
+                {
+                    registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                }
                 int emailAlreadyExit = _commonController.emailAlreadyExits(registrationModel.EmailID);
                 int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
                 if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
                 {
                    
-                    registrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                    registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                   
                     string salt = _commonController.CreateSalt();
                     string saltedHash = _commonController.ComputeSaltedHash(registrationModel.Password, salt);
                     registrationModel.Salt = salt;
                     registrationModel.SaltedHash = saltedHash;
-
+                    registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                    registrationModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                     if (ModelState.IsValid)
                     {
                         var result = await _registrationService.CreateRegistrationAsync(registrationModel);
@@ -180,9 +183,19 @@ namespace CoreLayout.Controllers.UserManagement
         [AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int id)
         {
+            int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
             var Data = await _registrationService.GetRegistrationByIdAsync(id);
             Data.InstituteList = await _registrationService.GetAllInstituteAsync();
-            Data.RoleList = await _roleService.GetAllRoleAsync();
+            //Data.RoleList = await _roleService.GetAllRoleAsync();
+            if (RoleId == 1)
+            {
+                Data.RoleList = await _roleService.GetAllRoleAsync();
+            }
+            else
+            {
+                Data.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+            }
             if (Data == null)
             {
                 return NotFound();
@@ -208,9 +221,20 @@ namespace CoreLayout.Controllers.UserManagement
             try
             {
                 registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
-                registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                //registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                if (RoleId == 1)
+                {
+                    registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                }
+                else
+                {
+                    registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                }
                 registrationModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                registrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("UserId");
                 if (registrationModel.IsPasswordChange == "1")
                 {
                     string salt = _commonController.CreateSalt();

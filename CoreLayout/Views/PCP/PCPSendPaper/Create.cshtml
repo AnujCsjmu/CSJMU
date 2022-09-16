@@ -29,16 +29,6 @@
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" multiple asp-for="PaperId" asp-items="@(new SelectList(Model.PaperList,"PaperId","PaperName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
@@ -48,6 +38,25 @@
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" multiple asp-for="PaperId" asp-items="@(new SelectList(String.Empty,"PaperId","PaperName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="form-group">
@@ -63,6 +72,26 @@
 </div>
 <!-- Conetnt End-->
 @section Scripts{
-   
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PaperSetterId").on("change", function () {
+
+               /* $("#PaperId").empty();*/
+
+                var ddlsource = "#PaperSetterId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?PaperSetterId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                    $("#PaperId").empty();
+                    $.each(data, function (i, user) {
+                        items += "<option value ='" + user.value + "'>" + user.text + "</option>";
+                });
+                    $('#PaperId').html(items);
+            });
+            });
+        });
+    </script>
 }
 

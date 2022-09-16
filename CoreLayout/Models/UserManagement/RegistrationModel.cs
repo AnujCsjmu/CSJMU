@@ -74,6 +74,11 @@ namespace CoreLayout.Models.UserManagement
         [NotMapped]
         public List<RoleModel> RoleList { get; set; }
 
+        //public List<RoleToRoleMappingModel> RoleToRoleMappingList { get; set; }
+        public int? PaperSetterId { get; set; }
+        public string PaperSetterName { get; set; }
+        
+
 
     }
 }

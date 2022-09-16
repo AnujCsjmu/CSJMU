@@ -9,5 +9,6 @@ namespace CoreLayout.Repositories.Masters.Role
 {
     public interface IRoleRepository : IRepository<RoleModel>
     {
+        Task<List<RoleModel>> GetRoleToRoleMappingByRoleAsync(int FromRoleId);
     }
 }

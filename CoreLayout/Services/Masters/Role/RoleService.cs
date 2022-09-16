@@ -37,5 +37,10 @@ namespace CoreLayout.Services.Masters.Role
         {
             return await _roleRepository.DeleteAsync(roleModel);
         }
+
+        public async Task<List<RoleModel>> GetRoleToRoleMappingByRoleAsync(int FromRoleId)
+        {
+            return await _roleRepository.GetRoleToRoleMappingByRoleAsync(FromRoleId);
+        }
     }
 }

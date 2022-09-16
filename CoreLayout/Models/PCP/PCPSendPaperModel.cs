@@ -13,19 +13,29 @@ namespace CoreLayout.Models.PCP
         [Key]
         public int SendPaperId { get; set; }
 
-        [Display(Name = "Agency Name")]
-        [Required(ErrorMessage = "Please enter agency name")]
+        [Display(Name = "Paper Name")]
+        [Required(ErrorMessage = "Please enter paper name")]
         
         public int PaperId { get; set; }
         public string PaperName { get; set; }
 
-        [Display(Name = "User Name")]
-        [Required(ErrorMessage = "Please enter paper name")]
+        [Display(Name = "Agency Name")]
+        [Required(ErrorMessage = "Please enter agency name")]
         public int UserId { get; set; }
         public string UserName { get; set; }
+
+        [Display(Name = "PaperSetter Name")]
+        [Required(ErrorMessage = "Please enter paper setter name")]
+        public int PaperSetterId { get; set; }
+        public string PaperSetterName { get; set; }
 
         public List<PCPUploadPaperModel> PaperList { get; set; }
 
         public List<RegistrationModel> AgencyList { get; set; }
+
+        public List<RegistrationModel> PaperSetterList { get; set; }
+
+        //public int? RoleId { get; set; }
+        public string CreatedUserName { get; set; }
     }
 }

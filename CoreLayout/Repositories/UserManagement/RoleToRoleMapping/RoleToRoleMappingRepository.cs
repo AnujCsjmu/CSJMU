@@ -1,5 +1,4 @@
-﻿using CoreLayout.Models.PCP;
-using CoreLayout.Models.QPDetails;
+﻿using CoreLayout.Models;
 using CoreLayout.Models.UserManagement;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,15 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Repositories.PCP.PCPSendPaper
+namespace CoreLayout.Repositories.UserManagement.RoleToRoleMapping
 {
-    public class PCPSendPaperRepository : BaseRepository, IPCPSendPaperRepository
+    public class RoleToRoleMappingRepository : BaseRepository, IRoleToRoleMappingRepository
     {
-        public PCPSendPaperRepository(IConfiguration configuration)
+        public RoleToRoleMappingRepository(IConfiguration configuration)
 : base(configuration)
         { }
-
-        public async Task<int> CreateAsync(PCPSendPaperModel entity)
+        public async Task<int> CreateAsync(RoleToRoleMappingModel entity)
         {
             using (var connection = CreateConnection())
             {
@@ -29,19 +27,23 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                 {
                     try
                     {
-                        var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
-                        var res = 0;
+                        int res = 0;
+                        var query = "SP_InsertUpdateDelete_RoleToRoleMapping";
+
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("AgencyId", entity.UserId, DbType.Int32);
-                        parameters.Add("PaperId", entity.PaperId, DbType.Int32);
-                        parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
-                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
+                        parameters.Add("FromRoleId", entity.FromRoleId, DbType.Int32);
+                        //parameters.Add("ToRoleId", entity.ToRoleId, DbType.Int32);
+                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
+                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("@Query", 1, DbType.Int32);
-
-                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        foreach (int ToRoleId in entity.ToRoleList)
+                        {
+                            parameters.Add("ToRoleId", ToRoleId, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
                         if (res == 1)
                         {
                             tran.Commit();
@@ -66,19 +68,18 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                     }
                 }
             }
-
         }
 
-        public async Task<int> DeleteAsync(PCPSendPaperModel entity)
+        public async Task<int> DeleteAsync(RoleToRoleMappingModel entity)
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
+                var query = "SP_InsertUpdateDelete_RoleToRoleMapping";
                 using (var connection = CreateConnection())
                 {
                     entity.IsRecordDeleted = 1;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("SendPaperId", entity.SendPaperId, DbType.Int32);
+                    parameters.Add("RoleMappingId", entity.RoleMappingId, DbType.Int32);
                     parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
@@ -91,17 +92,18 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
             }
         }
 
-        public async Task<List<PCPSendPaperModel>> GetAllAsync()
+        public async Task<List<RoleToRoleMappingModel>> GetAllAsync()
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
+                var query = "SP_InsertUpdateDelete_RoleToRoleMapping";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 4, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<PCPSendPaperModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<PCPSendPaperModel>)list;
+                    var list = await SqlMapper.QueryAsync<RoleToRoleMappingModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<RoleToRoleMappingModel>)list;
                 }
             }
             catch (Exception ex)
@@ -110,17 +112,17 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
             }
         }
 
-        public async Task<PCPSendPaperModel> GetByIdAsync(int SendPaperId)
+        public async Task<RoleToRoleMappingModel> GetByIdAsync(int RoleMappingId)
         {
             try
             {
-                var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
+                var query = "SP_InsertUpdateDelete_RoleToRoleMapping";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("SendPaperId", SendPaperId, DbType.Int32);
+                    parameters.Add("RoleMappingId", RoleMappingId, DbType.Int32);
                     parameters.Add("@Query", 5, DbType.Int32);
-                    var lst = await SqlMapper.QueryAsync<PCPSendPaperModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    var lst = await SqlMapper.QueryAsync<RoleToRoleMappingModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return lst.FirstOrDefault();
                 }
             }
@@ -130,7 +132,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
             }
         }
 
-        public async Task<int> UpdateAsync(PCPSendPaperModel entity)
+        public async Task<int> UpdateAsync(RoleToRoleMappingModel entity)
         {
             using (var connection = CreateConnection())
             {
@@ -141,19 +143,24 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                 {
                     try
                     {
-                        var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
-                        var res = 0;
+                        int res = 0;
+                        var query = "SP_InsertUpdateDelete_RoleToRoleMapping";
+
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("AgencyId", entity.UserId, DbType.Int32);
-                        parameters.Add("PaperId", entity.PaperId, DbType.Int32);
-                        parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
-                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
+                        parameters.Add("FromRoleId", entity.FromRoleId, DbType.Int32);
+                        //parameters.Add("ToRoleId", entity.ToRoleId, DbType.Int32);
+                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
+                        parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        foreach (int ToRoleId in entity.ToRoleList)
+                        {
+                            parameters.Add("ToRoleId", ToRoleId, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
 
-                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
                             tran.Commit();
@@ -182,23 +189,6 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
             }
         }
 
-        public async Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync()
-        {
-            try
-            {
-                var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
-                using (var connection = CreateConnection())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@Query", 6, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<RegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<RegistrationModel>)list;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-        }
+       
     }
 }

@@ -1,18 +1,18 @@
-﻿@using CoreLayout.Models.PCP
-@model IEnumerable<PCPSendPaperModel>
+﻿@using CoreLayout.Models.UserManagement
+@model IEnumerable<RoleToRoleMappingModel>
 @{
     ViewData["title"] = "Index";
 }
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Send Paper List</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">RoleToRoleMapping List</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">SendPaper</a></li>
+            <li class="breadcrumb-item"><a href="#">RoleToRoleMapping</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </div>
     <div class="btn btn-list">
-        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxSendPaperId><i class="fe fe-plus"></i> Add New</a>
+        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxRoleMappingId><i class="fe fe-plus"></i> Add New</a>
     </div>
 </div>
 
@@ -27,20 +27,19 @@
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperId)
+                                    @Html.DisplayNameFor(c => c.FromRoleId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.UserId)
+                                    @Html.DisplayNameFor(c => c.ToRoleId)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.PaperSetterId)
-                                </th>
+                               
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
+                                
                                 <th>
                                     Action
                                 </th>
@@ -53,24 +52,23 @@
                             }
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td>@item.PaperName</td>
-                                <td>@item.UserName</td>
-                                <td>@item.PaperSetterName</td>
-                                <td>@item.CreatedUserName</td>
-                                <td>@item.CreatedDate</td>
-                                <td>
-                                    <div class="table-actions text-center">
-                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.FromRoleName</td>
+                                    <td>@item.ToRoleName</td>
+                                    <td>@item.CreatedBy</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
+                                            <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -82,6 +80,13 @@
 <!-- End Row -->
 
 @section Scripts{
+    <script type="text/javascript">
+        function showMsg(msg, controller, itemid) {
+            mscConfirm(msg, function () {
+                window.location.href = 'State/' + controller + '?StateId=' + itemid;
+            });
+        }
+    </script>
 
     <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>

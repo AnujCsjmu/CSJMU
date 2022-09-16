@@ -125,5 +125,26 @@ namespace CoreLayout.Repositories.Masters.Role
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<List<RoleModel>> GetRoleToRoleMappingByRoleAsync(int FromRoleId)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_Role";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("FromRoleId", FromRoleId, DbType.Int32);
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<RoleModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<RoleModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

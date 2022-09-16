@@ -14,5 +14,6 @@ namespace CoreLayout.Services.Masters.Role
         public Task<int> CreateRoleAsync(RoleModel roleModel);
         public Task<int> UpdateRoleAsync(RoleModel roleModel);
         public Task<int> DeleteRoleAsync(RoleModel roleModel);
+        public Task<List<RoleModel>> GetRoleToRoleMappingByRoleAsync(int FromRoleId);
     }
 }
