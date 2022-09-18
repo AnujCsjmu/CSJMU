@@ -27,5 +27,7 @@ namespace CoreLayout.Models.UserManagement
         public string ToRoleName { get; set; }
 
         public List<int> ToRoleList { get; set; }
+
+        public List<RoleToRoleMappingModel> ToRolelListForGrid { get; set; }
     }
 }

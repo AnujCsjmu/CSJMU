@@ -240,5 +240,7 @@ namespace CoreLayout.Models.PCP
 
         [Display(Name = "Paper Name")]
         public string PaperName { get; set; }
+
+        public int? IsPaperUploaded { get; set; }
     }
 }

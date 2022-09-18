@@ -9,6 +9,10 @@ namespace CoreLayout.Services.PCP.PCPSendReminder
    public  interface IPCPSendReminderService
     {
         public Task<List<PCPRegistrationModel>> GetAllAssingedQP();
+
+        public Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded();
+
+        public Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded();
         //public Task<PCPRegistrationModel> GetPCPApprovalById(int id);
 
         public Task<List<PCPRegistrationModel>> GetReminderById(int id);

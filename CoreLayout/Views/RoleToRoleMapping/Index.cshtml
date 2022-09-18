@@ -29,17 +29,9 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.FromRoleId)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.ToRoleId)
-                                </th>
-                               
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedBy)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedDate)
-                                </th>
-                                
+                                <th>Role to Role Mapping List</th>
+
+
                                 <th>
                                     Action
                                 </th>
@@ -58,9 +50,53 @@
                                         @sno
                                     </td>
                                     <td>@item.FromRoleName</td>
-                                    <td>@item.ToRoleName</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td>@item.CreatedDate</td>
+                                    <td>
+
+                                        <table class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.ToRoleId)
+                                                    </th>
+
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.CreatedBy)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.CreatedDate)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    int sno1 = 0;
+                                                }
+                                                @foreach (var item1 in item.ToRolelListForGrid)
+                                                {
+                                                <tr>
+                                                    <td>
+                                                        @{ sno1++; }
+                                                        @sno1
+                                                    </td>
+                                                    
+                                                    <td>@item1.ToRoleName</td>
+                                                    <td>@item1.CreatedBy</td>
+                                                    <td>@item1.CreatedDate</td>
+                                                    
+                                                </tr>
+                                                }
+                                            </tbody>
+
+                                        </table>
+
+
+
+                                    </td>
+                                    @*<td>@item.ToRoleName</td>
+                                        <td>@item.CreatedBy</td>
+                                        <td>@item.CreatedDate</td>*@
                                     <td>
                                         <div class="table-actions text-center">
                                             <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>

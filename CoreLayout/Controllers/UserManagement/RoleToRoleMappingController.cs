@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,24 +44,59 @@ namespace CoreLayout.Controllers.UserManagement
         {
             try
             {
+                
+                List<RoleToRoleMappingModel> list2 = new List<RoleToRoleMappingModel>();
+                
+
+                var fromRoleList = (from reg in await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync()
+                            select new { reg.FromRoleId, reg.CreatedBy, reg.FromRoleName }).Distinct().ToList();
+                foreach (var _data in fromRoleList)
+                {
+                    List<RoleToRoleMappingModel> list1 = new List<RoleToRoleMappingModel>();
+                    RoleToRoleMappingModel roleToRoleMappingModel = new RoleToRoleMappingModel();
+                    var toRoleList = (from reg1 in await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync()
+                                 where reg1.FromRoleId == _data.FromRoleId
+                                 select reg1).Distinct().ToList();
+                    foreach (var _data1 in toRoleList)
+                    {
+                        
+                        if (_data.FromRoleId == _data1.FromRoleId)
+                        {
+                            roleToRoleMappingModel.RoleMappingId = _data1.RoleMappingId;
+                            roleToRoleMappingModel.FromRoleId = _data1.FromRoleId;
+                            roleToRoleMappingModel.CreatedBy = _data1.CreatedBy;
+                            roleToRoleMappingModel.FromRoleName = _data1.FromRoleName;
+                            roleToRoleMappingModel.ToRoleId = _data1.ToRoleId;
+                            roleToRoleMappingModel.ToRoleName = _data1.ToRoleName;
+                            roleToRoleMappingModel.CreatedDate = _data1.CreatedDate;
+
+                            list1.Add(roleToRoleMappingModel);
+                        }
+                    }
+
+                    roleToRoleMappingModel.ToRolelListForGrid = toRoleList;
+                    list2.Add(roleToRoleMappingModel);
+                }
+                //ViewBag.list = roleToRoleMappingModel;
+
                 //start encrypt id for update, delete & details
-                var menu = await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync();
-                // _ = RefereshMenuAsync();
-                foreach (var _menu in menu)
-                {
-                    var id = _menu.RoleMappingId.ToString();
-                    _menu.EncryptedId = _protector.Protect(id);
-                }
-                //end
-                //start generate maxid for create button
-                int maxmenuid = 0;
-                foreach (var _menu in menu)
-                {
-                    maxmenuid = _menu.RoleMappingId;
-                }
-                maxmenuid = maxmenuid + 1;
-                ViewBag.MaxRoleMappingId = _protector.Protect(maxmenuid.ToString());
-                return View(menu);
+                //var menu = await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync();
+                //_ = RefereshMenuAsync();
+                //foreach (var _menu in roleToRoleMappingModel.ToRolelListForGrid)
+                //{
+                //    var id = _menu.RoleMappingId.ToString();
+                //    _menu.EncryptedId = _protector.Protect(id);
+                //}
+                ////end
+                ////start generate maxid for create button
+                //int maxmenuid = 0;
+                //foreach (var _menu in roleToRoleMappingModel.ToRolelListForGrid)
+                //{
+                //    maxmenuid = _menu.RoleMappingId;
+                //}
+                //maxmenuid = maxmenuid + 1;
+                //ViewBag.MaxRoleMappingId = _protector.Protect(maxmenuid.ToString());
+                return View(list2);
             }
             catch (Exception ex)
             {
@@ -68,7 +104,7 @@ namespace CoreLayout.Controllers.UserManagement
             }
             return View();
         }
-        
+
         [AuthorizeContext(ViewAction.Add)]
         public async Task<ActionResult> CreateAsync(string id)
         {
@@ -168,7 +204,7 @@ namespace CoreLayout.Controllers.UserManagement
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int RoleMappingId, RoleToRoleMappingModel  roleToRoleMappingModel)
+        public async Task<IActionResult> Edit(int RoleMappingId, RoleToRoleMappingModel roleToRoleMappingModel)
         {
 
             try
