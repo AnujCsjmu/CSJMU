@@ -28,7 +28,7 @@
                     <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th><input name="select_all" value="1" type="checkbox"></th>
                                 <th>S.No</th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
@@ -49,7 +49,7 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CourseCode)
                                 </th>
-                               
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
@@ -95,12 +95,12 @@
                         </tbody>
                     </table>
                     <div class="form-group">
-                       
-                            <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
-                            @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
-                            @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
-                        
-                        </div>
+
+                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
+                        @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
+                        @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -126,7 +126,7 @@
 
     @*checkbox*@
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>*@
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>*@
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -159,15 +159,10 @@
             });
 
         });
-
-
-
     </script>
 
     <script type="text/javascript">
-
         $(document).ready(function () {
-
             $("#btnReminder").click(function () {
                 var userid = [];
                 var i = 0;
@@ -198,8 +193,47 @@
             });
 
         });
+    </script>
 
+    @*checkbox multi select at one time*@
+    <script>
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+        }
+        $(document).ready(function () {
+            // Array holding selected row IDs
 
+            var rows_selected = [];
+            //var table = $('#exportexample').DataTable({
+            //    /*$("#exportexample").dataTable().fnDestroy();*/
+            //});
+            var table = $('#exportexample').DataTable();
+            // Handle click on checkbox
+            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
 
+                var $row = $(this).closest('tr');
+
+                // Get row data
+                var data = table.row($row).data();
+
+                // Update state of "Select all" control
+                updateDataTableSelectAllCtrl(table);
+
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+
+            // Handle click on "Select all" control
+            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                if (this.checked) {
+                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                } else {
+                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
+                }
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+        });
     </script>
 }

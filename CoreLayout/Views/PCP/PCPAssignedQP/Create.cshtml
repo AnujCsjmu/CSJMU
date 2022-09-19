@@ -6,7 +6,7 @@
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Create Assigned QP</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Assigned QP to Paper Setter</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">AssignedQP</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create</li>
@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" multiple asp-for="QPList" asp-items="@(new SelectList(ViewBag.QPList,"QPId","QPName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>

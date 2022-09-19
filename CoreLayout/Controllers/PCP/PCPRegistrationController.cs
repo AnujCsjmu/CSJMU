@@ -63,9 +63,8 @@ namespace CoreLayout.Controllers.PSP
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             pCPRegistrationModel.QPCodeList =await _qPMasterService.GetAllQPMaster();
             pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
-            //pCPRegistrationModel.BranchList = await _branchService.GetAllBranch();
-            //pCPRegistrationModel.InstituteList = await _instituteService.GetAllInstitute();
-            //return View(pSPRegistrationModel);
+
+            pCPRegistrationModel.BranchList = await _courseBranchMappingService.GetAllCourseBranchMapping();
             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
         }
 
@@ -109,9 +108,11 @@ namespace CoreLayout.Controllers.PSP
                                 var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
                                 if (res.Equals(1))
                                 {
+                                    ModelState.Clear();
                                     //success
                                     ModelState.AddModelError("", "Data saved!");
-                                    return RedirectToAction("Login", "Home");
+                                    errormsg = String.Format("Hello{0}.\n You are registered as role paper setter. \n After COE approval, You will get userid and password \n in registered email and mobile", pCPRegistrationModel.UserName);
+                                    return await Registration();
                                 }
                                 else
                                 {
@@ -143,7 +144,7 @@ namespace CoreLayout.Controllers.PSP
                 //return RedirectToAction("Registration", "PSPRegistration");
             }
             //return RedirectToAction(nameof(Registration));
-            return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
+            return View("~/Views/PCP/PCPRegistration/Registration.cshtml","PCPRegistration");
         }
 
         [Obsolete]

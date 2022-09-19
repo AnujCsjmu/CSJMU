@@ -111,6 +111,7 @@ namespace CoreLayout.Controllers.PCP
             pCPSendPaperModel.PaperSetterList = (from reg in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
                                                  where reg.RoleId == 19
                                                  select reg).ToList();
+
             if (ModelState.IsValid)
             {
 
@@ -138,11 +139,11 @@ namespace CoreLayout.Controllers.PCP
                                    Text = user.PaperName,
                                    Value = user.PaperId.ToString(),
                                }).ToList();
-            GetUserList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
+            //GetUserList.Insert(0, new SelectListItem()
+            //{
+            //    Text = "----Select----",
+            //    Value = string.Empty
+            //});
 
             //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
 

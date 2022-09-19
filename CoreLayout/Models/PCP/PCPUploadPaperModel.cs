@@ -63,7 +63,7 @@ namespace CoreLayout.Models.PCP
 
         public int? PCPRegID { get; set; }
 
- 
-     
+
+        public int? RoleId { get; set; }
     }
 }

@@ -40,7 +40,11 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
-
+                        //foreach (var s in entity.PaperSetterList)
+                        //{
+                        //    parameters.Add("PaperId", s.PaperSetterId, DbType.Int32);
+                        //    res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        //}
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {

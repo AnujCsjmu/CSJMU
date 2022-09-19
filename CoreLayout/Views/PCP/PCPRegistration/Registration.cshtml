@@ -60,7 +60,7 @@
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
                                 <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
                                 <div class="card-body">
-                                    <form method="post" asp-controller="PCPRegistration" asp-action="Registration" enctype="multipart/form-data">
+                                    <form method="post" enctype="multipart/form-data">
                                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                                         </div>
@@ -137,7 +137,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="MobileNo" type="number" maxlength="10" placeholder="Enter your mobile number" />
+                                                    <input class="form-control" asp-for="MobileNo" maxlength="10" placeholder="Enter your mobile number" />
                                                     <label asp-for="MobileNo">Mobile Number</label>
                                                     <span class="text-danger" asp-validation-for="MobileNo"></span>
                                                 </div>
@@ -244,7 +244,7 @@
 
                                         </div>
                                         <div>
-                                            <input class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to delete this?')" />
+                                            <input  class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to submit this?')" />
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             @if (ViewBag.errormsg != null && ViewBag.errormsg != "")

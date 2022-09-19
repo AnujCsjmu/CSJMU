@@ -297,10 +297,7 @@
     <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 
-
-    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/json2/20130526/json2.min.js"></script>*@
-
+    @*sendReminder*@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#btnReminder").click(function () {
@@ -333,6 +330,7 @@
         });
     </script>
 
+    @*ViewReminder*@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#btnViewReminder").click(function () {
@@ -364,48 +362,27 @@
         });
     </script>
 
-
+    @*checkbox multi select at one time*@
     <script>
-        //
-        // Updates "Select all" control in a data table
-        //
         function updateDataTableSelectAllCtrl(table) {
             var $table = table.table().node();
             var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
         }
         $(document).ready(function () {
             // Array holding selected row IDs
+           
             var rows_selected = [];
-            var table = $('#exportexample').DataTable({
-            });
-
+            //var table = $('#exportexample').DataTable({
+            //    /*$("#exportexample").dataTable().fnDestroy();*/
+            //});
+            var table = $('#exportexample').DataTable();
             // Handle click on checkbox
             $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
+              
                 var $row = $(this).closest('tr');
 
                 // Get row data
                 var data = table.row($row).data();
-
-                //// Get row ID
-                //var rowId = data[0];
-
-                //// Determine whether row ID is in the list of selected row IDs
-                //var index = $.inArray(rowId, rows_selected);
-
-                //// If checkbox is checked and row ID is not in list of selected row IDs
-                //if (this.checked && index === -1) {
-                //    rows_selected.push(rowId);
-
-                //    // Otherwise, if checkbox is not checked and row ID is in list of selected row IDs
-                //} else if (!this.checked && index !== -1) {
-                //    rows_selected.splice(index, 1);
-                //}
-
-                //if (this.checked) {
-                //    $row.addClass('selected');
-                //} else {
-                //    $row.removeClass('selected');
-                //}
 
                 // Update state of "Select all" control
                 updateDataTableSelectAllCtrl(table);
@@ -421,7 +398,6 @@
                 } else {
                     $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
                 }
-
                 // Prevent click event from propagating to parent
                 e.stopPropagation();
             });

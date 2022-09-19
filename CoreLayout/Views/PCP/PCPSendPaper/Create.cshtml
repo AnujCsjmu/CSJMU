@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="PaperId" asp-items="@(new SelectList(String.Empty,"PaperId","PaperName"))">
+                                <select class="form-control select" multiple asp-for="PaperId" asp-items="@(new SelectList(String.Empty,"PaperId","PaperName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>

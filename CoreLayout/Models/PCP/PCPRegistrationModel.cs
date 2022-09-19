@@ -14,7 +14,7 @@ namespace CoreLayout.Models.PCP
         [Key]
         public int PCPRegID { get; set; }
 
-        [Display(Name = "Paper Setter")]
+        [Display(Name = "Paper Setter Name")]
         [Required(ErrorMessage = "Please enter user name")]
         [StringLength(50)]
         public string UserName { get; set; }
@@ -65,8 +65,9 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Role Name")]
         public int RoleId { get; set; }
 
-        [Display(Name = "Institute Name")]
+        [Display(Name = "Institute/College Name")]
         [Required(ErrorMessage = "Please enter institute name")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         //public int InstituteId { get; set; }
         public string InstituteName { get; set; }
 

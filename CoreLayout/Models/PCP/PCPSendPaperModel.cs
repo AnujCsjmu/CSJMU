@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Masters;
 using CoreLayout.Models.UserManagement;
 using System;
 using System.Collections.Generic;
@@ -37,5 +38,15 @@ namespace CoreLayout.Models.PCP
 
         //public int? RoleId { get; set; }
         public string CreatedUserName { get; set; }
+
+        public List<CourseModel> CourseList { get; set; }
+
+        [Display(Name = "Course Name")]
+        [Required(ErrorMessage = "Please enter course name")]
+        public int CourseID { get; set; }
+
+        public string CourseName { get; set; }
+
+        public int? RoleId { get; set; }
     }
 }

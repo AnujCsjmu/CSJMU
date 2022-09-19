@@ -110,7 +110,8 @@
                                                             <tr>
                                                                 <th>S.No</th>
                                                                 <th>
-                                                                    @Html.DisplayNameFor(c => c.QPCode)
+                                                                    @*@Html.DisplayNameFor(c => c.QPCode)*@
+                                                                    QP Code Allotted?
                                                                 </th>
                                                                 <th>
                                                                     @Html.DisplayNameFor(c => c.QPName)
@@ -156,8 +157,15 @@
                                                                 </td>
                                                             </tr>
                                                         }
+                                                        
                                                     }
                                                 }
+                                                <tr>
+                                                    <td>
+                                                        <label style="font-weight:bold; color:red">Not Allotted</label>
+                                                        
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
 
