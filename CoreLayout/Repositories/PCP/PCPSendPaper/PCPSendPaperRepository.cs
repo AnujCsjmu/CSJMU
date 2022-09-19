@@ -34,6 +34,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseID, DbType.Int32);
                         parameters.Add("PaperId", entity.PaperId, DbType.Int32);
                         parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);

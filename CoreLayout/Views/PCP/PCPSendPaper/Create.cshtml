@@ -31,6 +31,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="UserId" asp-items="@(new SelectList(Model.AgencyList,"UserID","UserName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>

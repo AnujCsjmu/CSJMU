@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Enum;
 using CoreLayout.Filters;
 using CoreLayout.Models.PCP;
+using CoreLayout.Services.Masters.Course;
 using CoreLayout.Services.PCP.PCPSendPaper;
 using CoreLayout.Services.PCP.PCPSendReminder;
 using CoreLayout.Services.PCP.PCPUploadPaper;
@@ -27,7 +28,8 @@ namespace CoreLayout.Controllers.PCP
         private readonly IPCPSendPaperService _pCPSendPaperService;
         private readonly IRegistrationService _registrationService;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
-        public PCPSendPaperController(ILogger<PCPSendPaperController> logger, IDataProtectionProvider provider, IPCPSendReminderService pCPSendReminderService, IPCPSendPaperService pCPSendPaperService, IRegistrationService registrationService, IPCPUploadPaperService pCPUploadPaperService)
+        private readonly ICourseService _courseService;
+        public PCPSendPaperController(ILogger<PCPSendPaperController> logger, IDataProtectionProvider provider, IPCPSendReminderService pCPSendReminderService, IPCPSendPaperService pCPSendPaperService, IRegistrationService registrationService, IPCPUploadPaperService pCPUploadPaperService, ICourseService courseService)
         {
             _logger = logger;
             _protector = provider.CreateProtector("PCPSendPaper.PCPSendPaperController");
@@ -35,6 +37,7 @@ namespace CoreLayout.Controllers.PCP
             _pCPSendPaperService = pCPSendPaperService;
             _registrationService = registrationService;
             _pCPUploadPaperService = pCPUploadPaperService;
+            _courseService = courseService;
         }
 
         [AuthorizeContext(ViewAction.View)]
@@ -81,6 +84,8 @@ namespace CoreLayout.Controllers.PCP
             {
 
                 PCPSendPaperModel pCPSendPaperModel = new PCPSendPaperModel();
+                pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
+                                                select course).ToList();
                 pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
                                                 where reg.RoleId == 21
                                                 select reg).ToList();
@@ -105,6 +110,8 @@ namespace CoreLayout.Controllers.PCP
         {
             pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+            pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
+                                            select course).ToList();
             pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
                                             where reg.RoleId == 21
                                             select reg).ToList();
