@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.UserManagement;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,11 +27,11 @@ namespace CoreLayout.Models.PCP
         public string UserName { get; set; }
 
         [Display(Name = "PaperSetter Name")]
-        [Required(ErrorMessage = "Please enter paper setter name")]
-        public int PaperSetterId { get; set; }
+        //[Required(ErrorMessage = "Please enter paper setter name")]
+        public int? PaperSetterId { get; set; }
         public string PaperSetterName { get; set; }
 
-        public List<PCPUploadPaperModel> PaperList { get; set; }
+        public List<int> PaperList { get; set; }
 
         public List<RegistrationModel> AgencyList { get; set; }
 

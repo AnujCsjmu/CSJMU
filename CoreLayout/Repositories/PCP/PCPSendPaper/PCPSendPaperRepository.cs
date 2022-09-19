@@ -35,18 +35,18 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
                         parameters.Add("CourseID", entity.CourseID, DbType.Int32);
-                        parameters.Add("PaperId", entity.PaperId, DbType.Int32);
+                        //parameters.Add("PaperId", entity.PaperId, DbType.Int32);
                         parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
-                        //foreach (var s in entity.PaperSetterList)
-                        //{
-                        //    parameters.Add("PaperId", s.PaperSetterId, DbType.Int32);
-                        //    res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
-                        //}
-                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        foreach (int paperid in entity.PaperList)
+                        {
+                            parameters.Add("PaperId", paperid, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        //res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
                             tran.Commit();
@@ -151,14 +151,19 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
-                        parameters.Add("PaperId", entity.PaperId, DbType.Int32);
+                        //parameters.Add("PaperId", entity.PaperId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseID, DbType.Int32);
                         parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
                         parameters.Add("@Query", 2, DbType.Int32);
-
-                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        foreach (int paperid in entity.PaperList)
+                        {
+                            parameters.Add("PaperId", paperid, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        // res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
                             tran.Commit();

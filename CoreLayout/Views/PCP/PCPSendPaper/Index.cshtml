@@ -27,11 +27,12 @@
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperId)
-                                </th>
-                                <th>
                                     @Html.DisplayNameFor(c => c.UserId)
                                 </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperId)
+                                </th>
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperSetterId)
                                 </th>
@@ -58,8 +59,9 @@
                                     @{ sno++; }
                                     @sno
                                 </td>
-                                <td>@item.PaperName</td>
                                 <td>@item.UserName</td>
+                                <td>@item.PaperName</td>
+
                                 <td>@item.PaperSetterName</td>
                                 <td>@item.CreatedUserName</td>
                                 <td>@item.CreatedDate</td>

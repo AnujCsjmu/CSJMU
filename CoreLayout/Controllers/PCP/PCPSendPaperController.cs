@@ -89,9 +89,12 @@ namespace CoreLayout.Controllers.PCP
                 pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
                                                 where reg.RoleId == 21
                                                 select reg).ToList();
-                pCPSendPaperModel.PaperSetterList = (from reg in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
-                                                     where reg.RoleId == 19
-                                                     select reg).ToList();
+                pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                     where setter.RoleId == 19
+                                                     select setter).ToList();
+                ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                                         //where user.CreatedBy == PaperSetterId
+                                     select paper).ToList();
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
             }
@@ -115,9 +118,12 @@ namespace CoreLayout.Controllers.PCP
             pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
                                             where reg.RoleId == 21
                                             select reg).ToList();
-            pCPSendPaperModel.PaperSetterList = (from reg in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
-                                                 where reg.RoleId == 19
-                                                 select reg).ToList();
+            pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                 where setter.RoleId == 19
+                                                 select setter).ToList();
+            ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                                               //where user.CreatedBy == PaperSetterId
+                                           select paper).ToList();
 
             if (ModelState.IsValid)
             {

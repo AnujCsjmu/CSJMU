@@ -47,25 +47,59 @@
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
+                        @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
+                                    <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                    <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" multiple asp-for="PaperId" asp-items="@(new SelectList(String.Empty,"PaperId","PaperName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                <select class="form-control select" multiple asp-for="PaperList" asp-items="@(new SelectList(ViewBag.PaperList,"PaperId","PaperName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
                                 <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
 
+                        @*<div class="col-md-6">
+                                <div>
+                                    <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
+                                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th><input name="select_all" value="1" type="checkbox"></th>
+                                                <th>S.No</th>
+                                                <th>
+                                                    @Html.DisplayNameFor(c => c.PaperId)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int sno = 0;
+                                            }
+                                            @foreach (var item in ViewBag.PaperList)
+                                            {
+                                                <tr>
+                                                    <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
+
+                                                    <td>
+                                                        @{ sno++; }
+                                                        @sno
+                                                    </td>
+                                                    <td>@item.PaperName</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>*@
 
                     </div>
                     <div class="form-group">
@@ -99,6 +133,73 @@
                 });
                     $('#PaperId').html(items);
             });
+            });
+        });
+    </script>
+
+
+    @*checkbox multi select at one time*@
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+        }
+        $(document).ready(function () {
+            // Array holding selected row IDs
+
+            var rows_selected = [];
+            var table = $('#exportexample').DataTable({
+                "scrollY": 100,
+                "scrollX": true,
+                "scrollCollapse": true,
+                "fixedHeader": true,
+                "bInfo": false,
+                scrollResize: true,
+                lengthChange: false,
+                searching: false,
+                paging: false,
+                fixedColumns: {
+                    leftColumns: 1,
+                    rightColumns: 1
+                },
+                columnDefs: [{
+                    orderable: false,
+                    className: 'select-checkbox',
+                    targets: 0
+                }],
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child'
+                },
+                order: [[1, 'asc']]
+            });
+            //var table = $('#exportexample').DataTable();
+            // Handle click on checkbox
+            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
+
+                var $row = $(this).closest('tr');
+
+                // Get row data
+                var data = table.row($row).data();
+
+                // Update state of "Select all" control
+                updateDataTableSelectAllCtrl(table);
+
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+
+            // Handle click on "Select all" control
+            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                if (this.checked) {
+                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                } else {
+                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
+                }
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
             });
         });
     </script>
