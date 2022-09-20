@@ -41,9 +41,9 @@ namespace CoreLayout.Services.PCP.PCPAssignedQP
             return await _pCPAssignedQPRepository.DeleteAsync(pCPAssignedQPModel);
         }
 
-        public async Task<List<PCPAssignedQPModel>> GetAllQPByPCPRegIdAsync(int PCPRegid)
+        public async Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid)
         {
-            return await _pCPAssignedQPRepository.GetAllQPByPCPRegIdAsync(PCPRegid);
+            return await _pCPAssignedQPRepository.GetAllUserByQPIdAsync(qpid);
         }
 
         public async Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid)

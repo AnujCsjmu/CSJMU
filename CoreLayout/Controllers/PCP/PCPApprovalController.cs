@@ -137,7 +137,7 @@ namespace CoreLayout.Controllers
         }
         
 
-        public async Task<IActionResult> GetJsonData(string uid)
+        public async Task<IActionResult> Approved(string uid)
         {
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             int result = 0;
@@ -214,7 +214,9 @@ namespace CoreLayout.Controllers
                         TempData["error"] = "User has been not approved successfully";
                     }
                 }
-                return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
+                //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
+                ModelState.Clear();
+                return await Index();
             }
             //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
             return RedirectToAction(nameof(Index));

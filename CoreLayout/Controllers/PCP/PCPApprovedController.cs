@@ -61,25 +61,25 @@ namespace CoreLayout.Controllers.PCP
                             where reg.IsApproved != null
                             select reg).ToList();
 
-                //get how much qp assign to the user
-                List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
-                List<List<PCPAssignedQPModel>> qPMasterModels = new List<List<PCPAssignedQPModel>>();
-                PCPAssignedQPModel pCPAssignedQPModel = new PCPAssignedQPModel();
-                foreach (var _data in data)
-                {
-                    List<PCPAssignedQPModel> qpmodelt = new List<PCPAssignedQPModel>();
-                    string id = _data.PCPRegID.ToString();
-                    var data1 = await _pCPAssignedQPService.GetAllQPByPCPRegIdAsync(Convert.ToInt32(id));
-                    foreach (var _data1 in data1)
-                    {
+                ////get how much qp assign to the user
+                //List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
+                //List<List<PCPAssignedQPModel>> qPMasterModels = new List<List<PCPAssignedQPModel>>();
+                //PCPAssignedQPModel pCPAssignedQPModel = new PCPAssignedQPModel();
+                //foreach (var _data in data)
+                //{
+                //    List<PCPAssignedQPModel> qpmodelt = new List<PCPAssignedQPModel>();
+                //    string id = _data.PCPRegID.ToString();
+                //    var data1 = await _pCPAssignedQPService.GetAllQPByPCPRegIdAsync(Convert.ToInt32(id));
+                //    foreach (var _data1 in data1)
+                //    {
 
-                        qpmodelt.Add(_data1);
-                    }
-                    qPMasterModels.Add(qpmodelt);
+                //        qpmodelt.Add(_data1);
+                //    }
+                //    qPMasterModels.Add(qpmodelt);
                     
-                }
-                //pCPAssignedQPModel.QPListForGrid = qPMasterModels;
-                ViewBag.QPList = qPMasterModels;
+                //}
+                ////pCPAssignedQPModel.QPListForGrid = qPMasterModels;
+                //ViewBag.QPList = qPMasterModels;
 
                 //end
 

@@ -23,85 +23,87 @@
     <div class="col-lg-12">
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
-                <div class="table-responsive-sm">
+                <form asp-action="Index" method="post">
+                    <div class="table-responsive-sm">
 
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
-                        <thead>
-                            <tr>
-                                <th><input name="select_all" value="1" type="checkbox"></th>
-                                <th>S.No</th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.UserName)
-                                </th>
-
-                                <th>
-                                    @Html.DisplayNameFor(c => c.MobileNo)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.EmailID)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.InstituteCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.BranchCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CourseCode)
-                                </th>
-
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedDate)
-                                </th>
-
-                                <th>
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @{
-                                int sno = 0;
-                            }
-                            @foreach (var item in Model)
-                            {
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-                                    </td>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td>@item.UserName</td>
+                                    <th><input name="select_all" value="1" type="checkbox"></th>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.UserName)
+                                    </th>
 
-                                    <td>@item.MobileNo</td>
-                                    <td>@item.EmailID</td>
-                                    <td>@item.InstituteCode</td>
-                                    <td>@item.BranchCode</td>
-                                    <td>@item.CourseCode</td>
-                                    <td>@item.CreatedDate</td>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.MobileNo)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.EmailID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.InstituteCode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.BranchCode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.CourseCode)
+                                    </th>
 
-                                    <td>
-                                        <div class="table-actions text-center">
-                                            @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
-                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        </div>
-                                    </td>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.CreatedDate)
+                                    </th>
+
+                                    <th>
+                                        Action
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <div class="form-group">
+                            </thead>
 
-                        <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
-                        @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
-                        @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
+                            <tbody>
+                                @{
+                                    int sno = 0;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+                                        </td>
+                                        <td>
+                                            @{ sno++; }
+                                            @sno
+                                        </td>
+                                        <td>@item.UserName</td>
 
+                                        <td>@item.MobileNo</td>
+                                        <td>@item.EmailID</td>
+                                        <td>@item.InstituteCode</td>
+                                        <td>@item.BranchCode</td>
+                                        <td>@item.CourseCode</td>
+                                        <td>@item.CreatedDate</td>
+
+                                        <td>
+                                            <div class="table-actions text-center">
+                                                @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
+                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+
+                            <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
+                            @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
+                            @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
+
+                        </div>
                     </div>
-                </div>
+                    </form>
             </div>
         </div>
     </div>
@@ -141,7 +143,7 @@
                 if (userid.length > 0) {
                     $.ajax({
                         type: 'POST',
-                        url: '/PCPApproval/GetJsonData?uid=' + userid,
+                        url: '/PCPApproval/Approved?uid=' + userid,
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
 

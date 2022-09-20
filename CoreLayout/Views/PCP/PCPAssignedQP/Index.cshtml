@@ -27,17 +27,12 @@
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.QPId)
+                                    @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PCPRegID)
+                                    @Html.DisplayNameFor(c => c.QPName)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedBy)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedDate)
-                                </th>
+                                <th>Assigned User List</th>
                                 <th>
                                     Action
                                 </th>
@@ -50,65 +45,68 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td>
-
-                                        <table class="table table-sm table-bordered key-buttons text-wrap w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th>S.No</th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(c => c.QPCode)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(c => c.QPName)
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @{
-                                                    int sno1 = 0;
-                                                }
-                                                @foreach (var item1 in ViewBag.QPList)
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                               
+                                <td>
+                                    @item.QPCode
+                                </td>
+                                <td>
+                                    @item.QPName
+                                </td>
+                                <td>
+                                    <table class="table table-sm table-bordered key-buttons text-wrap w-100">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                               
+                                                <th>
+                                                    @Html.DisplayNameFor(c => c.PCPRegID)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(c => c.CreatedBy)
+                                                </th>
+                                                <th>
+                                                    @Html.DisplayNameFor(c => c.CreatedDate)
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int sno1 = 0;
+                                            }
+                                            @foreach (var item1 in ViewBag.UserList)
+                                            {
+                                                foreach (var list in item1)
                                                 {
-                                                    foreach (var list in item1)
+                                                    if (list.QPId == item.QPId)
                                                     {
-                                                        if (list.PCPRegID == item.PCPRegID)
-                                                        {
-                                                            <tr>
-                                                                <td>
-                                                                    @{ sno1++; }
-                                                                    @sno1
-                                                                </td>
-                                                                <td>
-                                                                    @list.QPCode
-                                                                </td>
-                                                                <td>
-                                                                    @list.QPName
-                                                                </td>
-                                                            </tr>
-                                                        }
+                                                        <tr>
+                                                            <td>
+                                                                @{ sno1++; }
+                                                                @sno1
+                                                            </td>
+                                                            <td>@list.UserName</td>
+                                                            <td>@list.CreatedBy</td>
+                                                            <td>@list.CreatedDate</td>
+                                                        </tr>
                                                     }
                                                 }
-                                            </tbody>
-                                        </table>
-
-                                    </td>
-                                    <td>@item.UserName</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td>@item.CreatedDate</td>
-                                    <td>
-                                        <div class="table-actions text-center">
-                                            <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </td>
+                                <td>
+                                    <div class="table-actions text-center">
+                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

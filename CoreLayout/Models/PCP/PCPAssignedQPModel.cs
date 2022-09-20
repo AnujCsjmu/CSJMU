@@ -17,7 +17,7 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please enter qp name")]
         //[StringLength(50)]
         public int QPId { get; set; }
-        public List<int> QPList { get; set; }
+        public List<QPMasterModel> QPList { get; set; }
         public string QPName { get; set; }
         public string QPCode { get; set; }
 
@@ -25,7 +25,7 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please enter user name")]
        // [StringLength(50)]
         public int PCPRegID { get; set; }
-        public List<PCPRegistrationModel> UserList { get; set; }
+        public List<int> UserList { get; set; }
         public string UserName { get; set; }
 
         public int? UserId { get; set; }

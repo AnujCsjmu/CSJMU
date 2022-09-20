@@ -35,8 +35,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
-                                <select  class="form-control select" multiple asp-for="QPList" asp-items="@(new SelectList(ViewBag.QPList,"QPId","QPName"))">
-                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPList,"QPId","QPName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
@@ -44,8 +44,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PCPRegID"> </label><span class="tx-danger"> *</span>
-                                <select  class="form-control select" asp-for="PCPRegID" asp-items="@(new SelectList(Model.UserList,"PCPRegID","UserName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                <select class="form-control select" multiple asp-for="UserList" asp-items="@(new SelectList(ViewBag.UserList,"PCPRegID","UserName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
                                 <span asp-validation-for="PCPRegID" class="parsley-errors-list filled"></span>
                             </div>

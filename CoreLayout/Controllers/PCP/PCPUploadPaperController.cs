@@ -58,8 +58,11 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 //start encrypt id for update,delete & details
-               
-                var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
+                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
+                //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
+                var data = (from reg in (await _pCPUploadPaperService.GetAllPCPUploadPaper())
+                            where reg.CreatedBy == CreatedBy
+                            select reg).ToList();
                 foreach (var _data in data)
                 {
                     var stringId = _data.PaperId.ToString();
@@ -117,11 +120,11 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                
+                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
                 pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
-                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaperModel.CreatedBy);
+                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync(CreatedBy);
 
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
@@ -139,10 +142,11 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         public async Task<IActionResult> CreateAsync(PCPUploadPaperModel pCPUploadPaper)
         {
+            int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
             pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
-            pCPUploadPaper.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaper.CreatedBy);
+            pCPUploadPaper.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync(CreatedBy);
             if (pCPUploadPaper.UploadPaper != null)
             {
                 //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
