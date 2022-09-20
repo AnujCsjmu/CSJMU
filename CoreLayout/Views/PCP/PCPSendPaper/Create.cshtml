@@ -24,7 +24,8 @@
                         <h6 class="card-title mb-1">Create State</h6>
                         <hr>
                     </div>*@
-                <form asp-action="Create" method="post">
+                <form asp-action="Create" method="post" id="form1">
+                    <input type="hidden" asp-for="paperids" value="" id="hdnpaperid" />
                     <div class="row">
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
@@ -56,54 +57,71 @@
                                     <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
                                 </div>
                             </div>*@
+                        <!--<div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
+                            <select class="form-control select" multiple asp-for="PaperList" asp-items="@(new SelectList(ViewBag.PaperList,"PaperId","PaperName"))">-->
+                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                        <!--</select>
+                                <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>-->
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" multiple asp-for="PaperList" asp-items="@(new SelectList(ViewBag.PaperList,"PaperId","PaperName"))">
-                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
-                                </select>
-                                <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
+                                <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th><input name="select_all" value="1" type="checkbox"></th>
+                                            <th>S.No</th>
+                                            <th>
+                                                @Html.DisplayNameFor(c => c.PaperId)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(c => c.CreatedBy)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(c => c.CreatedDate)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            int sno = 0;
+                                        }
+                                        @foreach (var item in ViewBag.PaperList)
+                                        {
+                                            <tr>
+                                                <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
+
+                                                <td>
+                                                    @{ sno++; }
+                                                    @sno
+                                                </td>
+                                                <td>@item.PaperName</td>
+                                                <td>@item.CreatedBy</td>
+                                                <td>@item.CreatedDate</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <span asp-validation-for="paperids" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-
-                        @*<div class="col-md-6">
-                                <div>
-                                    <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
-                                        <thead>
-                                            <tr>
-                                                <th><input name="select_all" value="1" type="checkbox"></th>
-                                                <th>S.No</th>
-                                                <th>
-                                                    @Html.DisplayNameFor(c => c.PaperId)
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                int sno = 0;
-                                            }
-                                            @foreach (var item in ViewBag.PaperList)
-                                            {
-                                                <tr>
-                                                    <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
-
-                                                    <td>
-                                                        @{ sno++; }
-                                                        @sno
-                                                    </td>
-                                                    <td>@item.PaperName</td>
-                                                </tr>
-                                            }
-                                        </tbody>
-                                    </table>
-                                    <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
-                                </div>
-                            </div>*@
-
                     </div>
+                    @*<div class="col-md-6">
+                        <div class="form-group">
+
+                           <input type="checkbox" id="chkdeclear" asp-for="TermsAndConditions" />
+                            <label asp-for="TermsAndConditions"> </label><span class="tx-danger"> *</span>
+                            <span asp-validation-for="TermsAndConditions" class="parsley-errors-list filled"></span>
+                        </div>
+                    </div>*@
+
+                    <br />
                     <div class="form-group">
-                        <input type="submit" class="btn btn-primary" value="Save" />
+                        <input id="submit" type="submit" class="btn btn-primary" value="Save" onclick="return confirm('After submit you can not any changes! submit?')" />
                         <a asp-action="Index" class="btn btn-success">Back to List</a>
 
                     </div>
@@ -203,5 +221,26 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+        i = 0;
+        $('#submit').click(function () {
+            var userid = [];
+            $('#chkid:checked').each(function () {
+                userid[i++] = $(this).val();
+            });
+            if (userid.length > 0) {
+                document.getElementById('hdnpaperid').value = userid;
+                var form = document.getElementById("form1");
+                form.submit();
+            }
+            else {
+                alert("Select atleast one checkbox");
+            }
+        });
+
+    </script>
+
+   
 }
 

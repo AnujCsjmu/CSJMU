@@ -1,19 +1,19 @@
 ﻿@using CoreLayout.Models.PCP
-@model IEnumerable<PCPSendPaperModel>
+@model IEnumerable<PCPRegistrationModel>
 @{
     ViewData["title"] = "Index";
 }
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Send Paper List</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">View QP Code And Paper Setter Wise Report</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">SendPaper</a></li>
+            <li class="breadcrumb-item"><a href="#">ViewReport</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </div>
-    <div class="btn btn-list">
+    @*<div class="btn btn-list">
         <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxSendPaperId><i class="fe fe-plus"></i> Send Paper</a>
-    </div>
+    </div>*@
 </div>
 
 <!-- Row -->
@@ -26,25 +26,18 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.UserId)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.PaperId)
-                                </th>
 
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperSetterId)
+                                    @Html.DisplayNameFor(c => c.UserName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.CreatedBy)
+                                    @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.CreatedDate)
+                                    @Html.DisplayNameFor(c => c.QPName)
                                 </th>
-                                <th>
-                                    Action
-                                </th>
+
+                             
                             </tr>
                         </thead>
 
@@ -59,19 +52,18 @@
                                     @{ sno++; }
                                     @sno
                                 </td>
-                                <td>@item.UserName</td>
-                                <td>@item.PaperName</td>
 
-                                <td>@item.PaperSetterName</td>
-                                <td>@item.CreatedUserName</td>
-                                <td>@item.CreatedDate</td>
-                                <td>
-                                    <div class="table-actions text-center">
-                                        @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
-                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                        @*<a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>*@
-                                    </div>
-                                </td>
+                                <td>@item.UserName</td>
+                                <td>@item.QPCode</td>
+                                <td>@item.QPName</td>
+
+                                <!--<td>
+        <div class="table-actions text-center">-->
+                                @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
+                                <!--<a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>-->
+                                @*<a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>*@
+                                <!--</div>
+    </td>-->
                             </tr>
                             }
                         </tbody>

@@ -41,11 +41,13 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
-                        foreach (int paperid in entity.PaperList)
+                        String[] array = entity.paperids.Split(",");
+                        for (int i = 0; i < array.Length; i++)
                         {
-                            parameters.Add("PaperId", paperid, DbType.Int32);
+                            parameters.Add("PaperId", Convert.ToInt32(array[i]), DbType.Int32);
                             res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         }
+                       
                         //res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
@@ -158,12 +160,12 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
                         parameters.Add("@Query", 2, DbType.Int32);
-                        foreach (int paperid in entity.PaperList)
-                        {
-                            parameters.Add("PaperId", paperid, DbType.Int32);
-                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
-                        }
-                        // res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        //foreach (int paperid in entity.PaperList)
+                        //{
+                        //    parameters.Add("PaperId", paperid, DbType.Int32);
+                        //    res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        //}
+                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
                             tran.Commit();

@@ -11,5 +11,7 @@ namespace CoreLayout.Services.PCP.PCPRegistration
         public Task<int> CreatePCPRegistrationAsync(PCPRegistrationModel pCPRegistrationModel);
         public Task<int> UpdatePCPRegistrationAsync(PCPRegistrationModel pCPRegistrationModel);
         public Task<int> DeletePCPRegistrationAsync(PCPRegistrationModel pCPRegistrationModel);
+
+        public Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise();
     }
 }

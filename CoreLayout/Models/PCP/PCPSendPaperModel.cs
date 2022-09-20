@@ -33,6 +33,8 @@ namespace CoreLayout.Models.PCP
 
         public List<int> PaperList { get; set; }
 
+        public List<string> SelectedPaperList { get; set; }
+
         public List<RegistrationModel> AgencyList { get; set; }
 
         public List<RegistrationModel> PaperSetterList { get; set; }
@@ -49,5 +51,12 @@ namespace CoreLayout.Models.PCP
         public string CourseName { get; set; }
 
         public int? RoleId { get; set; }
+
+        public string paperids { get; set; }
+
+        //[Display(Name = "Terms and Conditions")]
+        //[Range(typeof(bool), "true", "true", ErrorMessage = "You gotta tick the box!")]
+        //public bool TermsAndConditions { get; set; }
+
     }
 }

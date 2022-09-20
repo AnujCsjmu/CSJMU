@@ -37,5 +37,10 @@ namespace CoreLayout.Services.PCP.PCPRegistration
         {
             return await _pCPRegistrationRepository.DeleteAsync(pCPRegistrationModel);
         }
+
+        public async Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise()
+        {
+            return await _pCPRegistrationRepository.GetReportQPAndPaperWise();
+        }
     }
 }

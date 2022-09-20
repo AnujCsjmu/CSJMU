@@ -66,7 +66,6 @@ namespace CoreLayout.Controllers.PCP
                 //end
 
                 return View("~/Views/PCP/PCPSendPaper/Index.cshtml", data);
-
             }
 
             catch (Exception ex)
@@ -82,7 +81,6 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-
                 PCPSendPaperModel pCPSendPaperModel = new PCPSendPaperModel();
                 pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
                                                 select course).ToList();
@@ -111,37 +109,65 @@ namespace CoreLayout.Controllers.PCP
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(PCPSendPaperModel pCPSendPaperModel)
         {
-            pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-            pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-            pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
-                                            select course).ToList();
-            pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
-                                            where reg.RoleId == 21
-                                            select reg).ToList();
-            pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
-                                                 where setter.RoleId == 19
-                                                 select setter).ToList();
-            ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                                               //where user.CreatedBy == PaperSetterId
-                                           select paper).ToList();
-
-            if (ModelState.IsValid)
+           
+                pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
+                                                select course).ToList();
+                pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
+                                                where reg.RoleId == 21
+                                                select reg).ToList();
+                pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                     where setter.RoleId == 19
+                                                     select setter).ToList();
+                ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                                         //where user.CreatedBy == PaperSetterId
+                                     select paper).ToList();
+            if (pCPSendPaperModel.paperids != null)
             {
+                if (ModelState.IsValid)
+                {
 
-                var res = await _pCPSendPaperService.CreatePCPSendPaperAsync(pCPSendPaperModel);
-                if (res.Equals(1))
-                {
-                    TempData["success"] = "Paper has been send";
+                    var res = await _pCPSendPaperService.CreatePCPSendPaperAsync(pCPSendPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Paper has been send";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Paper has not been send";
+                    }
+                    return RedirectToAction(nameof(Index));
+
                 }
-                else
+                
+            }
+            else
+            {
+                ModelState.AddModelError("", "Please select atleast one checkbox");
+            }
+            return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
+        }
+
+        public IActionResult SendPaper(string uid)
+        {
+            PCPSendPaperModel pCPRegistrationModel = new PCPSendPaperModel();
+            if (uid != null)
+            {
+                List<string> list = new List<string>();
+                List<PCPSendPaperModel> list1 = new List<PCPSendPaperModel>();
+                String[] array = uid.Split(",");
+                for (int i = 0; i < array.Length; i++)
                 {
-                    TempData["error"] = "Paper has not been send";
+                    list.Add(array[i]);
                 }
-                return RedirectToAction(nameof(Index));
+                pCPRegistrationModel.SelectedPaperList = list;
+
+
 
             }
-            return View(pCPSendPaperModel);
 
+            return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPRegistrationModel);
         }
         public JsonResult GetPaper(int PaperSetterId)
         {

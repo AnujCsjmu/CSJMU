@@ -211,5 +211,24 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                 }
             }
         }
+
+        public async Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCP";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPRegistrationModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
