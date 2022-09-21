@@ -3,6 +3,7 @@ using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using CoreLayout.Models.UserManagement;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -48,6 +49,7 @@ namespace CoreLayout.Models.PCP
         public string Session { get; set; }
         public List<SessionModel> SessionList { get; set; }
 
+        [Remote(action: "VerifyName", controller: "PCPUploadPaper")]
         public List<PCPAssignedQPModel> QPList { get; set; }
         public string SessionType { get; set; }
 
@@ -56,6 +58,7 @@ namespace CoreLayout.Models.PCP
 
         [Display(Name = "QP Name")]
         [Required(ErrorMessage = "Please enter qp name")]
+        //[Remote(action: "VerifyName", controller: "PCPUploadPaper")]
         public int QPId { get; set; }
         public string QPName { get; set; }
         public string QPCode { get; set; }

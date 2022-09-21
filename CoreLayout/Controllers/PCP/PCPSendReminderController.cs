@@ -63,7 +63,7 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
                               //where qp.UserId == CreatedBy
                               select upload).ToList();
                 //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();

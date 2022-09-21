@@ -56,9 +56,9 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                <th>
+                                @*<th>
                                     Action
-                                </th>
+                                </th>*@
                             </tr>
                         </thead>
 
@@ -86,13 +86,13 @@
                                 <td>@item.SessionType</td>
                                 <td>@item.UserName</td>
                                 <td>@item.CreatedDate</td>
-                                <td>
+                                @*<td>
                                     <div class="table-actions text-center">
                                         <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
                                         <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
                                         <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
                                     </div>
-                                </td>
+                                </td>*@
                             </tr>
                             }
                         </tbody>

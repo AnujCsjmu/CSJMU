@@ -62,7 +62,11 @@ namespace CoreLayout.Models.PCP
         //public bool TermsAndConditions { get; set; }
         [Display(Name = "Paper")]
         public string PaperPath { get; set; }
-        
 
+        public int? AgencyId { get; set; }
+
+        public int? QPId { get; set; }
+
+        public List<PCPSendPaperModel> FilterList { get; set; }
     }
 }

@@ -120,8 +120,8 @@ namespace CoreLayout.Controllers.QPDetails
                 qPMasterModel.FacultyList = await _facultyService.GetAllFaculty();
                 qPMasterModel.CourseList = await _courseService.GetAllCourse();
                 qPMasterModel.BranchList = await _branchService.GetAllBranch();//subject
-                qPMasterModel.SessionList = await _courseDetailsService.GetAllSession();//course
-                qPMasterModel.GradeList = await _gradeDefinitionService.GetAllGradeDefinition();//course
+                qPMasterModel.SessionList = await _courseDetailsService.GetAllSession();//sllabus
+                qPMasterModel.GradeList = await _gradeDefinitionService.GetAllGradeDefinition();//
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/QPDetails/QPMaster/Create.cshtml", qPMasterModel);
             }

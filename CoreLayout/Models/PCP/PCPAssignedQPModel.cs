@@ -34,5 +34,7 @@ namespace CoreLayout.Models.PCP
         //display qp details
         public string QPCreatedDate { get; set; }
         public string QPCreatedBy { get; set; }
+
+        public string  PaperPath { get; set; }
     }
 }

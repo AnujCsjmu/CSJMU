@@ -91,10 +91,10 @@ namespace CoreLayout.Controllers.PCP
                                                      where setter.RoleId == 19
                                                      select setter).ToList();
                 var data = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                                         //where user.CreatedBy == PaperSetterId
-                                     select paper).ToList();
+                                //where user.CreatedBy == PaperSetterId
+                            select paper).ToList();
                 ViewBag.PaperList = data;
-               
+
                 //end
                 return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
             }
@@ -111,23 +111,42 @@ namespace CoreLayout.Controllers.PCP
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(PCPSendPaperModel pCPSendPaperModel)
         {
-           
-                pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
-                                                select course).ToList();
-                pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
-                                                where reg.RoleId == 21
-                                                select reg).ToList();
-                pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
-                                                     where setter.RoleId == 19
-                                                     select setter).ToList();
-                ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                                         //where user.CreatedBy == PaperSetterId
-                                     select paper).ToList();
+            //start check paper already sent to agency
+            int result = 0;
+            String[] array = pCPSendPaperModel.paperids.Split(",");
+            for (int i = 0; i < array.Length; i++)
+            {
+                int paperid = Convert.ToInt32(array[i]);
+                var data = (from sendpaper in await _pCPSendPaperService.GetAllPCPSendPaper()
+                            where sendpaper.AgencyId == pCPSendPaperModel.UserId && sendpaper.PaperId == paperid
+                            select sendpaper).ToList();
+                if (data.Count > 0)
+                {
+                    result = 1;
+                }
+            }
+            //end
+            pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+            pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+            pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
+                                            select course).ToList();
+            pCPSendPaperModel.AgencyList = (from reg in await _registrationService.GetAllRegistrationAsync()
+                                            where reg.RoleId == 21
+                                            select reg).ToList();
+            pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
+                                                 where setter.RoleId == 19
+                                                 select setter).ToList();
+            ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                                     //where user.CreatedBy == PaperSetterId
+                                 select paper).ToList();
             if (pCPSendPaperModel.paperids != null)
             {
-                if (ModelState.IsValid)
+                if (result == 1)
+                {
+                    ModelState.AddModelError("", "Paper already sent to this agency!");
+                    return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
+                }
+                else if (ModelState.IsValid)
                 {
 
                     var res = await _pCPSendPaperService.CreatePCPSendPaperAsync(pCPSendPaperModel);
@@ -142,7 +161,7 @@ namespace CoreLayout.Controllers.PCP
                     return RedirectToAction(nameof(Index));
 
                 }
-                
+
             }
             else
             {
@@ -174,7 +193,7 @@ namespace CoreLayout.Controllers.PCP
         public JsonResult GetPaper(int PaperSetterId)
         {
             var GetUserList = (from user in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                               where user.CreatedBy== PaperSetterId
+                               where user.CreatedBy == PaperSetterId
                                select new SelectListItem()
                                {
                                    Text = user.PaperName,

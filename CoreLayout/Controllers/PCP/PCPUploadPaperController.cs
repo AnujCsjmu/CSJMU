@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace CoreLayout.Controllers.PCP
                 //start encrypt id for update,delete & details
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-                var data = (from reg in (await _pCPUploadPaperService.GetAllPCPUploadPaper())
+                var data = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
                             where reg.CreatedBy == CreatedBy
                             select reg).ToList();
                 foreach (var _data in data)
@@ -145,22 +146,32 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         public async Task<IActionResult> CreateAsync(PCPUploadPaperModel pCPUploadPaper)
         {
+            //start check paper already uploaded
             int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
-            pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
-            pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
-            pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
-            var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
-                        where qp.UserId == CreatedBy
-                        select qp).ToList();
-            pCPUploadPaper.QPList = data;
-            if (pCPUploadPaper.UploadPaper != null)
-            {
-                //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
-                var supportedTypes = new[] { "pdf", "PDF" };
-                var fileExt = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
+            var alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                               where reg.CreatedBy == CreatedBy && reg.QPId== pCPUploadPaper.QPId
+                               select reg).ToList();
+           //end
+                pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
+                pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
+                var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                            where qp.UserId == CreatedBy
+                            select qp).ToList();
+                pCPUploadPaper.QPList = data;
+                if (pCPUploadPaper.UploadPaper != null)
+                {
+                    //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
+                    var supportedTypes = new[] { "pdf", "PDF" };
+                    var fileExt = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
                 if (!supportedTypes.Contains(fileExt))
                 {
                     ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                }
+                else if (alreadyexit.Count > 0)
+                {
+                    ModelState.AddModelError("", "Paper already uploaded for this QP");
                     return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                 }
                 else
@@ -182,14 +193,23 @@ namespace CoreLayout.Controllers.PCP
                         return RedirectToAction(nameof(Index));
                     }
                 }
-            }
-            else
-            {
-                return View(pCPUploadPaper);
-            }
+                }
+                else
+                {
+                    return View(pCPUploadPaper);
+                }
 
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            //}
+            //else
+            //{
+            //    TempData["error"] = "Paper has not been saved";
+            //    ModelState.AddModelError("", "Paper already uploaded for this QP");
+            //    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+            //}
+
+
         }
 
         //[AuthorizeContext(ViewAction.Edit)]
@@ -202,8 +222,8 @@ namespace CoreLayout.Controllers.PCP
                 var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
                 data.SessionList = await _courseDetailsService.GetAllSession();
                 var qpdata = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
-                            where qp.UserId == CreatedBy
-                            select qp).ToList();
+                              where qp.UserId == CreatedBy
+                              select qp).ToList();
                 data.QPList = qpdata;
                 if (data == null)
                 {
@@ -416,6 +436,28 @@ namespace CoreLayout.Controllers.PCP
             {
                 throw ex;
             }
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyName(int qpId)
+        {
+
+            var already = (from data in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                           where data.QPId == qpId
+                           select new SelectListItem()
+                           {
+                               Text = data.QPName,
+                               Value = data.QPId.ToString(),
+                           }).ToList();
+
+            if (already.Count > 0)
+            {
+                return Json($"Paper is already uploaded for this qp");
+            }
+
+            return Json(true);
+
+
         }
 
     }
