@@ -21,14 +21,14 @@ namespace CoreLayout.Models.PCP
         public string QPName { get; set; }
         public string QPCode { get; set; }
 
-        [Display(Name = "User Name")]
-        [Required(ErrorMessage = "Please enter user name")]
+        [Display(Name = "Paper Setter Name")]
+        [Required(ErrorMessage = "Please enter paper setter name")]
        // [StringLength(50)]
-        public int PCPRegID { get; set; }
+        public int UserId { get; set; }
         public List<int> UserList { get; set; }
         public string UserName { get; set; }
 
-        public int? UserId { get; set; }
+        public int? PCPRegID { get; set; }
         public List<List<PCPAssignedQPModel>> QPListForGrid { get; set; }
 
         //display qp details

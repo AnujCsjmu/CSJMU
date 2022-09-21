@@ -20,10 +20,13 @@ namespace CoreLayout.Models.PCP
         
         public int PaperId { get; set; }
         public string PaperName { get; set; }
+        public string PaperCode { get; set; }
 
         [Display(Name = "Agency Name")]
         [Required(ErrorMessage = "Please enter agency name")]
         public int UserId { get; set; }
+
+        [Display(Name = "Setter Name")]
         public string UserName { get; set; }
 
         [Display(Name = "PaperSetter Name")]
@@ -57,6 +60,9 @@ namespace CoreLayout.Models.PCP
         //[Display(Name = "Terms and Conditions")]
         //[Range(typeof(bool), "true", "true", ErrorMessage = "You gotta tick the box!")]
         //public bool TermsAndConditions { get; set; }
+        [Display(Name = "Paper")]
+        public string PaperPath { get; set; }
+        
 
     }
 }

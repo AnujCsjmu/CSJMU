@@ -8,11 +8,11 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
 {
     public interface IPCPSendReminderRepository
     {
-        Task<List<PCPRegistrationModel>> GetAllAssingedQP();
+        Task<List<PCPSendPaperModel>> GetAllAssingedQP();
 
-        Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded();
+        //Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded();
 
-        Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded();
+        //Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded();
         Task<List<PCPRegistrationModel>> GetReminderById(int UserID);
 
         Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel);

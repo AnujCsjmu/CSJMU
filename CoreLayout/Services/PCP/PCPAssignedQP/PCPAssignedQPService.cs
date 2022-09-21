@@ -41,14 +41,14 @@ namespace CoreLayout.Services.PCP.PCPAssignedQP
             return await _pCPAssignedQPRepository.DeleteAsync(pCPAssignedQPModel);
         }
 
-        public async Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid)
-        {
-            return await _pCPAssignedQPRepository.GetAllUserByQPIdAsync(qpid);
-        }
+        //public async Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid)
+        //{
+        //    return await _pCPAssignedQPRepository.GetAllUserByQPIdAsync(qpid);
+        //}
 
-        public async Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid)
-        {
-            return await _pCPAssignedQPRepository.GetAllQPByUserIdAsync(Userid);
-        }
+        //public async Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid)
+        //{
+        //    return await _pCPAssignedQPRepository.GetAllQPByUserIdAsync(Userid);
+        //}
     }
 }

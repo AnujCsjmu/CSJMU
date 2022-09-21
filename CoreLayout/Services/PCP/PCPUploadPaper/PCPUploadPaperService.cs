@@ -40,5 +40,10 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         {
             return await _pCPUploadPaperRepository.DeleteAsync(pCPUploadPaperModel);
         }
+
+        public async Task<List<PCPUploadPaperModel>> BothUserPaperUploadAndNotUpload()
+        {
+            return await _pCPUploadPaperRepository.BothUserPaperUploadAndNotUpload();
+        }
     }
 }

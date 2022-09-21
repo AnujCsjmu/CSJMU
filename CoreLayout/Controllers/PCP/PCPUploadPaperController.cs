@@ -124,7 +124,10 @@ namespace CoreLayout.Controllers.PCP
                 PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
                 pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
-                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync(CreatedBy);
+                var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                            where qp.UserId == CreatedBy
+                            select qp).ToList();
+                pCPUploadPaperModel.QPList = data;
 
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
@@ -146,7 +149,10 @@ namespace CoreLayout.Controllers.PCP
             pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
             pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
-            pCPUploadPaper.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync(CreatedBy);
+            var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                        where qp.UserId == CreatedBy
+                        select qp).ToList();
+            pCPUploadPaper.QPList = data;
             if (pCPUploadPaper.UploadPaper != null)
             {
                 //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
@@ -191,10 +197,14 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
+                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
                 data.SessionList = await _courseDetailsService.GetAllSession();
-                data.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)data.CreatedBy);
+                var qpdata = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                            where qp.UserId == CreatedBy
+                            select qp).ToList();
+                data.QPList = qpdata;
                 if (data == null)
                 {
                     return NotFound();
@@ -216,10 +226,14 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
+                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
-                pCPUploadPaperModel.QPList = await _pCPAssignedQPService.GetAllQPByUserIdAsync((int)pCPUploadPaperModel.ModifiedBy);
+                var qpdata = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                              where qp.UserId == CreatedBy
+                              select qp).ToList();
+                pCPUploadPaperModel.QPList = qpdata;
                 if (pCPUploadPaperModel.UploadPaper != null)
                 {
                     var supportedTypes = new[] { "pdf", "PDF" };

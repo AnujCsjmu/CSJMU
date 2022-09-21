@@ -45,24 +45,6 @@ namespace CoreLayout.Controllers.PCP
              
                 var data = await _pCPAssignedQPService.GetAllPCPAssignedQP();
 
-                //get how much qp assign to the user
-                List<PCPAssignedQPModel> pCPAssignedQPModels = new List<PCPAssignedQPModel>();
-                List<List<PCPAssignedQPModel>> qPMasterModels = new List<List<PCPAssignedQPModel>>();
-                PCPAssignedQPModel pCPAssignedQPModel = new PCPAssignedQPModel();
-                foreach (var _data in data)
-                {
-                    List<PCPAssignedQPModel> qpmodelt = new List<PCPAssignedQPModel>();
-                    string id = _data.QPId.ToString();
-                    var data1 = await _pCPAssignedQPService.GetAllUserByQPIdAsync(Convert.ToInt32(id));
-                    foreach (var _data1 in data1)
-                    {
-                        qpmodelt.Add(_data1);
-                    }
-                    qPMasterModels.Add(qpmodelt);
-                }
-                ViewBag.UserList = qPMasterModels;
-                //end
-
                 //start encrypt id for update, delete & details
                 foreach (var _data in data)
                 {
@@ -84,9 +66,8 @@ namespace CoreLayout.Controllers.PCP
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
+                return View("~/Views/PCP/PCPAssignedQP/Index.cshtml");
             }
-            //return View();
-            return View("~/Views/PCP/PCPAssignedQP/Index.cshtml");
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
@@ -123,19 +104,17 @@ namespace CoreLayout.Controllers.PCP
                 var guid_id = _protector.Unprotect(id);
                 PCPAssignedQPModel pCPAssignedQP = new PCPAssignedQPModel();
                 pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
-                // pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
-                //pCPAssignedQP.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                           where reg.IsApproved != null
                                           select reg).ToList();
-                // return View(pCPAssignedQP);
                 return View("~/Views/PCP/PCPAssignedQP/Create.cshtml", pCPAssignedQP);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
+               return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            
         }
 
         //Create Post Action Method
@@ -147,12 +126,11 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 pCPAssignedQPModel.QPList = await _qPMasterService.GetAllQPMaster();
-                // pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
-                //pCPAssignedQP.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                     where reg.IsApproved != null
                                     select reg).ToList();
                 pCPAssignedQPModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                //pCPAssignedQPModel.UserId = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 if (ModelState.IsValid)
                 {
@@ -173,8 +151,9 @@ namespace CoreLayout.Controllers.PCP
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
+                return View();
             }
-            return View();
+       
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Edit)]
@@ -185,8 +164,6 @@ namespace CoreLayout.Controllers.PCP
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPAssignedQPService.GetPCPAssignedQPById(Convert.ToInt32(guid_id));
                 data.QPList = await _qPMasterService.GetAllQPMaster();
-                // pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
-                //pCPAssignedQP.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                     where reg.IsApproved != null
                                     select reg).ToList();
@@ -212,13 +189,12 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 pCPAssignedQPModel.QPList = await _qPMasterService.GetAllQPMaster();
-                //pCPAssignedQPModel.QPList = await _qPMasterService.GetAllQPMaster();
-                //pCPAssignedQPModel.UserList = await _pCPRegistrationService.GetAllPCPRegistration();
                 ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                                where reg.IsApproved != null
                                                select reg).ToList();
                 pCPAssignedQPModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                //pCPAssignedQPModel.UserId = HttpContext.Session.GetInt32("UserId");
                 if (ModelState.IsValid)
                 {
                     var dbRole = await _pCPAssignedQPService.GetPCPAssignedQPById(PCPAssignedQPId);

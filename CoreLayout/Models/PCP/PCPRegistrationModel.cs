@@ -17,6 +17,7 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Paper Setter Name")]
         [Required(ErrorMessage = "Please enter user name")]
         [StringLength(50)]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         public string UserName { get; set; }
 
         //[Display(Name = "Login ID")]
@@ -140,6 +141,7 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Father's Name")]
         [Required(ErrorMessage = "Please enter father name")]
         [StringLength(50)]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         public string FatherName { get; set; }
 
         [Display(Name = "Full Address")]

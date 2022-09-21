@@ -14,7 +14,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
         public PCPSendReminderRepository(IConfiguration configuration)
 : base(configuration)
         { }
-        public async Task<List<PCPRegistrationModel>> GetAllAssingedQP()
+        public async Task<List<PCPSendPaperModel>> GetAllAssingedQP()
         {
             try
             {
@@ -23,8 +23,8 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 1, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<PCPRegistrationModel>)list;
+                    var list = await SqlMapper.QueryAsync<PCPSendPaperModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPSendPaperModel>)list;
                 }
             }
             catch (Exception ex)
@@ -109,41 +109,41 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
             }
 
         }
-        public async Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded()
-        {
-            try
-            {
-                var query = "SP_InsertUpdateDelete_PCPSendReminder";
-                using (var connection = CreateConnection())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@Query", 4, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<PCPRegistrationModel>)list;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-        }
-        public async Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded()
-        {
-            try
-            {
-                var query = "SP_InsertUpdateDelete_PCPSendReminder";
-                using (var connection = CreateConnection())
-                {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("@Query", 5, DbType.Int32);
-                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return (List<PCPRegistrationModel>)list;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-        }
+        //public async Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded()
+        //{
+        //    try
+        //    {
+        //        var query = "SP_InsertUpdateDelete_PCPSendReminder";
+        //        using (var connection = CreateConnection())
+        //        {
+        //            DynamicParameters parameters = new DynamicParameters();
+        //            parameters.Add("@Query", 4, DbType.Int32);
+        //            var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+        //            return (List<PCPRegistrationModel>)list;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message, ex);
+        //    }
+        //}
+        //public async Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded()
+        //{
+        //    try
+        //    {
+        //        var query = "SP_InsertUpdateDelete_PCPSendReminder";
+        //        using (var connection = CreateConnection())
+        //        {
+        //            DynamicParameters parameters = new DynamicParameters();
+        //            parameters.Add("@Query", 5, DbType.Int32);
+        //            var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+        //            return (List<PCPRegistrationModel>)list;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message, ex);
+        //    }
+        //}
     }
 }

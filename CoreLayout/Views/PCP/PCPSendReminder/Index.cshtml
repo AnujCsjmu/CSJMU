@@ -1,5 +1,5 @@
 ﻿@using CoreLayout.Models.PCP
-@model IEnumerable<PCPRegistrationModel>
+@model IEnumerable<PCPUploadPaperModel>
 @{
     ViewData["title"] = "Index";
 }
@@ -46,32 +46,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="advanced-search br-3">
                 <div class="row align-items-center">
-                    @*<div class="col-md-12 col-xl-4">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-lg-0">
-                                        <label class="">From :</label>
-                                        <div class="input-group">
-                                            <div class="input-group-text">
-                                                <i class="fe fe-calendar lh--9 op-6"></i>
-                                            </div><input class="form-control fc-datepicker"
-                                                         placeholder="11/01/2019" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-lg-0">
-                                        <label class="">To :</label>
-                                        <div class="input-group">
-                                            <div class="input-group-text">
-                                                <i class="fe fe-calendar lh--9 op-6"></i>
-                                            </div><input class="form-control fc-datepicker"
-                                                         placeholder="11/08/2019" type="text">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
                     <div class="col-md-6 col-xl-3">
                         <div class="form-group mb-lg-0">
                             <label> IS Paper Uploaded or Not ?</label><span class="tx-danger"> *</span>
@@ -89,14 +63,7 @@
                 </div>
                 <hr>
                 <div class="text-end">
-                    @*<a asp-action="Index" class="btn btn-primary" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">Apply</a>*@
                     <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" />
-
-                    @*<a class="btn btn-secondary" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">Reset</a>*@
                     <input asp-action="Reset" type="submit" class="btn btn-secondary" value="Reset" />
                 </div>
             </div>
@@ -104,6 +71,11 @@
     </form>
 </div>
 <!--End Navbar -->
+<div>
+    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+    </div>
+</div>
 <!-- Row -->
 <div class="row">
     <div class="col-lg-12">
@@ -118,13 +90,6 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
-
-                                @*<th>
-                                        @Html.DisplayNameFor(c => c.MobileNo)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(c => c.EmailID)
-                                    </th>*@
                                 <th>
                                     @Html.DisplayNameFor(c => c.InstituteCode)
                                 </th>
@@ -138,9 +103,24 @@
                                     @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperPath)
+                                    @Html.DisplayNameFor(c => c.QPName)
                                 </th>
 
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPassword)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPath)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Session) <br /> @Html.DisplayNameFor(c => c.SessionType)
+                                </th>
 
 
                             </tr>
@@ -154,114 +134,41 @@
                             {
                                 <tr>
                                     <td>
-                                        @if (ViewBag.PaperUploadedlist != null)
+                                        @if (item.PaperPath != null)
                                         {
-                                            @foreach (var item1 in ViewBag.PaperUploadedlist)
-                                            {
-                                                if (item.QPId == item1.QPId)
-                                                {
-
-                                                }
-                                                else
-                                                {
-                                                    <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-                                                    break;
-                                                }
-                                            }
                                         }
                                         else
                                         {
                                             <input type="checkbox" id="chkid" value="@item.PCPRegID" />
                                         }
-
                                     </td>
                                     <td>
                                         @{ sno++; }
                                         @sno
                                     </td>
+
                                     <td>@item.UserName</td>
-                                    @*<td>@item.MobileNo</td>
-                                        <td>@item.EmailID</td>*@
+
                                     <td>@item.InstituteCode</td>
-                                    <td>@item.BranchName</td>
-                                    <td>@item.CourseName</td>
+                                    <td>@item.BranchCode</td>
+                                    <td>@item.CourseCode</td>
+                                    <td>@item.QPCode</td>
                                     <td>@item.QPName</td>
-                                    <td>
-
-                                        @if (ViewBag.PaperUploadedlist != null)
-                                        {
-                                            <table class="table table-sm table-bordered key-buttons text-wrap w-100">
-                                                <thead>
-                                                    <tr>
-                                                        @foreach (var item1 in ViewBag.PaperUploadedlist)
-                                                        {
-                                                            if (item.QPId == item1.QPId)
-                                                            {
-                                                                <th>S.No</th>
-                                                                <th>
-                                                                    @Html.DisplayNameFor(c => c.PaperCode)
-                                                                </th>
-                                                                <th>
-                                                                    @Html.DisplayNameFor(c => c.PaperName)
-                                                                </th>
-                                                                <th>
-                                                                    @Html.DisplayNameFor(c => c.PaperPassword)
-                                                                </th>
-                                                                <th>
-                                                                    @Html.DisplayNameFor(c => c.PaperPath)
-                                                                </th>
-                                                                <th>
-                                                                    @Html.DisplayNameFor(c => c.Session) <br /> @Html.DisplayNameFor(c => c.SessionType)
-                                                                </th>
-                                                                break;
-                                                            }
-
-                                                        }
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    @{
-                                                        int sno1 = 0;
-                                                    }
-                                                    @foreach (var item1 in ViewBag.PaperUploadedlist)
-                                                    {
-                                                        if (item.QPId == item1.QPId)
-                                                        {
-                                                            <tr>
-
-                                                                <td>
-                                                                    @{ sno1++; }
-                                                                    @sno1
-                                                                </td>
-                                                                <td>@item1.PaperCode</td>
-                                                                <td>@item1.PaperName</td>
-                                                                <td>@item1.PaperPassword</td>
-                                                                <td>
-                                                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
-                                                                    <a asp-action="Download" asp-route-id="@item1.EncryptedId" target="_blank">Download</a>
-                                                                </td>
-                                                                <td>@item1.Session <br /> @item1.SessionType</td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
-                                        }
-
-                                    </td>
-
-                                    @*<td>@item.PaperCreatedBy</td>
-                                        <td>@item.PaperCreatedDate</td>
-                                        <td>@item.Session <br /> @item.SessionType</td>
-                                        <td>@item.PaperPassword</td>*@
-
-                                    <!--<td>
-                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>-->
-                                    @*<input type="button" id="btnAssignQP" name="AssignQP" value="AssignQP" class="btn btn-success" onclick="return confirm('Are you sure you want to assign QP?')" />*@
-                                    <!--<a id="btnViewReminder" data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Reminder" onclick="return confirm('Are you sure you want to view reminder?')"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>-->
-                                    @*<input type="button" id="btnViewReminder" name="ViewReminder" value="ViewReminder" class="btn btn-success" onclick="return confirm('Are you sure you want to view reminder?')" />*@
-                                    <!--</td>-->
+                                    <td>@item.PaperCode</td>
+                                    <td>@item.PaperName</td>
+                                    <td>@item.PaperPassword</td>
+                                    @if (item.PaperPath != null)
+                                    {
+                                        <td>
+                                            <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+                                    }
+                                    <td>@item.Session <br /> @item.SessionType</td>
                                 </tr>
                             }
                         </tbody>
@@ -274,10 +181,7 @@
     </div>
 </div>
 <div>
-    @if (ViewBag.PaperUploadedlist != null)
-    {
-        <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
-    }
+    <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
 </div>
 <!-- End Row -->
 
@@ -370,7 +274,7 @@
         }
         $(document).ready(function () {
             // Array holding selected row IDs
-           
+
             var rows_selected = [];
             //var table = $('#exportexample').DataTable({
             //    /*$("#exportexample").dataTable().fnDestroy();*/
@@ -378,7 +282,7 @@
             var table = $('#exportexample').DataTable();
             // Handle click on checkbox
             $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
-              
+
                 var $row = $(this).closest('tr');
 
                 // Get row data

@@ -13,5 +13,7 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         public Task<int> CreatePCPUploadPaperAsync(PCPUploadPaperModel pCPUploadPaperModel);
         public Task<int> UpdatePCPUploadPaperAsync(PCPUploadPaperModel pCPUploadPaperModel);
         public Task<int> DeletePCPUploadPaperAsync(PCPUploadPaperModel pCPUploadPaperModel);
+
+        public Task<List<PCPUploadPaperModel>> BothUserPaperUploadAndNotUpload();
     }
 }

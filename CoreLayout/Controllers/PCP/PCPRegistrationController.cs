@@ -111,7 +111,7 @@ namespace CoreLayout.Controllers.PSP
                                     ModelState.Clear();
                                     //success
                                     ModelState.AddModelError("", "Data saved!");
-                                    errormsg = String.Format("Hello{0}.\n You are registered as role paper setter. \n After COE approval, You will get userid and password \n in registered email and mobile", pCPRegistrationModel.UserName);
+                                    errormsg = String.Format("Hello {0}, \n You are successfully registered for paper setter. \n After COE approval, You will get userid and password \n in registered emailid and mobileno", pCPRegistrationModel.UserName);
                                     return await Registration();
                                 }
                                 else

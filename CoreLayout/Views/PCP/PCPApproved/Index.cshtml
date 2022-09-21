@@ -85,7 +85,15 @@
                                 <td>@item.InstituteCode</td>
                                 <td>@item.BranchCode</td>
                                 <td>@item.CourseCode</td>
-                                <td>@item.QPCode</td>
+                                @if (@item.QPCode == null)
+                                {
+                                    <td style="font-weight:bold; color:red">Not Assigned</td>
+                                }
+                                else
+                                {
+                                    <td>@item.QPCode</td>
+                                }
+
                                 <td>@item.QPName</td>
                                 @*<td style="display:block">
 

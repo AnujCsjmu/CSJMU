@@ -41,11 +41,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PCPRegID"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" multiple asp-for="UserList" asp-items="@(new SelectList(ViewBag.UserList,"PCPRegID","UserName"))">
-                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" multiple asp-for="UserList" asp-items="@(new SelectList(ViewBag.UserList,"UserId","UserName"))">
+                                    @*<option selected="selected" disabled="disabled" value=""></option>*@
                                 </select>
-                                <span asp-validation-for="PCPRegID" class="parsley-errors-list filled"></span>
+                                <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
 

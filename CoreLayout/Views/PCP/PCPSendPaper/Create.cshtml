@@ -48,24 +48,8 @@
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        @*<div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
-                                    <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
-                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                    </select>
-                                    <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
-                                </div>
-                            </div>*@
-                        <!--<div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                            <select class="form-control select" multiple asp-for="PaperList" asp-items="@(new SelectList(ViewBag.PaperList,"PaperId","PaperName"))">-->
-                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
-                        <!--</select>
-                                <span asp-validation-for="PaperId" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>-->
+
+
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -79,7 +63,13 @@
                                                 @Html.DisplayNameFor(c => c.PaperId)
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(c => c.CreatedBy)
+                                                @Html.DisplayNameFor(c => c.PaperCode)
+                                            </th>
+                                            @*<th>
+                                                @Html.DisplayNameFor(c => c.PaperPath)
+                                            </th>*@
+                                            <th>
+                                                @Html.DisplayNameFor(c => c.UserName)
                                             </th>
                                             <th>
                                                 @Html.DisplayNameFor(c => c.CreatedDate)
@@ -100,7 +90,12 @@
                                                     @sno
                                                 </td>
                                                 <td>@item.PaperName</td>
-                                                <td>@item.CreatedBy</td>
+                                                <td>@item.PaperCode</td>
+                                                @*<td>
+                                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                                    <a asp-action="Download" asp-route-id="@item.PaperId" target="_blank">Download</a>
+                                                </td>*@
+                                                <td>@item.UserName</td>
                                                 <td>@item.CreatedDate</td>
                                             </tr>
                                         }
@@ -110,14 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    @*<div class="col-md-6">
-                        <div class="form-group">
 
-                           <input type="checkbox" id="chkdeclear" asp-for="TermsAndConditions" />
-                            <label asp-for="TermsAndConditions"> </label><span class="tx-danger"> *</span>
-                            <span asp-validation-for="TermsAndConditions" class="parsley-errors-list filled"></span>
-                        </div>
-                    </div>*@
 
                     <br />
                     <div class="form-group">
@@ -241,6 +229,6 @@
 
     </script>
 
-   
+
 }
 

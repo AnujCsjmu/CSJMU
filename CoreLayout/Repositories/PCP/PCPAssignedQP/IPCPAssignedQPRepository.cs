@@ -9,8 +9,8 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
 {
     public interface IPCPAssignedQPRepository : IRepository<PCPAssignedQPModel>
     {
-        Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid);
+        //Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid);
 
-        Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);
+        //Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);
     }
 }

@@ -51,6 +51,7 @@ namespace CoreLayout.Models.PCP
         public List<PCPAssignedQPModel> QPList { get; set; }
         public string SessionType { get; set; }
 
+        [Display(Name = "Paper Setter Name")]
         public string UserName { get; set; }
 
         [Display(Name = "QP Name")]
@@ -65,5 +66,29 @@ namespace CoreLayout.Models.PCP
 
 
         public int? RoleId { get; set; }
+
+        [Display(Name = "Paper Setter Name")]
+        public string PaperSetterName { get; set; }
+
+        public string CreatedUserName { get; set; }
+
+
+        [Display(Name = "Institute Code")]
+        public string InstituteCode { get; set; }
+
+        [Display(Name = "Course Code")]
+        public string CourseCode { get; set; }
+
+        [Display(Name = "Course Name")]
+        public string CourseName { get; set; }
+
+
+        [Display(Name = "Subject Code")]
+        public string BranchCode { get; set; }
+
+
+        [Display(Name = "Subject Name")]
+        public string BranchName { get; set; }
+
     }
 }

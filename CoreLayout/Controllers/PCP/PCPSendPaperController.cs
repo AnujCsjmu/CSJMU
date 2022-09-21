@@ -90,10 +90,12 @@ namespace CoreLayout.Controllers.PCP
                 pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
                                                      where setter.RoleId == 19
                                                      select setter).ToList();
-                ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                var data = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                                          //where user.CreatedBy == PaperSetterId
                                      select paper).ToList();
-                var guid_id = _protector.Unprotect(id);
+                ViewBag.PaperList = data;
+               
+                //end
                 return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
             }
             catch (Exception ex)

@@ -38,16 +38,12 @@
     <!--- FONT-ICONS CSS -->
     <link href="~/assets/css/icons.css" rel="stylesheet">
 
-
     <!---Style css-->
     <link href="~/assets/css/style.css" rel="stylesheet">
     <link href="~/assets/css/skins.css" rel="stylesheet">
     <link href="~/assets/css/dark-style.css" rel="stylesheet">
     <link href="~/assets/css/transparent-style.css" rel="stylesheet">
     <link href="~/assets/css/boxed.css" rel="stylesheet">
-
-
-
 
 </head>
 <body style="background: url(../Images/pgbg.jpg); background-size: cover; background-repeat: no-repeat; ">
@@ -62,6 +58,13 @@
                                 <div class="card-body">
                                     <form method="post" enctype="multipart/form-data">
                                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
+                                            {
+                                                <span style="font-weight:bold" class="text-danger">@ViewBag.errormsg</span>
+                                            }
 
                                         </div>
                                         <div class="row mb-3">
@@ -154,7 +157,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
                                                     <input class="form-control" asp-for="InstituteCode" type="text" maxlength="10" placeholder="please enter institute code" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="InstituteCode">Institute Code</label>
+                                                    <label asp-for="InstituteCode">Institute/College Code</label>
                                                     <span class="text-danger" asp-validation-for="InstituteCode"></span>
 
                                                 </div>
@@ -162,7 +165,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input class="form-control" asp-for="InstituteName" type="text" placeholder="please enter institute name" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="InstituteName">Institute Name</label>
+                                                    <label asp-for="InstituteName">Institute/College Name</label>
                                                     <span class="text-danger" asp-validation-for="InstituteName"></span>
                                                 </div>
                                             </div>
@@ -244,15 +247,9 @@
 
                                         </div>
                                         <div>
-                                            <input  class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to submit this?')" />
+                                            <input class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to submit this?')" />
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
-                                            {
-                                                <span class="text-danger">@ViewBag.errormsg</span>
-                                            }
 
-                                        </div>
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
@@ -347,7 +344,7 @@
 
                 $.getJSON(url, function (data) {
                 var items = '';
-                    
+
                     $.each(data, function (i, branch) {
                         items += "<option value ='" + branch.value + "'>" + branch.text + "</option>";
                 });

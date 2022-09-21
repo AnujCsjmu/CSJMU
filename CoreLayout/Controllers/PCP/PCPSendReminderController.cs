@@ -63,24 +63,22 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                var allAssignedQP = await _pCPSendReminderService.GetAllAssingedQP();
-                var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-                ViewBag.PaperUploadedlist = allUploadedQP;
+                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                              //where qp.UserId == CreatedBy
+                              select upload).ToList();
+                //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
+                //ViewBag.PaperUploadedlist = allUploadedQP;
                 //end
 
                 //start encrypt id for update,delete & details
-                foreach (var _data in allUploadedQP)
+                foreach (var _data in data)
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
-                foreach (var _data in allUploadedQP)
-                {
-                    var stringId = _data.PaperId.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
-                }
+               
                 //end
-                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", allAssignedQP);
+                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
 
             catch (Exception ex)
@@ -94,74 +92,69 @@ namespace CoreLayout.Controllers.PCP
         {
             int? paperupload = pCPRegistrationModel.IsPaperUploaded;
 
-            object data = null;
+            //var data = (dynamic)null;
             if (paperupload == 1)//paper uploded
             {
-                data = await _pCPSendReminderService.GetAllAssingedQPButPaperUploaded();
-                var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-                ViewBag.PaperUploadedlist = allUploadedQP;
+                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                                where upload.PaperPath != null
+                            select upload).ToList();
+
                 //start encrypt id for update,delete & details
-                foreach (var _data in allUploadedQP)
-                {
-                    var stringId = _data.PaperId.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
-                }
-                foreach (var _data in allUploadedQP)
+                foreach (var _data in data)
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
                 //end
+                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
             else if (paperupload == 2)//paper not uploded
-            { 
-                data = await _pCPSendReminderService.GetAllAssingedQPButPaperNotUploaded();
-                var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-                ViewBag.PaperUploadedlist = allUploadedQP;
+            {
+                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                            where upload.PaperPath == null
+                            select upload).ToList();
+                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
             else
             {
-                data = await _pCPSendReminderService.GetAllAssingedQP();
-                var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-                ViewBag.PaperUploadedlist = allUploadedQP;
+                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                            //where upload.PaperPath != null
+                            select upload).ToList();
                 //start encrypt id for update,delete & details
-                foreach (var _data in allUploadedQP)
-                {
-                    var stringId = _data.PaperId.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
-                }
-                foreach (var _data in allUploadedQP)
+                foreach (var _data in data)
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
                 //end
+                return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
-            return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
+
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> ResetAsync()//int? paperupload
         {
-            var allAssignedQP = await _pCPSendReminderService.GetAllAssingedQP();
-            var allUploadedQP = await _pCPUploadPaperService.GetAllPCPUploadPaper();
-            ViewBag.PaperUploadedlist = allUploadedQP;
+          var  data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                        //where upload.PaperPath != null
+                    select upload).ToList();
             //end
 
             //start encrypt id for update,delete & details
-            foreach (var _data in allUploadedQP)
+            foreach (var _data in data)
             {
                 var stringId = _data.PaperId.ToString();
                 _data.EncryptedId = _protector.Protect(stringId);
             }
-            foreach (var _data in allUploadedQP)
+            foreach (var _data in data)
             {
                 var stringId = _data.PaperId.ToString();
                 _data.EncryptedId = _protector.Protect(stringId);
             }
-            return View("~/Views/PCP/PCPSendReminder/Index.cshtml", allAssignedQP);
+            return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
         }
-        public async Task<IActionResult> SendReminderAsync(string uid)
+        public async Task<IActionResult> SendReminder(string uid)
         {
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             try
@@ -224,12 +217,14 @@ namespace CoreLayout.Controllers.PCP
                     }
                     //return View("~/Views/PCP/PCPSendReminder/Index.cshtml", pCPRegistrationModel);
                     //return RedirectToAction("~/Views/PCP/PCPSendReminder/Index.cshtml");
+                    return await Index();
                 }
 
             }
             catch (Exception ex)
             {
                 TempData["error"] = "Some thing went wrong";
+                ModelState.AddModelError("", ex.ToString());
                 return View();
             }
             return View("~/Views/PCP/PCPSendReminder/Index.cshtml");

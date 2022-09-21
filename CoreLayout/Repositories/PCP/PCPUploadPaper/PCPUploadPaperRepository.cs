@@ -191,7 +191,24 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                 }
             }
         }
+        public async Task<List<PCPUploadPaperModel>> BothUserPaperUploadAndNotUpload()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCPUploadPaper";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<PCPUploadPaperModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPUploadPaperModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
 
-        
     }
 }
