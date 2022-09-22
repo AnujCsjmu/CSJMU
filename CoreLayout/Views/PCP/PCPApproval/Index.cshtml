@@ -23,7 +23,7 @@
     <div class="col-lg-12">
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
-                <form asp-action="Index" method="post">
+                <form asp-action="Index" method="post" id="form1">
                     <div class="table-responsive-sm">
 
                         <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
@@ -146,11 +146,12 @@
                         url: '/PCPApproval/Approved?uid=' + userid,
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
-
-                            /*alert(data);*/
+                            alert("1");
+                            var form = document.getElementById("form1");
+                            form.reload();
                         },
                         error: function (data) {
-                            /*alert("error!");*/
+                            alert("0");
                         }
                     });
                 }
@@ -182,6 +183,7 @@
                         success: function (data) {
 
                             /*alert(data);*/
+                            
                         },
                         error: function (data) {
                             /*alert("error!");*/

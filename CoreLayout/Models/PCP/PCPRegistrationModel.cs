@@ -178,7 +178,7 @@ namespace CoreLayout.Models.PCP
 
         [Display(Name = "Bank Account No")]
         [Required(ErrorMessage = "Please enter account no")]
-        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid account no.")]
+        [RegularExpression(@"^([0-9]{20})$", ErrorMessage = "Invalid account no.")]
         public string AccountNo { get; set; }
 
         [Display(Name = "Bank Branch address")]

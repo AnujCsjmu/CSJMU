@@ -6,6 +6,7 @@ using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.QPMaster;
 using iTextSharp.text;
+using iTextSharp.text.exceptions;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
@@ -39,8 +40,10 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
+        private readonly CommonController _commonController;
+
         [Obsolete]
-        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService)
+        public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService, CommonController commonController)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
@@ -49,6 +52,7 @@ namespace CoreLayout.Controllers.PCP
             hostingEnvironment = environment;
             _courseDetailsService = courseDetailsService;
             _pCPAssignedQPService = pCPAssignedQPService;
+            _commonController = commonController;
         }
 
         [HttpGet]
@@ -149,21 +153,24 @@ namespace CoreLayout.Controllers.PCP
             //start check paper already uploaded
             int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
             var alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                               where reg.CreatedBy == CreatedBy && reg.QPId== pCPUploadPaper.QPId
+                               where reg.CreatedBy == CreatedBy && reg.QPId == pCPUploadPaper.QPId
                                select reg).ToList();
-           //end
-                pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
-                pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
-                var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
-                            where qp.UserId == CreatedBy
-                            select qp).ToList();
-                pCPUploadPaper.QPList = data;
-                if (pCPUploadPaper.UploadPaper != null)
-                {
-                    //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
-                    var supportedTypes = new[] { "pdf", "PDF" };
-                    var fileExt = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
+            //end
+            //start pdf pwd encrypt
+            pCPUploadPaper.PaperPassword= _commonController.Encrypt(pCPUploadPaper.PaperPassword);
+            //end
+            pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
+            pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
+            pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
+            var data = (from qp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
+                        where qp.UserId == CreatedBy
+                        select qp).ToList();
+            pCPUploadPaper.QPList = data;
+            if (pCPUploadPaper.UploadPaper != null)
+            {
+                //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
+                var supportedTypes = new[] { "pdf", "PDF" };
+                var fileExt = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
                 if (!supportedTypes.Contains(fileExt))
                 {
                     ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
@@ -193,14 +200,14 @@ namespace CoreLayout.Controllers.PCP
                         return RedirectToAction(nameof(Index));
                     }
                 }
-                }
-                else
-                {
-                    return View(pCPUploadPaper);
-                }
+            }
+            else
+            {
+                return View(pCPUploadPaper);
+            }
 
 
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
             //}
             //else
             //{
@@ -250,6 +257,9 @@ namespace CoreLayout.Controllers.PCP
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
+                //start pdf pwd encrypt
+                pCPUploadPaperModel.PaperPassword = _commonController.Encrypt(pCPUploadPaperModel.PaperPassword);
+                //end
                 var qpdata = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
                               where qp.UserId == CreatedBy
                               select qp).ToList();
@@ -437,6 +447,8 @@ namespace CoreLayout.Controllers.PCP
                 throw ex;
             }
         }
+
+
 
         [AcceptVerbs("GET", "POST")]
         public IActionResult VerifyName(int qpId)

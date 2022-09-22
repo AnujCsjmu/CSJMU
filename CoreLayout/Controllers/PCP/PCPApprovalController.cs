@@ -79,6 +79,9 @@ namespace CoreLayout.Controllers
             return View("~/Views/PCP/PCPApproval/Index.cshtml");
 
         }
+
+
+
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(string id)
@@ -215,7 +218,6 @@ namespace CoreLayout.Controllers
                     }
                 }
                 //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
-                ModelState.Clear();
                 return await Index();
             }
             //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);

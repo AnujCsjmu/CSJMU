@@ -96,7 +96,7 @@
                                                     @*<label asp-for="TypeOfEmployeement">Type of Employeemeny</label>*@
                                                     @Html.DropDownList("TypeOfEmployeement", new List<SelectListItem>
                                                     {
-                                                    new SelectListItem{ Text="----Select----", Value = string.Empty },
+                                                    new SelectListItem{ Text="----Select Job Type----", Value = string.Empty },
                                                     new SelectListItem{ Text="Permanent", Value = "Permanent" },
                                                     new SelectListItem{ Text="Contractual", Value = "Contractual" },
                                                     },
@@ -183,7 +183,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     @*subject*@
-                                                    <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
+                                                    <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
                                                         <option selected="selected" disabled="disabled" value="">--Select Subject-- </option>
                                                     </select>
 
@@ -202,7 +202,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input class="form-control" asp-for="IFSC" type="text" maxlength="10" placeholder="Enter your ifsc code" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="IFSC">IFSC</label>
+                                                    <label asp-for="IFSC">Bank IFSC</label>
                                                     <span class="text-danger" asp-validation-for="IFSC"></span>
                                                 </div>
                                             </div>
@@ -210,15 +210,15 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="AccountNo" maxlength="10" placeholder="Enter your account no" />
-                                                    <label asp-for="AccountNo">Account No</label>
+                                                    <input class="form-control" asp-for="AccountNo" maxlength="20" placeholder="Enter your account no" />
+                                                    <label asp-for="AccountNo">Bank Account No</label>
                                                     <span class="text-danger" asp-validation-for="AccountNo"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input class="form-control" asp-for="BranchAddress" type="text" placeholder="Enter your branch address" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="BranchAddress">Branch Address</label>
+                                                    <label asp-for="BranchAddress">Bank Branch Address</label>
                                                     <span class="text-danger" asp-validation-for="BranchAddress"></span>
                                                 </div>
                                             </div>
@@ -227,7 +227,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-floating">
                                                     <input asp-for="ProfileImage" class="form-control" />
-                                                    @*<label asp-for="Photo">Photo</label>*@
+                                                    <label asp-for="ProfileImage">Photo</label>
                                                     <span class="text-danger" asp-validation-for="ProfileImage"></span>
                                                 </div>
                                             </div>
@@ -243,7 +243,7 @@
                                         <div class="form-floating mb-3">
                                             <input class="form-control" asp-for="Remarks" type="text" placeholder="Enter your remarks" onkeydown="upperCaseF(this)" />
                                             <label asp-for="Remarks">Remarks</label>
-                                            <span class="text-danger" asp-validation-for="Remarks"></span>
+                                            @*<span class="text-danger" asp-validation-for="Remarks"></span>*@
 
                                         </div>
                                         <div>

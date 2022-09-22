@@ -45,7 +45,7 @@ namespace CoreLayout.Controllers
             _buttonPermissionService = buttonPermissionService;
             _pCPRegistrationService = pCPRegistrationService;
         }
-        public async  Task<ActionResult> RefereshMenuAsync()
+        public async Task<ActionResult> RefereshMenuAsync()
         {
             var role = @User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value;
             int userid = (int)HttpContext.Session.GetInt32("UserId");
@@ -172,13 +172,13 @@ namespace CoreLayout.Controllers
             try
             {
                 var already = (from user in _registrationService.GetAllRegistrationAsync().Result
-                                 where user.MobileNo == MobileNo
-                                 select new SelectListItem()
-                                 {
-                                     Text = user.MobileNo,
-                                     Value = user.UserID.ToString(),
-                                 }).ToList();
-                if (already.Count>0)
+                               where user.MobileNo == MobileNo
+                               select new SelectListItem()
+                               {
+                                   Text = user.MobileNo,
+                                   Value = user.UserID.ToString(),
+                               }).ToList();
+                if (already.Count > 0)
                 {
                     result = 1;
                 }
@@ -212,13 +212,13 @@ namespace CoreLayout.Controllers
             }
             return result;
         }
-        public int assignRoleAlreadyExits(int userid,int roleid)
+        public int assignRoleAlreadyExits(int userid, int roleid)
         {
             int result = 0;
             try
             {
                 var already = (from userRole in _assignRoleService.GetAllRoleAssignAsync().Result
-                               where userRole.RoleUserId == userid && userRole.RoleId==roleid
+                               where userRole.RoleUserId == userid && userRole.RoleId == roleid
                                select new SelectListItem()
                                {
                                    Text = userRole.RoleId.ToString(),
@@ -236,7 +236,7 @@ namespace CoreLayout.Controllers
             return result;
         }
 
-        public int AlreadyExitsButtonPermission( int buttonid, int userid, int roleid, string controller, string action)
+        public int AlreadyExitsButtonPermission(int buttonid, int userid, int roleid, string controller, string action)
         {
             int result = 0;
             try
@@ -278,12 +278,12 @@ namespace CoreLayout.Controllers
             try
             {
                 var emp = (from maxSort in _parentMenuService.GetAllParentMenuAsync().Result
-                               select new SelectListItem()
-                               {
-                                   Text = maxSort.UserName,
-                                   Value = maxSort.ParentMenuId.ToString(),
-                               }).ToList();
-             
+                           select new SelectListItem()
+                           {
+                               Text = maxSort.UserName,
+                               Value = maxSort.ParentMenuId.ToString(),
+                           }).ToList();
+
             }
             catch (Exception)
             {
@@ -379,8 +379,8 @@ namespace CoreLayout.Controllers
             return rtr;
         }
 
-    
-            public string apicall(string url)
+
+        public string apicall(string url)
         {
             SMSModel sMSModel = new SMSModel();
             HttpWebRequest httpreq = (HttpWebRequest)WebRequest.Create(url);
@@ -407,6 +407,50 @@ namespace CoreLayout.Controllers
                 //DataRepository.Provider.ExecuteDataSet("cusp_SMSLogs_LogActivity", "Response-Error", url, e.Message);
                 return "0";
             }
+        }
+
+        public string Encrypt(string clearText)
+        {
+            string encryptionKey = "MAKV2SPBNI99212";
+            byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(encryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
+                    }
+                    clearText = Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            return clearText;
+        }
+
+        public string Decrypt(string cipherText)
+        {
+            string encryptionKey = "MAKV2SPBNI99212";
+            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(encryptionKey, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
+                    }
+                    cipherText = Encoding.Unicode.GetString(ms.ToArray());
+                }
+            }
+            return cipherText;
         }
     }
 }
