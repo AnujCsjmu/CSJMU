@@ -51,7 +51,7 @@ namespace CoreLayout.Controllers.PCP
                 //start encrypt id for update,delete & details
                 foreach (var _data in data)
                 {
-                    var stringId = _data.PaperId.ToString();
+                    var stringId = _data.SendPaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
                 //end
@@ -208,6 +208,40 @@ namespace CoreLayout.Controllers.PCP
             //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
 
             return Json(GetUserList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var dbRole = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(guid_id));
+                if (dbRole != null)
+                {
+                    var res = await _pCPSendPaperService.DeletePCPSendPaperAsync(dbRole);
+
+                    if (res.Equals(1))
+                    {
+                        TempData["error"] = "Data has been deleted";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Data has not been deleted";
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Some thing went wrong!";
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }

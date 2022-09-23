@@ -1,30 +1,45 @@
 ﻿using CoreLayout.Models.PCP;
+using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.PCP.PCPSendPaper;
 using CoreLayout.Services.PCP.PCPUploadPaper;
+using iTextSharp.text.pdf;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
 {
-
+    [Authorize(Roles = "Controller Of Examination")]
     public class PCPQPAndPaperReportController : Controller
     {
         private readonly ILogger<PCPQPAndPaperReportController> _logger;
         private readonly IPCPRegistrationService _pCPRegistrationService;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         private readonly IPCPSendPaperService _pCPSendPaperService;
-        public PCPQPAndPaperReportController(ILogger<PCPQPAndPaperReportController> logger, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IPCPSendPaperService pCPSendPaperService)
+        private readonly IPCPAssignedQPService _pCPAssignedQPService;
+        private readonly IDataProtector _protector;
+        [Obsolete]
+        private readonly IHostingEnvironment hostingEnvironment;//for file upload
+
+        [Obsolete]
+        public PCPQPAndPaperReportController(ILogger<PCPQPAndPaperReportController> logger, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IPCPSendPaperService pCPSendPaperService, IPCPAssignedQPService pCPAssignedQPService,IDataProtectionProvider provider, IHostingEnvironment environment)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
             _pCPUploadPaperService = pCPUploadPaperService;
             _pCPSendPaperService = pCPSendPaperService;
+            _pCPAssignedQPService = pCPAssignedQPService;
+            hostingEnvironment = environment;
+            _protector = provider.CreateProtector("PCPQPAndPaperReport.PCPQPAndPaperReportController");
         }
         public async Task<IActionResult> IndexAsync()
         {
@@ -48,6 +63,38 @@ namespace CoreLayout.Controllers.PCP
             }
 
             ViewBag.list = list2;
+            //start encrypt
+            foreach (var _data in data)
+            {
+                var stringId = _data.PaperId.ToString();
+                _data.EncryptedId = _protector.Protect(stringId);
+            }
+            //end
+
+            //start for report
+            var registercount = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                        //where reg.IsApproved == null
+                        select reg).ToList();
+            var approvecount = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                                 where reg.IsApproved != null
+                                 select reg).ToList();
+            var reject = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                                 where reg.IsRecordDeleted == 1
+                                 select reg).ToList();
+            var qpallotted = (from reg in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
+                          select reg).ToList();
+            var paperupload = (from reg in (await _pCPUploadPaperService.GetAllPCPUploadPaper())
+                              select reg).ToList();
+            var sendpaper = (from reg in (await _pCPSendPaperService.GetAllPCPSendPaper())
+                               select reg).ToList();
+
+            ViewBag.RegistrationCount = registercount.Count.ToString();
+            ViewBag.ApprovedCount = approvecount.Count.ToString();
+            ViewBag.RejectCount = reject.Count.ToString();
+            ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
+            ViewBag.PaperUploadCount = paperupload.Count.ToString();
+            ViewBag.SendToAgencyCount = sendpaper.Count.ToString();
+            //end report
 
             //var data1= await _pCPSendPaperService.GetAllPCPSendPaper();
             //foreach (var _data in data)
@@ -65,6 +112,43 @@ namespace CoreLayout.Controllers.PCP
             //}
             //ViewBag.list = list2;
             return View("~/Views/PCP/PCPReport/Index.cshtml", data);
+        }
+
+        [Obsolete]
+        public async Task<IActionResult> DownloadAsync(string id)
+        {
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                    var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
+                    byte[] bytes = System.IO.File.ReadAllBytes(path);
+                    using (MemoryStream inputData = new MemoryStream(bytes))
+                    {
+                        using (MemoryStream outputData = new MemoryStream())
+                        {
+                            string PDFFilepassword = data.PaperPassword;
+                            PdfReader reader = new PdfReader(inputData);
+                            PdfReader.unethicalreading = true;
+                            PdfEncryptor.Encrypt(reader, outputData, true, PDFFilepassword, PDFFilepassword, PdfWriter.ALLOW_SCREENREADERS);
+                            bytes = outputData.ToArray();
+                            return File(bytes, "application/pdf");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

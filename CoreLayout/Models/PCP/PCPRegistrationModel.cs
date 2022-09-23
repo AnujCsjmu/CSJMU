@@ -245,5 +245,13 @@ namespace CoreLayout.Models.PCP
         public string PaperName { get; set; }
 
         public int? IsPaperUploaded { get; set; }
+
+        //for report
+        public string  RegistrationCount { get; set; }
+        public string ApprovedCount { get; set; }
+        public string RejectCount { get; set; }
+        public string QPAllotmentCount { get; set; }
+        public string PaperUploadCount { get; set; }
+        public string SendToAgencyCount { get; set; }
     }
 }

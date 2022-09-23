@@ -28,6 +28,8 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                     {
                         var query = "SP_InsertUpdateDelete_PCPUploadPaper";
                         var res = 0;
+                        var res1 = 0;
+                        int newID = 0;
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("PaperCode", entity.PaperCode, DbType.String);
@@ -41,11 +43,22 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        
+                        parameters.Add("ReturnUploadId", entity.ReturnUploadId, DbType.Int32, direction: ParameterDirection.Output);
                         parameters.Add("@Query", 1, DbType.Int32);
-
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
-
-                        if (res == 1)
+                        newID = parameters.Get<int>("ReturnUploadId");
+                        if (res == 1 && newID != 0)
+                        {
+                            parameters.Add("PaperId", newID, DbType.Int32);
+                            parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+                            parameters.Add("DownloadStatus", "Upload", DbType.String);
+                            parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                            parameters.Add("PaperPath", entity.PaperPath, DbType.String);
+                            parameters.Add("@Query", 7, DbType.Int32);
+                            res1 = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        if (res == 1 && res1 == 1)
                         {
                             tran.Commit();
                         }
@@ -54,7 +67,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                             tran.Rollback();
                         }
 
-                        return res;
+                        return res1;
 
                     }
                     catch (Exception ex)
@@ -208,6 +221,58 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
             {
                 throw new Exception(ex.Message, ex);
             }
+        }
+
+        public async Task<int> InsertDownloadLogAsync(PCPUploadPaperModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
+                        var res = 0;
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("PaperId", entity.PaperId, DbType.Int32);
+                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+                        parameters.Add("DownloadStatus", entity.DownloadStatus, DbType.String);
+                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("PaperPath", entity.PaperPath, DbType.String);
+                        parameters.Add("@Query", 7, DbType.Int32);
+
+                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
         }
 
     }

@@ -19,7 +19,11 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please enter paper name")]
         
         public int PaperId { get; set; }
+
+        [Display(Name = "Paper Name")]
         public string PaperName { get; set; }
+
+        [Display(Name = "Paper Code")]
         public string PaperCode { get; set; }
 
         [Display(Name = "Agency Name")]
@@ -63,10 +67,24 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Paper")]
         public string PaperPath { get; set; }
 
+        [Display(Name = "Agency")]
         public int? AgencyId { get; set; }
 
+        [Display(Name = "Agency Name")]
+        public string AgencyName { get; set; }
         public int? QPId { get; set; }
 
+        [Display(Name = "Send By")]
+        public string CreatedByName { get; set; }
         public List<PCPSendPaperModel> FilterList { get; set; }
+
+        [Display(Name = "QP Name")]
+        public string QPName { get; set; }
+        [Display(Name = "Paper Password")]
+        public string PaperPassword { get; set; }
+        public string Session { get; set; }
+        [Display(Name = "Session Type")]
+        public string SessionType { get; set; }
+   
     }
 }

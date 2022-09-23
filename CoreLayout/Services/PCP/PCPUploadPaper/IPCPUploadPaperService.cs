@@ -15,5 +15,7 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         public Task<int> DeletePCPUploadPaperAsync(PCPUploadPaperModel pCPUploadPaperModel);
 
         public Task<List<PCPUploadPaperModel>> BothUserPaperUploadAndNotUpload();
+
+        public Task<int> InsertDownloadLogAsync(PCPUploadPaperModel pCPUploadPaperModel);
     }
 }

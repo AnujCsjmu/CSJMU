@@ -6,6 +6,7 @@ using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.PCP.PCPApproval;
 using CoreLayout.Services.PCP.PCPRegistration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers
 {
+    [Authorize(Roles = "Controller Of Examination")]
     public class PCPApprovalController : Controller
     {
         private readonly ILogger<PCPApprovalController> _logger;

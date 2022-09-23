@@ -9,5 +9,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
     public interface IPCPUploadPaperRepository : IRepository<PCPUploadPaperModel>
     {
         Task<List<PCPUploadPaperModel>> BothUserPaperUploadAndNotUpload();
+
+        Task<int> InsertDownloadLogAsync(PCPUploadPaperModel entity);
     }
 }

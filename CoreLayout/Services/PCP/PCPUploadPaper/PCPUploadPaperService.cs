@@ -45,5 +45,10 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         {
             return await _pCPUploadPaperRepository.BothUserPaperUploadAndNotUpload();
         }
+
+        public async Task<int> InsertDownloadLogAsync(PCPUploadPaperModel pCPUploadPaperModel)
+        {
+            return await _pCPUploadPaperRepository.InsertDownloadLogAsync(pCPUploadPaperModel);
+        }
     }
 }

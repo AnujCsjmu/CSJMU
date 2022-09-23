@@ -93,5 +93,9 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Subject Name")]
         public string BranchName { get; set; }
 
+        public string DownloadStatus { get; set; }
+
+        public int? ReturnUploadId { get; set; }
+
     }
 }
