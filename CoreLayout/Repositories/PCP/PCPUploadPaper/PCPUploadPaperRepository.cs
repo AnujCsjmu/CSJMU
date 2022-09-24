@@ -1,5 +1,6 @@
 ﻿using CoreLayout.Models.PCP;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
-                        
+
                         parameters.Add("ReturnUploadId", entity.ReturnUploadId, DbType.Int32, direction: ParameterDirection.Output);
                         parameters.Add("@Query", 1, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
@@ -273,6 +274,59 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                 }
             }
 
+        }
+
+
+        public async Task<int> FinalSubmitAsync(PCPUploadPaperModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
+                        var res = 0;
+                      
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("@Query", 8, DbType.Int32);
+                        String[] array = entity.paperids.Split(",");
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            parameters.Add("PaperId", Convert.ToInt32(array[i]), DbType.Int32);
+                            parameters.Add("FinalSubmit", "FinalSubmit", DbType.String);
+                            parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
         }
 
     }

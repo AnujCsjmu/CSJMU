@@ -75,6 +75,8 @@ namespace CoreLayout.Controllers.PCP
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
+
+
                 }
                
                 //end
@@ -188,7 +190,7 @@ namespace CoreLayout.Controllers.PCP
                         }
                         else
                         {
-                            pCPRegistrationModel.IsMobileReminder = "Y";//messageResult.ToString();
+                            pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
                         }
 
                         //send mail
@@ -200,7 +202,7 @@ namespace CoreLayout.Controllers.PCP
                         }
                         else
                         {
-                            pCPRegistrationModel.IsEmailReminder = "Y";//emailResult.ToString();
+                            pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
                         }
                         #endregion
 
@@ -217,7 +219,7 @@ namespace CoreLayout.Controllers.PCP
                     }
                     //return View("~/Views/PCP/PCPSendReminder/Index.cshtml", pCPRegistrationModel);
                     //return RedirectToAction("~/Views/PCP/PCPSendReminder/Index.cshtml");
-                    return await Index();
+                    return await IndexAsync(pCPRegistrationModel);
                 }
 
             }
@@ -282,21 +284,14 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
-                    var path = Path.Combine(uploadsFolder, data.PaperPath);
-                    byte[] bytes = System.IO.File.ReadAllBytes(path);
-                    using (MemoryStream inputData = new MemoryStream(bytes))
-                    {
-                        using (MemoryStream outputData = new MemoryStream())
-                        {
-                            string PDFFilepassword = data.PaperPassword;
-                            PdfReader reader = new PdfReader(inputData);
-                            PdfReader.unethicalreading = true;
-                            PdfEncryptor.Encrypt(reader, outputData, true, PDFFilepassword, PDFFilepassword, PdfWriter.ALLOW_SCREENREADERS);
-                            bytes = outputData.ToArray();
-                            return File(bytes, "application/pdf");
-                        }
-                    }
+                    #region file download
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+                    var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
+                    //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    return File(FileBytes, "application/pdf");
+                    #endregion
                 }
             }
             catch (Exception ex)

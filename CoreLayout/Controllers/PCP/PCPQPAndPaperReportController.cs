@@ -128,21 +128,14 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                    #region file download
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
                     var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
-                    byte[] bytes = System.IO.File.ReadAllBytes(path);
-                    using (MemoryStream inputData = new MemoryStream(bytes))
-                    {
-                        using (MemoryStream outputData = new MemoryStream())
-                        {
-                            string PDFFilepassword = data.PaperPassword;
-                            PdfReader reader = new PdfReader(inputData);
-                            PdfReader.unethicalreading = true;
-                            PdfEncryptor.Encrypt(reader, outputData, true, PDFFilepassword, PDFFilepassword, PdfWriter.ALLOW_SCREENREADERS);
-                            bytes = outputData.ToArray();
-                            return File(bytes, "application/pdf");
-                        }
-                    }
+                    //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    return File(FileBytes, "application/pdf");
+                    #endregion
                 }
             }
             catch (Exception ex)

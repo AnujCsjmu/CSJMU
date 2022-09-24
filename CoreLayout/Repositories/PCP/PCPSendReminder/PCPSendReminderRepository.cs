@@ -75,8 +75,8 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
 
-                        parameters.Add("IsMobileReminder", entity.IsEmailReminder, DbType.String);
-                        parameters.Add("IsEmailReminder", entity.IsMobileReminder, DbType.String);
+                        parameters.Add("IsMobileReminder", entity.IsMobileReminder, DbType.String);
+                        parameters.Add("IsEmailReminder", entity.IsEmailReminder, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
                         parameters.Add("@Query", 3, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);

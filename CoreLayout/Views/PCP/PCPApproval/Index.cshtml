@@ -23,7 +23,11 @@
     <div class="col-lg-12">
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
-                <form asp-action="Index" method="post" id="form1">
+                <form  method="post" id="form1">
+                    @Html.Hidden("userid", (object)ViewBag.userid)
+                    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                    </div>
                     <div class="table-responsive-sm">
 
                         <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
@@ -97,13 +101,13 @@
                         </table>
                         <div class="form-group">
 
-                            <input type="button" id="btnSend" name="Approved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
+                            <input type="submit" id="btnApproved" value="Approved" class="btn btn-success" onclick="return confirm('Are you sure you want to approved?')" />
                             @*<input type="button" id="btnReminder" name="Reminder" value="Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want proceed?')" />*@
                             @*<a asp-action="Index" class="btn btn-success">Back to List</a>*@
 
                         </div>
                     </div>
-                    </form>
+                </form>
             </div>
         </div>
     </div>
@@ -132,7 +136,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#btnSend").click(function () {
+            $("#btnApproved").click(function () {
+                document.getElementById("userid").value = '';
                 var userid = [];
                 var i = 0;
                 //Loop through all checked CheckBoxes in GridView.
@@ -141,19 +146,21 @@
                     i++;
                 });
                 if (userid.length > 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/PCPApproval/Approved?uid=' + userid,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            alert("1");
-                            var form = document.getElementById("form1");
-                            form.reload();
-                        },
-                        error: function (data) {
-                            alert("0");
-                        }
-                    });
+                    //$.ajax({
+                    //    type: 'POST',
+                    //    url: '/PCPApproval/Approved?uid=' + userid,
+                    //    contentType: "application/json; charset=utf-8",
+                    //    success: function (data) {
+                    //        alert("1");
+                    //        var form = document.getElementById("form1");
+                    //        form.reload();
+                    //    },
+                    //    error: function (data) {
+                    //        alert("0");
+                    //    }
+                    //});
+                    alert(userid);
+                    document.getElementById("userid").value = userid;
                 }
                 else {
                     alert("Select atleast one checkbox");
@@ -164,7 +171,7 @@
         });
     </script>
 
-    <script type="text/javascript">
+    @*<script type="text/javascript">
         $(document).ready(function () {
             $("#btnReminder").click(function () {
                 var userid = [];
@@ -183,7 +190,7 @@
                         success: function (data) {
 
                             /*alert(data);*/
-                            
+
                         },
                         error: function (data) {
                             /*alert("error!");*/
@@ -197,7 +204,7 @@
             });
 
         });
-    </script>
+    </script>*@
 
     @*checkbox multi select at one time*@
     <script>

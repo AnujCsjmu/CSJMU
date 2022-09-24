@@ -31,9 +31,12 @@ namespace CoreLayout.Models.PCP
         public string PaperHindiName { get; set; }
 
         [Display(Name = "Paper Password")]
-        [Required(ErrorMessage = "Please enter paper password")]
+        //[Required(ErrorMessage = "Please enter paper password")]
         [StringLength(50)]
         public string PaperPassword { get; set; }
+
+        public string PaperRandomPassword { get; set; }
+        public string DecryptPassword { get; set; }
 
         [Display(Name = "Paper")]
         public string PaperPath { set; get; }
@@ -67,7 +70,7 @@ namespace CoreLayout.Models.PCP
 
         public int? PCPRegID { get; set; }
 
-
+        public string paperids { get; set; }
         public int? RoleId { get; set; }
 
         [Display(Name = "Paper Setter Name")]
@@ -96,6 +99,8 @@ namespace CoreLayout.Models.PCP
         public string DownloadStatus { get; set; }
 
         public int? ReturnUploadId { get; set; }
+
+        public string FinalSubmit { get; set; }
 
     }
 }

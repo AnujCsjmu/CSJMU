@@ -42,13 +42,13 @@
 <!-- End Page Header -->
 <!--Navbar-->
 <div class="responsive-background">
-    <form method="post">
+    <form method="post" id="form1">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="advanced-search br-3">
                 <div class="row align-items-center">
                     <div class="col-md-6 col-xl-3">
                         <div class="form-group mb-lg-0">
-                            <label> IS Paper Uploaded or Not ?</label><span class="tx-danger"> *</span>
+                            <label> Is Paper Uploaded or Not ?</label><span class="tx-danger"> *</span>
                             @Html.DropDownList("IsPaperUploaded", new List<SelectListItem>
                             {
                            new SelectListItem{ Text="--Please Select--", Value = "0" , Selected = true},
@@ -105,7 +105,6 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.QPName)
                                 </th>
-
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperCode)
                                 </th>
@@ -119,10 +118,9 @@
                                     @Html.DisplayNameFor(c => c.PaperPath)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.Session) <br /> @Html.DisplayNameFor(c => c.SessionType)
+                                    @Html.DisplayNameFor(c => c.Session) <br />
+                                    @Html.DisplayNameFor(c => c.SessionType)
                                 </th>
-
-
                             </tr>
                         </thead>
 
@@ -156,11 +154,14 @@
                                     <td>@item.QPName</td>
                                     <td>@item.PaperCode</td>
                                     <td>@item.PaperName</td>
-                                    <td>@item.PaperPassword</td>
+                                    <td>
+                                        <b>Encrypt</b> <br />@item.PaperPassword<br />
+                                        <b>Decrypt</b> <br />@item.PaperPassword
+                                    </td>
                                     @if (item.PaperPath != null)
                                     {
                                         <td>
-                                            <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
                                             <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
                                     }
@@ -173,8 +174,6 @@
                             }
                         </tbody>
                     </table>
-
-
                 </div>
             </div>
         </div>
@@ -183,6 +182,9 @@
 <div>
     <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
 </div>
+@*<div id="global-loader">
+    <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
+</div>*@
 <!-- End Row -->
 
 @section Scripts{
@@ -214,16 +216,19 @@
                 });
 
                 if (userid.length > 0) {
+                    $('#global-loader').show();
                     $.ajax({
                         type: 'POST',
                         url: '/PCPSendReminder/SendReminder?uid=' + userid,
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
-
-                            /*alert(data);*/
+                            var form = document.getElementById("form1");
+                            form.submit();
+                            /* alert("success");*/
+                            $('#global-loader').hide();
                         },
                         error: function (data) {
-                            /*alert("error!");*/
+                            /*alert("fail");*/
                         }
                     });
                 }

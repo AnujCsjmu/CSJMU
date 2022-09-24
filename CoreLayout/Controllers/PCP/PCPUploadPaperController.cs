@@ -1,4 +1,7 @@
-﻿using ceTe.DynamicPDF.PageElements;
+﻿using ceTe.DynamicPDF;
+using ceTe.DynamicPDF.Cryptography;
+using ceTe.DynamicPDF.Merger;
+using ceTe.DynamicPDF.PageElements;
 using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.PCP.PCPAssignedQP;
@@ -87,6 +90,96 @@ namespace CoreLayout.Controllers.PCP
             }
             return View("~/Views/PCP/PCPUploadPaper/Index.cshtml");
         }
+        [HttpPost]
+        [Obsolete]
+        public async Task<IActionResult> Index(PCPUploadPaperModel pCPUploadPaperModel)
+        {
+            string paperid = Request.Form["paperid"];
+            if(paperid!="")
+            {
+                //generate random pwd
+                pCPUploadPaperModel.PaperRandomPassword = CreateRandomPassword();
+                string aesencrytion = _commonController.Encrypt(pCPUploadPaperModel.PaperRandomPassword);
+                pCPUploadPaperModel.PaperPassword = aesencrytion;
+                pCPUploadPaperModel.paperids = paperid;
+                var data1 = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(paperid));
+                if (data1 != null)
+                {
+                    #region upload file in aes encrytion
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                    string uploadsFolder1 = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+
+                    string filePath = System.IO.Path.Combine(uploadsFolder, data1.PaperPath);
+                    string filePath1 = System.IO.Path.Combine(uploadsFolder1, data1.PaperPath);
+
+                    MergeDocument document = new MergeDocument(filePath);
+                    Aes256Security security = new Aes256Security(pCPUploadPaperModel.PaperRandomPassword);
+                    security.AllowCopy = false;
+                    security.AllowPrint = false;
+                    security.AllowFormFilling = false;
+                    document.Security = security;
+                    //insert file in other folder UploadPaperEncryption
+                    document.Draw(filePath1);
+                    //delete file from UploadPaper folder
+                    FileInfo file = new FileInfo(filePath);
+                    if (file.Exists)//check file exsit or not.
+                    {
+                        file.Delete();
+                    }
+                    #endregion
+                    var res = await _pCPUploadPaperService.FinalSubmitAsync(pCPUploadPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Data has been final submit";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Data has not been final submit";
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Selected data is not available");
+                    TempData["error"] = "Selected data is not available";
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Select at least one checkbox");
+                TempData["error"] = "Select at least one checkbox";
+            }
+
+            //start encrypt id for update,delete & details
+            int id = (int)HttpContext.Session.GetInt32("UserId");
+            //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
+            var data = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                        where reg.CreatedBy == id
+                        select reg).ToList();
+            foreach (var _data in data)
+            {
+                var stringId = _data.PaperId.ToString();
+                _data.EncryptedId = _protector.Protect(stringId);
+            }
+            //end
+            return View("~/Views/PCP/PCPUploadPaper/Index.cshtml", data);
+        }
+
+        private string CreateRandomPassword(int length = 6)
+        {
+            // Create a string of characters, numbers, special characters that allowed in the password  
+            string validChars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+
+            // Select one random character at a time from the string  
+            // and create an array of chars  
+            char[] chars = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                chars[i] = validChars[random.Next(0, validChars.Length)];
+            }
+            return new string(chars);
+        }
+
         [HttpGet]
         //[AuthorizeContext(ViewAction.Details)]
         [Obsolete]
@@ -149,7 +242,7 @@ namespace CoreLayout.Controllers.PCP
                                where reg.CreatedBy == CreatedBy && reg.QPId == pCPUploadPaper.QPId
                                select reg).ToList();
             //end
-            
+
             pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
             pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
@@ -159,12 +252,19 @@ namespace CoreLayout.Controllers.PCP
             pCPUploadPaper.QPList = data;
             if (pCPUploadPaper.UploadPaper != null)
             {
+                //check file name is not null
+               
                 //var supportedTypes = new[] { "jpg", "jpeg", "pdf", "png", "JPG", "JPEG", "PDF", "PNG" };
                 var supportedTypes = new[] { "pdf", "PDF" };
                 var fileExt = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
                 if (!supportedTypes.Contains(fileExt))
                 {
                     ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                }
+                else if (pCPUploadPaper.UploadPaper.FileName == null)
+                {
+                    ModelState.AddModelError("", "File name is blank");
                     return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                 }
                 else if (alreadyexit.Count > 0)
@@ -176,7 +276,7 @@ namespace CoreLayout.Controllers.PCP
                 {
                     var uniqueFileName = UploadedFile(pCPUploadPaper);
                     pCPUploadPaper.PaperPath = uniqueFileName;
-                    if (ModelState.IsValid)
+                    if (ModelState.IsValid && uniqueFileName != null)
                     {
                         var res = await _pCPUploadPaperService.CreatePCPUploadPaperAsync(pCPUploadPaper);
                         if (res.Equals(1))
@@ -190,24 +290,18 @@ namespace CoreLayout.Controllers.PCP
 
                         return RedirectToAction(nameof(Index));
                     }
+                    else
+                    {
+                        ModelState.AddModelError("", "Some thing went wrong");
+                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                    }
                 }
             }
             else
             {
-                return View(pCPUploadPaper);
+                ModelState.AddModelError("", "Please select file");
+                return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
             }
-
-
-            return RedirectToAction(nameof(Index));
-            //}
-            //else
-            //{
-            //    TempData["error"] = "Paper has not been saved";
-            //    ModelState.AddModelError("", "Paper already uploaded for this QP");
-            //    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-            //}
-
-
         }
 
         //[AuthorizeContext(ViewAction.Edit)]
@@ -248,9 +342,9 @@ namespace CoreLayout.Controllers.PCP
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.SessionList = await _courseDetailsService.GetAllSession();
-                //start pdf pwd encrypt
-                pCPUploadPaperModel.PaperPassword = _commonController.Encrypt(pCPUploadPaperModel.PaperPassword);
-                //end
+                ////start pdf pwd encrypt
+                //pCPUploadPaperModel.PaperPassword = _commonController.Encrypt(pCPUploadPaperModel.PaperPassword);
+                ////end
                 var qpdata = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
                               where qp.UserId == CreatedBy
                               select qp).ToList();
@@ -375,23 +469,31 @@ namespace CoreLayout.Controllers.PCP
                 throw ex;
             }
         }
-
-        //[Obsolete]
-        //public async Task<IActionResult> Download1(string filename)
+        //public async Task<IActionResult> FinalSubmitAsync()
         //{
-        //    if (filename == null)
-        //        return Content("filename is not availble");
-        //    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
-        //    var path = Path.Combine(uploadsFolder, filename);
-
-        //    var memory = new MemoryStream();
-        //    using (var stream = new FileStream(path, FileMode.Open))
+        //    if (ViewBag.paperids !=null)
         //    {
-        //        await stream.CopyToAsync(memory);
+        //        string s=ViewBag.paperid;
+        //        PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+        //        var res = await _pCPUploadPaperService.UpdatePCPUploadPaperAsync(pCPUploadPaperModel);
+        //        //if (res.Equals(1))
+        //        //{
+        //        //    TempData["success"] = "Paper has been final submitted";
+        //        //}
+        //        //else
+        //        //{
+        //        //    TempData["error"] = "Paper has not been submitted";
+        //        //}
+        //        return RedirectToAction(nameof(Index));
         //    }
-        //    memory.Position = 0;
-        //    return File(memory, GetContentType(path), Path.GetFileName(path));
+        //    else
+        //    {
+
+        //    }
+        //    return RedirectToAction("~/Views/PCP/PCPUploadPaper/Edit.cshtml");
         //}
+
+
         // Get content type
         private string GetContentType(string path)
         {
@@ -444,36 +546,27 @@ namespace CoreLayout.Controllers.PCP
 
                     if (res.Equals(1))
                     {
-                        TempData["success"] = "Paper has been downloaded";
+                        //TempData["success"] = "Paper has been downloaded";
 
                         #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
                         var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
-                        byte[] bytes = System.IO.File.ReadAllBytes(path);
-                        using (MemoryStream inputData = new MemoryStream(bytes))
-                        {
-                            using (MemoryStream outputData = new MemoryStream())
-                            {
-                                string PDFFilepassword = data.PaperPassword;
-                                PdfReader reader = new PdfReader(inputData);
-                                PdfReader.unethicalreading = true;
-                                PdfEncryptor.Encrypt(reader, outputData, true, PDFFilepassword, PDFFilepassword, PdfWriter.ALLOW_SCREENREADERS);
-                                bytes = outputData.ToArray();
-                                return File(bytes, "application/pdf");
-                            }
-                        }
+                        //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                        string ReportURL = path;
+                        byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                        return File(FileBytes, "application/pdf");
                         #endregion
 
                     }
                     else
                     {
-                        TempData["error"] = "Paper has not been downloaded";
+                        //TempData["error"] = "Paper has not been downloaded";
                     }
                 }
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Some thing went wrong";
+                //TempData["error"] = "Some thing went wrong";
             }
             return await Index();
         }

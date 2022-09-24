@@ -107,7 +107,7 @@ namespace CoreLayout.Controllers.PCP
                 var guid_id = _protector.Unprotect(id);
                 PCPAssignedQPModel pCPAssignedQP = new PCPAssignedQPModel();
                 pCPAssignedQP.QPList = await _qPMasterService.GetAllQPMaster();
-                ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
                                     where reg.IsApproved != null
                                     select reg).ToList();
                 return View("~/Views/PCP/PCPAssignedQP/Create.cshtml", pCPAssignedQP);

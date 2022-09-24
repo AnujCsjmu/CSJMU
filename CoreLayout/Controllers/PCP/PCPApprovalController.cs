@@ -82,7 +82,104 @@ namespace CoreLayout.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Index(PCPRegistrationModel pCPRegistrationModel)
+        {
+            string uid = Request.Form["userid"];
+            int result = 0;
+            string msg = string.Empty;
+            if (uid != "")
+            {
 
+                List<string> list = new List<string>();
+
+                String[] array = uid.Split(",");
+                for (int i = 0; i < array.Length; i++)
+                {
+                    //list.Add(array[i]);
+                    var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(array[i]));
+                    pCPRegistrationModel.PCPRegID = Convert.ToInt32(array[i]);
+                    pCPRegistrationModel.UserName = data.UserName;
+                    pCPRegistrationModel.MobileNo = data.MobileNo;
+                    pCPRegistrationModel.EmailID = data.EmailID;
+
+                    //generate loginid
+                    string randomno = Generate5digitRandomNuber();
+                    string loginid = "PCP" + randomno;
+                    pCPRegistrationModel.LoginID = loginid;
+
+                    //generate password
+                    string salt = CreateSalt();
+                    string randompwd = CreateRandomPassword();
+                    pCPRegistrationModel.Password = randompwd;
+                    string saltedHash = ComputeSaltedHash(randompwd, salt);
+                    pCPRegistrationModel.Salt = salt;
+                    pCPRegistrationModel.SaltedHash = saltedHash;
+
+                    pCPRegistrationModel.IsUserActive = data.IsUserActive;
+                    pCPRegistrationModel.RefID = data.RefID;
+                    pCPRegistrationModel.RefType = data.RefType;
+                    pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                    //pCPRegistrationModel.InstituteId = data.InstituteId;
+                    pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPRegistrationModel.RoleId = 19;
+                    pCPRegistrationModel.IsApproved = 1;
+                    pCPRegistrationModel.IsApprovedBy = HttpContext.Session.GetInt32("UserId");
+                    #region Send email and sms
+                    bool messageResult = false;
+                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                    if (messageResult == false)
+                    {
+                        pCPRegistrationModel.IsMobileReminder = "N";
+                    }
+                    else
+                    {
+                        pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
+                    }
+
+                    //send mail
+                    bool emailResult = false;
+                    emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                    if (emailResult == false)
+                    {
+                        pCPRegistrationModel.IsEmailReminder = "N";
+                    }
+                    else
+                    {
+                        pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
+                    }
+                    #endregion
+                    result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
+                    if (result.Equals(1))
+                    {
+                        TempData["success"] = "User has been approved";
+                    }
+                    else
+                    {
+                        TempData["error"] = "User has been not approved";
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Select at least one checkbox");
+                TempData["error"] = "Select at least one checkbox";
+            }
+
+            //start encrypt id for update,delete & details
+            var data1 = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
+                         where reg.IsApproved == null
+                         select reg).ToList();
+            //var data = await _pCPRegistrationService.GetAllPCPRegistration();
+
+            foreach (var _data in data1)
+            {
+                var stringId = _data.PCPRegID.ToString();
+                _data.EncryptedId = _protector.Protect(stringId);
+            }
+            //end
+            return View("~/Views/PCP/PCPApproval/Index.cshtml", data1);
+        }
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
@@ -140,96 +237,93 @@ namespace CoreLayout.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        
 
-        public async Task<IActionResult> Approved(string uid)
-        {
-            PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
-            int result = 0;
-            string msg = string.Empty;
-            if (uid != null)
-            {
-               
-                List<string> list = new List<string>();
 
-                String[] array = uid.Split(",");
-                for (int i = 0; i < array.Length; i++)
-                {
-                    //list.Add(array[i]);
-                    var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(array[i]));
-                    pCPRegistrationModel.PCPRegID = Convert.ToInt32(array[i]);
-                    pCPRegistrationModel.UserName = data.UserName;
-                    pCPRegistrationModel.MobileNo = data.MobileNo;
-                    pCPRegistrationModel.EmailID = data.EmailID;
+        //public async Task<IActionResult> Approved(string uid)
+        //{
+        //    PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
+        //    int result = 0;
+        //    string msg = string.Empty;
+        //    if (uid != null)
+        //    {
 
-                    //generate loginid
-                    string randomno = Generate5digitRandomNuber();
-                    string loginid = "PCP" + randomno;
-                    pCPRegistrationModel.LoginID = loginid;
+        //        List<string> list = new List<string>();
 
-                    //generate password
-                    string salt = CreateSalt();
-                    string randompwd = CreateRandomPassword();
-                    pCPRegistrationModel.Password = randompwd;
-                    string saltedHash = ComputeSaltedHash(randompwd, salt);
-                    pCPRegistrationModel.Salt = salt;
-                    pCPRegistrationModel.SaltedHash = saltedHash;
+        //        String[] array = uid.Split(",");
+        //        for (int i = 0; i < array.Length; i++)
+        //        {
+        //            //list.Add(array[i]);
+        //            var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(array[i]));
+        //            pCPRegistrationModel.PCPRegID = Convert.ToInt32(array[i]);
+        //            pCPRegistrationModel.UserName = data.UserName;
+        //            pCPRegistrationModel.MobileNo = data.MobileNo;
+        //            pCPRegistrationModel.EmailID = data.EmailID;
 
-                    pCPRegistrationModel.IsUserActive = data.IsUserActive;
-                    pCPRegistrationModel.RefID = data.RefID;
-                    pCPRegistrationModel.RefType = data.RefType;
-                    pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    //pCPRegistrationModel.InstituteId = data.InstituteId;
-                    pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                    pCPRegistrationModel.RoleId = 19;
-                    pCPRegistrationModel.IsApproved = 1;
-                    pCPRegistrationModel.IsApprovedBy = HttpContext.Session.GetInt32("UserId");
-                    #region Send email and sms
-                    //send message
-                    bool messageResult =false;
-                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                    if(messageResult == false)
-                    {
-                        pCPRegistrationModel.IsMobileReminder = "N";
-                    }
-                    else
-                    {
-                        pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
-                    }
+        //            //generate loginid
+        //            string randomno = Generate5digitRandomNuber();
+        //            string loginid = "PCP" + randomno;
+        //            pCPRegistrationModel.LoginID = loginid;
 
-                    //send mail
-                    bool emailResult = false;
-                    emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
-                    if (emailResult == false)
-                    {
-                        pCPRegistrationModel.IsEmailReminder = "N";
-                    }
-                    else
-                    {
-                        pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
-                    }
-                    #endregion
-                    result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
-                    if (result.Equals(1))
-                    {
-                        TempData["success"] = "User has been approved successfully";
-                    }
-                    else
-                    {
-                        TempData["error"] = "User has been not approved successfully";
-                    }
-                }
-                //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
-                return await Index();
-            }
-            //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
-            return RedirectToAction(nameof(Index));
-        }
+        //            //generate password
+        //            string salt = CreateSalt();
+        //            string randompwd = CreateRandomPassword();
+        //            pCPRegistrationModel.Password = randompwd;
+        //            string saltedHash = ComputeSaltedHash(randompwd, salt);
+        //            pCPRegistrationModel.Salt = salt;
+        //            pCPRegistrationModel.SaltedHash = saltedHash;
 
-        public JsonResult SendReminder(string uid)
-        {
-            return Json(uid);
-        }
+        //            pCPRegistrationModel.IsUserActive = data.IsUserActive;
+        //            pCPRegistrationModel.RefID = data.RefID;
+        //            pCPRegistrationModel.RefType = data.RefType;
+        //            pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+        //            //pCPRegistrationModel.InstituteId = data.InstituteId;
+        //            pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+        //            pCPRegistrationModel.RoleId = 19;
+        //            pCPRegistrationModel.IsApproved = 1;
+        //            pCPRegistrationModel.IsApprovedBy = HttpContext.Session.GetInt32("UserId");
+        //            #region Send email and sms
+        //            //send message
+        //            bool messageResult = false;
+        //            messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+        //            if (messageResult == false)
+        //            {
+        //                pCPRegistrationModel.IsMobileReminder = "N";
+        //            }
+        //            else
+        //            {
+        //                pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
+        //            }
+
+        //            //send mail
+        //            bool emailResult = false;
+        //            emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.EmailID, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+        //            if (emailResult == false)
+        //            {
+        //                pCPRegistrationModel.IsEmailReminder = "N";
+        //            }
+        //            else
+        //            {
+        //                pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
+        //            }
+        //            #endregion
+        //            result = await _pCPApprovalService.CreatePCPApprovalAsync(pCPRegistrationModel);
+        //            if (result.Equals(1))
+        //            {
+        //                TempData["success"] = "User has been approved successfully";
+        //            }
+        //            else
+        //            {
+        //                TempData["error"] = "User has been not approved successfully";
+        //            }
+        //        }
+        //        //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
+        //        return await Index();
+        //    }
+        //    //return View("~/Views/PCP/PCPApproval/Index.cshtml", pCPRegistrationModel);
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+
 
         public static string CreateSalt()
         {
@@ -313,7 +407,7 @@ namespace CoreLayout.Controllers
             return _mailService.SendEmailAsync(request);
         }
 
-       
+
     }
 }
 

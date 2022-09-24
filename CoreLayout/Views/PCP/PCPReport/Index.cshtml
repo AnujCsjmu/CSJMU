@@ -19,10 +19,10 @@
 
     <label style="font-weight:bold; color:red">Total Registration:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.RegistrationCount</label>&nbsp;&nbsp;&nbsp;
     <label style="font-weight:bold; color:red">Total Approved:- </label>&nbsp;&nbsp; <label style="font-weight:bold; color:black">@ViewBag.ApprovedCount</label>&nbsp;&nbsp;&nbsp;
-    <label style="font-weight:bold; color:red">Total Rejected:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.RejectCount</label><br />
+    <label style="font-weight:bold; color:red">Total Rejected:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.RejectCount</label>&nbsp;&nbsp;&nbsp;
     <label style="font-weight:bold; color:red">Total QP Allotted:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.QPAllotmentCount</label>&nbsp;&nbsp;&nbsp;
     <label style="font-weight:bold; color:red">Total Paper Uploaded:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.PaperUploadCount</label>&nbsp;&nbsp;&nbsp;
-    <label style="font-weight:bold; color:red">Total Send to Agency:- </label>&nbsp;&nbsp; <label style="font-weight:bold; color:black">@ViewBag.SendToAgencyCount</label><br />
+    <label style="font-weight:bold; color:red">Total Send to Agency:- </label>&nbsp;&nbsp; <label style="font-weight:bold; color:black">@ViewBag.SendToAgencyCount</label>&nbsp;&nbsp;&nbsp;
 
 </div>
 <!-- Row -->
@@ -55,7 +55,7 @@
                                     @Html.DisplayNameFor(c => c.PaperPath)
                                 </th>
                                 <th>
-                                    Papen Sent to Agency ?
+                                    Sent to Agency ?
                                 </th>
                             </tr>
                         </thead>
@@ -99,7 +99,7 @@
                                         <td>@item.PaperName</td>
                                         <td>@item.PaperCode</td>
                                         <td>
-                                            <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                            <img src="~/Images/pdfimage.png" height=20 width=30 /><br />
                                             <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
 
@@ -115,8 +115,7 @@
                                                 {
                                                     @if (item.PaperId == item2.PaperId && item.QPId == item2.QPId)
                                                     {
-                                                        @item2.AgencyName
-
+                                                      @item2.AgencyName <br />
                                                     }
 
                                                 }
