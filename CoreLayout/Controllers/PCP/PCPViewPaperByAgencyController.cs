@@ -1,14 +1,7 @@
-﻿using CoreLayout.Enum;
-using CoreLayout.Filters;
-using CoreLayout.Models.Common;
-using CoreLayout.Models.PCP;
-using CoreLayout.Services.Common;
-using CoreLayout.Services.Masters.Role;
-using CoreLayout.Services.PCP.PCPApproval;
+﻿using CoreLayout.Models.PCP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.PCP.PCPSendPaper;
 using CoreLayout.Services.PCP.PCPUploadPaper;
-using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -16,11 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
@@ -101,23 +91,14 @@ namespace CoreLayout.Controllers.PCP
                         TempData["success"] = "Paper has been downloaded";
 
                         #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
                         var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
-                        byte[] bytes = System.IO.File.ReadAllBytes(path);
-                        using (MemoryStream inputData = new MemoryStream(bytes))
-                        {
-                            using (MemoryStream outputData = new MemoryStream())
-                            {
-                                string PDFFilepassword = data.PaperPassword;
-                                PdfReader reader = new PdfReader(inputData);
-                                PdfReader.unethicalreading = true;
-                                PdfEncryptor.Encrypt(reader, outputData, true, PDFFilepassword, PDFFilepassword, PdfWriter.ALLOW_SCREENREADERS);
-                                bytes = outputData.ToArray();
-                                return File(bytes, "application/pdf");
-                            }
-                        }
+                        //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                        string ReportURL = path;
+                        byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                        return File(FileBytes, "application/pdf");
                         #endregion
-                        
+
                     }
                     else
                     {

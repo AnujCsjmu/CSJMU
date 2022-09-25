@@ -121,6 +121,7 @@
                                     @Html.DisplayNameFor(c => c.Session) <br />
                                     @Html.DisplayNameFor(c => c.SessionType)
                                 </th>
+                                <th>Reminder?</th>
                             </tr>
                         </thead>
 
@@ -156,7 +157,19 @@
                                     <td>@item.PaperName</td>
                                     <td>
                                         <b>Encrypt</b> <br />@item.PaperPassword<br />
-                                        <b>Decrypt</b> <br />@item.PaperPassword
+                                        @if (ViewBag.EncryptPwdList != null)
+
+                                        {
+                                            foreach (var item1 in ViewBag.EncryptPwdList)
+                                            {
+                                                @*@if (item.PaperId == item1.PaperId)
+                                                {*@
+                                                    <b>Decrypt</b> <br />@item.DecryptPassword
+                                                //}
+                                                break;
+                                            }
+                                        }
+
                                     </td>
                                     @if (item.PaperPath != null)
                                     {
@@ -170,6 +183,7 @@
                                         <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
                                     }
                                     <td>@item.Session <br /> @item.SessionType</td>
+                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" target="_blank">View</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -183,8 +197,8 @@
     <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
 </div>
 @*<div id="global-loader">
-    <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
-</div>*@
+        <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
+    </div>*@
 <!-- End Row -->
 
 @section Scripts{
@@ -224,11 +238,11 @@
                         success: function (data) {
                             var form = document.getElementById("form1");
                             form.submit();
-                            /* alert("success");*/
                             $('#global-loader').hide();
+                             alert("send reminder");
                         },
                         error: function (data) {
-                            /*alert("fail");*/
+                            alert("failed reminder");
                         }
                     });
                 }
@@ -240,7 +254,7 @@
     </script>
 
     @*ViewReminder*@
-    <script type="text/javascript">
+    @*<script type="text/javascript">
         $(document).ready(function () {
             $("#btnViewReminder").click(function () {
                 var userid = [];
@@ -269,7 +283,7 @@
                 }
             });
         });
-    </script>
+    </script>*@
 
     @*checkbox multi select at one time*@
     <script>

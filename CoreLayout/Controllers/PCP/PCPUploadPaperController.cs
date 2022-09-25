@@ -1,12 +1,9 @@
-﻿using ceTe.DynamicPDF;
-using ceTe.DynamicPDF.Cryptography;
+﻿using ceTe.DynamicPDF.Cryptography;
 using ceTe.DynamicPDF.Merger;
-using ceTe.DynamicPDF.PageElements;
 using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPUploadPaper;
-using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -117,6 +114,7 @@ namespace CoreLayout.Controllers.PCP
                     security.AllowCopy = false;
                     security.AllowPrint = false;
                     security.AllowFormFilling = false;
+                    security.AllowEdit = false;
                     document.Security = security;
                     //insert file in other folder UploadPaperEncryption
                     document.Draw(filePath1);

@@ -16,10 +16,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPSendReminder;
-using iTextSharp.text.pdf;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 
 namespace CoreLayout.Controllers.PCP
@@ -64,22 +62,26 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
-                              //where qp.UserId == CreatedBy
-                              select upload).ToList();
+                                //where qp.UserId == CreatedBy
+                            select upload).ToList();
                 //var data = await _pCPUploadPaperService.GetAllPCPUploadPaper();
                 //ViewBag.PaperUploadedlist = allUploadedQP;
                 //end
-
+                List<string> pcslist = new List<string>();
                 //start encrypt id for update,delete & details
                 foreach (var _data in data)
                 {
                     var stringId = _data.PaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
 
-
+                    if (_data.PaperPassword != null)
+                    {
+                        _data.DecryptPassword = _commonController.Decrypt(_data.PaperPassword);
+                        pcslist.Add(_data.DecryptPassword);
+                    }
                 }
-               
                 //end
+                ViewBag.EncryptPwdList = pcslist;
                 return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
 
@@ -98,7 +100,7 @@ namespace CoreLayout.Controllers.PCP
             if (paperupload == 1)//paper uploded
             {
                 var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
-                                where upload.PaperPath != null
+                            where upload.PaperPath != null
                             select upload).ToList();
 
                 //start encrypt id for update,delete & details
@@ -120,7 +122,7 @@ namespace CoreLayout.Controllers.PCP
             else
             {
                 var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
-                            //where upload.PaperPath != null
+                                //where upload.PaperPath != null
                             select upload).ToList();
                 //start encrypt id for update,delete & details
                 foreach (var _data in data)
@@ -132,15 +134,15 @@ namespace CoreLayout.Controllers.PCP
                 return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
 
-            
+
         }
 
         [HttpPost]
         public async Task<IActionResult> ResetAsync()//int? paperupload
         {
-          var  data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
-                        //where upload.PaperPath != null
-                    select upload).ToList();
+            var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                            //where upload.PaperPath != null
+                        select upload).ToList();
             //end
 
             //start encrypt id for update,delete & details
@@ -232,22 +234,22 @@ namespace CoreLayout.Controllers.PCP
             return View("~/Views/PCP/PCPSendReminder/Index.cshtml");
         }
 
-        public async Task<JsonResult> ViewReminderAsync(string uid)
-        {
-            List<PCPRegistrationModel> data = null;
-            try
-            {
-                data = await _pCPSendReminderService.GetReminderById(Convert.ToInt32(uid));
+        //public async Task<JsonResult> ViewReminderAsync(string uid)
+        //{
+        //    List<PCPRegistrationModel> data = null;
+        //    try
+        //    {
+        //        data = await _pCPSendReminderService.GetReminderById(Convert.ToInt32(uid));
 
-                ViewBag.ViewReminder = data;
+        //        ViewBag.ViewReminder = data;
 
-            }
-            catch (Exception ex)
-            {
-                TempData["error"] = "Some thing went wrong";
-            }
-            return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["error"] = "Some thing went wrong";
+        //    }
+        //    return Json(data, new Newtonsoft.Json.JsonSerializerSettings());
+        //}
 
         public bool SendRegistraionMeassage(string username, string mobile, string loginid, string password)
         {
@@ -299,5 +301,28 @@ namespace CoreLayout.Controllers.PCP
                 throw ex;
             }
         }
+
+        public async Task<IActionResult> ViewReminder(int id)
+        {
+            try
+            {
+                //var guid_id = _protector.Unprotect(id);
+                var data = await _pCPSendReminderService.GetReminderById(id);
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View("~/Views/PCP/PCPSendReminder/ViewReminder.cshtml",data);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
