@@ -2,213 +2,208 @@
 @{
     ViewData["Title"] = "Create";
 }
-<div class="main-content side-content pt-0">
-    <div class="side-app">
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Create Course</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Course</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
 
-        <div class="main-container container-fluid">
-
-
-            <!-- Page Header -->
-            <div class="page-header">
-                <div>
-                    <h2 class="main-content-title tx-24 mg-b-5">Create Course</h2>
-                    <hr />
-                </div>
-
-            </div>
-            <!-- End Page Header -->
-            <!-- Conetnt Start-->
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <div>
-                                <h6 class="card-title mb-1">Create Course</h6>
-                                <hr />
-                            </div>
-
-                            <form asp-action="Create" method="post">
-                                <div class="row">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger">
-
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="CourseCode" class="mg-b-10"> </label>
-                                            <input asp-for="CourseCode" class="form-control" />
-                                            <span asp-validation-for="CourseCode" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="CourseName" class="mg-b-10"> </label>
-                                            <input asp-for="CourseName" class="form-control" />
-                                            <span asp-validation-for="CourseName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="HindiName" class="mg-b-10"> </label>
-                                            <input asp-for="HindiName" class="form-control" />
-                                            <span asp-validation-for="HindiName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="MinDuration" class="mg-b-10"> </label>
-                                            <input asp-for="MinDuration" class="form-control" type="number" />
-                                            <span asp-validation-for="MinDuration" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="MaxDuration" class="mg-b-10"> </label>
-                                            <input asp-for="MaxDuration" class="form-control" type="number" />
-                                            <span asp-validation-for="MaxDuration" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="ProgramId" class="mg-b-10"> </label>
-                                            <select style="width:260px" class="select" asp-for="ProgramId" asp-items="@(new SelectList(Model.ProgramList,"ProgramId","ProgramName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                            <span asp-validation-for="ProgramId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="CourseTypeId" class="mg-b-10"> </label>
-                                            <select style="width:260px" class="select" asp-for="CourseTypeId" asp-items="@(new SelectList(Model.CourseTypeList,"CourseTypeId","CourseTypeName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                            <span asp-validation-for="CourseTypeId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="ShortName" class="mg-b-10"> </label>
-                                            <input asp-for="ShortName" class="form-control" />
-                                            <span asp-validation-for="ShortName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="AffOnline" class="mg-b-10"> </label>
-                                            @Html.DropDownList("AffOnline", new List<SelectListItem>
-                                          {
-                                           new SelectListItem{ Text="N", Value = "N" },
-                                           new SelectListItem{ Text="Y", Value = "Y" },
-                                          },
-                                          new { @class = "form-control" })
-                                            <span asp-validation-for="AffOnline" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="NominalDuration" class="mg-b-10"> </label>
-                                            <input asp-for="NominalDuration" class="form-control" type="number" />
-                                            <span asp-validation-for="NominalDuration" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="OnCampus" class="mg-b-10"> </label>
-                                            @Html.DropDownList("OnCampus", new List<SelectListItem>
-                                          {
-                                           new SelectListItem{ Text="No", Value = "0" },
-                                           new SelectListItem{ Text="Yes", Value = "1" },
-                                          },
-                                          new { @class = "form-control" })
-                                            <span asp-validation-for="OnCampus" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="OffCampus" class="mg-b-10"> </label>
-                                            @Html.DropDownList("OffCampus", new List<SelectListItem>
-                                            {
-                                             new SelectListItem{ Text="No", Value = "0" },
-                                             new SelectListItem{ Text="Yes", Value = "1" },
-                                            },
-                                            new { @class = "form-control" })
-                                            <span asp-validation-for="OffCampus" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="CertificateName" class="mg-b-10"> </label>
-                                            <input asp-for="CertificateName" class="form-control" />
-                                            <span asp-validation-for="CertificateName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="CertificateHindiName" class="mg-b-10"> </label>
-                                            <input asp-for="CertificateHindiName" class="form-control" />
-                                            <span asp-validation-for="CertificateHindiName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="DisplayName" class="mg-b-10"> </label>
-                                            <input asp-for="DisplayName" class="form-control" />
-                                            <span asp-validation-for="DisplayName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="IsNEP" class="mg-b-10"> </label>
-                                            @Html.DropDownList("IsNEP", new List<SelectListItem>
-                                           {
-                                            new SelectListItem{ Text="No", Value = "0" },
-                                            new SelectListItem{ Text="Yes", Value = "1" },
-                                           },
-                                           new { @class = "form-control" })
-                                            <span asp-validation-for="IsNEP" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="IsActive" class="mg-b-10"> </label>
-                                            @Html.DropDownList("IsActive", new List<SelectListItem>
-                                            {
-                                             new SelectListItem{ Text="No", Value = "0" },
-                                             new SelectListItem{ Text="Yes", Value = "1" },
-                                            },
-                                            new { @class = "form-control" })
-                                            <span asp-validation-for="IsActive" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label asp-for="IsLateralAllowed" class="mg-b-10"> </label>
-                                            @Html.DropDownList("IsLateralAllowed", new List<SelectListItem>
-                                            {
-                                             new SelectListItem{ Text="No", Value = "0" },
-                                             new SelectListItem{ Text="Yes", Value = "1" },
-                                            },
-                                            new { @class = "form-control" })
-                                            <span asp-validation-for="IsLateralAllowed" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="submit" class="btn btn-primary" value="Save" />
-                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
-                                    </div>
-                                </div>
-
-                            </form>
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Conetnt End-->
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseCode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CourseCode" class="form-control" />
+                                <span asp-validation-for="CourseCode" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CourseName" class="form-control" />
+                                <span asp-validation-for="CourseName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="HindiName" class="form-control" />
+                                <span asp-validation-for="HindiName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MinDuration"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MinDuration" class="form-control" type="number" />
+                                <span asp-validation-for="MinDuration" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MaxDuration"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MaxDuration" class="form-control" type="number" />
+                                <span asp-validation-for="MaxDuration" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ProgramId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ProgramId" asp-items="@(new SelectList(Model.ProgramList,"ProgramId","ProgramName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="ProgramId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseTypeId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseTypeId" asp-items="@(new SelectList(Model.CourseTypeList,"CourseTypeId","CourseTypeName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="CourseTypeId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ShortName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ShortName" class="form-control" />
+                                <span asp-validation-for="ShortName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="AffOnline"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("AffOnline", new List<SelectListItem>
+                              {
+                               new SelectListItem{ Text="N", Value = "N" },
+                               new SelectListItem{ Text="Y", Value = "Y" },
+                              },
+                              new { @class = "form-control" })
+                                <span asp-validation-for="AffOnline" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="NominalDuration"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="NominalDuration" class="form-control" type="number" />
+                                <span asp-validation-for="NominalDuration" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="OnCampus"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("OnCampus", new List<SelectListItem>
+                              {
+                               new SelectListItem{ Text="No", Value = "0" },
+                               new SelectListItem{ Text="Yes", Value = "1" },
+                              },
+                              new { @class = "form-control" })
+                                <span asp-validation-for="OnCampus" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="OffCampus"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("OffCampus", new List<SelectListItem>
+                                {
+                                 new SelectListItem{ Text="No", Value = "0" },
+                                 new SelectListItem{ Text="Yes", Value = "1" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="OffCampus" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CertificateName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CertificateName" class="form-control" />
+                                <span asp-validation-for="CertificateName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CertificateHindiName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CertificateHindiName" class="form-control" />
+                                <span asp-validation-for="CertificateHindiName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DisplayName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="DisplayName" class="form-control" />
+                                <span asp-validation-for="DisplayName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsNEP"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("IsNEP", new List<SelectListItem>
+                               {
+                                new SelectListItem{ Text="No", Value = "0" },
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                               },
+                               new { @class = "form-control" })
+                                <span asp-validation-for="IsNEP" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("IsActive", new List<SelectListItem>
+                                {
+                                 new SelectListItem{ Text="No", Value = "0" },
+                                 new SelectListItem{ Text="Yes", Value = "1" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsLateralAllowed"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("IsLateralAllowed", new List<SelectListItem>
+                                {
+                                 new SelectListItem{ Text="No", Value = "0" },
+                                 new SelectListItem{ Text="Yes", Value = "1" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="IsLateralAllowed" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
         </div>
     </div>
 </div>
+<!-- Conetnt End-->
+@section Scripts{
+
+}

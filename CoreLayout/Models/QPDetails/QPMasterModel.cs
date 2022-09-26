@@ -26,7 +26,7 @@ namespace CoreLayout.Models.QPDetails
 
         [Display(Name = "QP Name")]
         [Required(ErrorMessage = "Please enter qp name")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string QPName { get; set; }
 

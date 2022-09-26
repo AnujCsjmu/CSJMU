@@ -33,9 +33,21 @@
                                     @Html.DisplayNameFor(c => c.PaperId)
                                 </th>
 
-                                @*<th>
-                                        @Html.DisplayNameFor(c => c.PaperSetterName)
-                                    </th>*@
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CourseID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperOpenTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.StaticIPAddress)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPassword)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperPath)
+                                </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
                                 </th>
@@ -62,7 +74,35 @@
                                     <td>@item.AgencyName</td>
                                     <td>@item.PaperName</td>
 
-                                    @*<td>@item.PaperSetterName</td>*@
+                                    <td>@item.CourseCode</td>
+                                    <td>@item.PaperOpenTime</td>
+                                    <td>@item.StaticIPAddress</td>
+                                    <td>
+                                        <b>Encrypt</b> <br />@item.PaperPassword<br />
+                                        @if (ViewBag.EncryptPwdList != null)
+
+                                        {
+                                            foreach (var item1 in ViewBag.EncryptPwdList)
+                                            {
+                                               
+                                                <b>Decrypt</b> <br />@item.DecryptPassword
+                                                
+                                                break;
+                                            }
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @if (item.PaperPath != null)
+                                        {
+                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        }
+
+                                    </td>
+
+
                                     <td>@item.CreatedByName</td>
                                     <td>@item.CreatedDate</td>
                                     <td>

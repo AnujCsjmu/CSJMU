@@ -40,6 +40,8 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
+                        parameters.Add("PaperOpenTime", entity.PaperOpenTime, DbType.DateTime);
+                        parameters.Add("StaticIPAddress", entity.StaticIPAddress, DbType.String);
                         parameters.Add("@Query", 1, DbType.Int32);
                         String[] array = entity.paperids.Split(",");
                         for (int i = 0; i < array.Length; i++)
@@ -159,6 +161,8 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
+                        parameters.Add("PaperOpenTime", entity.PaperOpenTime, DbType.DateTime);
+                        parameters.Add("StaticIPAddress", entity.StaticIPAddress, DbType.String);
                         parameters.Add("@Query", 2, DbType.Int32);
                         //foreach (int paperid in entity.PaperList)
                         //{

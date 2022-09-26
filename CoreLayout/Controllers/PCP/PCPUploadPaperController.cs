@@ -547,7 +547,7 @@ namespace CoreLayout.Controllers.PCP
                         //TempData["success"] = "Paper has been downloaded";
 
                         #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
                         var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
                         //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                         string ReportURL = path;

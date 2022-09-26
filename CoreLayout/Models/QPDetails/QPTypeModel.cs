@@ -16,7 +16,7 @@ namespace CoreLayout.Models.QPDetails
         [Remote(action: "VerifyName", controller: "QPType")]
         [Display(Name = "QP Type Name")]
         [Required(ErrorMessage = "Please enter qp type")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(50)]
         public string QPTypeName { get; set; }
         public int UserId { get; set; }

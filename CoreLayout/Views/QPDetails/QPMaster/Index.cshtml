@@ -49,14 +49,23 @@
                                     @Html.DisplayNameFor(c => c.BranchId)
                                 </th>
                                 <th>
+                                    @*@Html.DisplayNameFor(c => c.Credits)<br />
+                                    @Html.DisplayNameFor(c => c.InternalMarks)<br />
+                                    @Html.DisplayNameFor(c => c.ExternalMarks)*@
+                                    Credits<br />Internal<br />External
+                                </th>
+                                <th>
+                                    @*@Html.DisplayNameFor(c => c.SemYearId)<br />
+        @Html.DisplayNameFor(c => c.NoOfPaper)*@
+                                    SemYear<br />NoOfPaper
+                                </th>
+                                <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.ModifiedDate)
-                                </th>
+
                                 <th>
                                     Action
                                 </th>
@@ -80,9 +89,11 @@
                                 <td>@item.FacultyName</td>
                                 <td>@item.CourseName</td>
                                 <td>@item.BranchName</td>
+                                <td>@item.Credits <br />@item.InternalMarks <br /> @item.ExternalMarks</td>
+                                <td>@item.SemYearId <br />@item.NoOfPaper</td>
                                 <td>@item.CreatedBy</td>
                                 <td>@item.CreatedDate</td>
-                                <td>@item.ModifiedDate</td>
+
                                 <td>
                                     <div class="table-actions text-center">
                                         <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>

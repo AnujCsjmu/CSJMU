@@ -56,6 +56,7 @@ namespace CoreLayout.Models.PCP
         public int CourseID { get; set; }
 
         public string CourseName { get; set; }
+        public string CourseCode { get; set; }
 
         public int? RoleId { get; set; }
 
@@ -85,6 +86,16 @@ namespace CoreLayout.Models.PCP
         public string Session { get; set; }
         [Display(Name = "Session Type")]
         public string SessionType { get; set; }
-   
+
+        [Display(Name = "Paper Open Time")]
+        public DateTime PaperOpenTime { get; set; }
+
+        [Display(Name = "Static IP")]
+        public string StaticIPAddress { get; set; }
+
+        [Display(Name = "Decrypt Password")]
+        public string DecryptPassword { get; set; }
+
+        
     }
 }

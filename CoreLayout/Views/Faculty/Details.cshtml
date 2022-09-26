@@ -3,61 +3,58 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="main-content side-content pt-0">
-    <div class="side-app">
-        <div class="main-container container-fluid">
-            <!-- Page Header -->
-            <div class="page-header">
-                <div>
-                    <h2 class="main-content-title tx-24 mg-b-5">Faculty Details</h2>
-                    <hr />
-                </div>
-            </div>
-            <!-- End Page Header -->
-            <!-- Conetnt Start-->
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <div>
-                                <h6 class="card-title mb-1">Faculty Details</h6>
-                                <hr />
-                            </div>
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Faculty Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Faculty</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+    </div>
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">State Details</h6>
+                        <hr />
+                    </div>*@
 
-                            <form asp-action="Details" method="post">
-                                <div class="row">
-                                    <input type="hidden" asp-for="FacultyID" />
-                                    <div asp-validation-summary="ModelOnly" class="text-danger">
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="ProgramId" class="mg-b-10"> </label>
-                                            <input asp-for="ProgramName" class="form-control" readonly="readonly" />
-                                            <span asp-validation-for="ProgramId" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label asp-for="FacultyName" class="mg-b-10"> </label>
-                                            <input asp-for="FacultyName" class="form-control" readonly="readonly" />
-                                            <span asp-validation-for="FacultyName" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
-                                        <a asp-action="Index" class="btn btn-success">Back to List</a>
-                                    </div>
-                                </div>
-
-                            </form>
+                <form asp-action="Details" method="post">
+                    <div class="row">
+                        <input type="hidden" asp-for="FacultyID" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ProgramId"> </label>
+                                <input asp-for="ProgramName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="ProgramId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FacultyName"> </label>
+                                <input asp-for="FacultyName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="FacultyName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <!-- Conetnt End-->
 
+                </form>
+
+
+            </div>
         </div>
     </div>
 </div>
+<!-- Conetnt End-->

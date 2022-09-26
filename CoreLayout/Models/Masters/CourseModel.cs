@@ -22,7 +22,7 @@ namespace CoreLayout.Models.Masters
 
         [Display(Name = "Course Name")]
         [Required(ErrorMessage = "Please enter course name")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(100)]
         public string CourseName { get; set; }
 

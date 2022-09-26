@@ -48,8 +48,20 @@
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperOpenTime"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PaperOpenTime" class="form-control" />
+                                <span asp-validation-for="PaperOpenTime" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="StaticIPAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="StaticIPAddress" class="form-control" />
+                                <span asp-validation-for="StaticIPAddress" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
@@ -66,8 +78,8 @@
                                                 @Html.DisplayNameFor(c => c.PaperCode)
                                             </th>
                                             @*<th>
-                                                @Html.DisplayNameFor(c => c.PaperPath)
-                                            </th>*@
+                                @Html.DisplayNameFor(c => c.PaperPath)
+                            </th>*@
                                             <th>
                                                 @Html.DisplayNameFor(c => c.UserName)
                                             </th>
@@ -92,9 +104,9 @@
                                                 <td>@item.PaperName</td>
                                                 <td>@item.PaperCode</td>
                                                 @*<td>
-                                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
-                                                    <a asp-action="Download" asp-route-id="@item.PaperId" target="_blank">Download</a>
-                                                </td>*@
+                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
+                                    <a asp-action="Download" asp-route-id="@item.PaperId" target="_blank">Download</a>
+                                </td>*@
                                                 <td>@item.UserName</td>
                                                 <td>@item.CreatedDate</td>
                                             </tr>

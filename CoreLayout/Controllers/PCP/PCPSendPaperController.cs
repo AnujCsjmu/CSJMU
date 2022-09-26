@@ -8,6 +8,7 @@ using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.Registration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,7 +30,12 @@ namespace CoreLayout.Controllers.PCP
         private readonly IRegistrationService _registrationService;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         private readonly ICourseService _courseService;
-        public PCPSendPaperController(ILogger<PCPSendPaperController> logger, IDataProtectionProvider provider, IPCPSendReminderService pCPSendReminderService, IPCPSendPaperService pCPSendPaperService, IRegistrationService registrationService, IPCPUploadPaperService pCPUploadPaperService, ICourseService courseService)
+        private readonly CommonController _commonController;
+        [Obsolete]
+        private readonly IHostingEnvironment hostingEnvironment;//for file upload
+
+        [Obsolete]
+        public PCPSendPaperController(ILogger<PCPSendPaperController> logger, IDataProtectionProvider provider, IPCPSendReminderService pCPSendReminderService, IPCPSendPaperService pCPSendPaperService, IRegistrationService registrationService, IPCPUploadPaperService pCPUploadPaperService, ICourseService courseService, IHostingEnvironment environment, CommonController commonController)
         {
             _logger = logger;
             _protector = provider.CreateProtector("PCPSendPaper.PCPSendPaperController");
@@ -38,6 +44,8 @@ namespace CoreLayout.Controllers.PCP
             _registrationService = registrationService;
             _pCPUploadPaperService = pCPUploadPaperService;
             _courseService = courseService;
+            hostingEnvironment = environment;
+            _commonController = commonController;
         }
 
         [AuthorizeContext(ViewAction.View)]
@@ -47,13 +55,21 @@ namespace CoreLayout.Controllers.PCP
             {
                 var data = await _pCPSendPaperService.GetAllPCPSendPaper();
                 //end
-
+                List<string> pcslist = new List<string>();
                 //start encrypt id for update,delete & details
                 foreach (var _data in data)
                 {
                     var stringId = _data.SendPaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
+
+                    //for decrypt pwd
+                    if (_data.PaperPassword != null)
+                    {
+                        _data.DecryptPassword = _commonController.Decrypt(_data.PaperPassword);
+                        pcslist.Add(_data.DecryptPassword);
+                    }
                 }
+                ViewBag.EncryptPwdList = pcslist;
                 //end
                 //start generate maxid for create button
                 int id = 0;
@@ -242,6 +258,36 @@ namespace CoreLayout.Controllers.PCP
 
             return RedirectToAction(nameof(Index));
 
+        }
+
+        [Obsolete]
+        public async Task<IActionResult> DownloadAsync(string id)
+        {
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    #region file download
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+                    var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
+                    //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    return File(FileBytes, "application/pdf");
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
