@@ -302,12 +302,12 @@ namespace CoreLayout.Controllers.PCP
             }
         }
 
-        public async Task<IActionResult> ViewReminder(int id)
+        public async Task<IActionResult> ViewReminder(int id,int QPId)
         {
             try
             {
                 //var guid_id = _protector.Unprotect(id);
-                var data = await _pCPSendReminderService.GetReminderById(id);
+                var data = await _pCPSendReminderService.GetReminderById(id, QPId);
 
                 if (data == null)
                 {

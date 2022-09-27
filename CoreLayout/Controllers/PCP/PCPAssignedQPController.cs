@@ -3,10 +3,15 @@ using CoreLayout.Filters;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.PCP;
 using CoreLayout.Models.QPDetails;
+using CoreLayout.Services.Masters.Branch;
+using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.CourseBranchMapping;
+using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.QPDetails.QPMaster;
+using CoreLayout.Services.QPDetails.QPType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -28,13 +33,28 @@ namespace CoreLayout.Controllers.PCP
         private readonly IDataProtector _protector;
         private readonly IQPMasterService _qPMasterService;
         private readonly IPCPRegistrationService _pCPRegistrationService;
-        public PCPAssignedQPController(ILogger<PCPAssignedQPController> logger, IPCPAssignedQPService pCPAssignedQPService, IDataProtectionProvider provider, IQPMasterService qPMasterService, IPCPRegistrationService pCPRegistrationService)
+
+        private readonly IQPTypeService _qPTypeService;
+        private readonly ICourseService _courseService;
+        private readonly IBranchService _branchService;
+        private readonly ICourseDetailsService _courseDetailsService;
+        private readonly ICourseBranchMappingService _courseBranchMappingService;
+
+        public PCPAssignedQPController(ILogger<PCPAssignedQPController> logger, IPCPAssignedQPService pCPAssignedQPService,
+            IDataProtectionProvider provider, IQPMasterService qPMasterService, IPCPRegistrationService pCPRegistrationService,
+            IQPTypeService qPTypeService, ICourseService courseService, IBranchService branchService, ICourseDetailsService courseDetailsService, ICourseBranchMappingService courseBranchMappingService)
         {
             _logger = logger;
             _pCPAssignedQPService = pCPAssignedQPService;
             _protector = provider.CreateProtector("PCPAssignedQP.PCPAssignedQPController");
             _qPMasterService = qPMasterService;
             _pCPRegistrationService = pCPRegistrationService;
+
+            _qPTypeService = qPTypeService;
+            _courseService = courseService;
+            _branchService = branchService;
+            _courseDetailsService = courseDetailsService;
+            _courseBranchMappingService = courseBranchMappingService;
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.View)]
@@ -110,6 +130,29 @@ namespace CoreLayout.Controllers.PCP
                 ViewBag.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
                                     where reg.IsApproved != null
                                     select reg).ToList();
+                //new
+                // pCPAssignedQP.QPTypeList = await _qPTypeService.GetAllQPType();//
+
+
+                //pCPAssignedQP.CourseList = await _courseService.GetAllCourse();
+                //pCPAssignedQP.CourseList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
+                //                            join course in await _courseService.GetAllCourse() on qpmaster.CourseId equals course.CourseID
+                //                            //where qpmaster.CourseId==course.CourseID
+                //                            select course).Distinct().ToList();
+
+                ////pCPAssignedQP.BranchList = await _branchService.GetAllBranch();//subject
+                //pCPAssignedQP.BranchList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
+                //                            join branch in await _branchService.GetAllBranch() on qpmaster.BranchId equals branch.BranchID
+                //                            //where qpmaster.CourseId==course.CourseID
+                //                            select branch).Distinct().ToList();
+
+                ////pCPAssignedQP.SessionList = await _courseDetailsService.GetAllSession();//sllabus
+                //pCPAssignedQP.SessionList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
+                //                             join session in await _courseDetailsService.GetAllSession() on qpmaster.SyllabusId equals session.SessionId
+                //                             //where qpmaster.CourseId==course.CourseID
+                //                             select session).Distinct().ToList();
+
+
                 return View("~/Views/PCP/PCPAssignedQP/Create.cshtml", pCPAssignedQP);
             }
             catch (Exception ex)
@@ -132,7 +175,7 @@ namespace CoreLayout.Controllers.PCP
                 int result = 0;
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 var alreadyexit = (from assignqp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
-                                   where assignqp.CreatedBy == CreatedBy && assignqp.QPId== pCPAssignedQPModel.QPId
+                                   where assignqp.CreatedBy == CreatedBy && assignqp.QPId == pCPAssignedQPModel.QPId
                                    select assignqp).ToList();
                 foreach (var useid in alreadyexit)
                 {
@@ -150,6 +193,13 @@ namespace CoreLayout.Controllers.PCP
                 ViewBag.UserList = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                     where reg.IsApproved != null
                                     select reg).ToList();
+
+                //new 
+                //pCPAssignedQPModel.QPTypeList = await _qPTypeService.GetAllQPType();//
+                //pCPAssignedQPModel.CourseList = await _courseService.GetAllCourse();
+                //pCPAssignedQPModel.BranchList = await _branchService.GetAllBranch();//subject
+                //pCPAssignedQPModel.SessionList = await _courseDetailsService.GetAllSession();//sllabus
+
                 pCPAssignedQPModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 //pCPAssignedQPModel.UserId = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
@@ -217,7 +267,7 @@ namespace CoreLayout.Controllers.PCP
                 int result = 0;
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 var alreadyexit = (from assignqp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
-                                   where assignqp.CreatedBy == CreatedBy 
+                                   where assignqp.CreatedBy == CreatedBy
                                    select assignqp).ToList();
                 foreach (var useid in alreadyexit)
                 {
@@ -302,5 +352,24 @@ namespace CoreLayout.Controllers.PCP
             return RedirectToAction(nameof(Index));
 
         }
+
+        //public async Task<JsonResult> GetSubjectAsync(int CourseId)
+        //{
+        //    var CourseList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
+        //                      join branch in await _courseBranchMappingService.GetAllCourseBranchMapping() on qpmaster.CourseId equals branch.CourseId
+        //                      where qpmaster.CourseId == CourseId
+        //                      select new SelectListItem()
+        //                      {
+        //                          Text = branch.BranchName,
+        //                          Value = branch.BranchId.ToString(),
+        //                      }).Distinct().ToList();
+        //    //select new { branch.BranchID,branch.BranchName }).Distinct().ToList();
+        //    //CourseList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
+        //    return Json(CourseList);
+        //}
     }
 }

@@ -15,7 +15,7 @@ namespace CoreLayout.Services.PCP.PCPSendReminder
         //public Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded();
         //public Task<PCPRegistrationModel> GetPCPApprovalById(int id);
 
-        public Task<List<PCPRegistrationModel>> GetReminderById(int id);
+        public Task<List<PCPRegistrationModel>> GetReminderById(int id,int QPId);
         //public Task<int> CreatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel);
         public Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel);
         //public Task<int> UpdatePCPApprovalAsync(PCPRegistrationModel pCPRegistrationModel);

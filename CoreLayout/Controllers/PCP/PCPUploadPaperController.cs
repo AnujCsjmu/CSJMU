@@ -272,7 +272,7 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
-                    var uniqueFileName = UploadedFile(pCPUploadPaper);
+                    var uniqueFileName = UploadedFile(pCPUploadPaper,"");
                     pCPUploadPaper.PaperPath = uniqueFileName;
                     if (ModelState.IsValid && uniqueFileName != null)
                     {
@@ -360,9 +360,10 @@ namespace CoreLayout.Controllers.PCP
                     {
                         if (ModelState.IsValid)
                         {
-                            var uniqueFileName = UploadedFile(pCPUploadPaperModel);
-                            pCPUploadPaperModel.PaperPath = uniqueFileName;
                             var value = await _pCPUploadPaperService.GetPCPUploadPaperById(PaperId);
+                            var uniqueFileName = UploadedFile(pCPUploadPaperModel, value.PaperPath);
+                            pCPUploadPaperModel.PaperPath = uniqueFileName;
+                            
                             if (await TryUpdateModelAsync<PCPUploadPaperModel>(value))
                             {
                                 var res = await _pCPUploadPaperService.UpdatePCPUploadPaperAsync(pCPUploadPaperModel);
@@ -426,7 +427,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [Obsolete]
-        private string UploadedFile(PCPUploadPaperModel model)
+        private string UploadedFile(PCPUploadPaperModel model,string oldpath)
         {
             try
             {
@@ -443,6 +444,11 @@ namespace CoreLayout.Controllers.PCP
                     int userid = (int)HttpContext.Session.GetInt32("UserId");
                     uniqueFileName = userid + "_" + datetime + "_" + model.UploadPaper.FileName;
                     string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+                    string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
+                    if (System.IO.File.Exists(deletefilePath))
+                    {
+                        System.IO.File.Delete(deletefilePath);
+                    }
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         model.UploadPaper.CopyTo(fileStream);

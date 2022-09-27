@@ -27,9 +27,9 @@ namespace CoreLayout.Services.PCP.PCPSendReminder
         //{
         //    return await _pCPSendReminderRepository.GetAllAssingedQPButPaperUploaded();
         //}
-        public async Task<List<PCPRegistrationModel>> GetReminderById(int id)
+        public async Task<List<PCPRegistrationModel>> GetReminderById(int id,int QPId)
         {
-            return await _pCPSendReminderRepository.GetReminderById(id);
+            return await _pCPSendReminderRepository.GetReminderById(id, QPId);
         }
         public async Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel)
         {

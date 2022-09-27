@@ -156,16 +156,12 @@
                                     <td>@item.PaperCode</td>
                                     <td>@item.PaperName</td>
                                     <td>
-                                        <b>Encrypt</b> <br />@item.PaperPassword<br />
+                                        @item.PaperPassword<br />
                                         @if (ViewBag.EncryptPwdList != null)
-
                                         {
                                             foreach (var item1 in ViewBag.EncryptPwdList)
                                             {
-                                                @*@if (item.PaperId == item1.PaperId)
-                                                {*@
-                                                    <b>Decrypt</b> <br />@item.DecryptPassword
-                                                //}
+                                                @item.DecryptPassword
                                                 break;
                                             }
                                         }
@@ -183,7 +179,7 @@
                                         <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
                                     }
                                     <td>@item.Session <br /> @item.SessionType</td>
-                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" target="_blank">View</a></td>
+                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-qpid="@item.QPId" target="_blank">View</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -239,7 +235,7 @@
                             var form = document.getElementById("form1");
                             form.submit();
                             $('#global-loader').hide();
-                             alert("send reminder");
+                            alert("send reminder");
                         },
                         error: function (data) {
                             alert("failed reminder");
@@ -255,35 +251,35 @@
 
     @*ViewReminder*@
     @*<script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnViewReminder").click(function () {
-                var userid = [];
-                var i = 0;
-                //Loop through all checked CheckBoxes in GridView.
-                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
-                    userid[i] = $(this).val();
-                });
-                if (userid.length > 0) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/PCPSendReminder/ViewReminder?uid=' + userid,
-                        contentType: "application/json; charset=utf-8",
-                        data: $(this).serialize(),
-                        success: function (data) {
-
-                        },
-
-                        error: function (data) {
-                            /*alert("error!");*/
-                        }
+            $(document).ready(function () {
+                $("#btnViewReminder").click(function () {
+                    var userid = [];
+                    var i = 0;
+                    //Loop through all checked CheckBoxes in GridView.
+                    $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                        userid[i] = $(this).val();
                     });
-                }
-                else {
-                    alert("Select atleast one checkbox");
-                }
+                    if (userid.length > 0) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/PCPSendReminder/ViewReminder?uid=' + userid,
+                            contentType: "application/json; charset=utf-8",
+                            data: $(this).serialize(),
+                            success: function (data) {
+
+                            },
+
+                            error: function (data) {
+                                /*alert("error!");*/
+                            }
+                        });
+                    }
+                    else {
+                        alert("Select atleast one checkbox");
+                    }
+                });
             });
-        });
-    </script>*@
+        </script>*@
 
     @*checkbox multi select at one time*@
     <script>

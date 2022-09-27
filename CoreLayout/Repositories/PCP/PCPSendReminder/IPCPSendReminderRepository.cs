@@ -13,7 +13,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
         //Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperNotUploaded();
 
         //Task<List<PCPRegistrationModel>> GetAllAssingedQPButPaperUploaded();
-        Task<List<PCPRegistrationModel>> GetReminderById(int UserID);
+        Task<List<PCPRegistrationModel>> GetReminderById(int UserID,int QPId);
 
         Task<int> CreateReminderAsync(PCPRegistrationModel pCPRegistrationModel);
     }

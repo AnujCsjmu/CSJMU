@@ -1,8 +1,10 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,5 +38,43 @@ namespace CoreLayout.Models.PCP
         public string QPCreatedBy { get; set; }
 
         public string  PaperPath { get; set; }
+
+        //add new 
+        [Display(Name = "Course")]
+        [Required(ErrorMessage = "Please select course")]
+        public int CourseId { get; set; }
+
+        [Display(Name = "Subject")]
+        [Required(ErrorMessage = "Please select subject")]
+        public int BranchId { get; set; }
+
+        [Display(Name = "Syllabus")]
+        [Required(ErrorMessage = "Please select syllabus")]
+        public int SyllabusId { get; set; }
+
+        [Display(Name = "Subject Type")]
+        [StringLength(2)]
+        public string SubjectType { get; set; }
+        public List<CourseModel> CourseList { get; set; }
+        public string CourseName { get; set; }
+        [NotMapped]
+        public List<BranchModel> BranchList { get; set; }
+        public string BranchName { get; set; }//note branch table is used as subjectname
+        [NotMapped]
+        public List<SessionModel> SessionList { get; set; }
+        public string SyllabusName { get; set; }//not session table is used as syllabus name
+        [NotMapped]
+        public List<QPTypeModel> QPTypeList { get; set; }
+        public string QPTypeName { get; set; }
+
+        [Display(Name = "QP Type")]
+        [Required(ErrorMessage = "Please select qp type")]
+        public int QPTypeId { get; set; }
+
+        [Display(Name = "Semester Year")]
+        [Required(ErrorMessage = "Please select Semester year")]
+        public int SemYearId { get; set; }
+
+        public List<QPTypeModel> SemYearList { get; set; }
     }
 }
