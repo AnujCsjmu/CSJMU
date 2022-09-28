@@ -15,6 +15,8 @@ namespace CoreLayout.Services.PCP.PCPAssignedQP
         public Task<int> UpdatePCPAssignedQPAsync(PCPAssignedQPModel pCPAssignedQPModel);
         public Task<int> DeletePCPAssignedQPAsync(PCPAssignedQPModel pCPAssignedQPModel);
 
+        public Task<PCPAssignedQPModel> alreadyAssignedQP(int userid, int QPId);
+
         //public Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid);
 
         //public Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);

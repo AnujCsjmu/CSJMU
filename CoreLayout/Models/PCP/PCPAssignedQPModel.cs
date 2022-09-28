@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Exam;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using System;
@@ -23,7 +24,7 @@ namespace CoreLayout.Models.PCP
         public string QPName { get; set; }
         public string QPCode { get; set; }
 
-        [Display(Name = "Paper Setter Name")]
+        [Display(Name = "Setter Name")]
         [Required(ErrorMessage = "Please enter paper setter name")]
        // [StringLength(50)]
         public int UserId { get; set; }
@@ -39,30 +40,40 @@ namespace CoreLayout.Models.PCP
 
         public string  PaperPath { get; set; }
 
-        //add new 
-        [Display(Name = "Course")]
-        [Required(ErrorMessage = "Please select course")]
-        public int CourseId { get; set; }
+        public List<PCPRegistrationModel> PCPUserList { get; set; }
 
-        [Display(Name = "Subject")]
-        [Required(ErrorMessage = "Please select subject")]
-        public int BranchId { get; set; }
+
+
+
 
         [Display(Name = "Syllabus")]
         [Required(ErrorMessage = "Please select syllabus")]
-        public int SyllabusId { get; set; }
+        public int SessionId { get; set; }
+        public string Session { get; set; }//not session table is used as syllabus name
+        public List<ExamCourseMappingModel> SessionList { get; set; }
+
+
 
         [Display(Name = "Subject Type")]
         [StringLength(2)]
         public string SubjectType { get; set; }
-        public List<CourseModel> CourseList { get; set; }
+
+        //add new 
+        [Display(Name = "Course")]
+        [Required(ErrorMessage = "Please select course")]
+        public int CourseId { get; set; }
+        public List<ExamCourseMappingModel> CourseList { get; set; }
         public string CourseName { get; set; }
-        [NotMapped]
-        public List<BranchModel> BranchList { get; set; }
+
+
+        [Display(Name = "Subject")]
+        [Required(ErrorMessage = "Please select subject")]
+        public int BranchId { get; set; }
+        public List<CourseBranchMappingModel> BranchList { get; set; }
         public string BranchName { get; set; }//note branch table is used as subjectname
-        [NotMapped]
-        public List<SessionModel> SessionList { get; set; }
-        public string SyllabusName { get; set; }//not session table is used as syllabus name
+
+
+
         [NotMapped]
         public List<QPTypeModel> QPTypeList { get; set; }
         public string QPTypeName { get; set; }
@@ -74,7 +85,14 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Semester Year")]
         [Required(ErrorMessage = "Please select Semester year")]
         public int SemYearId { get; set; }
+        public List<ExamCourseMappingModel> SemYearList { get; set; }
 
-        public List<QPTypeModel> SemYearList { get; set; }
+
+        [Display(Name = "Exam")]
+        [Required(ErrorMessage = "Please select exam")]
+        public int ExamId { get; set; }
+        public string ExamName { get; set; }
+        public List<ExamMasterModel> ExamList { get; set; }
+
     }
 }

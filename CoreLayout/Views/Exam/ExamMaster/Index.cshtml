@@ -1,18 +1,18 @@
-﻿@using CoreLayout.Models.PCP
-@model IEnumerable<PCPAssignedQPModel>
+﻿@using CoreLayout.Models.Exam
+@model IEnumerable<ExamMasterModel>
 @{
     ViewData["title"] = "Index";
 }
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Assigned QP List</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Exam List</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">AssignedQP</a></li>
+            <li class="breadcrumb-item"><a href="#">Exam</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </div>
     <div class="btn btn-list">
-        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxPCPAssignedQPId><i class="fe fe-plus"></i> Assigned QP</a>
+        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxExamId><i class="fe fe-plus"></i> New Exam</a>
     </div>
 </div>
 
@@ -22,36 +22,21 @@
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
                 <div class="table-responsive-sm">
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
                         <thead>
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.ExamId)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CourseId)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.SemYearId)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.BranchId)
+                                    @Html.DisplayNameFor(c => c.ExamName)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.SessionId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.QPCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.UserId)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CreatedBy)
-                                </th>
-                                <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ModifiedDate)
                                 </th>
                                 <th>
                                     Action
@@ -65,37 +50,23 @@
                             }
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td> @item.ExamName</td>
-                                <td> @item.CourseName</td>
-                                <td> @item.SemYearId</td>
-                                <td> @item.BranchName</td>
-                                <td> @item.Session</td>
-
-                                <td> @item.QPCode</td>
-                                <td> @item.UserName</td>
-                                <td>@item.QPCreatedBy</td>
-                                <td>@item.CreatedDate</td>
-
-                                <td>
-                                    <div class="table-actions text-center">
-                                        @if (item.PaperPath == null)
-                                        {
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.ExamName</td>
+                                    <td>@item.Session</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>@item.ModifiedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
                                             <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
                                             <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
                                             <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        }
-                                        else
-                                        {
-                                            <label style="font-weight:bold; color:red">Paper Uploaded</label>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
+                                        </div>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>

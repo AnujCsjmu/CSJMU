@@ -1,0 +1,95 @@
+﻿@model CoreLayout.Models.Exam.ExamCourseMappingModel
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Create Exam Course Mapping</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">ExamCourseMapping</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList,"ExamId","ExamName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="ExamId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseID"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("SemYearId", new List<SelectListItem>
+                                      {
+                                      new SelectListItem{ Text="-Select-", Value = "" },
+                                      new SelectListItem{ Text="1", Value = "1" },
+                                      new SelectListItem{ Text="2", Value = "2" },
+                                      new SelectListItem{ Text="3", Value = "3" },
+                                      new SelectListItem{ Text="4", Value = "4" },
+                                      new SelectListItem{ Text="5", Value = "5" },
+                                      new SelectListItem{ Text="6", Value = "6" },
+                                      new SelectListItem{ Text="7", Value = "7" },
+                                      new SelectListItem{ Text="8", Value = "8" },
+                                      new SelectListItem{ Text="9", Value = "9" },
+                                      new SelectListItem{ Text="10", Value = "10" },
+
+                                      },
+                                      new { @class = "form-control" })
+                                <span class="parsley-errors-list filled" asp-validation-for="SemYearId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperSetterPermission"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("PaperSetterPermission", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" , Selected = true},
+                                new SelectListItem{ Text="No", Value = "0" },
+
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="PaperSetterPermission" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

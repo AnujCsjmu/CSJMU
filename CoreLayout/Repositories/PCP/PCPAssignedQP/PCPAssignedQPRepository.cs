@@ -31,16 +31,19 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("QPId", entity.QPId, DbType.String);
-                        //parameters.Add("PCPRegID", entity.PCPRegID, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        //parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
+                        parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseId, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                        parameters.Add("SyllabusId", entity.SessionId, DbType.Int32);
+                        parameters.Add("ExamId", entity.ExamId, DbType.Int32);
                         parameters.Add("@Query", 1, DbType.Int32);
                         StringBuilder stringBuilder = new StringBuilder();
                         foreach (int userid in entity.UserList)
                         {
-                            parameters.Add("UserId", userid, DbType.Int32);
+                            parameters.Add("UserId", entity.UserId, DbType.Int32);
                             res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         }
 
@@ -152,17 +155,20 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AssignedQPId", entity.AssignedQPId, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.String);
-                        //parameters.Add("PCPRegID", entity.PCPRegID, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        //parameters.Add("UserId", entity.UserId, DbType.Int32);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
+                        parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseId, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                        parameters.Add("SyllabusId", entity.SessionId, DbType.Int32);
+                        parameters.Add("ExamId", entity.ExamId, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
-                        foreach (int userid in entity.UserList)
-                        {
-                            parameters.Add("UserId", userid, DbType.Int32);
+                        //foreach (int userid in entity.UserList)
+                        //{
+                            parameters.Add("UserId", entity.UserId, DbType.Int32);
                             res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
-                        }
+                        //}
                         if (res == 1)
                         {
                             tran.Commit();
@@ -188,6 +194,27 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         connection.Close();
                     }
                 }
+            }
+        }
+
+        public async Task<PCPAssignedQPModel> alreadyAssignedQP(int userid,int QPId)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCPAssignedQP";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("QPId", QPId, DbType.Int32);
+                    parameters.Add("UserId", userid, DbType.Int32);
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<PCPAssignedQPModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
 

@@ -4,6 +4,8 @@ using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Common;
+using CoreLayout.Repositories.Exam.ExamCourseMapping;
+using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
@@ -44,6 +46,8 @@ using CoreLayout.Repositories.UserManagement.RoleToRoleMapping;
 using CoreLayout.Repositories.UserManagement.SubMenu;
 using CoreLayout.Services.Audit;
 using CoreLayout.Services.Common;
+using CoreLayout.Services.Exam.ExamCourseMapping;
+using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
@@ -329,6 +333,14 @@ namespace CoreLayout
             //PCP send paper
             services.AddScoped<IRoleToRoleMappingService, RoleToRoleMappingService>();
             services.AddScoped<IRoleToRoleMappingRepository, RoleToRoleMappingRepository>();
+
+            //Exam Course Mapping
+            services.AddScoped<IExamCourseMappingService, ExamCourseMappingService>();
+            services.AddScoped<IExamCourseMappingRepository, ExamCourseMappingRepository>();
+
+            //Exam master
+            services.AddScoped<IExamMasterService, ExamMasterService>();
+            services.AddScoped<IExamMasterRepository, ExamMasterRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

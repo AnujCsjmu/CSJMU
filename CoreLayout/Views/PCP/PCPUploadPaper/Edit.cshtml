@@ -39,7 +39,7 @@
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PaperCode"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="PaperCode" class="form-control" />
@@ -59,7 +59,7 @@
                                 <input asp-for="PaperHindiName" class="form-control" />
                                 <span asp-validation-for="PaperHindiName" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>
+                        </div>*@
                         @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PaperPassword"> </label><span class="tx-danger"> *</span>
@@ -74,7 +74,7 @@
                                 <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
@@ -95,7 +95,7 @@
                                 new { @class = "form-control" })
                                 <span asp-validation-for="SessionType" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

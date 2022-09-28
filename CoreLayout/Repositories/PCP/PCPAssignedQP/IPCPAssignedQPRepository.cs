@@ -12,5 +12,6 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
         //Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid);
 
         //Task<List<PCPAssignedQPModel>> GetAllQPByUserIdAsync(int Userid);
+        Task<PCPAssignedQPModel> alreadyAssignedQP(int userid, int QPId);
     }
 }

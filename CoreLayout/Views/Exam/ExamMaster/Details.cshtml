@@ -1,13 +1,13 @@
-﻿@model CoreLayout.Models.Masters.RoleModel
+﻿@model CoreLayout.Models.Exam.ExamMasterModel
 @{
     ViewData["Title"] = "Details";
 }
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Role Details</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Exam Details</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Role</a></li>
+            <li class="breadcrumb-item"><a href="#">Exam</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </div>
@@ -24,27 +24,27 @@
                     </div>*@
                 <form asp-action="Details" method="post">
                     <div class="row">
-                        <input type="hidden" asp-for="RoleID" />
+                        <input type="hidden" asp-for="ExamId" />
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="RoleName"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="ExamName"> </label><span class="tx-danger"> *</span>
 
-                                <input asp-for="RoleName" readonly="readonly" class="form-control" />
-                                <span asp-validation-for="RoleName" class="parsley-errors-list filled"></span>
+                                <input asp-for="ExamName" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="ExamName" class="parsley-errors-list filled"></span>
                             </div>
-
+                            
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="Description"> </label><span class="tx-danger"> *</span>
+                                <label asp-for="Session"> </label><span class="tx-danger"> *</span>
 
-                                <input asp-for="Description" readonly="readonly" class="form-control" />
-
-                                <span asp-validation-for="Description" class="parsley-errors-list filled"></span>
+                                <input asp-for="Session" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="Session" class="parsley-errors-list filled"></span>
                             </div>
+                           
                         </div>
                         <div class="form-group">
                             <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>

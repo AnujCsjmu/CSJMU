@@ -40,7 +40,10 @@ namespace CoreLayout.Services.PCP.PCPAssignedQP
         {
             return await _pCPAssignedQPRepository.DeleteAsync(pCPAssignedQPModel);
         }
-
+        public async Task<PCPAssignedQPModel> alreadyAssignedQP(int userid, int QPId)
+        {
+            return await _pCPAssignedQPRepository.alreadyAssignedQP(userid, QPId);
+        }
         //public async Task<List<PCPAssignedQPModel>> GetAllUserByQPIdAsync(int qpid)
         //{
         //    return await _pCPAssignedQPRepository.GetAllUserByQPIdAsync(qpid);
