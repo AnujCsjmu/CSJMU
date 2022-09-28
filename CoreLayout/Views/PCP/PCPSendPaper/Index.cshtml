@@ -84,9 +84,9 @@
                                         {
                                             foreach (var item1 in ViewBag.EncryptPwdList)
                                             {
-                                               
+
                                                 <b>Decrypt</b> <br />@item.DecryptPassword
-                                                
+
                                                 break;
                                             }
                                         }
@@ -116,6 +116,16 @@
                             }
                         </tbody>
                     </table>
+                    @if (ViewBag.Message != null)
+                    {
+                        <script type="text/javascript">
+
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+                        </script>
+
+                    }
                 </div>
             </div>
         </div>

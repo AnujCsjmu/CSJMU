@@ -216,5 +216,25 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        //get server datetime
+        public async Task<PCPSendPaperModel> GetServerDateTime()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 7, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<PCPSendPaperModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

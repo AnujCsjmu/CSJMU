@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -266,11 +267,20 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id)); // get paer details for download
+                var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(guid_id));//get peper open time
+                var data2 = await _pCPSendPaperService.GetServerDateTime();//get server datetime
 
+                DateTime paperOpenTime = data1.PaperOpenTime;
+                DateTime serverDatetime = data2.ServerDateTime;
                 if (data == null)
                 {
                     return NotFound();
+                }
+                else if (serverDatetime <= paperOpenTime)
+                {
+                    TempData["error"] = "Paper open time is over";
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {

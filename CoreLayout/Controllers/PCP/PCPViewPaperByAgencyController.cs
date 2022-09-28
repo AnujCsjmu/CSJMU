@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,9 +27,10 @@ namespace CoreLayout.Controllers.PCP
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
+        private readonly CommonController _commonController;
 
         [Obsolete]
-        public PCPViewPaperByAgencyController(ILogger<PCPViewPaperByAgencyController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor,  IDataProtectionProvider provider, IPCPSendPaperService pCPSendPaperService, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment)
+        public PCPViewPaperByAgencyController(ILogger<PCPViewPaperByAgencyController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPSendPaperService pCPSendPaperService, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, CommonController commonController)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -37,26 +39,36 @@ namespace CoreLayout.Controllers.PCP
             _pCPSendPaperService = pCPSendPaperService;
             _pCPUploadPaperService = pCPUploadPaperService;
             hostingEnvironment = environment;
+            _commonController = commonController;
         }
         public async Task<IActionResult> IndexAsync()
         {
             try
             {
                 int? id = HttpContext.Session.GetInt32("UserId");
-                var data = (from reg in await  _pCPSendPaperService.GetAllPCPSendPaper()
+                var data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
                             where reg.AgencyId == id
                             select reg).ToList();
 
                 //start encrypt id for update, delete & details
+                List<string> pcslist = new List<string>();
                 foreach (var _data in data)
+                {
+                    var stringId = _data.PaperId.ToString();
+                    _data.EncryptedId = _protector.Protect(stringId);
+
+                    //for decrypt pwd
+                    if (_data.PaperPassword != null)
                     {
-                        var stringId = _data.PaperId.ToString();
-                        _data.EncryptedId = _protector.Protect(stringId);
+                        _data.DecryptPassword = _commonController.Decrypt(_data.PaperPassword);
+                        pcslist.Add(_data.DecryptPassword);
                     }
+                }
+                ViewBag.EncryptPwdList = pcslist;
                 //end
                 return View("~/Views/PCP/PCPViewPaperByAgency/Index.cshtml", data);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
@@ -69,17 +81,30 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id)); // get paer details for download
+                var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(guid_id));//get peper open time and static ip
+                var data2 = await _pCPSendPaperService.GetServerDateTime();//get server datetime
 
+                string getIPAddres = HttpContext.Session.GetString("IPAddress");
                 if (data == null)
                 {
                     return NotFound();
+                }
+                else if (data2.ServerDateTime <= data1.PaperOpenTime)
+                {
+                    TempData["error"] = "Paper open time is not started";
+                    return RedirectToAction(nameof(Index));
+                }
+                else if (getIPAddres != data1.StaticIPAddress)
+                {
+                    TempData["error"] = "Static IP is not matched";
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {
                     //insert download record
                     PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
-                    pCPUploadPaperModel.CreatedBy= HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                     pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                     pCPUploadPaperModel.PaperId = data.PaperId;
                     pCPUploadPaperModel.PaperPath = data.PaperPath;
@@ -88,7 +113,7 @@ namespace CoreLayout.Controllers.PCP
                     //end
                     if (res.Equals(1))
                     {
-                        TempData["success"] = "Paper has been downloaded";
+                        //TempData["success"] = "Paper has been downloaded";
 
                         #region file download
                         string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
@@ -102,11 +127,11 @@ namespace CoreLayout.Controllers.PCP
                     }
                     else
                     {
-                        TempData["error"] = "Paper has not been downloaded";
+                        //TempData["error"] = "Paper has not been downloaded";
                     }
-                    
+
                 }
-                
+
             }
             catch (Exception ex)
             {

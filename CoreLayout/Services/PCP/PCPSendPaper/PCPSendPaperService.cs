@@ -45,6 +45,9 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         {
             return await _pCPSendPaperRepository.GetAllPCPUser_UploadPaperAsync();
         }
-
+        public async Task<PCPSendPaperModel> GetServerDateTime()
+        {
+            return await _pCPSendPaperRepository.GetServerDateTime();
+        }
     }
 }

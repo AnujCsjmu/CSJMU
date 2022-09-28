@@ -10,5 +10,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
     public interface IPCPSendPaperRepository : IRepository<PCPSendPaperModel>
     {
         Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync();
+
+        Task<PCPSendPaperModel> GetServerDateTime();
     }
 }

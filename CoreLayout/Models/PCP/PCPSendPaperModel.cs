@@ -96,6 +96,6 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Decrypt Password")]
         public string DecryptPassword { get; set; }
 
-        
+        public DateTime  ServerDateTime { get; set; }
     }
 }

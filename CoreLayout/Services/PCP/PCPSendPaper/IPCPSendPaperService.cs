@@ -16,5 +16,7 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         public Task<int> DeletePCPSendPaperAsync(PCPSendPaperModel pCPSendPaperModel);
 
         public Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync();
+
+        public Task<PCPSendPaperModel> GetServerDateTime();
     }
 }
