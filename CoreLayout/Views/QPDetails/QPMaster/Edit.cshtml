@@ -12,7 +12,7 @@
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </div>
-  
+
 </div>
 <!-- End Page Header -->
 <!-- Conetnt Start-->
@@ -21,9 +21,9 @@
         <div class="card custom-card">
             <div class="card-body">
                 @*<div>
-                    <h6 class="card-title mb-1">Edit State</h6>
-                    <hr />
-                </div>*@
+                        <h6 class="card-title mb-1">Edit State</h6>
+                        <hr />
+                    </div>*@
 
                 <form asp-action="Edit" method="post">
                     <div class="row">
@@ -31,7 +31,58 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="BranchID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="BranchID" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchID"></span>
+                            </div>
+                        </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="QPTypeId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="QPTypeId" asp-items="@(new SelectList(Model.QPTypeList,"QPTypeId","QPTypeName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="QPTypeId"></span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FacultyId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="FacultyId" asp-items="@(new SelectList(Model.FacultyList,"FacultyID","FacultyName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="FacultyId"></span>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SubjectType"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("SubjectType", new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Text="-Select-", Value = "" },
+                                        new SelectListItem{ Text="Core", Value = "Core" },
+                                        new SelectListItem{ Text="Vocational", Value = "Vocational" },
+                                        new SelectListItem{ Text="Curricular ", Value = "Curricular" },
+                                        },
+                                        new { @class = "form-control" })
+                                <span class="parsley-errors-list filled" asp-validation-for="SubjectType"></span>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="QPCode"> </label><span class="tx-danger"> *</span>
@@ -51,56 +102,6 @@
                                 <label asp-for="QPHindiName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="QPHindiName" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="QPHindiName"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="QPTypeId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="QPTypeId" asp-items="@(new SelectList(Model.QPTypeList,"QPTypeId","QPTypeName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="QPTypeId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="FacultyId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="FacultyId" asp-items="@(new SelectList(Model.FacultyList,"FacultyID","FacultyName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="FacultyId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="SubjectType"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("SubjectType", new List<SelectListItem>
-                                        {
-                                        new SelectListItem{ Text="-Select-", Value = "" },
-                                        new SelectListItem{ Text="Main", Value = "M" },
-                                        new SelectListItem{ Text="Vocatinal", Value = "V" },
-                                        new SelectListItem{ Text="Circular", Value = "C" },
-                                        },
-                                        new { @class = "form-control" })
-                                <span class="parsley-errors-list filled" asp-validation-for="SubjectType"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -183,14 +184,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="MainGroup"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="MainGroup" class="form-control" type="number" />
+                                <input asp-for="MainGroup" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="MainGroup"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SubGroup"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="SubGroup" class="form-control" type="number" />
+                                <input asp-for="SubGroup" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="SubGroup"></span>
                             </div>
                         </div>
@@ -265,3 +266,26 @@
     </div>
 </div>
 <!-- Conetnt End-->
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*bind branch/subject*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#BranchID").empty();
+                    var ddlsource = "#CourseId";
+                    var url = '@Url.Content("~/")' + "QPMaster/GetBranch?CourseId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#BranchID").empty();
+                        $.each(data, function (i, branch) {
+                            items += "<option value ='" + branch.value + "'>" + branch.text + "</option>";
+                    });
+                        $('#BranchID').html(items);
+                });
+                });
+            });
+
+    </script>
+}

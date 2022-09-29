@@ -32,6 +32,13 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label asp-for="CourseID" class="mg-b-10"> </label>
+                                <input asp-for="CourseName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="CourseID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label asp-for="PramotionType" class="mg-b-10"> </label>
                                 <input asp-for="PramotionType" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="PramotionType" class="text-danger"></span>

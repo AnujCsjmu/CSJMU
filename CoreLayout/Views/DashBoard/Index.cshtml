@@ -9,31 +9,34 @@
                 <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
             </ol>
         </div>
-        <div class="d-flex">
-            <div class="me-2">
-                <a class="btn ripple btn-outline-primary dropdown-toggle mb-0" href="#"
-                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <i class="fe fe-external-link"></i> Export <i class="fa fa-caret-down ms-1"></i>
-                </a>
-                <div class="dropdown-menu tx-13">
-                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf me-2"></i>Export as Pdf</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-image me-2"></i>Export as Image</a>
-                    <a class="dropdown-item" href="#">
-                        <i class="fa fa-file-excel me-2"></i>Export as
-                        Excel
+        @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "Administrator")
+        {
+            <div class="d-flex">
+                <div class="me-2">
+                    <a class="btn ripple btn-outline-primary dropdown-toggle mb-0" href="#"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <i class="fe fe-external-link"></i> Export <i class="fa fa-caret-down ms-1"></i>
+                    </a>
+                    <div class="dropdown-menu tx-13">
+                        <a class="dropdown-item" href="#"><i class="fa fa-file-pdf me-2"></i>Export as Pdf</a>
+                        <a class="dropdown-item" href="#"><i class="fa fa-image me-2"></i>Export as Image</a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fa fa-file-excel me-2"></i>Export as
+                            Excel
+                        </a>
+                    </div>
+                </div>
+                <div class="">
+                    <a href="#" class="btn ripple btn-secondary navresponsive-toggler mb-0"
+                       data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                       aria-controls="navbarSupportedContent" aria-expanded="false"
+                       aria-label="Toggle navigation">
+                        <i class="fe fe-filter me-1"></i> Filter <i class="fa fa-caret-down ms-1"></i>
                     </a>
                 </div>
             </div>
-            <div class="">
-                <a href="#" class="btn ripple btn-secondary navresponsive-toggler mb-0"
-                   data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                   aria-controls="navbarSupportedContent" aria-expanded="false"
-                   aria-label="Toggle navigation">
-                    <i class="fe fe-filter me-1"></i> Filter <i class="fa fa-caret-down ms-1"></i>
-                </a>
-            </div>
+        }
         </div>
-    </div>
     <!-- End Page Header -->
     <!--Navbar-->
     <div class="responsive-background">

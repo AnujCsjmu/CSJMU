@@ -31,7 +31,7 @@ namespace CoreLayout.Models.Masters
         [StringLength(100)]
         public string HindiName { get; set; }
 
-        [Display(Name = "Min Duration")]
+        [Display(Name = "Min Duration in Semester")]
         public int? MinDuration { get; set; }
 
         [Display(Name = "Max Duration")]

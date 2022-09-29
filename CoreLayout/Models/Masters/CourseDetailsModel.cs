@@ -13,15 +13,15 @@ namespace CoreLayout.Models.Masters
         public int CourseDetailId { get; set; }
 
         [Display(Name = "Pramotion Type")]
-        [Required(ErrorMessage = "Please enter pramotion type")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
-        [StringLength(100)]
+        [Required(ErrorMessage = "Please select pramotion type")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[StringLength(100)]
         public string PramotionType { get; set; }
 
-        [Display(Name = "Course Duration Type")]
-        [Required(ErrorMessage = "Please enter course duration type")]
-        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
-        [StringLength(100)]
+        [Display(Name = "Course Exam Type")]
+        [Required(ErrorMessage = "Please select course exam type")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+       // [StringLength(100)]
         public string CourseDurationType { get; set; }
 
         [Display(Name = "Session")]
@@ -48,5 +48,11 @@ namespace CoreLayout.Models.Masters
         public int IsCreadit { get; set; }
 
         public List<SessionModel> SessionList { get; set; }
+
+        [Display(Name = "Course Name")]
+        [Required(ErrorMessage = "Please enter course name")]
+        public int CourseID { get; set; }
+        public string CourseName { get; set; }
+        public List<CourseModel> CourseList { get; set; }
     }
 }

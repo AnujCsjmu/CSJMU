@@ -3,6 +3,7 @@ using CoreLayout.Filters;
 using CoreLayout.Models.QPDetails;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Course;
+using CoreLayout.Services.Masters.CourseBranchMapping;
 using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.Masters.Faculty;
 using CoreLayout.Services.QPDetails.GradeDefinition;
@@ -33,10 +34,11 @@ namespace CoreLayout.Controllers.QPDetails
         private readonly IBranchService _branchService;
         private readonly ICourseDetailsService _courseDetailsService;
         private readonly IGradeDefinitionService _gradeDefinitionService;
+        private readonly ICourseBranchMappingService _courseBranchMappingService;
         public QPMasterController(ILogger<QPMasterController> logger, IDataProtectionProvider provider,
             IQPTypeService qPTypeService, IQPMasterService qPMasterService, IFacultyService facultyService,
             ICourseService courseService, IBranchService branchService, ICourseDetailsService courseDetailsService,
-            IGradeDefinitionService gradeDefinitionService)
+            IGradeDefinitionService gradeDefinitionService, ICourseBranchMappingService courseBranchMappingService)
         {
             _logger = logger;
             _qPTypeService = qPTypeService;
@@ -47,6 +49,7 @@ namespace CoreLayout.Controllers.QPDetails
             _branchService = branchService;
             _courseDetailsService = courseDetailsService;
             _gradeDefinitionService = gradeDefinitionService;
+            _courseBranchMappingService = courseBranchMappingService;
         }
 
         [HttpGet]
@@ -112,14 +115,13 @@ namespace CoreLayout.Controllers.QPDetails
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> CreateAsync(string id)
         {
-
             try
             {
                 QPMasterModel qPMasterModel = new QPMasterModel();
                 qPMasterModel.QPTypeList = await _qPTypeService.GetAllQPType();//
                 qPMasterModel.FacultyList = await _facultyService.GetAllFaculty();
                 qPMasterModel.CourseList = await _courseService.GetAllCourse();
-                qPMasterModel.BranchList = await _branchService.GetAllBranch();//subject
+                //qPMasterModel.BranchList = await _branchService.GetAllBranch();//subject
                 qPMasterModel.SessionList = await _courseDetailsService.GetAllSession();//sllabus
                 qPMasterModel.GradeList = await _gradeDefinitionService.GetAllGradeDefinition();//
                 var guid_id = _protector.Unprotect(id);
@@ -279,10 +281,24 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 return Json($"{qPCode} is already in use.");
             }
-
             return Json(true);
+        }
+        public async Task<JsonResult> GetBranch(int CourseId)
+        {
+            var BranchList = (from coursbranchemapping in await _courseBranchMappingService.GetAllCourseBranchMapping()
+                              where coursbranchemapping.CourseId == CourseId
+                              select new SelectListItem()
+                              {
+                                  Text = coursbranchemapping.BranchName,
+                                  Value = coursbranchemapping.BranchId.ToString(),
+                              }).ToList();
 
-
+            BranchList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(BranchList);
         }
 
     }

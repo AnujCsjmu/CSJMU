@@ -30,7 +30,7 @@ namespace CoreLayout.Repositories.QPDetails.QPMaster
                     parameters.Add("QPTypeId", entity.QPTypeId, DbType.Int32);
                     parameters.Add("FacultyId", entity.FacultyId, DbType.Int32);
                     parameters.Add("CourseId", entity.CourseId, DbType.Int32);
-                    parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                    parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
                     parameters.Add("SubjectType", entity.SubjectType, DbType.String);
                     parameters.Add("OMRCode", entity.OMRCode, DbType.String);
                     parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
@@ -139,7 +139,7 @@ namespace CoreLayout.Repositories.QPDetails.QPMaster
                     parameters.Add("QPTypeId", entity.QPTypeId, DbType.Int32);
                     parameters.Add("FacultyId", entity.FacultyId, DbType.Int32);
                     parameters.Add("CourseId", entity.CourseId, DbType.Int32);
-                    parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                    parameters.Add("SubjectId", entity.BranchID, DbType.Int32);
                     parameters.Add("SubjectType", entity.SubjectType, DbType.String);
                     parameters.Add("OMRCode", entity.OMRCode, DbType.String);
                     parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);

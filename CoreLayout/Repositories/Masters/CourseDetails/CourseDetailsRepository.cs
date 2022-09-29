@@ -24,6 +24,7 @@ namespace CoreLayout.Repositories.Masters.CourseDetails
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("CourseID", entity.CourseID, DbType.Int32);
                     parameters.Add("PramotionType", entity.PramotionType, DbType.String);
                     parameters.Add("CourseDurationType", entity.CourseDurationType, DbType.String);
                     parameters.Add("SessionId", entity.SessionId, DbType.Int32);
@@ -120,6 +121,7 @@ namespace CoreLayout.Repositories.Masters.CourseDetails
 
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("CourseDetailId", entity.CourseDetailId, DbType.Int32);
+                    parameters.Add("CourseID", entity.CourseID, DbType.Int32);
                     parameters.Add("PramotionType", entity.PramotionType, DbType.String);
                     parameters.Add("CourseDurationType", entity.CourseDurationType, DbType.String);
                     parameters.Add("SessionId", entity.SessionId, DbType.Int32);

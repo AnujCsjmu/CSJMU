@@ -30,7 +30,43 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CourseName" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="BranchID"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="BranchName" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchID"></span>
+                            </div>
+                        </div>
 
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="QPTypeId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="QPTypeName" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="QPTypeId"></span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FacultyId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FacultyName" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="FacultyId"></span>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SubjectType"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="SubjectType" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="SubjectType"></span>
+                            </div>
+                        </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="QPCode"> </label><span class="tx-danger"> *</span>
@@ -50,48 +86,6 @@
                                 <label asp-for="QPHindiName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="QPHindiName" class="form-control" readonly="readonly" />
                                 <span class="parsley-errors-list filled" asp-validation-for="QPHindiName"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="QPTypeId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="QPTypeName" class="form-control" readonly="readonly" />
-                                <span class="parsley-errors-list filled" asp-validation-for="QPTypeId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="FacultyId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="FacultyName" class="form-control" />
-                                <span class="parsley-errors-list filled" asp-validation-for="FacultyId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="CourseName" class="form-control" readonly="readonly" />
-                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="BranchName" class="form-control" readonly="readonly" />
-                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="SubjectType"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("SubjectType", new List<SelectListItem>
-                                        {
-                                        new SelectListItem{ Text="Select", Value = "" },
-                                        new SelectListItem{ Text="Main", Value = "M" },
-                                        new SelectListItem{ Text="Vocatinal", Value = "V" },
-                                        new SelectListItem{ Text="Circular", Value = "C" },
-                                        },
-                                        new { @class = "form-control", @disabled = "disabled" })
-                                <span class="parsley-errors-list filled" asp-validation-for="SubjectType"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -170,14 +164,14 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="MainGroup"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="MainGroup" class="form-control" type="number" readonly="readonly" />
+                                <input asp-for="MainGroup" class="form-control" readonly="readonly" />
                                 <span class="parsley-errors-list filled" asp-validation-for="MainGroup"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SubGroup"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="SubGroup" class="form-control" type="number" readonly="readonly" />
+                                <input asp-for="SubGroup" class="form-control" readonly="readonly" />
                                 <span class="parsley-errors-list filled" asp-validation-for="SubGroup"></span>
                             </div>
                         </div>

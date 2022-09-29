@@ -31,12 +31,13 @@ namespace CoreLayout.Models.QPDetails
         public string QPName { get; set; }
 
         [Display(Name = "QP Hindi Name")]
-        [Required(ErrorMessage = "Please enter qp hindi name")]
+        //[Required(ErrorMessage = "Please enter qp hindi name")]
         [StringLength(50)]
         public string QPHindiName { get; set; }
 
         [Display(Name = "QP Type")]
-        public int? QPTypeId { get; set; }
+        [Required(ErrorMessage = "Please select qp type")]
+        public int QPTypeId { get; set; }
 
         [Display(Name = "Faculty")]
          [Required(ErrorMessage = "Please select faculty")]
@@ -48,27 +49,33 @@ namespace CoreLayout.Models.QPDetails
 
         [Display(Name = "Subject")]
         [Required(ErrorMessage = "Please select subject")]
-        public int BranchId { get; set; }
+        public int BranchID { get; set; }
 
         [Display(Name = "Subject Type")]
-        [StringLength(2)]
+        [Required(ErrorMessage = "Please select subject type")]
+        //[StringLength(2)]
         public string SubjectType { get; set; }
 
         [Display(Name = "OMR Code")]
         public string OMRCode { get; set; }
 
-        [Display(Name = "Semester Year")]
+        [Display(Name = "Semester/Year")]
         [Required(ErrorMessage = "Please select Semester year")]
         public int SemYearId { get; set; }
 
         [Required(ErrorMessage = "Please select is elective")]
         public int IsElective { get; set; }
+
+        [Required(ErrorMessage = "Please enter credits")]
         public string Credits { get; set; }
 
+
         [Display(Name = "Internal Marks")]
+        [Required(ErrorMessage = "Please enter internal marks")]
         public int? InternalMarks { get; set; }
 
         [Display(Name = "External Marks")]
+        [Required(ErrorMessage = "Please enter external marks")]
         public int? ExternalMarks { get; set; }
 
         [Required(ErrorMessage = "Please select is single faculty")]

@@ -29,24 +29,47 @@
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="CourseID" class="text-danger"></span>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PramotionType"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PramotionType" class="form-control" />
+                                @Html.DropDownList("PramotionType", new List<SelectListItem>
+                              {
+                                new SelectListItem{ Text="--Select Pramotion Type--", Value = "" },
+                               new SelectListItem{ Text="Annual", Value = "Annual" },
+                               new SelectListItem{ Text="Semester", Value = "Semester" },
+                                new SelectListItem{ Text="Mix", Value = "Mix" },
+                              },
+                              new { @class = "form-control" })
                                 <span asp-validation-for="PramotionType" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="CourseDurationType"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="CourseDurationType" class="form-control" />
+                                @*<input asp-for="CourseDurationType" class="form-control" />*@
+                                @Html.DropDownList("CourseDurationType", new List<SelectListItem>
+                            {
+                              new SelectListItem{ Text="--Select Course Exam Type--", Value = "" },
+                              new SelectListItem{ Text="Semester", Value = "Semester" },
+                              new SelectListItem{ Text="Annual", Value = "Annual" },
+                              new SelectListItem{ Text="Professional", Value = "Professional" },
+                            },
+                            new { @class = "form-control" })
                                 <span asp-validation-for="CourseDurationType" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="SessionId" > </label><span class="tx-danger"> *</span>
+                                <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
@@ -55,15 +78,15 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="NumberOfYear" > </label><span class="tx-danger"> *</span>
-                                <input asp-for="NumberOfYear" class="form-control" />
+                                <label asp-for="NumberOfYear"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="NumberOfYear" class="form-control" value="" />
                                 <span asp-validation-for="NumberOfYear" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="NumberOfSemester" > </label><span class="tx-danger"> *</span>
-                                <input asp-for="NumberOfSemester" class="form-control" />
+                                <label asp-for="NumberOfSemester"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="NumberOfSemester" class="form-control" value="" />
                                 <span asp-validation-for="NumberOfSemester" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
@@ -76,7 +99,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="IsGrade" > </label><span class="tx-danger"> *</span>
+                                <label asp-for="IsGrade"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("IsGrade", new List<SelectListItem>
                                 {
                                  new SelectListItem{ Text="No", Value = "0" },
@@ -88,7 +111,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="IsCreadit" > </label><span class="tx-danger"> *</span>
+                                <label asp-for="IsCreadit"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("IsCreadit", new List<SelectListItem>
                                 {
                                  new SelectListItem{ Text="No", Value = "0" },

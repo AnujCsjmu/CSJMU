@@ -22,6 +22,7 @@ using CoreLayout.Filters;
 using CoreLayout.Enum;
 using CoreLayout.Services.Masters.Program;
 using CoreLayout.Services.Masters.CourseDetails;
+using CoreLayout.Services.Masters.Course;
 
 namespace CoreLayout.Controllers.Masters
 {
@@ -31,11 +32,13 @@ namespace CoreLayout.Controllers.Masters
         private readonly ILogger<CourseDetailsController> _logger;
         private readonly IDataProtector _protector;
         private readonly ICourseDetailsService _courseDetailsService;
-        public CourseDetailsController(ILogger<CourseDetailsController> logger, IDataProtectionProvider provider, ICourseDetailsService courseDetailsService)
+        private readonly ICourseService _courseService;
+        public CourseDetailsController(ILogger<CourseDetailsController> logger, IDataProtectionProvider provider, ICourseDetailsService courseDetailsService, ICourseService courseService)
         {
             _logger = logger;
             _courseDetailsService = courseDetailsService;
             _protector = provider.CreateProtector("CourseDetails.CourseDetailsController");
+            _courseService = courseService;
         }
 
 
@@ -124,6 +127,7 @@ namespace CoreLayout.Controllers.Masters
             {
                 CourseDetailsModel courseDetailsModel = new CourseDetailsModel();
                 courseDetailsModel.SessionList = await _courseDetailsService.GetAllSession();
+                courseDetailsModel.CourseList = await _courseService.GetAllCourse();
                 var guid_id = _protector.Unprotect(id);
                 return View(courseDetailsModel);
             }
@@ -141,6 +145,7 @@ namespace CoreLayout.Controllers.Masters
         public async Task<IActionResult> Create(CourseDetailsModel courseDetailsModel)
         {
             courseDetailsModel.SessionList = await _courseDetailsService.GetAllSession();
+            courseDetailsModel.CourseList = await _courseService.GetAllCourse();
             courseDetailsModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
             courseDetailsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
             if (ModelState.IsValid)
@@ -170,6 +175,7 @@ namespace CoreLayout.Controllers.Masters
                 var guid_id = _protector.Unprotect(id);
                 var data = await _courseDetailsService.GetCourseDetailById(Convert.ToInt32(guid_id));
                 data.SessionList = await _courseDetailsService.GetAllSession();
+                data.CourseList = await _courseService.GetAllCourse();
                 if (data == null)
                 {
                     return NotFound();
@@ -191,6 +197,7 @@ namespace CoreLayout.Controllers.Masters
             try
             {
                 courseDetailsModel.SessionList= await _courseDetailsService.GetAllSession();
+                courseDetailsModel.CourseList = await _courseService.GetAllCourse();
                 courseDetailsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 courseDetailsModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 if (ModelState.IsValid)
