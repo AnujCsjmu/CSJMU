@@ -99,7 +99,7 @@ namespace CoreLayout.Controllers.PCP
             //var data = (dynamic)null;
             if (paperupload == 1)//paper uploded
             {
-                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
                             where upload.PaperPath != null
                             select upload).ToList();
 
@@ -114,14 +114,14 @@ namespace CoreLayout.Controllers.PCP
             }
             else if (paperupload == 2)//paper not uploded
             {
-                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
                             where upload.PaperPath == null
                             select upload).ToList();
                 return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
             else
             {
-                var data = (from upload in (await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload())
+                var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
                                 //where upload.PaperPath != null
                             select upload).ToList();
                 //start encrypt id for update,delete & details
@@ -286,9 +286,58 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
+                    //insert download record
+                    PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                    pCPUploadPaperModel.PaperId = data.PaperId;
+                    pCPUploadPaperModel.PaperPath = data.PaperPath;
+                    pCPUploadPaperModel.DownloadStatus = "Download Paper By COE";
+                    var res = await _pCPUploadPaperService.InsertDownloadLogAsync(pCPUploadPaperModel);
+                    //end
+
                     #region file download
                     string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
                     var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
+                    //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    return File(FileBytes, "application/pdf");
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [Obsolete]
+        public async Task<IActionResult> DownloadAnswer(string id)
+        {
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    //insert download record
+                    PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                    pCPUploadPaperModel.PaperId = data.PaperId;
+                    pCPUploadPaperModel.PaperPath = data.AnswerPath;
+                    pCPUploadPaperModel.DownloadStatus = "Download Answer By COE";
+                    var res = await _pCPUploadPaperService.InsertDownloadLogAsync(pCPUploadPaperModel);
+                    //end
+
+                    #region file download
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaperEncryption");
+                    var path = System.IO.Path.Combine(uploadsFolder, data.AnswerPath);
                     //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                     string ReportURL = path;
                     byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);

@@ -50,29 +50,31 @@ namespace CoreLayout.Controllers
                     #region pcp deshboard report
                     //start for report
 
-
-                    var registercount = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                             //where reg.IsApproved == null
-                                         select reg).ToList();
-                    var approvecount = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                        where reg.IsApproved != null
-                                        select reg).ToList();
-                    var reject = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                  where reg.IsRecordDeleted == 1
-                                  select reg).ToList();
-                    var qpallotted = (from reg in await _pCPAssignedQPService.GetAllPCPAssignedQP()
+                    if (roleid == 3)
+                    {
+                        var registercount = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                                                 //where reg.IsApproved == null
+                                             select reg).ToList();
+                        var approvecount = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                                            where reg.IsApproved != null
+                                            select reg).ToList();
+                        var reject = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                                      where reg.IsRecordDeleted == 1
                                       select reg).ToList();
-                    var paperupload = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                                       select reg).ToList();
-                    var sendpaper = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
-                                     select reg).ToList();
+                        var qpallotted = (from reg in await _pCPAssignedQPService.GetAllPCPAssignedQP()
+                                          select reg).ToList();
+                        var paperupload = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                                           select reg).ToList();
+                        var sendpaper = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                                         select reg).ToList();
 
-                    ViewBag.RegistrationCount = registercount.Count.ToString();
-                    ViewBag.ApprovedCount = approvecount.Count.ToString();
-                    ViewBag.RejectCount = reject.Count.ToString();
-                    ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
-                    ViewBag.PaperUploadCount = paperupload.Count.ToString();
-                    ViewBag.SendToAgencyCount = sendpaper.Count.ToString();
+                        ViewBag.RegistrationCount = registercount.Count.ToString();
+                        ViewBag.ApprovedCount = approvecount.Count.ToString();
+                        ViewBag.RejectCount = reject.Count.ToString();
+                        ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
+                        ViewBag.PaperUploadCount = paperupload.Count.ToString();
+                        ViewBag.SendToAgencyCount = sendpaper.Count.ToString();
+                    }
 
                     #endregion
                     List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);

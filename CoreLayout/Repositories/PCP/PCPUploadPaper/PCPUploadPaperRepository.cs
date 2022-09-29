@@ -25,25 +25,31 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                 // You could use `var` instead of `SqlTransaction`
                 using (var tran = connection.BeginTransaction())
                 {
+                    var res = 0;
+                    var res1 = 0;
+                    int newID = 0;
                     try
                     {
                         var query = "SP_InsertUpdateDelete_PCPUploadPaper";
-                        var res = 0;
-                        var res1 = 0;
-                        int newID = 0;
+                       
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("PaperCode", entity.PaperCode, DbType.String);
-                        parameters.Add("PaperName", entity.PaperName, DbType.String);
-                        parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
+                        //parameters.Add("PaperCode", entity.PaperCode, DbType.String);
+                        //parameters.Add("PaperName", entity.PaperName, DbType.String);
+                        //parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
                         parameters.Add("PaperPath", entity.PaperPath, DbType.String);
                         parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
-                        parameters.Add("SessionId", entity.SessionId, DbType.Int32);
-                        parameters.Add("SessionType", entity.SessionType, DbType.String);
+                        //parameters.Add("SessionId", entity.SessionId, DbType.Int32);
+                        //parameters.Add("SessionType", entity.SessionType, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseId, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                        parameters.Add("SyllabusId", entity.SessionId, DbType.Int32);
+                        parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
+                        parameters.Add("AnswerPath", entity.AnswerPath, DbType.String);
 
                         parameters.Add("ReturnUploadId", entity.ReturnUploadId, DbType.Int32, direction: ParameterDirection.Output);
                         parameters.Add("@Query", 1, DbType.Int32);
@@ -67,22 +73,20 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         {
                             tran.Rollback();
                         }
-
-                        return res1;
-
                     }
                     catch (Exception ex)
                     {
                         // roll the transaction back
                         tran.Rollback();
 
-                        // handle the error however you need to.
-                        throw new Exception(ex.Message, ex);
+                        //// handle the error however you need to.
+                        //throw new Exception(ex.Message, ex);
                     }
                     finally
                     {
                         connection.Close();
                     }
+                    return res1;
                 }
             }
 
@@ -165,17 +169,22 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("PaperId", entity.PaperId, DbType.Int32);
-                        parameters.Add("PaperCode", entity.PaperCode, DbType.String);
-                        parameters.Add("PaperName", entity.PaperName, DbType.String);
-                        parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
+                        //parameters.Add("PaperCode", entity.PaperCode, DbType.String);
+                        //parameters.Add("PaperName", entity.PaperName, DbType.String);
+                        //parameters.Add("PaperHindiName", entity.PaperHindiName, DbType.String);
                         parameters.Add("PaperPath", entity.PaperPath, DbType.String);
                         parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
-                        parameters.Add("SessionId", entity.SessionId, DbType.Int32);
-                        parameters.Add("SessionType", entity.SessionType, DbType.String);
+                        //parameters.Add("SessionId", entity.SessionId, DbType.Int32);
+                        //parameters.Add("SessionType", entity.SessionType, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("CourseID", entity.CourseId, DbType.Int32);
+                        parameters.Add("SubjectId", entity.BranchId, DbType.Int32);
+                        parameters.Add("SyllabusId", entity.SessionId, DbType.Int32);
+                        parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
+                        parameters.Add("AnswerPath", entity.AnswerPath, DbType.String);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)

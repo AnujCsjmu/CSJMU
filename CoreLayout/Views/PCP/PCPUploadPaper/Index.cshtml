@@ -39,26 +39,25 @@
                                         @Html.DisplayNameFor(c => c.QPId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.PaperName)
+                                        @Html.DisplayNameFor(c => c.CourseId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.PaperCode)
+                                        @Html.DisplayNameFor(c => c.BranchId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.PaperHindiName)
+                                        @Html.DisplayNameFor(c => c.SemYearId)
                                     </th>
-                                    <th>
-                                        @Html.DisplayNameFor(c => c.PaperPath)
-                                    </th>
-                                    @*<th>
-                                            @Html.DisplayNameFor(c => c.PaperPassword)
-                                        </th>*@
+
                                     <th>
                                         @Html.DisplayNameFor(c => c.SessionId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.SessionType)
+                                        @Html.DisplayNameFor(c => c.UploadPaper)
                                     </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.AnswerPaper)
+                                    </th>
+
                                     <th>
                                         @Html.DisplayNameFor(c => c.CreatedBy)
                                     </th>
@@ -91,19 +90,25 @@
                                             @sno
                                         </td>
                                         <td>@item.QPName</td>
-                                        <td>@item.PaperName</td>
-                                        <td>@item.PaperCode</td>
-                                        <td>@item.PaperHindiName</td>
+                                        <td>@item.CourseName</td>
+                                        <td>@item.BranchName</td>
+                                        <td>@item.SemYearId</td>
+                                        <td>@item.Session</td>
+
                                         <td>
                                             <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
                                             @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
                                             {
-                                                <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                                <a asp-action="DownloadPaper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                             }
                                         </td>
-                                        @*<td>@item.PaperPassword</td>*@
-                                        <td>@item.Session</td>
-                                        <td>@item.SessionType</td>
+                                        <td>
+                                            <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
+                                            @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                            {
+                                                <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            }
+                                        </td>
                                         <td>@item.UserName</td>
                                         <td>@item.CreatedDate</td>
                                         <td>
@@ -153,45 +158,45 @@
 
     @*checkbox multi select at one time*@
     @*<script>
-        function updateDataTableSelectAllCtrl(table) {
-            var $table = table.table().node();
-            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
-        }
-        $(document).ready(function () {
-            // Array holding selected row IDs
+            function updateDataTableSelectAllCtrl(table) {
+                var $table = table.table().node();
+                var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+            }
+            $(document).ready(function () {
+                // Array holding selected row IDs
 
-            var rows_selected = [];
-            //var table = $('#exportexample').DataTable({
-            //    /*$("#exportexample").dataTable().fnDestroy();*/
-            //});
-            var table = $('#exportexample').DataTable();
-            // Handle click on checkbox
-            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
+                var rows_selected = [];
+                //var table = $('#exportexample').DataTable({
+                //    /*$("#exportexample").dataTable().fnDestroy();*/
+                //});
+                var table = $('#exportexample').DataTable();
+                // Handle click on checkbox
+                $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
 
-                var $row = $(this).closest('tr');
+                    var $row = $(this).closest('tr');
 
-                // Get row data
-                var data = table.row($row).data();
+                    // Get row data
+                    var data = table.row($row).data();
 
-                // Update state of "Select all" control
-                updateDataTableSelectAllCtrl(table);
+                    // Update state of "Select all" control
+                    updateDataTableSelectAllCtrl(table);
 
-                // Prevent click event from propagating to parent
-                e.stopPropagation();
+                    // Prevent click event from propagating to parent
+                    e.stopPropagation();
+                });
+
+                // Handle click on "Select all" control
+                $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                    if (this.checked) {
+                        $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                    } else {
+                        $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
+                    }
+                    // Prevent click event from propagating to parent
+                    e.stopPropagation();
+                });
             });
-
-            // Handle click on "Select all" control
-            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
-                if (this.checked) {
-                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
-                } else {
-                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
-                }
-                // Prevent click event from propagating to parent
-                e.stopPropagation();
-            });
-        });
-    </script>*@
+        </script>*@
 
     @*final submit*@
 
@@ -205,7 +210,7 @@
                 $("#exportexample tbody input[type=checkbox]:checked").each(function () {
                     userid[i] = $(this).val();
                     i++;
-                    
+
                 });
                 if (userid.length > 0) {
                     document.getElementById("paperid").value = userid;

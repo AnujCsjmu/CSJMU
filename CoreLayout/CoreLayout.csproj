@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <Folder Include="Logs\" />
+    <Folder Include="wwwroot\AnswerPaper\" />
+    <Folder Include="wwwroot\AnswerPaperEncryption\" />
     <Folder Include="wwwroot\UploadPaperEncrption\" />
     <Folder Include="wwwroot\PCPPhoto\" />
     <Folder Include="wwwroot\UploadPaper\" />

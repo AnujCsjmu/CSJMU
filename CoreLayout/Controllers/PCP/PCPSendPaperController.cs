@@ -176,9 +176,7 @@ namespace CoreLayout.Controllers.PCP
                         TempData["error"] = "Paper has not been send";
                     }
                     return RedirectToAction(nameof(Index));
-
                 }
-
             }
             else
             {
@@ -200,32 +198,29 @@ namespace CoreLayout.Controllers.PCP
                     list.Add(array[i]);
                 }
                 pCPRegistrationModel.SelectedPaperList = list;
-
-
-
             }
 
             return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPRegistrationModel);
         }
-        public JsonResult GetPaper(int PaperSetterId)
-        {
-            var GetUserList = (from user in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                               where user.CreatedBy == PaperSetterId
-                               select new SelectListItem()
-                               {
-                                   Text = user.PaperName,
-                                   Value = user.PaperId.ToString(),
-                               }).ToList();
-            //GetUserList.Insert(0, new SelectListItem()
-            //{
-            //    Text = "----Select----",
-            //    Value = string.Empty
-            //});
+        //public JsonResult GetPaper(int PaperSetterId)
+        //{
+        //    var GetUserList = (from user in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+        //                       where user.CreatedBy == PaperSetterId
+        //                       select new SelectListItem()
+        //                       {
+        //                           Text = user.PaperName,
+        //                           Value = user.PaperId.ToString(),
+        //                       }).ToList();
+        //    //GetUserList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
 
-            //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
+        //    //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
 
-            return Json(GetUserList);
-        }
+        //    return Json(GetUserList);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Delete(string id)

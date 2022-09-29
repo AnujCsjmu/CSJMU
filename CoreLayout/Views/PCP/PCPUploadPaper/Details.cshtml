@@ -37,53 +37,46 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperCode"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperCode" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="PaperCode" class="parsley-errors-list filled"></span>
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CourseName" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperName" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="PaperName" class="parsley-errors-list filled"></span>
+                                <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="SemYearId" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="SemYearId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperHindiName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperHindiName" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="PaperHindiName" class="parsley-errors-list filled"></span>
+                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="BranchName" class="form-control" readonly="readonly" />
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
                             </div>
                         </div>
-                        @*<div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PaperPassword"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperPassword" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="PaperPassword" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>*@
-                        @*<div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="PaperPath"> </label><span class="tx-danger"> *</span>
-                <input asp-for="PaperPath" class="form-control" readonly="readonly" />
-                <span asp-validation-for="PaperPath" class="parsley-errors-list filled"></span>
-            </div>
-        </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="Session" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="SessionId" class="parsley-errors-list filled"></span>
+                                <span class="parsley-errors-list filled" asp-validation-for="SessionId"></span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UploadPaper"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="UploadPaper" class="form-control" />
+                                <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="SessionType"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="SessionType" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="SessionType" class="parsley-errors-list filled"></span>
+                                <label asp-for="AnswerPaper"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AnswerPaper" class="form-control" />
+                                <span asp-validation-for="AnswerPaper" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

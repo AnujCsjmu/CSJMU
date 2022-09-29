@@ -91,25 +91,19 @@
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.InstituteCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.BranchCode)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.CourseCode)
-                                </th>
-                                <th>
                                     @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.QPName)
+                                    @Html.DisplayNameFor(c => c.CourseId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperCode)
+                                    @Html.DisplayNameFor(c => c.BranchId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperName)
+                                    @Html.DisplayNameFor(c => c.SemYearId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.SessionId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperPassword)
@@ -118,8 +112,10 @@
                                     @Html.DisplayNameFor(c => c.PaperPath)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.Session) <br />
-                                    @Html.DisplayNameFor(c => c.SessionType)
+                                    @Html.DisplayNameFor(c => c.AnswerPath)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Session) 
                                 </th>
                                 <th>Reminder?</th>
                             </tr>
@@ -131,56 +127,64 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @if (item.PaperPath != null)
-                                        {
-                                        }
-                                        else
-                                        {
-                                            <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-                                        }
-                                    </td>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-
-                                    <td>@item.UserName</td>
-
-                                    <td>@item.InstituteCode</td>
-                                    <td>@item.BranchCode</td>
-                                    <td>@item.CourseCode</td>
-                                    <td>@item.QPCode</td>
-                                    <td>@item.QPName</td>
-                                    <td>@item.PaperCode</td>
-                                    <td>@item.PaperName</td>
-                                    <td>
-                                        @item.PaperPassword<br />
-                                        @if (ViewBag.EncryptPwdList != null)
-                                        {
-                                            foreach (var item1 in ViewBag.EncryptPwdList)
-                                            {
-                                                @item.DecryptPassword
-                                                break;
-                                            }
-                                        }
-
-                                    </td>
+                            <tr>
+                                <td>
                                     @if (item.PaperPath != null)
                                     {
-                                        <td>
-                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
-                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+                                        <input type="checkbox" id="chkid" value="@item.PCPRegID" />
                                     }
-                                    <td>@item.Session <br /> @item.SessionType</td>
-                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-qpid="@item.QPId" target="_blank">View</a></td>
-                                </tr>
+                                </td>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+
+                                <td>@item.UserName</td>
+                                <td>@item.QPCode</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.BranchName</td>
+                                <td>@item.SemYearId</td>
+                                <td>@item.Session</td>
+                                <td>
+                                    @item.PaperPassword<br />
+                                    @if (ViewBag.EncryptPwdList != null)
+                                    {
+                                        foreach (var item1 in ViewBag.EncryptPwdList)
+                                        {
+                                            @item.DecryptPassword
+                                            break;
+                                        }
+                                    }
+
+                                </td>
+                                @if (item.PaperPath != null)
+                                {
+                                    <td>
+                                        <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                        <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+                                }
+                                @if (item.AnswerPath != null)
+                                {
+                                    <td>
+                                        <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                        <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="font-weight:bold; color:red">Answer Not Uploaded</td>
+                                }
+                                <td>@item.Session</td>
+                                <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-qpid="@item.QPId" target="_blank">View</a></td>
+                            </tr>
                             }
                         </tbody>
                     </table>

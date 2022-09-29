@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Exam;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using CoreLayout.Models.UserManagement;
@@ -17,18 +18,18 @@ namespace CoreLayout.Models.PCP
         [Key]
         public int PaperId { get; set; }
 
-        [Display(Name = "Paper Code")]
-        [Required(ErrorMessage = "Please enter paper code")]
-        [StringLength(50)]
-        public string PaperCode { get; set; }
+        //[Display(Name = "Paper Code")]
+        //[Required(ErrorMessage = "Please enter paper code")]
+        //[StringLength(50)]
+        //public string PaperCode { get; set; }
 
-        [Display(Name = "Paper Name")]
-        [Required(ErrorMessage = "Please enter paper name")]
-        [StringLength(100)]
-        public string PaperName { get; set; }
+        //[Display(Name = "Paper Name")]
+        //[Required(ErrorMessage = "Please enter paper name")]
+        //[StringLength(100)]
+        //public string PaperName { get; set; }
 
-        [Display(Name = "Paper Hindi Name")]
-        public string PaperHindiName { get; set; }
+        //[Display(Name = "Paper Hindi Name")]
+        //public string PaperHindiName { get; set; }
 
         [Display(Name = "Paper Password")]
         //[Required(ErrorMessage = "Please enter paper password")]
@@ -45,16 +46,13 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Upload Paper")]
         public IFormFile UploadPaper { get; set; }
 
+         [Display(Name = "Upload Paper")]
+        public IFormFile UploadPaperEdit { get; set; }
 
-        [Required(ErrorMessage = "Please enter session")]
-        [Display(Name = "Session")]
-        public int SessionId { get; set; }
-        public string Session { get; set; }
-        public List<SessionModel> SessionList { get; set; }
 
         [Remote(action: "VerifyName", controller: "PCPUploadPaper")]
         public List<PCPAssignedQPModel> QPList { get; set; }
-        public string SessionType { get; set; }
+        //public string SessionType { get; set; }
 
         [Display(Name = "Paper Setter Name")]
         public string UserName { get; set; }
@@ -85,16 +83,11 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Course Code")]
         public string CourseCode { get; set; }
 
-        [Display(Name = "Course Name")]
-        public string CourseName { get; set; }
 
 
         [Display(Name = "Subject Code")]
         public string BranchCode { get; set; }
 
-
-        [Display(Name = "Subject Name")]
-        public string BranchName { get; set; }
 
         public string DownloadStatus { get; set; }
 
@@ -102,5 +95,40 @@ namespace CoreLayout.Models.PCP
 
         public string FinalSubmit { get; set; }
 
+        [Display(Name = "Course")]
+        [Required(ErrorMessage = "Please select course")]
+        public int CourseId { get; set; }
+        public List<QPMasterModel> CourseList { get; set; }
+        public string CourseName { get; set; }
+
+
+        [Display(Name = "Subject")]
+        [Required(ErrorMessage = "Please select subject")]
+        public int BranchId { get; set; }
+        public List<QPMasterModel> BranchList { get; set; }
+        public string BranchName { get; set; }//note branch table is used as subjectname
+
+
+        [Required(ErrorMessage = "Please enter session")]
+        [Display(Name = "Session")]
+        public int SessionId { get; set; }
+        public string Session { get; set; }
+        public List<QPMasterModel> SessionList { get; set; }
+
+
+        [Display(Name = "Answer Paper")]
+        public string AnswerPath { set; get; }
+
+        [Required(ErrorMessage = "Please choose answer paper")]
+        [Display(Name = "Answer Paper")]
+        public IFormFile AnswerPaper { get; set; }
+
+        [Display(Name = "Answer Paper")]
+        public IFormFile AnswerPaperEdit { get; set; }
+
+        [Display(Name = "Semester Year")]
+        [Required(ErrorMessage = "Please select Semester year")]
+        public int SemYearId { get; set; }
+        public List<QPMasterModel> SemYearList { get; set; }
     }
 }

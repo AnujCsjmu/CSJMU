@@ -39,63 +39,60 @@
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        @*<div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperCode"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperCode" class="form-control" />
-                                <span asp-validation-for="PaperCode" class="parsley-errors-list filled"></span>
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseId","CourseName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperName" class="form-control" />
-                                <span asp-validation-for="PaperName" class="parsley-errors-list filled"></span>
+                                <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control" asp-for="SemYearId" asp-items="@(new SelectList(Model.SemYearList,"SemYearId","SemYearId"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="SemYearId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="PaperHindiName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperHindiName" class="form-control" />
-                                <span asp-validation-for="PaperHindiName" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>*@
-                        @*<div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PaperPassword"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PaperPassword" class="form-control" />
-                                <span asp-validation-for="PaperPassword" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>*@
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="UploadPaper"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="UploadPaper" class="form-control" />
-                                <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
+                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
                             </div>
                         </div>
-                        @*<div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                <select class="form-control" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SyllabusId","SyllabusName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
-                                <span asp-validation-for="SessionId" class="parsley-errors-list filled"></span>
+
+                                <span class="parsley-errors-list filled" asp-validation-for="SessionId"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="SessionType"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("SessionType", new List<SelectListItem>
-                                {
-                                new SelectListItem{ Text="Odd", Value = "Odd" , Selected = true},
-                                new SelectListItem{ Text="Even", Value = "Even" },
-
-                                },
-                                new { @class = "form-control" })
-                                <span asp-validation-for="SessionType" class="parsley-errors-list filled"></span>
+                                <label asp-for="UploadPaperEdit"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="UploadPaperEdit" class="form-control" />
+                                <span asp-validation-for="UploadPaperEdit" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>*@
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AnswerPaperEdit"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AnswerPaperEdit" class="form-control" />
+                                <span asp-validation-for="AnswerPaperEdit" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
@@ -109,3 +106,45 @@
     </div>
 </div>
 <!-- Conetnt End-->
+
+@section Scripts{
+    @*bind course in exam selected*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#QPId").on("change", function () {
+                    $("#CourseId").empty();
+                    $("#BranchId").empty();
+                    $("#SessionId").empty();
+                    $("#SemYearId").empty();
+                    var ddlsource = "#QPId";
+                    var url = '@Url.Content("~/")' + "PCPUploadPaper/GetCourseSubjectSemYearSyl?QPId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                        console.log(data)
+                        var items = '';
+                        var items1 = '';
+                        var items2 = '';
+                        var items3 = '';
+                        $("#CourseId").empty();
+                        $("#BranchId").empty();
+                        $("#SessionId").empty();
+                        $("#SemYearId").empty();
+                        $.each(data, function (i, qp) {
+                            items += "<option value ='" + qp.courseId + "'>" + qp.courseName + "</option>";
+                            items1 += "<option value ='" + qp.branchID + "'>" + qp.branchName + "</option>";
+                            items2 += "<option value ='" + qp.syllabusId + "'>" + qp.syllabusName + "</option>";
+                            items3 += "<option value ='" + qp.semYearId + "'>" + qp.semYearId + "</option>";
+                        });
+
+                        $('#CourseId').html(items);
+                        $('#BranchId').html(items1);
+                        $('#SessionId').html(items2);
+                        $('#SemYearId').html(items3);
+                });
+                });
+            });
+
+    </script>
+
+}
