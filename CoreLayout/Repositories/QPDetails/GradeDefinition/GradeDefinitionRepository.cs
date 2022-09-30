@@ -24,6 +24,7 @@ namespace CoreLayout.Repositories.QPDetails.GradeDefinition
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("GradeName", entity.GradeName, DbType.String);
+                    parameters.Add("GradeLetter", entity.GradeLetter, DbType.String);
                     parameters.Add("StartPercentage", entity.StartPercentage, DbType.Int32);
                     parameters.Add("EndPercentage", entity.EndPercentage, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
@@ -89,7 +90,7 @@ namespace CoreLayout.Repositories.QPDetails.GradeDefinition
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("QPTypeId", GradeId, DbType.Int32);
+                    parameters.Add("GradeId", GradeId, DbType.Int32);
                     parameters.Add("@Query", 5, DbType.Int32);
                     var lst = await SqlMapper.QueryAsync<GradeDefinitionModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return lst.FirstOrDefault();
@@ -112,6 +113,7 @@ namespace CoreLayout.Repositories.QPDetails.GradeDefinition
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("GradeId", entity.GradeId, DbType.Int32);
                     parameters.Add("GradeName", entity.GradeName, DbType.String);
+                    parameters.Add("GradeLetter", entity.GradeLetter, DbType.String);
                     parameters.Add("StartPercentage", entity.StartPercentage, DbType.Int32);
                     parameters.Add("EndPercentage", entity.EndPercentage, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);

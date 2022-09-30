@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Enum;
 using CoreLayout.Filters;
 using CoreLayout.Models.QPDetails;
+using CoreLayout.Services.QPDetails.GradeDefinition;
 using CoreLayout.Services.QPDetails.QPType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
@@ -15,16 +16,16 @@ using System.Threading.Tasks;
 namespace CoreLayout.Controllers.QPDetails
 {
     [Authorize(Roles = "Administrator")]
-    public class QPTypeController : Controller
+    public class GradeDefinitionController : Controller
     {
-        private readonly ILogger<QPTypeController> _logger;
+        private readonly ILogger<GradeDefinitionController> _logger;
         private readonly IDataProtector _protector;
-        private readonly IQPTypeService _qPTypeService;
-        public QPTypeController(ILogger<QPTypeController> logger, IDataProtectionProvider provider, IQPTypeService qPTypeService)
+        private readonly IGradeDefinitionService _gradeDefinitionService;
+        public GradeDefinitionController(ILogger<GradeDefinitionController> logger, IDataProtectionProvider provider, IGradeDefinitionService gradeDefinitionService)
         {
             _logger = logger;
-            _qPTypeService = qPTypeService;
-            _protector = provider.CreateProtector("QPType.QPTypeController");
+            _gradeDefinitionService = gradeDefinitionService;
+            _protector = provider.CreateProtector("GradeDefinition.GradeDefinitionController");
         }
 
         [HttpGet]
@@ -34,10 +35,10 @@ namespace CoreLayout.Controllers.QPDetails
             try
             {
                 //start encrypt id for update,delete & details
-                var data = await _qPTypeService.GetAllQPType();
+                var data = await _gradeDefinitionService.GetAllGradeDefinition();
                 foreach (var _data in data)
                 {
-                    var stringId = _data.QPTypeId.ToString();
+                    var stringId = _data.GradeId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
                 //end
@@ -46,12 +47,12 @@ namespace CoreLayout.Controllers.QPDetails
                 int id = 0;
                 foreach (var _data in data)
                 {
-                    id = _data.QPTypeId;
+                    id = _data.GradeId;
                 }
                 id = id + 1;
-                ViewBag.MaxQPTypeId = _protector.Protect(id.ToString());
+                ViewBag.MaxGradeId = _protector.Protect(id.ToString());
                 //end
-                return View("~/Views/QPDetails/QPType/Index.cshtml", data);
+                return View("~/Views/QPDetails/GradeDefinition/Index.cshtml", data);
 
             }
 
@@ -59,7 +60,7 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View("~/Views/QPDetails/QPType/Index.cshtml");
+            return View("~/Views/QPDetails/GradeDefinition/Index.cshtml");
         }
 
         [HttpGet]
@@ -69,13 +70,13 @@ namespace CoreLayout.Controllers.QPDetails
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var data = await _qPTypeService.GetQPTypeById(Convert.ToInt32(guid_id));
+                var data = await _gradeDefinitionService.GetGradeDefinitionById(Convert.ToInt32(guid_id));
                 data.EncryptedId = id;
                 if (data == null)
                 {
                     return NotFound();
                 }
-                return View("~/Views/QPDetails/QPType/Details.cshtml", data);
+                return View("~/Views/QPDetails/GradeDefinition/Details.cshtml", data);
 
             }
             catch (Exception ex)
@@ -93,7 +94,7 @@ namespace CoreLayout.Controllers.QPDetails
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                return View("~/Views/QPDetails/QPType/Create.cshtml");
+                return View("~/Views/QPDetails/GradeDefinition/Create.cshtml");
             }
             catch (Exception ex)
             {
@@ -106,26 +107,26 @@ namespace CoreLayout.Controllers.QPDetails
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Add)]
-        public async Task<IActionResult> Create(QPTypeModel qPTypeModel)
+        public async Task<IActionResult> Create(GradeDefinitionModel gradeDefinitionModel)
         {
-            qPTypeModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-            qPTypeModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+            gradeDefinitionModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+            gradeDefinitionModel.IPAddress = HttpContext.Session.GetString("IPAddress");
             if (ModelState.IsValid)
             {
 
-                var res = await _qPTypeService.CreateQPTypeAsync(qPTypeModel);
+                var res = await _gradeDefinitionService.CreateGradeDefinitionAsync(gradeDefinitionModel);
                 if (res.Equals(1))
                 {
-                    TempData["success"] = "QPType has been saved";
+                    TempData["success"] = "GradeDefinition has been saved";
                 }
                 else
                 {
-                    TempData["error"] = "QPType has not been saved";
+                    TempData["error"] = "GradeDefinition has not been saved";
                 }
                 return RedirectToAction(nameof(Index));
 
             }
-            return View("~/Views/QPDetails/QPType/Create.cshtml", qPTypeModel);
+            return View("~/Views/QPDetails/GradeDefinition/Create.cshtml", gradeDefinitionModel);
 
         }
 
@@ -135,43 +136,42 @@ namespace CoreLayout.Controllers.QPDetails
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var data = await _qPTypeService.GetQPTypeById(Convert.ToInt32(guid_id));
+                var data = await _gradeDefinitionService.GetGradeDefinitionById(Convert.ToInt32(guid_id));
                 if (data == null)
                 {
                     return NotFound();
                 }
-                return View("~/Views/QPDetails/QPType/Edit.cshtml", data);
+                return View("~/Views/QPDetails/GradeDefinition/Edit.cshtml", data);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View("~/Views/QPDetails/QPType/Edit.cshtml");
+            return View("~/Views/QPDetails/GradeDefinition/Edit.cshtml");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int QPTypeId, QPTypeModel qPTypeModel)
+        public async Task<IActionResult> Edit(int GradeId, GradeDefinitionModel gradeDefinitionModel)
         {
             try
             {
-                qPTypeModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                qPTypeModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                qPTypeModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
+                gradeDefinitionModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                gradeDefinitionModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 if (ModelState.IsValid)
                 {
-                    var value = await _qPTypeService.GetQPTypeById(QPTypeId);
-                    if (await TryUpdateModelAsync<QPTypeModel>(value))
+                    var value = await _gradeDefinitionService.GetGradeDefinitionById(GradeId);
+                    if (await TryUpdateModelAsync<GradeDefinitionModel>(value))
                     {
-                        var res = await _qPTypeService.UpdateQPTypeAsync(qPTypeModel);
+                        var res = await _gradeDefinitionService.UpdateGradeDefinitionAsync(gradeDefinitionModel);
                         if (res.Equals(1))
                         {
-                            TempData["success"] = "QPType has been updated";
+                            TempData["success"] = "GradeDefinition has been updated";
                         }
                         else
                         {
-                            TempData["error"] = "QPType has not been updated";
+                            TempData["error"] = "GradeDefinition has not been updated";
                         }
                         return RedirectToAction(nameof(Index));
                     }
@@ -181,7 +181,7 @@ namespace CoreLayout.Controllers.QPDetails
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View("~/Views/QPDetails/QPType/Edit.cshtml", qPTypeModel);
+            return View("~/Views/QPDetails/GradeDefinition/Edit.cshtml", gradeDefinitionModel);
         }
 
         [HttpGet]
@@ -191,17 +191,17 @@ namespace CoreLayout.Controllers.QPDetails
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var value = await _qPTypeService.GetQPTypeById(Convert.ToInt32(guid_id));
+                var value = await _gradeDefinitionService.GetGradeDefinitionById(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
-                    var res = await _qPTypeService.DeleteQPTypeAsync(value);
+                    var res = await _gradeDefinitionService.DeleteGradeDefinitionAsync(value);
                     if (res.Equals(1))
                     {
-                        TempData["success"] = "QPType has been deleted";
+                        TempData["success"] = "GradeDefinition has been deleted";
                     }
                     else
                     {
-                        TempData["error"] = "QPType has not been deleted";
+                        TempData["error"] = "GradeDefinition has not been deleted";
                     }
                 }
                 else
@@ -218,26 +218,26 @@ namespace CoreLayout.Controllers.QPDetails
         }
 
 
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyName(string qPTypeName)
-        {
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult VerifyName(string qPTypeName)
+        //{
 
-            var already = (from data in _qPTypeService.GetAllQPType().Result
-                           where data.QPTypeName == qPTypeName.Trim()
-                           select new SelectListItem()
-                           {
-                               Text = data.QPTypeName,
-                               Value = data.QPTypeId.ToString(),
-                           }).ToList();
+        //    var already = (from data in _qPTypeService.GetAllQPType().Result
+        //                   where data.QPTypeName == qPTypeName.Trim()
+        //                   select new SelectListItem()
+        //                   {
+        //                       Text = data.QPTypeName,
+        //                       Value = data.QPTypeId.ToString(),
+        //                   }).ToList();
 
-            if (already.Count > 0)
-            {
-                return Json($"{qPTypeName} is already in use.");
-            }
+        //    if (already.Count > 0)
+        //    {
+        //        return Json($"{qPTypeName} is already in use.");
+        //    }
 
-            return Json(true);
+        //    return Json(true);
 
 
-        }
+        //}
     }
 }

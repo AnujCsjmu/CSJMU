@@ -1,0 +1,73 @@
+﻿@model CoreLayout.Models.QPDetails.GradeDefinitionModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Grade Definition Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">GradeDefinition</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+    </div>
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">State Details</h6>
+                        <hr />
+                    </div>*@
+
+                <form asp-action="Details" method="post">
+                    <div class="row">
+                        <input type="hidden" asp-for="GradeId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="GradeName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="GradeName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="GradeName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="GradeLetter"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="GradeLetter" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="GradeLetter" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="StartPercentage"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="StartPercentage" class="form-control"  readonly="readonly" />
+                                <span asp-validation-for="StartPercentage" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EndPercentage"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="EndPercentage" class="form-control"  readonly="readonly" />
+                                <span asp-validation-for="EndPercentage" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Conetnt End-->

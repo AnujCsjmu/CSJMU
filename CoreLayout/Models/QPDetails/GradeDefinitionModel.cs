@@ -16,14 +16,21 @@ namespace CoreLayout.Models.QPDetails
         [Display(Name = "Grade Name")]
         [Required(ErrorMessage = "Please enter grade name")]
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
-        [Remote(action: "VerifyName", controller: "QPMaster")]
         [StringLength(50)]
         public string GradeName { get; set; }
 
+        [Display(Name = "Grade Letter")]
+        [Required(ErrorMessage = "Please enter grade letter")]
+        [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        [StringLength(50)]
+        public string GradeLetter { get; set; }
+
         [Display(Name = "Start Percentage")]
+        [Required(ErrorMessage = "Please enter start percentage")]
         public int StartPercentage { get; set; }
 
         [Display(Name = "End Percentage")]
+        [Required(ErrorMessage = "Please enter end percentage")]
         public int EndPercentage { get; set; }
     }
 }
