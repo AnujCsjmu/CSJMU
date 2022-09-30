@@ -39,6 +39,9 @@
                                         @Html.DisplayNameFor(c => c.QPId)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(c => c.QPCode)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(c => c.CourseId)
                                     </th>
                                     <th>
@@ -76,56 +79,57 @@
                                 }
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
+                                <tr>
+                                    @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                    {
+                                        <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.QPName</td>
+                                    <td>@item.QPCode</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.SemYearId</td>
+                                    <td>@item.Session</td>
+
+                                    <td>
+                                        <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
                                         @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
                                         {
-                                            <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
+                                            <a asp-action="DownloadPaper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         }
-                                        else
+                                    </td>
+                                    <td>
+                                        <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
+                                        @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
                                         {
-                                            <td></td>
+                                            <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         }
-                                        <td>
-                                            @{ sno++; }
-                                            @sno
-                                        </td>
-                                        <td>@item.QPName</td>
-                                        <td>@item.CourseName</td>
-                                        <td>@item.BranchName</td>
-                                        <td>@item.SemYearId</td>
-                                        <td>@item.Session</td>
-
-                                        <td>
-                                            <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
+                                    </td>
+                                    <td>@item.UserName</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
                                             @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
                                             {
-                                                <a asp-action="DownloadPaper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                                <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
                                             }
-                                        </td>
-                                        <td>
-                                            <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
-                                            @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                            else
                                             {
-                                                <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                                <label style="font-weight:bold; color:red">Final Submitted</label>
                                             }
-                                        </td>
-                                        <td>@item.UserName</td>
-                                        <td>@item.CreatedDate</td>
-                                        <td>
-                                            <div class="table-actions text-center">
-                                                @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
-                                                {
-                                                    <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                                    <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <label style="font-weight:bold; color:red">Final Submitted</label>
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        </div>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>

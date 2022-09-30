@@ -284,8 +284,6 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
             }
 
         }
-
-
         public async Task<int> FinalSubmitAsync(PCPUploadPaperModel entity)
         {
             using (var connection = CreateConnection())

@@ -30,6 +30,7 @@ using CoreLayout.Repositories.PCP.PCPAssignedQP;
 using CoreLayout.Repositories.PCP.PCPRegistration;
 using CoreLayout.Repositories.PCP.PCPSendPaper;
 using CoreLayout.Repositories.PCP.PCPSendReminder;
+using CoreLayout.Repositories.PCP.PCPUploadOldPaper;
 using CoreLayout.Repositories.PCP.PCPUploadPaper;
 using CoreLayout.Repositories.QPDetails.GradeDefinition;
 using CoreLayout.Repositories.QPDetails.QPMaster;
@@ -72,6 +73,7 @@ using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.PCP.PCPSendPaper;
 using CoreLayout.Services.PCP.PCPSendReminder;
+using CoreLayout.Services.PCP.PCPUploadOldPaper;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.QPDetails.GradeDefinition;
 using CoreLayout.Services.QPDetails.QPMaster;
@@ -341,6 +343,10 @@ namespace CoreLayout
             //Exam master
             services.AddScoped<IExamMasterService, ExamMasterService>();
             services.AddScoped<IExamMasterRepository, ExamMasterRepository>();
+
+            //Exam PCP Upload old paper/Syllabus/Pattern
+            services.AddScoped<IPCPUploadOldPaperService, PCPUploadOldPaperService>();
+            services.AddScoped<IPCPUploadOldPaperRepository, PCPUploadOldPaperRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

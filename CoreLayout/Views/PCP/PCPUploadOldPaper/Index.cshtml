@@ -1,0 +1,180 @@
+﻿@using CoreLayout.Models.PCP
+@model IEnumerable<PCPUploadOldPaperModel>
+@{
+    ViewData["title"] = "Index";
+}
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Old Paper/Syllabus/Pattern List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">OldDocumets</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List</li>
+        </ol>
+    </div>
+    <div class="btn btn-list">
+        <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxOldPaperId><i class="fe fe-plus"></i> Upload Documents</a>
+    </div>
+</div>
+
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <form method="post" id="form1">
+                    @*@Html.HiddenFor(m => m.Name)*@
+                    @Html.Hidden("paperid", (object)ViewBag.paperid)
+                    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                    </div>
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.ExamId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.CourseId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.SessionId)<br />
+                                        @Html.DisplayNameFor(c => c.SemYearId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.BranchId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.QPCode)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.OldPaperPath)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.OldSyllabusPath)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.OldPatternPath)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.CreatedBy)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.CreatedDate)
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{
+                                    int sno = 0;
+                                }
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                        {
+                                            <td> <input type="checkbox" id="chkid" value="@item.OldPaperId" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        <td>
+                                            @{ sno++; }
+                                            @sno
+                                        </td>
+                                        <td> @item.ExamName</td>
+                                        <td> @item.CourseName</td>
+                                        <td>
+                                            @item.Session <br />
+                                            @item.SemYearId
+                                        </td>
+                                        <td> @item.BranchName</td>
+                                        <td> @item.QPCode</td>
+                                        <td>
+                                            <a asp-action="DownloadOldPaper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="DownloadOldSyllabus" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            <div class="table-actions text-center">
+                                                @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                                {
+                                                    <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                                    <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <label style="font-weight:bold; color:red">Final Submitted</label>
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div>
+                            <input type="submit" id="btnFinalSubmit" value="Final Submit" class="btn btn-success" onclick="return confirm('Are you want to save ?')" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnFinalSubmit").click(function () {
+                document.getElementById("paperid").value = '';
+                var userid = [];
+                var i = 0;
+                //Loop through all checked CheckBoxes in GridView.
+                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                    userid[i] = $(this).val();
+                    i++;
+
+                });
+                if (userid.length > 0) {
+                    document.getElementById("paperid").value = userid;
+                }
+                else {
+                    alert("Select atleast one checkbox");
+                    //var form = document.getElementById("form1");
+                    //form.preventDefault();
+                }
+            });
+        });
+    </script>
+}

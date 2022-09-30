@@ -29,22 +29,21 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Agency Name")]
         [Required(ErrorMessage = "Please enter agency name")]
         public int UserId { get; set; }
-
-        [Display(Name = "Setter Name")]
         public string UserName { get; set; }
-
-        [Display(Name = "PaperSetter Name")]
-        //[Required(ErrorMessage = "Please enter paper setter name")]
-        public int? PaperSetterId { get; set; }
-        public string PaperSetterName { get; set; }
-
-        public List<int> PaperList { get; set; }
-
-        public List<string> SelectedPaperList { get; set; }
-
         public List<RegistrationModel> AgencyList { get; set; }
 
+
+        [Display(Name = "Setter Name")]
+        [Required(ErrorMessage = "Please enter paper setter name")]
+        public int PaperSetterId { get; set; }
+        public string PaperSetterName { get; set; }
         public List<RegistrationModel> PaperSetterList { get; set; }
+
+
+        public List<int> PaperList { get; set; }
+        public List<string> SelectedPaperList { get; set; }
+
+      
 
         //public int? RoleId { get; set; }
         public string CreatedUserName { get; set; }
@@ -52,8 +51,8 @@ namespace CoreLayout.Models.PCP
         public List<CourseModel> CourseList { get; set; }
 
         [Display(Name = "Course Name")]
-        [Required(ErrorMessage = "Please enter course name")]
-        public int CourseID { get; set; }
+        //[Required(ErrorMessage = "Please enter course name")]
+        public int? CourseID { get; set; }
 
         public string CourseName { get; set; }
         public string CourseCode { get; set; }
@@ -74,13 +73,15 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Agency Name")]
         public string AgencyName { get; set; }
         public int? QPId { get; set; }
+        [Display(Name = "QP Name")]
+        public string QPName { get; set; }
+        public string QPCode { get; set; }
 
         [Display(Name = "Send By")]
         public string CreatedByName { get; set; }
         public List<PCPSendPaperModel> FilterList { get; set; }
 
-        [Display(Name = "QP Name")]
-        public string QPName { get; set; }
+     
         [Display(Name = "Paper Password")]
         public string PaperPassword { get; set; }
         public string Session { get; set; }
@@ -88,14 +89,25 @@ namespace CoreLayout.Models.PCP
         public string SessionType { get; set; }
 
         [Display(Name = "Paper Open Time")]
+        [Required(ErrorMessage = "Please enter paper open time")]
+        //[Range(typeof(DateTime), "1/1/2022", "1/1/2040")]
         public DateTime PaperOpenTime { get; set; }
 
         [Display(Name = "Static IP")]
+        [Required(ErrorMessage = "Please enter static ip")]
         public string StaticIPAddress { get; set; }
 
         [Display(Name = "Decrypt Password")]
         public string DecryptPassword { get; set; }
 
         public DateTime  ServerDateTime { get; set; }
+
+        [Display(Name = "Branch Name")]
+        public string BranchName { get; set; }
+
+        [Display(Name = "Sem Year")]
+        public string SemYearId { get; set; }
+
+        
     }
 }

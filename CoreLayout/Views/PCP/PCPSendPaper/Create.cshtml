@@ -30,13 +30,22 @@
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
+                        @*<div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                    <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                    </select>
+                    <span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>
+                </div>
+            </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
-                                <span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>
+                                <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -62,68 +71,57 @@
                                 <span asp-validation-for="StaticIPAddress" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card custom-card overflow-hidden">
+                                <div class="card-body">
+                                    <div class="table-responsive-sm">
+                                        <label> Paper List </label><span class="tx-danger"> *</span>
+                                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                                            <thead>
+                                                <tr>
+                                                    <th>@*<input name="select_all" id="select_all" value="1" type="checkbox">*@</th>
+                                                    <th>S.No</th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.UserId)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.CourseID)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.BranchName)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.SemYearId)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.Session)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.QPName)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.QPCode)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(c => c.CreatedDate)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="output"></tbody>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PaperId"> </label><span class="tx-danger"> *</span>
-                                <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th><input name="select_all" value="1" type="checkbox"></th>
-                                            <th>S.No</th>
-                                            <th>
-                                                @Html.DisplayNameFor(c => c.PaperId)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(c => c.PaperCode)
-                                            </th>
-                                            @*<th>
-                                @Html.DisplayNameFor(c => c.PaperPath)
-                            </th>*@
-                                            <th>
-                                                @Html.DisplayNameFor(c => c.UserName)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(c => c.CreatedDate)
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{
-                                            int sno = 0;
-                                        }
-                                        @foreach (var item in ViewBag.PaperList)
-                                        {
-                                            <tr>
-                                                <td> <input type="checkbox" id="chkid" value="@item.PaperId" /></td>
-
-                                                <td>
-                                                    @{ sno++; }
-                                                    @sno
-                                                </td>
-                                                <td>@item.PaperName</td>
-                                                <td>@item.PaperCode</td>
-                                                @*<td>
-                                    <img src="~/Images/pdfimage.png" height=50 width=50 /><br />
-                                    <a asp-action="Download" asp-route-id="@item.PaperId" target="_blank">Download</a>
-                                </td>*@
-                                                <td>@item.UserName</td>
-                                                <td>@item.CreatedDate</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                                <span asp-validation-for="paperids" class="parsley-errors-list filled"></span>
+                                        </table>
+                                        @*<span asp-validation-for="paperids" class="parsley-errors-list filled"></span>*@
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-
-                    <br />
+                    <!-- End Row -->
                     <div class="form-group">
                         <input id="submit" type="submit" class="btn btn-primary" value="Save" onclick="return confirm('After submit you can not any changes! submit?')" />
                         <a asp-action="Index" class="btn btn-success">Back to List</a>
-
                     </div>
 
                 </form>
@@ -133,33 +131,35 @@
 </div>
 <!-- Conetnt End-->
 @section Scripts{
-    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#PaperSetterId").on("change", function () {
-
-               /* $("#PaperId").empty();*/
-
                 var ddlsource = "#PaperSetterId";
-                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?PaperSetterId="+$(ddlsource).val();
-
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?PaperSetterId=" + $(ddlsource).val();
                 $.getJSON(url, function (data) {
-                var items = '';
-                    $("#PaperId").empty();
-                    $.each(data, function (i, user) {
-                        items += "<option value ='" + user.value + "'>" + user.text + "</option>";
+                    let output = data.map((i,index) => "<tr><td><input type='checkbox' id='chkid' value='"+i.paperId+"' /> </td><td>"+(index+1)+"</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.semYearId + "</td><td>" + i.session + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
                 });
-                    $('#PaperId').html(items);
-            });
             });
         });
     </script>
 
-
     @*checkbox multi select at one time*@
     <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
-
-    <script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+    @*<script>
         function updateDataTableSelectAllCtrl(table) {
             var $table = table.table().node();
             var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
@@ -168,32 +168,32 @@
             // Array holding selected row IDs
 
             var rows_selected = [];
-            var table = $('#exportexample').DataTable({
-                "scrollY": 100,
-                "scrollX": true,
-                "scrollCollapse": true,
-                "fixedHeader": true,
-                "bInfo": false,
-                scrollResize: true,
-                lengthChange: false,
-                searching: false,
-                paging: false,
-                fixedColumns: {
-                    leftColumns: 1,
-                    rightColumns: 1
-                },
-                columnDefs: [{
-                    orderable: false,
-                    className: 'select-checkbox',
-                    targets: 0
-                }],
-                select: {
-                    style: 'multi',
-                    selector: 'td:first-child'
-                },
-                order: [[1, 'asc']]
-            });
-            //var table = $('#exportexample').DataTable();
+            //var table = $('#exportexample').DataTable({
+            //    "scrollY": 100,
+            //    "scrollX": true,
+            //    "scrollCollapse": true,
+            //    "fixedHeader": true,
+            //    "bInfo": false,
+            //    scrollResize: true,
+            //    lengthChange: false,
+            //    searching: false,
+            //    paging: false,
+            //    fixedColumns: {
+            //        leftColumns: 1,
+            //        rightColumns: 1
+            //    },
+            //    columnDefs: [{
+            //        orderable: false,
+            //        className: 'select-checkbox',
+            //        targets: 0
+            //    }],
+            //    select: {
+            //        style: 'multi',
+            //        selector: 'td:first-child'
+            //    },
+            //    order: [[1, 'asc']]
+            //});
+            var table = $('#exportexample').DataTable();
             // Handle click on checkbox
             $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
 
@@ -220,7 +220,7 @@
                 e.stopPropagation();
             });
         });
-    </script>
+    </script>*@
 
     <script type="text/javascript">
         i = 0;
@@ -240,6 +240,7 @@
         });
 
     </script>
+
 
 
 }

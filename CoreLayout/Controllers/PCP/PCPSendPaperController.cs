@@ -128,21 +128,7 @@ namespace CoreLayout.Controllers.PCP
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(PCPSendPaperModel pCPSendPaperModel)
         {
-            //start check paper already sent to agency
             int result = 0;
-            String[] array = pCPSendPaperModel.paperids.Split(",");
-            for (int i = 0; i < array.Length; i++)
-            {
-                int paperid = Convert.ToInt32(array[i]);
-                var data = (from sendpaper in await _pCPSendPaperService.GetAllPCPSendPaper()
-                            where sendpaper.AgencyId == pCPSendPaperModel.UserId && sendpaper.PaperId == paperid
-                            select sendpaper).ToList();
-                if (data.Count > 0)
-                {
-                    result = 1;
-                }
-            }
-            //end
             pCPSendPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
             pCPSendPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
             pCPSendPaperModel.CourseList = (from course in await _courseService.GetAllCourse()
@@ -153,34 +139,52 @@ namespace CoreLayout.Controllers.PCP
             pCPSendPaperModel.PaperSetterList = (from setter in await _pCPSendPaperService.GetAllPCPUser_UploadPaperAsync()
                                                  where setter.RoleId == 19
                                                  select setter).ToList();
-            ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                                     //where user.CreatedBy == PaperSetterId
-                                 select paper).ToList();
+            //ViewBag.PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+            //                         //where user.CreatedBy == PaperSetterId
+            //                     select paper).ToList();
+            //start check paper already sent to agency
             if (pCPSendPaperModel.paperids != null)
             {
-                if (result == 1)
-                {
-                    ModelState.AddModelError("", "Paper already sent to this agency!");
-                    return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
-                }
-                else if (ModelState.IsValid)
-                {
 
-                    var res = await _pCPSendPaperService.CreatePCPSendPaperAsync(pCPSendPaperModel);
-                    if (res.Equals(1))
+                String[] array = pCPSendPaperModel.paperids.Split(",");
+                for (int i = 0; i < array.Length; i++)
+                {
+                    int paperid = Convert.ToInt32(array[i]);
+                    var data = (from sendpaper in await _pCPSendPaperService.GetAllPCPSendPaper()
+                                where sendpaper.AgencyId == pCPSendPaperModel.UserId && sendpaper.PaperId == paperid
+                                select sendpaper).ToList();
+                    if (data.Count > 0)
                     {
-                        TempData["success"] = "Paper has been send";
+                        result = 1;
                     }
-                    else
-                    {
-                        TempData["error"] = "Paper has not been send";
-                    }
-                    return RedirectToAction(nameof(Index));
                 }
             }
             else
             {
-                ModelState.AddModelError("", "Please select atleast one checkbox");
+                ModelState.AddModelError("", "Check atleast one paper!");
+                return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
+            }
+            //end
+
+
+            if (result == 1)
+            {
+                ModelState.AddModelError("", "Paper already sent to this agency!");
+                return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
+            }
+            else if (ModelState.IsValid)
+            {
+
+                var res = await _pCPSendPaperService.CreatePCPSendPaperAsync(pCPSendPaperModel);
+                if (res.Equals(1))
+                {
+                    TempData["success"] = "Paper has been send";
+                }
+                else
+                {
+                    TempData["error"] = "Paper has not been send";
+                }
+                return RedirectToAction(nameof(Index));
             }
             return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
         }
@@ -202,25 +206,13 @@ namespace CoreLayout.Controllers.PCP
 
             return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPRegistrationModel);
         }
-        //public JsonResult GetPaper(int PaperSetterId)
-        //{
-        //    var GetUserList = (from user in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-        //                       where user.CreatedBy == PaperSetterId
-        //                       select new SelectListItem()
-        //                       {
-        //                           Text = user.PaperName,
-        //                           Value = user.PaperId.ToString(),
-        //                       }).ToList();
-        //    //GetUserList.Insert(0, new SelectListItem()
-        //    //{
-        //    //    Text = "----Select----",
-        //    //    Value = string.Empty
-        //    //});
-
-        //    //var GetUserList = _buttonPermissionService.GetUserByRoleAsync(role);
-
-        //    return Json(GetUserList);
-        //}
+        public JsonResult GetPaper(int PaperSetterId)
+        {
+            var PaperList = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                               where paper.CreatedBy == PaperSetterId
+                               select paper).ToList();
+            return Json(PaperList);
+        }
 
         [HttpGet]
         public async Task<IActionResult> Delete(string id)

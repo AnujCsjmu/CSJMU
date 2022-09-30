@@ -216,10 +216,9 @@
                 var ddlUser = $("#ddlUser");
                 if (ddlUser.val() == "") {
                     //If the "Please Select" option is selected display error.
-                    alert("Please select atleast user!");
-                    return false;
+                    alert("Please select atleast one paper setter!");
+                    return true;
                 }
-                return true;
             });
         });
     </script>

@@ -30,25 +30,23 @@
                                     @Html.DisplayNameFor(c => c.QPName)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperName)
+                                    @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperCode)
+                                    @Html.DisplayNameFor(c => c.CourseID)
                                 </th>
-                                @*<th>
-            @Html.DisplayNameFor(c => c.PaperHindiName)
-        </th>*@
                                 <th>
-                                    @Html.DisplayNameFor(c => c.PaperPath)
+                                    @Html.DisplayNameFor(c => c.BranchName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Session)<br />
+                                    @Html.DisplayNameFor(c => c.SemYearId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperPassword)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.Session)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.SessionType)
+                                    @Html.DisplayNameFor(c => c.PaperPath)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperOpenTime)
@@ -62,9 +60,6 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                @*<th>
-            Action
-        </th>*@
                             </tr>
                         </thead>
 
@@ -74,48 +69,46 @@
                             }
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td>@item.QPName</td>
-                                <td>@item.PaperName</td>
-                                <td>@item.PaperCode</td>
-                                @*<td>@item.PaperHindiName</td>*@
-
-                                <td>
-                                    <b>Encrypt</b> <br />@item.PaperPassword<br />
-                                    @if (ViewBag.EncryptPwdList != null)
-                                    {
-                                        foreach (var item1 in ViewBag.EncryptPwdList)
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.QPName</td>
+                                    <td>@item.QPCode</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.Session <br /> @item.SemYearId</td>
+                                    <td>
+                                        <b>Encrypt</b> <br />@item.PaperPassword<br />
+                                        @if (ViewBag.EncryptPwdList != null)
                                         {
-                                            <b>Decrypt</b> <br />@item.DecryptPassword
-                                            break;
+                                            foreach (var item1 in ViewBag.EncryptPwdList)
+                                            {
+                                                <b>Decrypt</b> <br />@item.DecryptPassword
+                                                break;
+                                            }
                                         }
-                                    }
-                                </td>
-                                <td>
-                                    @if (item.PaperPath != null)
-                                    {
-                                        <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                        <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
-                                    }
-                                </td>
-                                <td>@item.Session</td>
-                                <td>@item.SessionType</td>
-                                <td>@item.PaperOpenTime</td>
-                                <td>@item.StaticIPAddress</td>
-                                <td>@item.CreatedByName</td>
-                                <td>@item.CreatedDate</td>
-                                @*<td>
-            <div class="table-actions text-center">
-                <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-            </div>
-        </td>*@
-                            </tr>
+                                    </td>
+                                    <td>
+                                        @if (item.PaperPath != null)
+                                        {
+                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        }
+                                    </td>
+                                    <td>@item.PaperOpenTime</td>
+                                    <td>@item.StaticIPAddress</td>
+                                    <td>@item.CreatedByName</td>
+                                    <td>@item.CreatedDate</td>
+                                    @*<td>
+                                            <div class="table-actions text-center">
+                                                <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                            </div>
+                                        </td>*@
+                                </tr>
                             }
                         </tbody>
                     </table>

@@ -2,6 +2,7 @@
 using CoreLayout.Models.Exam;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,9 +42,6 @@ namespace CoreLayout.Models.PCP
         public string  PaperPath { get; set; }
 
         public List<PCPRegistrationModel> PCPUserList { get; set; }
-
-
-
 
 
         [Display(Name = "Syllabus")]
@@ -93,6 +91,15 @@ namespace CoreLayout.Models.PCP
         public int ExamId { get; set; }
         public string ExamName { get; set; }
         public List<ExamMasterModel> ExamList { get; set; }
+
+
+
+        //fileupload
+        [Display(Name = "Old Paper")]
+        public string OldPaperPath { set; get; }
+        [Required(ErrorMessage = "Please choose old paper")]
+        [Display(Name = "Upload Paper")]
+        public IFormFile FUOldPape { get; set; }
 
     }
 }
