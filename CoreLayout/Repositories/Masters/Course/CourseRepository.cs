@@ -31,6 +31,7 @@ namespace CoreLayout.Repositories.Masters.Course
                     parameters.Add("MaxDuration", entity.MaxDuration, DbType.Int32);
                     parameters.Add("ProgramId", entity.ProgramId, DbType.Int32);
                     parameters.Add("CourseTypeId", entity.CourseTypeId, DbType.Int32);
+                    parameters.Add("CourseExamType", entity.CourseExamType, DbType.String);
                     parameters.Add("ShortName", entity.ShortName, DbType.String);
                     parameters.Add("AffOnline", entity.AffOnline, DbType.String);
                     parameters.Add("UserId", entity.CreatedBy, DbType.Int32);
@@ -138,6 +139,7 @@ namespace CoreLayout.Repositories.Masters.Course
                     parameters.Add("MaxDuration", entity.MaxDuration, DbType.Int32);
                     parameters.Add("ProgramId", entity.ProgramId, DbType.Int32);
                     parameters.Add("CourseTypeId", entity.CourseTypeId, DbType.Int32);
+                    parameters.Add("CourseExamType", entity.CourseExamType, DbType.String);
                     parameters.Add("ShortName", entity.ShortName, DbType.String);
                     parameters.Add("AffOnline", entity.AffOnline, DbType.String);
                     parameters.Add("UserId", entity.ModifiedBy, DbType.Int32);

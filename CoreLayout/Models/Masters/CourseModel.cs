@@ -31,7 +31,7 @@ namespace CoreLayout.Models.Masters
         [StringLength(100)]
         public string HindiName { get; set; }
 
-        [Display(Name = "Min Duration in Semester")]
+        [Display(Name = "Min Duration")]
         public int? MinDuration { get; set; }
 
         [Display(Name = "Max Duration")]
@@ -81,5 +81,11 @@ namespace CoreLayout.Models.Masters
 
         public List<ProgramModel> ProgramList { get; set; }
         public List<CourseTypeModel> CourseTypeList { get; set; }
+
+        [Display(Name = "Course Exam Type")]
+        [Required(ErrorMessage = "Please select course exam type")]
+        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        //[StringLength(100)]
+        public string CourseExamType { get; set; }
     }
 }

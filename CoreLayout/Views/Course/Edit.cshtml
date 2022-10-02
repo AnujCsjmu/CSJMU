@@ -86,6 +86,20 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="CourseExamType"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("CourseExamType", new List<SelectListItem>
+                              {
+                               new SelectListItem{ Text="--Select Pramotion Type--", Value = "" },
+                               new SelectListItem{ Text="Annual", Value = "Annual" },
+                               new SelectListItem{ Text="Semester", Value = "Semester" },
+                               new SelectListItem{ Text="Mix", Value = "Mix" },
+                              },
+                              new { @class = "form-control" })
+                                <span asp-validation-for="CourseExamType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="ShortName" class="mg-b-10"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="ShortName" class="form-control" />
                                 <span asp-validation-for="ShortName" class="text-danger"></span>

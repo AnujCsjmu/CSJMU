@@ -38,20 +38,7 @@
                                 <span asp-validation-for="CourseID" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="PramotionType"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("PramotionType", new List<SelectListItem>
-                              {
-                                new SelectListItem{ Text="--Select Pramotion Type--", Value = "" },
-                               new SelectListItem{ Text="Annual", Value = "Annual" },
-                               new SelectListItem{ Text="Semester", Value = "Semester" },
-                                new SelectListItem{ Text="Mix", Value = "Mix" },
-                              },
-                              new { @class = "form-control" })
-                                <span asp-validation-for="PramotionType" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
+                       
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="CourseDurationType"> </label><span class="tx-danger"> *</span>

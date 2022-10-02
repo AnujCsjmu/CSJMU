@@ -12,13 +12,13 @@ namespace CoreLayout.Models.Masters
         [Key]
         public int CourseDetailId { get; set; }
 
-        [Display(Name = "Pramotion Type")]
-        [Required(ErrorMessage = "Please select pramotion type")]
-        //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
-        //[StringLength(100)]
-        public string PramotionType { get; set; }
+        //[Display(Name = "Pramotion Type")]
+        //[Required(ErrorMessage = "Please select pramotion type")]
+        ////[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
+        ////[StringLength(100)]
+        //public string PramotionType { get; set; }
 
-        [Display(Name = "Course Exam Type")]
+        [Display(Name = "Course Duration Type")]
         [Required(ErrorMessage = "Please select course exam type")]
         //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
        // [StringLength(100)]

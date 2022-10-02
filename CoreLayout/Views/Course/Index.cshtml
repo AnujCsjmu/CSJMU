@@ -1,4 +1,4 @@
-﻿@using CoreLayout.Models.Masters
+﻿    @using CoreLayout.Models.Masters
 @model IEnumerable<CourseModel>
 @{
     ViewData["title"] = "Index";
@@ -38,7 +38,9 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.CourseTypeId)
                                 </th>
-
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CourseExamType)
+                                </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
                                 </th>
@@ -59,23 +61,24 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td>@item.CourseCode</td>
-                                    <td>@item.CourseName</td>
-                                    <td>@item.ProgramName</td>
-                                    <td>@item.CourseTypeName</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td>@item.CreatedDate</td>
-                                    <td>
-                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>@item.CourseCode</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.ProgramName</td>
+                                <td>@item.CourseTypeName</td>
+                                <td>@item.CourseExamType</td>
+                                <td>@item.CreatedBy</td>
+                                <td>@item.CreatedDate</td>
+                                <td>
+                                    <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                    <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
