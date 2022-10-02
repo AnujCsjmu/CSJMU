@@ -18,5 +18,7 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         public Task<List<RegistrationModel>> GetAllPCPUser_UploadPaperAsync();
 
         public Task<PCPSendPaperModel> GetServerDateTime();
+
+        public Task<int> FinalSubmitAsync(PCPSendPaperModel pCPSendPaperModel);
     }
 }

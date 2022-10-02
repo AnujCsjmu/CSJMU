@@ -30,16 +30,63 @@
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-                        @*<div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
-                    <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
-                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                    </select>
-                    <span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>
-                </div>
-            </div>*@
-                        <div class="col-md-6">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList,"ExamId","ExamName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="ExamId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(string.Empty,"CourseID","CourseName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="SemYearId" asp-items="@(new SelectList(string.Empty,"SemYearId","SemYearId"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="SemYearId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(string.Empty,"SessionId","Session"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="SessionId"></span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(string.Empty,"QPId","QPName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PaperSetterId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="PaperSetterId" asp-items="@(new SelectList(Model.PaperSetterList,"PaperSetterId","PaperSetterName"))">
@@ -48,7 +95,7 @@
                                 <span asp-validation-for="PaperSetterId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="UserId" asp-items="@(new SelectList(Model.AgencyList,"UserID","UserName"))">
@@ -57,14 +104,14 @@
                                 <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PaperOpenTime"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="PaperOpenTime" class="form-control" />
                                 <span asp-validation-for="PaperOpenTime" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="StaticIPAddress"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="StaticIPAddress" class="form-control" />
@@ -84,22 +131,20 @@
                                                     <th>@*<input name="select_all" id="select_all" value="1" type="checkbox">*@</th>
                                                     <th>S.No</th>
                                                     <th>
-                                                        @Html.DisplayNameFor(c => c.UserId)
+                                                        @Html.DisplayNameFor(c => c.PaperSetterId)
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(c => c.CourseID)
+                                                        @Html.DisplayNameFor(c => c.CourseId)
                                                     </th>
                                                     <th>
                                                         @Html.DisplayNameFor(c => c.BranchName)
                                                     </th>
                                                     <th>
+                                                        @Html.DisplayNameFor(c => c.Session)<br />
                                                         @Html.DisplayNameFor(c => c.SemYearId)
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(c => c.Session)
-                                                    </th>
-                                                    <th>
-                                                        @Html.DisplayNameFor(c => c.QPName)
+                                                        @Html.DisplayNameFor(c => c.QPId)
                                                     </th>
                                                     <th>
                                                         @Html.DisplayNameFor(c => c.QPCode)
@@ -115,6 +160,7 @@
                                         @*<span asp-validation-for="paperids" class="parsley-errors-list filled"></span>*@
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -131,96 +177,141 @@
 </div>
 <!-- Conetnt End-->
 @section Scripts{
+
+    @*bing grid on filter*@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#PaperSetterId").on("change", function () {
-                var ddlsource = "#PaperSetterId";
-                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?PaperSetterId=" + $(ddlsource).val();
+            var examId = $('#ExamId').find('option:selected').val();
+            var courseId = $('#CourseId').find('option:selected').val();
+            var branchId = $('#BranchId').find('option:selected').val();
+            var sessionId = $('#SessionId').find('option:selected').val();
+            var paperSetterId = $('#PaperSetterId').find('option:selected').val();
+            var qPId = $('#QPId').find('option:selected').val();
+            var semYearId = $('#SemYearId').find('option:selected').val();
+            $("#ExamId").on("change", function () {
+                $('#global-loader').show();
+                 examId = "#ExamId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?ExamId=" + $(examId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i,index) => "<tr><td><input type='checkbox' id='chkid' value='"+i.paperId+"' /> </td><td>"+(index+1)+"</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.semYearId + "</td><td>" + i.session + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                        let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                        $("#output").html(output);
+                        $('#global-loader').hide();
+                });
+            });
+
+            $("#CourseId").on("change", function () {
+                $('#global-loader').show();
+                courseId = "#CourseId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?CourseId=" + $(courseId).val()
+                    + "&ExamId=" + $(examId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
+                    $('#global-loader').hide();
+                });
+            });
+
+            $("#BranchId").on("change", function () {
+                $('#global-loader').show();
+                branchId = "#BranchId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?BranchId=" + $(branchId).val()
+                    + "&ExamId=" + $(examId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
+                    $('#global-loader').hide();
+                });
+            });
+
+            $("#SessionId").on("change", function () {
+                $('#global-loader').show();
+                sessionId = "#SessionId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?SessionId=" + $(sessionId).val()
+                    + "&ExamId=" + $(examId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
+                    $('#global-loader').hide();
+                });
+            });
+
+            $("#PaperSetterId").on("change", function () {
+                $('#global-loader').show();
+                 paperSetterId = "#PaperSetterId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?PaperSetterId=" + $(paperSetterId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&ExamId=" + $(examId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
+                    $('#global-loader').hide();
+                });
+            });
+
+            $("#QPId").on("change", function () {
+                $('#global-loader').show();
+                qPId = "#QPId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?QPId=" + $(qPId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&ExamId=" + $(examId).val()
+                    + "&SemYearId=" + $(semYearId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
+                    $('#global-loader').hide();
+                });
+            });
+
+            $("#SemYearId").on("change", function () {
+                $('#global-loader').show();
+                semYearId = "#SemYearId";
+                var url = '@Url.Content("~/")' + "PCPSendPaper/GetPaper?SemYearId=" + $(semYearId).val()
+                    + "&CourseId=" + $(courseId).val()
+                    + "&BranchId=" + $(branchId).val()
+                    + "&SessionId=" + $(sessionId).val()
+                    + "&QPId=" + $(qPId).val()
+                    + "&ExamId=" + $(examId).val()
+                    + "&PaperSetterId=" + $(paperSetterId).val();
+                $.getJSON(url, function (data) {
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    $("#output").html(output);
+                    $('#global-loader').hide();
                 });
             });
         });
     </script>
 
-    @*checkbox multi select at one time*@
-    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
-    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
-    <script src="~/assets/js/table-data.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
-    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
-    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
-    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
-    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
-    @*<script>
-        function updateDataTableSelectAllCtrl(table) {
-            var $table = table.table().node();
-            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
-        }
-        $(document).ready(function () {
-            // Array holding selected row IDs
 
-            var rows_selected = [];
-            //var table = $('#exportexample').DataTable({
-            //    "scrollY": 100,
-            //    "scrollX": true,
-            //    "scrollCollapse": true,
-            //    "fixedHeader": true,
-            //    "bInfo": false,
-            //    scrollResize: true,
-            //    lengthChange: false,
-            //    searching: false,
-            //    paging: false,
-            //    fixedColumns: {
-            //        leftColumns: 1,
-            //        rightColumns: 1
-            //    },
-            //    columnDefs: [{
-            //        orderable: false,
-            //        className: 'select-checkbox',
-            //        targets: 0
-            //    }],
-            //    select: {
-            //        style: 'multi',
-            //        selector: 'td:first-child'
-            //    },
-            //    order: [[1, 'asc']]
-            //});
-            var table = $('#exportexample').DataTable();
-            // Handle click on checkbox
-            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
 
-                var $row = $(this).closest('tr');
-
-                // Get row data
-                var data = table.row($row).data();
-
-                // Update state of "Select all" control
-                updateDataTableSelectAllCtrl(table);
-
-                // Prevent click event from propagating to parent
-                e.stopPropagation();
-            });
-
-            // Handle click on "Select all" control
-            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
-                if (this.checked) {
-                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
-                } else {
-                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
-                }
-                // Prevent click event from propagating to parent
-                e.stopPropagation();
-            });
-        });
-    </script>*@
 
     <script type="text/javascript">
         i = 0;
@@ -243,5 +334,124 @@
 
 
 
+    @*bind course in exam selected*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ExamId").on("change", function () {
+                    $("#CourseId").empty();
+                    var ddlsource = "#ExamId";
+                    var url = '@Url.Content("~/")' + "PCPSendPaper/GetCourse?ExamId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#CourseId").empty();
+                        $.each(data, function (i, course) {
+                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                    });
+                        $('#CourseId').html(items);
+                });
+                });
+            });
+
+    </script>
+
+    @*bind semyear*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#SemYearId").empty();
+                    var ddlsource = "#CourseId";
+                    var url = '@Url.Content("~/")' + "PCPSendPaper/GetSemYear?CourseId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#SemYearId").empty();
+                        $.each(data, function (i, semyear) {
+                            items += "<option value ='" + semyear.value + "'>" + semyear.text + "</option>";
+                    });
+                        $('#SemYearId').html(items);
+                });
+                });
+            });
+
+    </script>
+    @*bind branch/subject*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#BranchId").empty();
+                    var ddlsource = "#CourseId";
+                    var url = '@Url.Content("~/")' + "PCPSendPaper/GetBranch?CourseId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#BranchId").empty();
+                        $.each(data, function (i, branch) {
+                            items += "<option value ='" + branch.value + "'>" + branch.text + "</option>";
+                    });
+                        $('#BranchId').html(items);
+                });
+                });
+            });
+
+    </script>
+
+    @*bind session/syllabus*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ExamId").on("change", function () {
+                    $("#SessionId").empty();
+                    var ddlsource = "#ExamId";
+                    var url = '@Url.Content("~/")' + "PCPSendPaper/GetSyllabus?ExamId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#SessionId").empty();
+                        $.each(data, function (i, syllabus) {
+                            items += "<option value ='" + syllabus.value + "'>" + syllabus.text + "</option>";
+                    });
+                        $('#SessionId').html(items);
+                });
+                });
+            });
+
+    </script>
+
+    @*bind qp*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#QPId").empty();
+                    var ddlsource = "#CourseId";
+                    var url = '@Url.Content("~/")' + "PCPSendPaper/GetQP?CourseId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#QPId").empty();
+                        $.each(data, function (i, qp) {
+                            items += "<option value ='" + qp.value + "'>" + qp.text + "</option>";
+                    });
+                        $('#QPId').html(items);
+                });
+                });
+            });
+
+    </script>
+
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    @*<script src="~/assets/js/table-data.js"></script>
+        <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+         <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+         <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+         <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+         <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+         <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+         <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+         <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+         <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>*@
 }
 

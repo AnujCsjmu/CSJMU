@@ -39,14 +39,14 @@ namespace CoreLayout.Models.PCP
         public string PaperRandomPassword { get; set; }
         public string DecryptPassword { get; set; }
 
-        [Display(Name = "Paper")]
+        [Display(Name = "Question Paper")]
         public string PaperPath { set; get; }
 
-        [Required(ErrorMessage = "Please choose paper")]
-        [Display(Name = "Upload Paper")]
+        [Required(ErrorMessage = "Please choose question paper")]
+        [Display(Name = "Upload Question Paper")]
         public IFormFile UploadPaper { get; set; }
 
-         [Display(Name = "Upload Paper")]
+         [Display(Name = "Upload Question Paper")]
         public IFormFile UploadPaperEdit { get; set; }
 
 
@@ -54,7 +54,7 @@ namespace CoreLayout.Models.PCP
         public List<PCPAssignedQPModel> QPList { get; set; }
         //public string SessionType { get; set; }
 
-        [Display(Name = "Paper Setter Name")]
+        [Display(Name = "Setter Name")]
         public string UserName { get; set; }
 
         [Display(Name = "QP Name")]
@@ -62,6 +62,8 @@ namespace CoreLayout.Models.PCP
         //[Remote(action: "VerifyName", controller: "PCPUploadPaper")]
         public int QPId { get; set; }
         public string QPName { get; set; }
+
+        [Display(Name = "QP Code")]
         public string QPCode { get; set; }
 
         public int? UserId { get; set; }
@@ -71,7 +73,7 @@ namespace CoreLayout.Models.PCP
         public string paperids { get; set; }
         public int? RoleId { get; set; }
 
-        [Display(Name = "Paper Setter Name")]
+        [Display(Name = "Setter Name")]
         public string PaperSetterName { get; set; }
 
         public string CreatedUserName { get; set; }
@@ -120,15 +122,21 @@ namespace CoreLayout.Models.PCP
         public string AnswerPath { set; get; }
 
         [Required(ErrorMessage = "Please choose answer paper")]
-        [Display(Name = "Answer Paper")]
+        [Display(Name = "Upload Answer Paper")]
         public IFormFile AnswerPaper { get; set; }
 
-        [Display(Name = "Answer Paper")]
+        [Display(Name = "Upload Answer Paper")]
         public IFormFile AnswerPaperEdit { get; set; }
 
-        [Display(Name = "Semester Year")]
+        [Display(Name = "SemYear")]
         [Required(ErrorMessage = "Please select Semester year")]
         public int SemYearId { get; set; }
         public List<QPMasterModel> SemYearList { get; set; }
+
+        public string RequestQuestionPwdStatus { set; get; }
+
+        public string RequestAnswerPwdStatus { set; get; }
+
+        public int? ExamId { get; set; }
     }
 }

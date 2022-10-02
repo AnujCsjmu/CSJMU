@@ -55,5 +55,15 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         {
             return await _pCPUploadPaperRepository.FinalSubmitAsync(pCPUploadPaperModel);
         }
+
+        public async Task<int> RequestQuestionPassword(PCPUploadPaperModel pCPUploadPaperModel)
+        {
+            return await _pCPUploadPaperRepository.RequestQuestionPassword(pCPUploadPaperModel);
+        }
+
+        public async Task<int> RequestAnswerPassword(PCPUploadPaperModel pCPUploadPaperModel)
+        {
+            return await _pCPUploadPaperRepository.RequestAnswerPassword(pCPUploadPaperModel);
+        }
     }
 }

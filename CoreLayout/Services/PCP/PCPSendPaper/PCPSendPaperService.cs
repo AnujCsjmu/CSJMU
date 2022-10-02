@@ -49,5 +49,9 @@ namespace CoreLayout.Services.PCP.PCPSendPaper
         {
             return await _pCPSendPaperRepository.GetServerDateTime();
         }
+        public async Task<int> FinalSubmitAsync(PCPSendPaperModel pCPSendPaperModel)
+        {
+            return await _pCPSendPaperRepository.FinalSubmitAsync(pCPSendPaperModel);
+        }
     }
 }

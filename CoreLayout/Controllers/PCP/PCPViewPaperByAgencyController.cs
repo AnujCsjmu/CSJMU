@@ -75,6 +75,63 @@ namespace CoreLayout.Controllers.PCP
             return View("~/Views/PCP/PCPViewPaperByAgency/Index.cshtml");
         }
 
+
+        [HttpPost]
+        [Obsolete]
+        public async Task<IActionResult> Index(PCPSendPaperModel pCPSendPaperModel)
+        {
+            string sendpaperid = Request.Form["sendpaperid"];
+            if (sendpaperid != "")
+            {
+                pCPSendPaperModel.sendpaperids = sendpaperid;
+                var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(sendpaperid));
+                if (data1 != null)
+                {
+                    var res = await _pCPSendPaperService.FinalSubmitAsync(pCPSendPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Data has been accepted";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Data has not been not accepted";
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Selected data is not available");
+                    TempData["error"] = "Selected data is not available";
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Select at least one checkbox");
+                TempData["error"] = "Select at least one checkbox";
+            }
+
+            int? id = HttpContext.Session.GetInt32("UserId");
+            var data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                        where reg.AgencyId == id
+                        select reg).ToList();
+
+            //start encrypt id for update, delete & details
+            List<string> pcslist = new List<string>();
+            foreach (var _data in data)
+            {
+                var stringId = _data.PaperId.ToString();
+                _data.EncryptedId = _protector.Protect(stringId);
+
+                //for decrypt pwd
+                if (_data.PaperPassword != null)
+                {
+                    _data.DecryptPassword = _commonController.Decrypt(_data.PaperPassword);
+                    pcslist.Add(_data.DecryptPassword);
+                }
+            }
+            ViewBag.EncryptPwdList = pcslist;
+            return View("~/Views/PCP/PCPViewPaperByAgency/Index.cshtml", data);
+        }
+
         [Obsolete]
         public async Task<IActionResult> DownloadAsync(string id)
         {

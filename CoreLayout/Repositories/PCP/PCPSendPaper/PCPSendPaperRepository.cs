@@ -34,9 +34,9 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
-                        parameters.Add("CourseID", entity.CourseID, DbType.Int32);
+                        parameters.Add("ExamId", entity.ExamId, DbType.Int32);
                         //parameters.Add("PaperId", entity.PaperId, DbType.Int32);
-                        parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
+                        //parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
@@ -156,8 +156,8 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
                         //parameters.Add("PaperId", entity.PaperId, DbType.Int32);
-                        parameters.Add("CourseID", entity.CourseID, DbType.Int32);
-                        parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
+                        parameters.Add("ExamId", entity.ExamId, DbType.Int32);
+                        //parameters.Add("PaperSetterId", entity.PaperSetterId, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
@@ -234,6 +234,57 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
             catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<int> FinalSubmitAsync(PCPSendPaperModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
+                        var res = 0;
+
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("@Query", 8, DbType.Int32);
+                        String[] array = entity.sendpaperids.Split(",");
+                        for (int i = 0; i < array.Length; i++)
+                        {
+                            parameters.Add("SendPaperId", Convert.ToInt32(array[i]), DbType.Int32);
+                            parameters.Add("AcceptedStatus", "Accepted", DbType.String);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
             }
         }
     }

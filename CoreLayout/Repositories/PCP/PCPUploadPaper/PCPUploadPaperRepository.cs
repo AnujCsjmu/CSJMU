@@ -336,5 +336,105 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
             }
         }
 
+        public async Task<int> RequestQuestionPassword(PCPUploadPaperModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
+                        var res = 0;
+
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("@PaperId", entity.PaperId, DbType.Int32);
+                        parameters.Add("@RequestQuestionPwdStatus", entity.RequestQuestionPwdStatus, DbType.String);
+                        parameters.Add("@CreatedBy", entity.CreatedBy, DbType.Int32);
+                        parameters.Add("@Query", 9, DbType.Int32);
+                       
+                       res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        public async Task<int> RequestAnswerPassword(PCPUploadPaperModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_InsertUpdateDelete_PCPUploadPaper";
+                        var res = 0;
+
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("@PaperId", entity.PaperId, DbType.Int32);
+                        parameters.Add("@RequestAnswerPwdStatus", entity.RequestAnswerPwdStatus, DbType.String);
+                        parameters.Add("@CreatedBy", entity.CreatedBy, DbType.Int32);
+                        parameters.Add("@Query", 10, DbType.Int32);
+
+                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
     }
 }

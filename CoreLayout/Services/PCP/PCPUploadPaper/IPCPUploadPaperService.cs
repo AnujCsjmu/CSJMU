@@ -19,5 +19,7 @@ namespace CoreLayout.Services.PCP.PCPUploadPaper
         public Task<int> InsertDownloadLogAsync(PCPUploadPaperModel pCPUploadPaperModel);
 
         public Task<int> FinalSubmitAsync(PCPUploadPaperModel pCPUploadPaperModel);
+        public Task<int> RequestQuestionPassword(PCPUploadPaperModel pCPUploadPaperModel);
+        public Task<int> RequestAnswerPassword(PCPUploadPaperModel pCPUploadPaperModel);
     }
 }

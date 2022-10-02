@@ -14,7 +14,7 @@ namespace CoreLayout.Models.PCP
         [Key]
         public int PCPRegID { get; set; }
 
-        [Display(Name = "Paper Setter Name")]
+        [Display(Name = "Setter Name")]
         [Required(ErrorMessage = "Please enter user name")]
         [StringLength(50)]
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
@@ -232,7 +232,8 @@ namespace CoreLayout.Models.PCP
 
         public int? PaperId { get; set; }
         public string Session { get; set; }
-
+        [Display(Name = "SemYear")]
+        public int? SemYearId { get; set; }
         public string SessionType { get; set; }
 
         [Display(Name = "Paper Pwd")]

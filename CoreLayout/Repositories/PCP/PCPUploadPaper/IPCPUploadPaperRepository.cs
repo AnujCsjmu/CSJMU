@@ -13,5 +13,8 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
         Task<int> InsertDownloadLogAsync(PCPUploadPaperModel entity);
 
         Task<int> FinalSubmitAsync(PCPUploadPaperModel pCPUploadPaperModel);
+
+        Task<int> RequestQuestionPassword(PCPUploadPaperModel pCPUploadPaperModel);
+        Task<int> RequestAnswerPassword(PCPUploadPaperModel pCPUploadPaperModel);
     }
 }

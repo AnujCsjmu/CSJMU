@@ -351,7 +351,7 @@ namespace CoreLayout.Controllers.PCP
             }
         }
 
-        public async Task<IActionResult> ViewReminder(int id,int QPId)
+        public async Task<IActionResult> ViewReminder(int id, int QPId)
         {
             try
             {
@@ -364,13 +364,87 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
-                    return View("~/Views/PCP/PCPSendReminder/ViewReminder.cshtml",data);
+                    return View("~/Views/PCP/PCPSendReminder/ViewReminder.cshtml", data);
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        public async Task<IActionResult> RequestQuestionPassword(string id)
+        {
+            PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    //insert download record
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.PaperId = data.PaperId;
+                    pCPUploadPaperModel.RequestQuestionPwdStatus = "Request For QuestionPaper Password By COE";
+                    var res = await _pCPUploadPaperService.RequestQuestionPassword(pCPUploadPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Question Paper Password has been requested";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Question Paper Password has not been requested";
+                    }
+                    //end
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> RequestAnswerPassword(string id)
+        {
+            PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    //insert download record
+                    //insert download record
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.PaperId = data.PaperId;
+                    pCPUploadPaperModel.RequestAnswerPwdStatus = "Request For AnswerPaper Password By COE";
+                    var res = await _pCPUploadPaperService.RequestAnswerPassword(pCPUploadPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "AnswerPaper Password has been requested";
+                    }
+                    else
+                    {
+                        TempData["error"] = "AnswerPaper Password has not been requested";
+                    }
+                    //end
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return RedirectToAction(nameof(Index));
         }
 
     }

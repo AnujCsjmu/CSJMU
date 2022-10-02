@@ -48,12 +48,11 @@
                                         @Html.DisplayNameFor(c => c.BranchId)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(c => c.SessionId)<br />
                                         @Html.DisplayNameFor(c => c.SemYearId)
                                     </th>
 
-                                    <th>
-                                        @Html.DisplayNameFor(c => c.SessionId)
-                                    </th>
+                                 
                                     <th>
                                         @Html.DisplayNameFor(c => c.UploadPaper)
                                     </th>
@@ -96,9 +95,8 @@
                                     <td>@item.QPCode</td>
                                     <td>@item.CourseName</td>
                                     <td>@item.BranchName</td>
-                                    <td>@item.SemYearId</td>
-                                    <td>@item.Session</td>
-
+                                    <td>@item.Session <br /> @item.SemYearId</td>
+                                    
                                     <td>
                                         <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
                                         @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
@@ -125,7 +123,7 @@
                                             }
                                             else
                                             {
-                                                <label style="font-weight:bold; color:red">Final Submitted</label>
+                                                <label style="font-weight:bold; color:green">Final Submitted</label>
                                             }
                                         </div>
                                     </td>

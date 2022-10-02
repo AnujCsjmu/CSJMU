@@ -23,7 +23,9 @@ namespace CoreLayout.Models.PCP
         //[StringLength(50)]
         public int QPId { get; set; }
         public List<QPMasterModel> QPList { get; set; }
+        [Display(Name = "QP Name")]
         public string QPName { get; set; }
+        [Display(Name = "QP Code")]
         public string QPCode { get; set; }
 
         [Display(Name = "Setter Name")]
@@ -43,7 +45,7 @@ namespace CoreLayout.Models.PCP
         public List<PCPRegistrationModel> PCPUserList { get; set; }
 
 
-        [Display(Name = "Syllabus")]
+        [Display(Name = "Session")]
         [Required(ErrorMessage = "Please select syllabus")]
         public int SessionId { get; set; }
         public string Session { get; set; }//not session table is used as syllabus name
@@ -94,7 +96,7 @@ namespace CoreLayout.Models.PCP
 
 
         //fileupload
-        [Display(Name = "Old Paper")]
+        [Display(Name = "Previous Question Paper")]
         public string OldPaperPath { set; get; }
         [Required(ErrorMessage = "Please choose old paper")]
         [Display(Name = "Upload Paper")]
@@ -102,14 +104,14 @@ namespace CoreLayout.Models.PCP
 
 
         //fileupload
-        [Display(Name = "Old Syllabus")]
+        [Display(Name = "Previous Syllabus")]
         public string OldSyllabusPath { set; get; }
         [Required(ErrorMessage = "Please choose old syllabus")]
         [Display(Name = "Old Syllabus")]
         public IFormFile FUOldSyllabus { get; set; }
 
         //fileupload
-        [Display(Name = "Old Pattern")]
+        [Display(Name = "Previous Pattern")]
         public string OldPatternPath { set; get; }
         [Required(ErrorMessage = "Please choose old pattern")]
         [Display(Name = "Old Pattern")]
