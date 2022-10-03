@@ -46,259 +46,202 @@
     <link href="~/assets/css/boxed.css" rel="stylesheet">
 
 </head>
-<body style="background: url(../Images/pgbg.jpg); background-size: cover; background-repeat: no-repeat; ">
+@*<body style="background: url(../Images/pgbg.jpg); background-size: cover; background-repeat: no-repeat; ">*@
+<body style="background: none; background-size: cover; background-repeat: no-repeat; ">
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-7">
-                            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
-                                <div class="card-body">
-                                    <form method="post" enctype="multipart/form-data">
-                                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
-                                        </div>
-                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
-                                            {
-                                                <span style="font-weight:bold" class="text-danger">@ViewBag.errormsg</span>
-                                            }
+                    <div class="card-header"><h3 class="text-center font-weight-bold my-1">Create Account</h3></div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="UserName" type="text" placeholder="Enter your name" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="UserName">Name</label>
-                                                    <span class="text-danger" asp-validation-for="UserName"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="FatherName" type="text" placeholder="Enter your father" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="FatherName">FatherName</label>
-                                                    <span class="text-danger" asp-validation-for="FatherName"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="Address" type="text" placeholder="Enter your address" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="Address">Address</label>
-                                                    <span class="text-danger" asp-validation-for="Address"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    @*<label asp-for="TypeOfEmployeement">Type of Employeemeny</label>*@
-                                                    @Html.DropDownList("TypeOfEmployeement", new List<SelectListItem>
-                                                    {
-                                                    new SelectListItem{ Text="----Select Job Type----", Value = string.Empty },
-                                                    new SelectListItem{ Text="Permanent", Value = "Permanent" },
-                                                    new SelectListItem{ Text="Contractual", Value = "Contractual" },
-                                                    },
-                                                    new { @class = "form-control" })
-                                                    <span class="text-danger" asp-validation-for="TypeOfEmployeement"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="TeachingExp" type="number" maxlength="2" placeholder="Enter your teaching exp" />
-                                                    <label asp-for="TeachingExp">Teaching Experience</label>
-                                                    <span class="text-danger" asp-validation-for="TeachingExp"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="PaperSettingExp" type="number" maxlength="2" placeholder="Enter your paper setting exp" />
-                                                    <label asp-for="PaperSettingExp">Paper Setting Experience</label>
-                                                    <span class="text-danger" asp-validation-for="PaperSettingExp"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="Aadhar" type="text" maxlength="12" placeholder="Enter your aadhar" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="Aadhar">Aadhar</label>
-                                                    <span class="text-danger" asp-validation-for="Aadhar"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="PAN" type="text" maxlength="12" placeholder="Enter your pan" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="PAN">PAN</label>
-                                                    <span class="text-danger" asp-validation-for="PAN"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="MobileNo" maxlength="10" placeholder="Enter your mobile number" />
-                                                    <label asp-for="MobileNo">Mobile Number</label>
-                                                    <span class="text-danger" asp-validation-for="MobileNo"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="EmailID" type="email" placeholder="name@example.com" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="EmailID">Email address</label>
-                                                    <span class="text-danger" asp-validation-for="EmailID"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @*<div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <div class="form-floating mb-3 mb-md-0">
-                                                        @Html.DropDownList("TypeOfEmployeement", new List<SelectListItem>
-                                                       {
-                                                       new SelectListItem{ Text="----Select----", Value = string.Empty },
-                                                       new SelectListItem{ Text="Yes", Value = "Yes" },
-                                                       new SelectListItem{ Text="No", Value = "No" },
-                                                       },
-                                                       new { @class = "form-control" })
-                                                        <label asp-for="InstituteCode">Is CSJMU ?</label>
-                                                        <span class="text-danger" asp-validation-for="InstituteCode"></span>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-floating">
-                                                        <select class="form-control" asp-for="TeacherCode" asp-items="@(new SelectList(string.Empty,"TeacherCode","TeacherName"))">
-                                                            <option selected="selected" disabled="disabled" value="">--Select Teacher Code-- </option>
-                                                        </select>
-                                                        <span class="text-danger" asp-validation-for="TeacherCode"></span>
-                                                    </div>
-                                                </div>
-                                            </div>*@
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="InstituteCode" type="text" maxlength="10" placeholder="please enter institute code" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="InstituteCode">Institute/College Code</label>
-                                                    <span class="text-danger" asp-validation-for="InstituteCode"></span>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="InstituteName" type="text" placeholder="please enter institute name" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="InstituteName">Institute/College Name</label>
-                                                    <span class="text-danger" asp-validation-for="InstituteName"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
-                                                        <option selected="selected" disabled="disabled" value="">--Select Course-- </option>
-                                                    </select>
-                                                    @*<label asp-for="QPCode">Role</label>*@
-                                                    <span class="text-danger" asp-validation-for="CourseID"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    @*subject*@
-                                                    <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
-                                                        <option selected="selected" disabled="disabled" value="">--Select Subject-- </option>
-                                                    </select>
-
-                                                    <span class="text-danger" asp-validation-for="BranchId"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="BankName" type="text" placeholder="Enter your bank name" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="BankName">Bank Name</label>
-                                                    <span class="text-danger" asp-validation-for="BankName"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="IFSC" type="text" maxlength="10" placeholder="Enter your ifsc code" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="IFSC">Bank IFSC</label>
-                                                    <span class="text-danger" asp-validation-for="IFSC"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating mb-3 mb-md-0">
-                                                    <input class="form-control" asp-for="AccountNo" maxlength="20" placeholder="Enter your account no" />
-                                                    <label asp-for="AccountNo">Bank Account No</label>
-                                                    <span class="text-danger" asp-validation-for="AccountNo"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input class="form-control" asp-for="BranchAddress" type="text" placeholder="Enter your branch address" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="BranchAddress">Bank Branch Address</label>
-                                                    <span class="text-danger" asp-validation-for="BranchAddress"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-                                                    <input asp-for="ProfileImage" class="form-control" />
-                                                    <label asp-for="ProfileImage">Photo</label>
-                                                    <span class="text-danger" asp-validation-for="ProfileImage"></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-floating">
-
-                                                    <input class="form-control" asp-for="Specilization" type="tel" placeholder="please enter specilization" onkeydown="upperCaseF(this)" />
-                                                    <label asp-for="Specilization">Specilization</label>
-                                                    <span class="text-danger" asp-validation-for="Specilization"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-floating mb-3">
-                                            <input class="form-control" asp-for="Remarks" type="text" placeholder="Enter your remarks" onkeydown="upperCaseF(this)" />
-                                            <label asp-for="Remarks">Remarks</label>
-                                            @*<span class="text-danger" asp-validation-for="Remarks"></span>*@
-
-                                        </div>
-                                        <div>
-                                            <input class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to submit this?')" />
-                                        </div>
-
-                                    </form>
                                 </div>
-                                <div class="card-footer text-center py-3">
+                                <div class="d-flex align-items-center justify-content-between mt-1 mb-0">
+                                    @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
+                                    {
+                                        <span style="font-weight:bold" class="text-danger">@ViewBag.errormsg</span>
+                                    }
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="UserName"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="UserName" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="UserName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="FatherName" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="FatherName"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Address"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="Address" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="Address"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="TypeOfEmployeement"> </label><span class="tx-danger"> *</span>
+                                        @Html.DropDownList("TypeOfEmployeement", new List<SelectListItem>
+                                                   {
+                                                   new SelectListItem{ Text="----Select Job Type----", Value = string.Empty },
+                                                   new SelectListItem{ Text="Permanent", Value = "Permanent" },
+                                                   new SelectListItem{ Text="Contractual", Value = "Contractual" },
+                                                   },
+                                                   new { @class = "form-control" })
+                                        <span class="parsley-errors-list filled" asp-validation-for="TypeOfEmployeement "></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="TeachingExp"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="TeachingExp" type="number" maxlength="2" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="TeachingExp"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PaperSettingExp"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="PaperSettingExp" type="number" maxlength="2" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="PaperSettingExp"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Aadhar"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="Aadhar" type="text" maxlength="12" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="Aadhar"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PAN"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="PAN" type="text" maxlength="12" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="PAN"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="MobileNo"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="MobileNo" maxlength="10" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="MobileNo"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="EmailID"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="EmailID" type="email" placeholder="name@example.com" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="EmailID"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="InstituteCode"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="InstituteCode" type="text" maxlength="10" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="InstituteCode"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="InstituteName"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="InstituteName" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="InstituteName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                                        <select class="form-control select" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                            <option selected="selected" disabled="disabled" value="">--Select Course-- </option>
+                                        </select>
+                                        <span class="parsley-errors-list filled" asp-validation-for="CourseID"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
+                                        <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(string.Empty,"BranchId","BranchName"))">
+                                            <option selected="selected" disabled="disabled" value="">--Select Subject-- </option>
+                                        </select>
+                                        <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="BankName"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="BankName" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="BankName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="IFSC"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="IFSC" type="text" maxlength="10" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="IFSC"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="AccountNo"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="AccountNo" maxlength="20" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="AccountNo"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="BranchAddress"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="BranchAddress" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="BranchAddress"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="ProfileImage"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="ProfileImage" class="form-control" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="ProfileImage"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Specilization"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="Specilization" type="tel" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="Specilization"></span>
+                                    </div>
+                                </div>
+                                @*<div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Remarks"> </label><span class="tx-danger"> *</span>
+                                        <input class="form-control" asp-for="Remarks" type="text" onkeydown="upperCaseF(this)" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="Remarks"></span>
+                                    </div>
+                                </div>*@
+                                <div class="form-group">
+                                    <input class="btn btn-primary btn-block" type="submit" value="Create Account" onclick="return confirm('Are you sure you want to submit this?')" />
+                                </div>
+                                <div class="card-footer text-center py-1">
                                     <div class="small"><a asp-action="Login" asp-controller="Home">Have an account? Go to login</a></div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </main>
         </div>
-        @*<div id="layoutAuthentication_footer">
-                <footer class="py-1 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>*@
+
     </div>
 
 

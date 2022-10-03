@@ -36,31 +36,35 @@
                                     <th><input name="select_all" value="1" type="checkbox"></th>
                                     <th>S.No</th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.UserName)
-                                    </th>
-
-                                    <th>
-                                        @Html.DisplayNameFor(c => c.MobileNo)
+                                        @Html.DisplayNameFor(c => c.UserName)<br />
+                                        @Html.DisplayNameFor(c => c.FatherName)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(c => c.MobileNo)<br />
                                         @Html.DisplayNameFor(c => c.EmailID)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.InstituteCode)
+                                        @Html.DisplayNameFor(c => c.Aadhar)<br />
+                                        @Html.DisplayNameFor(c => c.PAN)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.BranchCode)
+                                        @Html.DisplayNameFor(c => c.CourseID)<br />
+                                        @Html.DisplayNameFor(c => c.BranchId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.CourseCode)
+                                        TeachingExp<br />
+                                        PaperExp
                                     </th>
-
+                                    <th>
+                                        BankName<br />
+                                        BankIFSC <br />
+                                        BankAddress
+                                    </th>
                                     <th>
                                         @Html.DisplayNameFor(c => c.CreatedDate)
                                     </th>
-
                                     <th>
-                                        Action
+                                        Details
                                     </th>
                                 </tr>
                             </thead>
@@ -68,34 +72,31 @@
                             <tbody>
                                 @{
                                     int sno = 0;
+
                                 }
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" id="chkid" value="@item.PCPRegID" />
-                                        </td>
-                                        <td>
-                                            @{ sno++; }
-                                            @sno
-                                        </td>
-                                        <td>@item.UserName</td>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+                                    </td>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.UserName <br /> @item.FatherName</td>
+                                    <td>@item.MobileNo <br /> @item.EmailID</td>
+                                    <td>@item.Aadhar <br /> @item.PAN</td>
+                                    <td>@item.CourseName <br /> @item.BranchName</td>
 
-                                        <td>@item.MobileNo</td>
-                                        <td>@item.EmailID</td>
-                                        <td>@item.InstituteCode</td>
-                                        <td>@item.BranchCode</td>
-                                        <td>@item.CourseCode</td>
-                                        <td>@item.CreatedDate</td>
+                                    <td>@item.TeachingExp <br /> @item.PaperSettingExp</td>
+                                    <td>@item.BankName <br />@item.IFSC  <br /> @item.BranchAddress </td>
 
-                                        <td>
-                                            <div class="table-actions text-center">
-                                                @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
-                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>

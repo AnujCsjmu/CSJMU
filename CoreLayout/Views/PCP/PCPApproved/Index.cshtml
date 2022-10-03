@@ -51,10 +51,10 @@
                                     PaperExp
                                 </th>
                                 @*<th>
-                                    BankName<br />
-                                    BankIFSC <br />
-                                    BankAddress
-                                </th>*@
+                                        BankName<br />
+                                        BankIFSC <br />
+                                        BankAddress
+                                    </th>*@
                                 <th>
                                     QPCode
                                 </th>
@@ -73,6 +73,7 @@
                                 int sno = 0;
                                 int sno1 = 0;
                                 string space = " - ";
+                                int j = 0;
                             }
                             @foreach (var item in Model)
                             {
@@ -88,31 +89,34 @@
 
                                     <td>@item.TeachingExp <br /> @item.PaperSettingExp</td>
                                     @*<td>@item.BankName <br />@item.IFSC  <br /> @item.BranchAddress </td>*@
-                                <td style="white-space:nowrap">
-                                    @if (ViewBag.QPList != null)
-                                    {
-                                        
-                                        foreach (var item1 in ViewBag.QPList)
+                                    <td style="white-space:nowrap">
+                                        @if (ViewBag.QPList != null)
                                         {
-                                            foreach (var item2 in item1)
-                                            {
-                                                @if (item.UserId == item2.UserId)
-                                                {
-                                                    { sno1++; }
-                                                     @sno1 @space  @item2.QPCode<br />
-                                                }
 
+                                            foreach (var item1 in ViewBag.QPList)
+                                            {
+
+                                                foreach (var item2 in item1)
+                                                {
+                                                    j++;
+                                                    @if (item.UserId == item2.UserId)
+                                                    {
+                                                        { sno1++; }
+                                                        @sno1 @space @item2.QPCode<br />
+                                                    }
+
+                                                }
+                                                sno1 = 0;
                                             }
-                                            sno1 = 0;
+
+
+                                        }
+                                        else
+                                        {
+                                            <label>QP Not Assigned</label>
                                         }
 
-                                    }
-                                    else
-                                    {
-                                        <label>QP Not Assigned</label>
-                                    }
-
-                                </td>
+                                    </td>
                                     <td>@item.CreatedDate</td>
                                     <td>
                                         <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View Details"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
