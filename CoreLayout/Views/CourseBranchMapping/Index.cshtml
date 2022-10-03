@@ -23,7 +23,7 @@
         <div class="card custom-card overflow-hidden">
             <div class="card-body">
                 <div class="table-responsive-sm">
-                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
                                 <th>S.No</th>
@@ -32,6 +32,9 @@
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.BranchId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.FacultyID)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedBy)
@@ -53,24 +56,25 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td>@item.CourseName</td>
-                                    <td>@item.BranchName</td>
-                                    <td>@item.CreatedBy</td>
-                                    <td>@item.CreatedDate</td>
-                                    <td>@item.ModifiedDate</td>
-                                    <td>
-                                        <div class="table-actions text-center">
-                                            <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>@item.CourseName</td>
+                                <td>@item.BranchName</td>
+                                <td>@item.FacultyName</td>
+                                <td>@item.CreatedBy</td>
+                                <td>@item.CreatedDate</td>
+                                <td>@item.ModifiedDate</td>
+                                <td>
+                                    <div class="table-actions text-center">
+                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

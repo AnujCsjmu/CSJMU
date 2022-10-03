@@ -80,6 +80,19 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label asp-for="PaperType" class="mg-b-10"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("PaperType", new List<SelectListItem>
+                                {
+                                 new SelectListItem{ Text="----Select----", Value = string.Empty },
+                                 new SelectListItem{ Text="Objective", Value = "Objective" },
+                                 new SelectListItem{ Text="Subjective", Value = "Subjective" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="PaperType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label asp-for="FUOldPape"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUOldPape" class="form-control" />
                                 <span id="uservalidation" asp-validation-for="FUOldPape" class="parsley-errors-list filled"></span>

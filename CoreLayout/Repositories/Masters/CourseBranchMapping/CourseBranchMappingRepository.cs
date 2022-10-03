@@ -29,6 +29,7 @@ namespace CoreLayout.Repositories.Masters.CourseBranchMapping
                     parameters.Add("UserId", entity.CreatedBy, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                     parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                    parameters.Add("FacultyID", entity.FacultyID, DbType.Int32);
                     parameters.Add("@Query", 1, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -117,6 +118,7 @@ namespace CoreLayout.Repositories.Masters.CourseBranchMapping
                     parameters.Add("UserId", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                     parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                    parameters.Add("FacultyID", entity.FacultyID, DbType.Int32);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;

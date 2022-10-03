@@ -54,13 +54,12 @@
                             <div class="form-group">
                                 <label asp-for="Active" class="mg-b-10"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("Active", new List<SelectListItem>
-            {
-                 new SelectListItem{ Text="----Select----", Value = string.Empty },
-                 new SelectListItem{ Text="Active", Value = "1" },
-                 new SelectListItem{ Text="InActive", Value = "0" },
-
-            },
-            new { @class = "form-control" })
+                                {
+                                 new SelectListItem{ Text="----Select----", Value = string.Empty },
+                                 new SelectListItem{ Text="Active", Value = "1" },
+                                 new SelectListItem{ Text="InActive", Value = "0" },
+                                },
+                                new { @class = "form-control" })
                                 <span asp-validation-for="Active" class="parsley-errors-list filled"></span>
                             </div>
                         </div>

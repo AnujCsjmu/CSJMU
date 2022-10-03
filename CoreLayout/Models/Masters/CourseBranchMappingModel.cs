@@ -31,6 +31,11 @@ namespace CoreLayout.Models.Masters
         public List<BranchModel> BranchList { get; set; }
 
         public int UserId { get; set; }
-        
+
+        [Display(Name = "Faculty")]
+        [Required(ErrorMessage = "Please select faculty")]
+        public int FacultyID { get; set; }
+        public string FacultyName { get; set; }
+        public List<FacultyModel> FacultyList { get; set; }
     }
 }

@@ -71,7 +71,19 @@
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                       
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PaperType"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("PaperType", new List<SelectListItem>
+                                {
+                                 new SelectListItem{ Text="----Select----", Value = string.Empty },
+                                 new SelectListItem{ Text="Objective", Value = "Objective" },
+                                 new SelectListItem{ Text="Subjective", Value = "Subjective" },
+                                },
+                                new { @class = "form-control", @disabled = "disabled" })
+                                <span asp-validation-for="PaperType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <a asp-action="Edit" asp-route-id="@Model.EncryptedId" class="btn btn-primary">Edit</a>
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

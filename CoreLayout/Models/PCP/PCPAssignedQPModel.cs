@@ -91,15 +91,6 @@ namespace CoreLayout.Models.PCP
         public int ExamId { get; set; }
         public string ExamName { get; set; }
         public List<ExamMasterModel> ExamList { get; set; }
-
-
-
-        //fileupload
-        [Display(Name = "Old Paper")]
-        public string OldPaperPath { set; get; }
-        [Required(ErrorMessage = "Please choose old paper")]
-        [Display(Name = "Upload Paper")]
-        public IFormFile FUOldPape { get; set; }
-
+        public string CombineQPName { get; set; }
     }
 }

@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
-                                <select class="select"  asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
@@ -42,13 +42,21 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
-                                <select class="select" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
-                                    <option label="Select Country"></option>
+                                <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(String.Empty,"BranchID","BranchName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FacultyID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="FacultyID" asp-items="@(new SelectList(Model.FacultyList,"FacultyID","FacultyName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="FacultyID"></span>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <hr>
                             <input type="submit" class="btn btn-primary" value="Save" />
@@ -63,7 +71,26 @@
     </div>
 </div>
 <!-- Conetnt End-->
-<!--@section Scripts{-->
-    <!-- Custom js-->
-    <!--<script src="~/assets/js/select2.js"></script>
-}-->
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*bind branch/subject*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#BranchId").empty();
+                    var ddlsource = "#CourseId";
+                    var url = '@Url.Content("~/")' + "CourseBranchMapping/GetBranch?CourseId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#BranchId").empty();
+                        $.each(data, function (i, branch) {
+                            items += "<option value ='" + branch.value + "'>" + branch.text + "</option>";
+                    });
+                        $('#BranchId').html(items);
+                });
+                });
+            });
+
+    </script>
+}

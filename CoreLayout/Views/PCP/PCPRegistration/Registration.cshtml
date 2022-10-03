@@ -153,6 +153,30 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @*<div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <div class="form-floating mb-3 mb-md-0">
+                                                        @Html.DropDownList("TypeOfEmployeement", new List<SelectListItem>
+                                                       {
+                                                       new SelectListItem{ Text="----Select----", Value = string.Empty },
+                                                       new SelectListItem{ Text="Yes", Value = "Yes" },
+                                                       new SelectListItem{ Text="No", Value = "No" },
+                                                       },
+                                                       new { @class = "form-control" })
+                                                        <label asp-for="InstituteCode">Is CSJMU ?</label>
+                                                        <span class="text-danger" asp-validation-for="InstituteCode"></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <select class="form-control" asp-for="TeacherCode" asp-items="@(new SelectList(string.Empty,"TeacherCode","TeacherName"))">
+                                                            <option selected="selected" disabled="disabled" value="">--Select Teacher Code-- </option>
+                                                        </select>
+                                                        <span class="text-danger" asp-validation-for="TeacherCode"></span>
+                                                    </div>
+                                                </div>
+                                            </div>*@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">

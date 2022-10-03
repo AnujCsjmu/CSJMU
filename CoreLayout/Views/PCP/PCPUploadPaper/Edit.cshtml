@@ -33,7 +33,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPList,"QPId","QPName"))">
+                                <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPList,"QPId","CombineQPName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>

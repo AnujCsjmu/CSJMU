@@ -33,5 +33,15 @@ namespace CoreLayout.Models.Masters
 
         public int UserId { get; set; }
 
+        [Display(Name = "Subject Type")]
+        [Required(ErrorMessage = "Please select subject type")]
+        //[StringLength(2)]
+        public string SubjectType { get; set; }
+
+
+        [Display(Name = "Duration")]
+        [Required(ErrorMessage = "Please enter duration")]
+        public int Duration { get; set; }
+
     }
 }

@@ -254,5 +254,8 @@ namespace CoreLayout.Models.PCP
         public string QPAllotmentCount { get; set; }
         public string PaperUploadCount { get; set; }
         public string SendToAgencyCount { get; set; }
+
+        //new
+        public string TeacherCode { get; set; }
     }
 }

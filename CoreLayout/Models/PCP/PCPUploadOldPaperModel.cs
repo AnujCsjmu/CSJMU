@@ -99,7 +99,7 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Previous Question Paper")]
         public string OldPaperPath { set; get; }
         [Required(ErrorMessage = "Please choose old paper")]
-        [Display(Name = "Upload Paper")]
+        [Display(Name = "Upload Previous Session Paper")]
         public IFormFile FUOldPape { get; set; }
 
 
@@ -107,18 +107,22 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Previous Syllabus")]
         public string OldSyllabusPath { set; get; }
         [Required(ErrorMessage = "Please choose old syllabus")]
-        [Display(Name = "Old Syllabus")]
+        [Display(Name = "Upload Syllabus")]
         public IFormFile FUOldSyllabus { get; set; }
 
         //fileupload
         [Display(Name = "Previous Pattern")]
         public string OldPatternPath { set; get; }
         [Required(ErrorMessage = "Please choose old pattern")]
-        [Display(Name = "Old Pattern")]
+        [Display(Name = "Upload Paper Pattern")]
         public IFormFile FUOldPattern { get; set; }
 
         public string FinalSubmit { get; set; }
 
         public string oldpaperids { get; set; }
+
+        [Required(ErrorMessage = "Please select paper type")]
+        [Display(Name = "Paper Type")]
+        public string PaperType { get; set; }
     }
 }

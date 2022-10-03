@@ -43,7 +43,7 @@ namespace CoreLayout.Repositories.PCP.PCPAssignedQP
                         StringBuilder stringBuilder = new StringBuilder();
                         foreach (int userid in entity.UserList)
                         {
-                            parameters.Add("UserId", entity.UserId, DbType.Int32);
+                            parameters.Add("UserId", userid, DbType.Int32);
                             res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         }
 

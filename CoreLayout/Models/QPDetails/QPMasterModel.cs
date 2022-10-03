@@ -51,10 +51,10 @@ namespace CoreLayout.Models.QPDetails
         [Required(ErrorMessage = "Please select subject")]
         public int BranchID { get; set; }
 
-        [Display(Name = "Subject Type")]
-        [Required(ErrorMessage = "Please select subject type")]
-        //[StringLength(2)]
-        public string SubjectType { get; set; }
+        //[Display(Name = "Subject Type")]
+        //[Required(ErrorMessage = "Please select subject type")]
+        ////[StringLength(2)]
+        //public string SubjectType { get; set; }
 
         [Display(Name = "OMR Code")]
         public string OMRCode { get; set; }

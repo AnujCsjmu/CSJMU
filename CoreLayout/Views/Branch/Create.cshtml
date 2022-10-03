@@ -30,6 +30,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="BranchCode"> </label><span class="tx-danger"> *</span>
@@ -42,6 +43,27 @@
                                 <label asp-for="BranchName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="BranchName" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="BranchName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SubjectType"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("SubjectType", new List<SelectListItem>
+                                        {
+                                        new SelectListItem{ Text="-Select-", Value = "" },
+                                        new SelectListItem{ Text="Core", Value = "Core" },
+                                        new SelectListItem{ Text="Vocational", Value = "Vocational" },
+                                        new SelectListItem{ Text="Curricular", Value = "Curricular" },
+                                        },
+                                        new { @class = "form-control" })
+                                <span class="parsley-errors-list filled" asp-validation-for="SubjectType"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Duration"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Duration" class="form-control" type="number" />
+                                <span class="parsley-errors-list filled" asp-validation-for="Duration"></span>
                             </div>
                         </div>
                         <div class="col-md-6">

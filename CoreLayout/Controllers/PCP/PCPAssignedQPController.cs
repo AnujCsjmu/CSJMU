@@ -441,7 +441,7 @@ namespace CoreLayout.Controllers.PCP
                           where qpmaster.CourseId == CourseId
                           select new SelectListItem()
                           {
-                              Text = qpmaster.QPCode,
+                              Text = qpmaster.QPCode +"-"+ qpmaster.QPName,
                               Value = qpmaster.QPId.ToString(),
                           }).ToList();
 

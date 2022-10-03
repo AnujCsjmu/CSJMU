@@ -118,11 +118,11 @@ namespace CoreLayout.Models.PCP
         public List<QPMasterModel> SessionList { get; set; }
 
 
-        [Display(Name = "Answer Paper")]
+        [Display(Name = "Model Answer Paper")]
         public string AnswerPath { set; get; }
 
-        [Required(ErrorMessage = "Please choose answer paper")]
-        [Display(Name = "Upload Answer Paper")]
+        [Required(ErrorMessage = "Please choose model answer paper")]
+        [Display(Name = "Upload Model Answer")]
         public IFormFile AnswerPaper { get; set; }
 
         [Display(Name = "Upload Answer Paper")]
@@ -138,5 +138,7 @@ namespace CoreLayout.Models.PCP
         public string RequestAnswerPwdStatus { set; get; }
 
         public int? ExamId { get; set; }
+
+
     }
 }

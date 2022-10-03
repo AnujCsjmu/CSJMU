@@ -4,6 +4,7 @@ using CoreLayout.Models.Masters;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Course;
 using CoreLayout.Services.Masters.CourseBranchMapping;
+using CoreLayout.Services.Masters.Faculty;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -25,14 +26,16 @@ namespace CoreLayout.Controllers.Masters
         private readonly IBranchService _branchService;
         private readonly ICourseService _courseService;
         private readonly ICourseBranchMappingService _courseBranchMappingService;
+        private readonly IFacultyService _facultyService;
         public CourseBranchMappingController(ILogger<CourseBranchMappingController> logger, IDataProtectionProvider provider,
-            IBranchService branchService, ICourseService courseService, ICourseBranchMappingService courseBranchMappingService)
+            IBranchService branchService, ICourseService courseService, ICourseBranchMappingService courseBranchMappingService, IFacultyService facultyService)
         {
             _logger = logger;
             _branchService = branchService;
             _protector = provider.CreateProtector("CourseBranchMapping.CourseBranchMappingController");
             _courseService = courseService;
             _courseBranchMappingService = courseBranchMappingService;
+            _facultyService = facultyService;
         }
 
         [HttpGet]
@@ -103,7 +106,8 @@ namespace CoreLayout.Controllers.Masters
                 CourseBranchMappingModel data = new CourseBranchMappingModel();
                 data.CourseList = await _courseService.GetAllCourse();
                 data.BranchList= await _branchService.GetAllBranch();
-                if(data==null)
+                data.FacultyList = await _facultyService.GetAllFaculty();
+                if (data==null)
                 {
                     return NotFound();
                 }
@@ -124,7 +128,8 @@ namespace CoreLayout.Controllers.Masters
         public async Task<IActionResult> Create(CourseBranchMappingModel courseBranchMappingModel)
         {
             courseBranchMappingModel.CourseList = await _courseService.GetAllCourse();
-            courseBranchMappingModel.BranchList = await _branchService.GetAllBranch();
+            //courseBranchMappingModel.BranchList = await _branchService.GetAllBranch();
+            courseBranchMappingModel.FacultyList = await _facultyService.GetAllFaculty();
             courseBranchMappingModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
             courseBranchMappingModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
             courseBranchMappingModel.IPAddress = HttpContext.Session.GetString("IPAddress");
@@ -165,6 +170,7 @@ namespace CoreLayout.Controllers.Masters
                 var data = await _courseBranchMappingService.GetCourseBranchMappingById(Convert.ToInt32(guid_id));
                 data.CourseList = await _courseService.GetAllCourse();
                 data.BranchList = await _branchService.GetAllBranch();
+                data.FacultyList = await _facultyService.GetAllFaculty();
                 if (data == null)
                 {
                     return NotFound();
@@ -187,6 +193,7 @@ namespace CoreLayout.Controllers.Masters
             {
                 courseBranchMappingModel.CourseList = await _courseService.GetAllCourse();
                 courseBranchMappingModel.BranchList = await _branchService.GetAllBranch();
+                courseBranchMappingModel.FacultyList = await _facultyService.GetAllFaculty();
                 courseBranchMappingModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 courseBranchMappingModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 courseBranchMappingModel.UserId = (int)HttpContext.Session.GetInt32("UserId");
@@ -246,6 +253,24 @@ namespace CoreLayout.Controllers.Masters
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<JsonResult> GetBranch(int CourseId)
+        {
+            var BranchList = (from coursbranchemapping in await _courseBranchMappingService.GetAllCourseBranchMapping()
+                              where coursbranchemapping.CourseId == CourseId
+                              select new SelectListItem()
+                              {
+                                  Text = coursbranchemapping.BranchName,
+                                  Value = coursbranchemapping.BranchId.ToString(),
+                              }).ToList();
+
+            BranchList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(BranchList);
         }
     }
 }
