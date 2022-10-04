@@ -3,12 +3,9 @@ using CoreLayout.Models.Exam;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.QPDetails;
 using CoreLayout.Models.UserManagement;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CoreLayout.Models.PCP
 {
@@ -97,6 +94,7 @@ namespace CoreLayout.Models.PCP
         //[Range(typeof(DateTime), "1/1/2022", "1/1/2040")]
         public DateTime PaperOpenTime { get; set; }
 
+        [RegularExpression(@"^(?:[0-9]{1,3}.){3}[0-9]{1,3}$")]
         [Display(Name = "Static IP")]
         [Required(ErrorMessage = "Please enter static ip")]
         public string StaticIPAddress { get; set; }
