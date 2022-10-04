@@ -387,20 +387,20 @@ namespace CoreLayout.Controllers.PCP
                 }
                 else
                 {
-                    ////insert download record
-                    //pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                    //pCPUploadPaperModel.PaperId = data.PaperId;
-                    //pCPUploadPaperModel.RequestQuestionPwdStatus = "Request For QuestionPaper Password By COE";
-                    //var res = await _pCPUploadPaperService.RequestQuestionPassword(pCPUploadPaperModel);
-                    //if (res.Equals(1))
-                    //{
-                    //    TempData["success"] = "Question Paper Password has been requested";
-                    //}
-                    //else
-                    //{
-                    //    TempData["error"] = "Question Paper Password has not been requested";
-                    //}
-                    ////end
+                    //insert download record
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.PaperId = data.PaperId;
+                    pCPUploadPaperModel.RequestQuestionPwdStatus = "Request For QuestionPaper Password By COE";
+                    var res = await _pCPUploadPaperService.RequestQuestionPassword(pCPUploadPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Question Paper Password has been requested";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Question Paper Password has not been requested";
+                    }
+                    //end
                 }
 
             }
