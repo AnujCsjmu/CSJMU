@@ -124,5 +124,7 @@ namespace CoreLayout.Models.PCP
         [Required(ErrorMessage = "Please select paper type")]
         [Display(Name = "Paper Type")]
         public string PaperType { get; set; }
+
+        public int? QpAssignedUserId { get; set; }
     }
 }

@@ -53,7 +53,7 @@ namespace CoreLayout.Controllers.PCP
                 //start encrypt id for update,delete & details
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 var data = (from reg in await _pCPUploadOldPaperService.GetAllPCPUploadOldPaper()
-                            where reg.FinalSubmit != null
+                            where reg.FinalSubmit != null &&  reg.QpAssignedUserId == CreatedBy
                             select reg).ToList();
                 foreach (var _data in data)
                 {
