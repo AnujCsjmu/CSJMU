@@ -126,5 +126,28 @@ namespace CoreLayout.Models.PCP
         public string PaperType { get; set; }
 
         public int? QpAssignedUserId { get; set; }
+
+        //file upload
+        [Display(Name = "Setter Certificate")]
+        public string CertificatePath { set; get; }
+        //[Required(ErrorMessage = "Please choose setter certificate")]
+        [Display(Name = "Upload setter certificate")]
+        public IFormFile FUCertificate { get; set; }
+
+        //edit file upload
+        [Display(Name = "Upload Previous question paper")]
+        public IFormFile FUOldPaperEdit { get; set; }
+
+        //edit file upload
+        [Display(Name = "Upload Previous syllabus")]
+        public IFormFile FUOldSyllabusEdit { get; set; }
+
+        //edit file upload
+        [Display(Name = "Upload Previous pattern")]
+        public IFormFile FUOldPatternEdit { get; set; }
+
+        //edit file upload
+        [Display(Name = "Upload certificate")]
+        public IFormFile FUCertificateEdit { get; set; }
     }
 }

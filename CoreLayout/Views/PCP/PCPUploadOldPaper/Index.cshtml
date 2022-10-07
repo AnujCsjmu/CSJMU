@@ -62,6 +62,9 @@
                                         @Html.DisplayNameFor(c => c.OldPatternPath)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(c => c.CertificatePath)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(c => c.CreatedBy)
                                     </th>
                                     <th>
@@ -79,55 +82,90 @@
                                 }
                                 @foreach (var item in Model)
                                 {
-                                <tr>
-                                    @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
-                                    {
-                                        <td> <input type="checkbox" id="chkid" value="@item.OldPaperId" /></td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
-                                    <td> @item.ExamName</td>
-                                    <td> @item.CourseName</td>
-                                    <td>
-                                        @item.Session <br />
-                                        @item.SemYearId
-                                    </td>
-                                    <td> @item.BranchName</td>
-                                    <td> @item.QPCode</td>
-                                    <td> @item.PaperType</td>
-                                    <td>
-                                        <a asp-action="DownloadOldPaper" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
-                                    </td>
-                                    <td>
-                                        <a asp-action="DownloadOldSyllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
-                                    </td>
-                                    <td>
-                                        <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
-                                    </td>
-                                    <td>@item.UserName</td>
-                                    <td>@item.CreatedDate</td>
-                                    <td>
-                                        <div class="table-actions text-center">
-                                            @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                    <tr>
+                                        @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                        {
+                                            <td> <input type="checkbox" id="chkid" value="@item.OldPaperId" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        <td>
+                                            @{ sno++; }
+                                            @sno
+                                        </td>
+                                        <td> @item.ExamName</td>
+                                        <td> @item.CourseName</td>
+                                        <td>
+                                            @item.Session <br />
+                                            @item.SemYearId
+                                        </td>
+                                        <td> @item.BranchName</td>
+                                        <td> @item.QPCode</td>
+                                        <td> @item.PaperType</td>
+                                        <td>
+                                            @if (item.OldPaperPath != null)
                                             {
-                                                <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                <a asp-action="DownloadOldPaper" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {
-                                                <label style="font-weight:bold; color:red">Final Submitted</label>
+                                                <label style="font-weight:bold; color:red">No File</label>
                                             }
 
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            @if (item.OldSyllabusPath != null)
+                                            {
+                                                <a asp-action="DownloadOldSyllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                            }
+                                            else
+                                            {
+                                                <label style="font-weight:bold; color:red">No File</label>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @if (item.OldPatternPath != null)
+                                            {
+                                            <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                            }
+                                            else
+                                            {
+                                                <label style="font-weight:bold; color:red">No File</label>
+                                            }
+                                            
+                                        </td>
+                                        <td>
+                                            @if (item.CertificatePath != null)
+                                            {
+                                                <a asp-action="DownloadCertificate" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                            }
+                                            else
+                                            {
+                                                <label style="font-weight:bold; color:red">No File</label>
+                                            }
+
+                                        </td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            <div class="table-actions text-center">
+                                                @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
+                                                {
+                                                    <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                                    <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                                    <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <label style="font-weight:bold; color:red">Final Submitted</label>
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>

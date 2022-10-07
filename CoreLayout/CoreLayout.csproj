@@ -27,6 +27,7 @@
     <Folder Include="wwwroot\AnswerPaper\" />
     <Folder Include="wwwroot\AnswerPaperEncryption\" />
     <Folder Include="wwwroot\Attachments\" />
+    <Folder Include="wwwroot\UploadCertificate\" />
     <Folder Include="wwwroot\UploadPaper\" />
     <Folder Include="wwwroot\UploadOldPattern\" />
     <Folder Include="wwwroot\UploadOldSyllabus\" />

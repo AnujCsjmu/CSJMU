@@ -41,6 +41,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadOldPaper
                         parameters.Add("OldPaperPath", entity.OldPaperPath, DbType.String);
                         parameters.Add("OldSyllabusPath", entity.OldSyllabusPath, DbType.String);
                         parameters.Add("OldPatternPath", entity.OldPatternPath, DbType.String);
+                        parameters.Add("CertificatePath", entity.CertificatePath, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("PaperType", entity.PaperType, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
@@ -160,6 +161,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadOldPaper
                         parameters.Add("OldPaperPath", entity.OldPaperPath, DbType.String);
                         parameters.Add("OldSyllabusPath", entity.OldSyllabusPath, DbType.String);
                         parameters.Add("OldPatternPath", entity.OldPatternPath, DbType.String);
+                        parameters.Add("CertificatePath", entity.CertificatePath, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.String);
                         parameters.Add("PaperType", entity.PaperType, DbType.String);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
