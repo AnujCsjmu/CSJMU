@@ -128,16 +128,16 @@ namespace CoreLayout.Controllers.PCP
 
         //Create Get Action Method
         [HttpGet]
-       // [AuthorizeContext(ViewAction.Add)]
+        // [AuthorizeContext(ViewAction.Add)]
         public async Task<ActionResult> CreateAsync(string id)
         {
-           
+
             try
             {
                 var guid_id = _protector.Unprotect(id);
                 PCPAssignedQPModel pCPAssignedQP = new PCPAssignedQPModel();
-                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetSetterList()
-                                    select reg).Distinct().ToList();
+                //ViewBag.UserList = (from reg in await _pCPRegistrationService.GetSetterList()
+                //                    select reg).Distinct().ToList();
                 pCPAssignedQP.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
 
@@ -221,6 +221,7 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 data.PCPUserList = (from reg in await _pCPRegistrationService.GetSetterList()
+                                    where reg.BranchId == data.BranchId
                                     select reg).Distinct().ToList();
                 data.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
@@ -269,34 +270,35 @@ namespace CoreLayout.Controllers.PCP
 
 
                 pCPAssignedQPModel.PCPUserList = (from reg in await _pCPRegistrationService.GetSetterList()
-                                    select reg).Distinct().ToList();
+                                                  where reg.BranchId == pCPAssignedQPModel.BranchId
+                                                  select reg).Distinct().ToList();
                 pCPAssignedQPModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
                 pCPAssignedQPModel.CourseList = (from examcoursemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
-                                   where examcoursemapping.ExamId == pCPAssignedQPModel.ExamId
-                                   select examcoursemapping).ToList();
+                                                 where examcoursemapping.ExamId == pCPAssignedQPModel.ExamId
+                                                 select examcoursemapping).ToList();
 
                 pCPAssignedQPModel.SemYearList = (from examcoursemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
-                                    where examcoursemapping.CourseID == pCPAssignedQPModel.CourseId
-                                    select examcoursemapping).ToList();
+                                                  where examcoursemapping.CourseID == pCPAssignedQPModel.CourseId
+                                                  select examcoursemapping).ToList();
 
                 pCPAssignedQPModel.BranchList = (from coursbranchemapping in await _courseBranchMappingService.GetAllCourseBranchMapping()
-                                   where coursbranchemapping.CourseId == pCPAssignedQPModel.CourseId
-                                   select coursbranchemapping).ToList();
+                                                 where coursbranchemapping.CourseId == pCPAssignedQPModel.CourseId
+                                                 select coursbranchemapping).ToList();
 
 
                 pCPAssignedQPModel.SessionList = (from examcourseemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
-                                    where examcourseemapping.ExamId == pCPAssignedQPModel.ExamId
-                                    select examcourseemapping).ToList();
+                                                  where examcourseemapping.ExamId == pCPAssignedQPModel.ExamId
+                                                  select examcourseemapping).ToList();
 
 
                 pCPAssignedQPModel.QPList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
-                               where qpmaster.CourseId == pCPAssignedQPModel.CourseId
-                               select qpmaster).ToList();
+                                             where qpmaster.CourseId == pCPAssignedQPModel.CourseId
+                                             select qpmaster).ToList();
 
                 pCPAssignedQPModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPAssignedQPModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                if (alreadyexit!=null)
+                if (alreadyexit != null)
                 {
                     ModelState.AddModelError("", "QP already assigned to this user!");
                     return View("~/Views/PCP/PCPAssignedQP/Edit.cshtml", pCPAssignedQPModel);
@@ -414,23 +416,22 @@ namespace CoreLayout.Controllers.PCP
             });
             return Json(BranchList);
         }
-        //public async Task<JsonResult> GetSetterByCourse(int BranchId)
-        //{
-        //    var SetterList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-        //                      where reg.BranchId == BranchId && reg.IsApproved!=null
-        //                      select new SelectListItem()
-        //                      {
-        //                          Text = reg.UserName,
-        //                          Value = reg.UserId.ToString(),
-        //                      }).ToList();
-
-        //    SetterList.Insert(0, new SelectListItem()
-        //    {
-        //        Text = "----Select----",
-        //        Value = string.Empty
-        //    });
-        //    return Json(SetterList);
-        //}
+        public async Task<JsonResult> GetSetterByCourse(int BranchId)
+        {
+            var SetterList = (from reg in await _pCPRegistrationService.GetSetterList()
+                              where reg.BranchId==BranchId
+                              select new SelectListItem()
+                              {
+                                  Text = reg.UserName,
+                                  Value = reg.UserId.ToString(),
+                              }).ToList();
+            //SetterList.Insert(0, new SelectListItem()
+            //{
+            //    Text = "----Select----",
+            //    Value = string.Empty
+            //});
+            return Json(SetterList);
+        }
         public async Task<JsonResult> GetSyllabus(int ExamId)
         {
             var SyllabusList = (from examcourseemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
@@ -454,7 +455,7 @@ namespace CoreLayout.Controllers.PCP
                           where qpmaster.CourseId == CourseId
                           select new SelectListItem()
                           {
-                              Text = qpmaster.QPCode +"-"+ qpmaster.QPName,
+                              Text = qpmaster.QPCode + "-" + qpmaster.QPName,
                               Value = qpmaster.QPId.ToString(),
                           }).ToList();
 
