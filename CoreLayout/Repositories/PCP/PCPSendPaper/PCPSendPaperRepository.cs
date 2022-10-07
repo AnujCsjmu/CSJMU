@@ -22,6 +22,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
         {
             using (var connection = CreateConnection())
             {
+                var res = 0;
                 connection.Open();
                 // create the transaction
                 // You could use `var` instead of `SqlTransaction`
@@ -30,7 +31,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                     try
                     {
                         var query = "SP_InsertUpdateDelete_PCPSendPaperToAgency";
-                        var res = 0;
+                        
                         entity.IsRecordDeleted = 0;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("AgencyId", entity.UserId, DbType.Int32);
@@ -46,8 +47,11 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         String[] array = entity.paperids.Split(",");
                         for (int i = 0; i < array.Length; i++)
                         {
-                            parameters.Add("PaperId", Convert.ToInt32(array[i]), DbType.Int32);
-                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                            if (array[i] != "")
+                            {
+                                parameters.Add("PaperId", Convert.ToInt32(array[i]), DbType.Int32);
+                                res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                            }
                         }
                        
                         //res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
@@ -59,7 +63,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         {
                             tran.Rollback();
                         }
-                        return res;
+                        //return res;
                     }
                     catch (Exception ex)
                     {
@@ -67,12 +71,13 @@ namespace CoreLayout.Repositories.PCP.PCPSendPaper
                         tran.Rollback();
 
                         // handle the error however you need to.
-                        throw new Exception(ex.Message, ex);
+                       // throw new Exception(ex.Message, ex);
                     }
                     finally
                     {
                         connection.Close();
                     }
+                    return res;
                 }
             }
 

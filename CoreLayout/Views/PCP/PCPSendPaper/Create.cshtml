@@ -122,7 +122,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card custom-card overflow-hidden">
-                                <div class="card-body">
+                                <div>
                                     <div class="table-responsive-sm">
                                         <label> Paper List </label><span class="tx-danger"> *</span>
                                         <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
@@ -140,9 +140,10 @@
                                                         @Html.DisplayNameFor(c => c.BranchName)
                                                     </th>
                                                     <th>
-                                                        @Html.DisplayNameFor(c => c.Session)<br />
-                                                        @Html.DisplayNameFor(c => c.SemYearId)
+                                                        @Html.DisplayNameFor(c => c.Session)
+                                                        
                                                     </th>
+                                                    <th>@Html.DisplayNameFor(c => c.SemYearId)</th>
                                                     <th>
                                                         @Html.DisplayNameFor(c => c.QPId)
                                                     </th>
@@ -200,10 +201,10 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                        let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
-                        $("#output").html(output);
-                        $('#global-loader').hide();
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + (i.createdDate) + "</td></tr>");
+                        $("#output").html(output);      
                 });
+                $('#global-loader').hide();
             });
 
             $("#CourseId").on("change", function () {
@@ -217,7 +218,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });
@@ -234,7 +235,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });
@@ -251,7 +252,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });
@@ -268,7 +269,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&ExamId=" + $(examId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });
@@ -285,7 +286,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });
@@ -302,7 +303,7 @@
                     + "&ExamId=" + $(examId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "<br>" + i.semYearId + "</td><td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + i.createdDate + "</td></tr>");
                     $("#output").html(output);
                     $('#global-loader').hide();
                 });

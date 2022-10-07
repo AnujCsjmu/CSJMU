@@ -33,14 +33,13 @@
                                     @Html.DisplayNameFor(c => c.CourseId)
                                 </th>
                                 <th>
+                                    @Html.DisplayNameFor(c => c.SessionId)<br />
                                     @Html.DisplayNameFor(c => c.SemYearId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.BranchId)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.SessionId)
-                                </th>
+                                
                                 <th>
                                     @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
@@ -72,10 +71,8 @@
                                 </td>
                                 <td> @item.ExamName</td>
                                 <td> @item.CourseName</td>
-                                <td> @item.SemYearId</td>
+                                <td>@item.Session <br /> @item.SemYearId</td>
                                 <td> @item.BranchName</td>
-                                <td> @item.Session</td>
-
                                 <td> @item.QPCode</td>
                                 <td> @item.UserName</td>
                                 <td>@item.QPCreatedBy</td>
