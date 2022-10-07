@@ -180,7 +180,7 @@ namespace CoreLayout.Controllers.PCP
                         pCPRegistrationModel.EmailID = data.EmailID;
                         pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                         pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                        pCPRegistrationModel.QPId = data.QPId;
+                        pCPRegistrationModel.AssignedQPId = data.AssignedQPId;
 
                         #region Send email and sms
                         //send message
@@ -351,12 +351,12 @@ namespace CoreLayout.Controllers.PCP
             }
         }
 
-        public async Task<IActionResult> ViewReminder(int id, int QPId)
+        public async Task<IActionResult> ViewReminder(int id, int assignedQPId)
         {
             try
             {
                 //var guid_id = _protector.Unprotect(id);
-                var data = await _pCPSendReminderService.GetReminderById(id, QPId);
+                var data = await _pCPSendReminderService.GetReminderById(id, assignedQPId);
 
                 if (data == null)
                 {

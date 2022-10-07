@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
 {
-    [Authorize(Roles = "QPAssign")]
+    [Authorize(Roles = "QPAssign, Controller Of Examination")]
     public class PCPUploadOldPaperController : Controller
     {
         private readonly ILogger<PCPUploadOldPaperController> _logger;
@@ -107,6 +107,7 @@ namespace CoreLayout.Controllers.PCP
             if (oldpaperid != "")
             {
                 pCPUploadOldPaperModel.oldpaperids = oldpaperid;
+                pCPUploadOldPaperModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 var data1 = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(oldpaperid));
                 if (data1 != null)
                 {
@@ -199,7 +200,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 //start check paper already uploaded
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
-                var alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                var alreadyexit = (from reg in await _pCPUploadOldPaperService.GetAllPCPUploadOldPaper()
                                    where reg.CreatedBy == CreatedBy && reg.QPId == pCPUploadOldPaperModel.QPId
                                    select reg).ToList();
                 //end
@@ -605,7 +606,7 @@ namespace CoreLayout.Controllers.PCP
         public IActionResult VerifyName(int qpId)
         {
 
-            var already = (from data in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+            var already = (from data in _pCPUploadOldPaperService.GetAllPCPUploadOldPaper().Result
                            where data.QPId == qpId
                            select new SelectListItem()
                            {

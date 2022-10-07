@@ -73,7 +73,7 @@ namespace CoreLayout.Controllers
                         ViewBag.RejectCount = reject.Count.ToString();
                         ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
                         ViewBag.PaperUploadCount = paperupload.Count.ToString();
-                        ViewBag.SendToAgencyCount = sendpaper.Count.ToString();
+                        ViewBag.SendToAgencyCount =sendpaper.Count.ToString();
                     }
 
                     #endregion

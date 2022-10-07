@@ -32,11 +32,20 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPList,"QPId","CombineQPName"))">
+                                <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList,"ExamId","ExamName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
-                                <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
+                                <span class="parsley-errors-list filled" asp-validation-for="ExamId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AssignedQPId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="AssignedQPId" asp-items="@(new SelectList(Model.QPList,"AssignedQPId","QPCode"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="AssignedQPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -61,7 +70,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchID","BranchName"))">
+                                <select class="form-control" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchId","BranchName"))">
                                     @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
 
@@ -71,7 +80,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SyllabusId","SyllabusName"))">
+                                <select class="form-control" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
                                     @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
 
@@ -112,13 +121,13 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript">
             $(document).ready(function () {
-                $("#QPId").on("change", function () {
+                $("#AssignedQPId").on("change", function () {
                     $("#CourseId").empty();
                     $("#BranchId").empty();
                     $("#SessionId").empty();
                     $("#SemYearId").empty();
-                    var ddlsource = "#QPId";
-                    var url = '@Url.Content("~/")' + "PCPUploadPaper/GetCourseSubjectSemYearSyl?QPId="+$(ddlsource).val();
+                    var ddlsource = "#AssignedQPId";
+                    var url = '@Url.Content("~/")' + "PCPUploadPaper/GetCourseSubjectSemYearSyl?AssignedQPId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                         console.log(data)
@@ -132,8 +141,8 @@
                         $("#SemYearId").empty();
                         $.each(data, function (i, qp) {
                             items += "<option value ='" + qp.courseId + "'>" + qp.courseName + "</option>";
-                            items1 += "<option value ='" + qp.branchID + "'>" + qp.branchName + "</option>";
-                            items2 += "<option value ='" + qp.syllabusId + "'>" + qp.syllabusName + "</option>";
+                            items1 += "<option value ='" + qp.branchId + "'>" + qp.branchName + "</option>";
+                            items2 += "<option value ='" + qp.sessionId + "'>" + qp.session + "</option>";
                             items3 += "<option value ='" + qp.semYearId + "'>" + qp.semYearId + "</option>";
                         });
 
@@ -141,6 +150,26 @@
                         $('#BranchId').html(items1);
                         $('#SessionId').html(items2);
                         $('#SemYearId').html(items3);
+                });
+                });
+            });
+
+    </script>
+    @*bind QP*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ExamId").on("change", function () {
+                    $("#AssignedQPId").empty();
+                    var ddlsource = "#ExamId";
+                    var url = '@Url.Content("~/")' + "PCPUploadPaper/GetQP?ExamId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#AssignedQPId").empty();
+                        $.each(data, function (i, qp) {
+                            items += "<option value ='" + qp.value + "'>" + qp.text + "</option>";
+                    });
+                        $('#AssignedQPId').html(items);
                 });
                 });
             });

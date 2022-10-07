@@ -31,7 +31,7 @@
                         <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><input name="select_all" value="1" type="checkbox"></th>
                                     <th>S.No</th>
                                     <th>
                                         @Html.DisplayNameFor(c => c.QPId)
@@ -185,6 +185,48 @@
                     //var form = document.getElementById("form1");
                     //form.preventDefault();
                 }
+            });
+        });
+    </script>
+
+    @*checkbox multi select at one time*@
+    <script>
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+        }
+        $(document).ready(function () {
+            // Array holding selected row IDs
+
+            var rows_selected = [];
+            //var table = $('#exportexample').DataTable({
+            //    /*$("#exportexample").dataTable().fnDestroy();*/
+            //});
+            var table = $('#exportexample').DataTable();
+            // Handle click on checkbox
+            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
+
+                var $row = $(this).closest('tr');
+
+                // Get row data
+                var data = table.row($row).data();
+
+                // Update state of "Select all" control
+                updateDataTableSelectAllCtrl(table);
+
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+
+            // Handle click on "Select all" control
+            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                if (this.checked) {
+                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                } else {
+                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
+                }
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
             });
         });
     </script>

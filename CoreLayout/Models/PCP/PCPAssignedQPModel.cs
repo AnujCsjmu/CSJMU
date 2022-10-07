@@ -92,5 +92,7 @@ namespace CoreLayout.Models.PCP
         public string ExamName { get; set; }
         public List<ExamMasterModel> ExamList { get; set; }
         public string CombineQPName { get; set; }
+
+        public int? RoleId { get; set; }
     }
 }

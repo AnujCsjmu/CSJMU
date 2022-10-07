@@ -60,11 +60,13 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "QP Name")]
         [Required(ErrorMessage = "Please enter qp name")]
         //[Remote(action: "VerifyName", controller: "PCPUploadPaper")]
-        public int QPId { get; set; }
+        public int AssignedQPId { get; set; }
         public string QPName { get; set; }
 
         [Display(Name = "QP Code")]
         public string QPCode { get; set; }
+
+        public int? QPId { get; set; }
 
         public int? UserId { get; set; }
 
@@ -100,14 +102,14 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Course")]
         [Required(ErrorMessage = "Please select course")]
         public int CourseId { get; set; }
-        public List<QPMasterModel> CourseList { get; set; }
+        public List<PCPAssignedQPModel> CourseList { get; set; }
         public string CourseName { get; set; }
 
 
         [Display(Name = "Subject")]
-        [Required(ErrorMessage = "Please select subject")]
-        public int BranchId { get; set; }
-        public List<QPMasterModel> BranchList { get; set; }
+        //[Required(ErrorMessage = "Please select subject")]
+        public int? BranchId { get; set; }
+        public List<PCPAssignedQPModel> BranchList { get; set; }
         public string BranchName { get; set; }//note branch table is used as subjectname
 
 
@@ -115,13 +117,13 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "Session")]
         public int SessionId { get; set; }
         public string Session { get; set; }
-        public List<QPMasterModel> SessionList { get; set; }
+        public List<PCPAssignedQPModel> SessionList { get; set; }
 
 
         [Display(Name = "Model Answer Paper")]
         public string AnswerPath { set; get; }
 
-        [Required(ErrorMessage = "Please choose model answer paper")]
+        //[Required(ErrorMessage = "Please choose model answer paper")]
         [Display(Name = "Upload Model Answer")]
         public IFormFile AnswerPaper { get; set; }
 
@@ -131,14 +133,22 @@ namespace CoreLayout.Models.PCP
         [Display(Name = "SemYear")]
         [Required(ErrorMessage = "Please select Semester year")]
         public int SemYearId { get; set; }
-        public List<QPMasterModel> SemYearList { get; set; }
+        public List<PCPAssignedQPModel> SemYearList { get; set; }
 
         public string RequestQuestionPwdStatus { set; get; }
 
         public string RequestAnswerPwdStatus { set; get; }
 
-        public int? ExamId { get; set; }
+        public string MobileNo { set; get; }
+        public string EmailID { set; get; }
 
+        public string LoginID { get; set; }
+
+        [Display(Name = "Exam")]
+        [Required(ErrorMessage = "Please select exam")]
+        public int ExamId { get; set; }
+        public string ExamName { get; set; }
+        public List<ExamMasterModel> ExamList { get; set; }
 
     }
 }

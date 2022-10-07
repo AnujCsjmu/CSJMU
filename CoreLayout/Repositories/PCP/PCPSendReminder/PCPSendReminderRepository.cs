@@ -33,7 +33,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
             }
         }
 
-        public async Task<List<PCPRegistrationModel>> GetReminderById(int UserID,int QPID)
+        public async Task<List<PCPRegistrationModel>> GetReminderById(int UserID,int AssignedQPId)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("UserID", UserID, DbType.Int32);
-                    parameters.Add("QPId", QPID, DbType.Int32);
+                    parameters.Add("AssignedQPId", AssignedQPId, DbType.Int32);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return (List<PCPRegistrationModel>)list;
@@ -78,7 +78,7 @@ namespace CoreLayout.Repositories.PCP.PCPSendReminder
 
                         parameters.Add("IsMobileReminder", entity.IsMobileReminder, DbType.String);
                         parameters.Add("IsEmailReminder", entity.IsEmailReminder, DbType.String);
-                        parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("AssignedQPId", entity.AssignedQPId, DbType.Int32);
                        
                         parameters.Add("@Query", 3, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);

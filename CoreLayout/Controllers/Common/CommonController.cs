@@ -1,8 +1,11 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
+using CoreLayout.Models.PCP;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.PCP.PCPRegistration;
+using CoreLayout.Services.PCP.PCPSendReminder;
+using CoreLayout.Services.PCP.PCPUploadPaper;
 using CoreLayout.Services.Registration;
 using CoreLayout.Services.UserManagement.AssignRole;
 using CoreLayout.Services.UserManagement.ButtonPermission;
@@ -34,7 +37,10 @@ namespace CoreLayout.Controllers
         private readonly IParentMenuService _parentMenuService;
         private readonly IButtonPermissionService _buttonPermissionService;
         private readonly IPCPRegistrationService _pCPRegistrationService;
-        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService)
+        private readonly IPCPUploadPaperService _pCPUploadPaperService;
+        private readonly IMailService _mailService;
+        private readonly IPCPSendReminderService _pCPSendReminderService;
+        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IMailService mailService, IPCPSendReminderService pCPSendReminderService)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -44,6 +50,9 @@ namespace CoreLayout.Controllers
             _parentMenuService = parentMenuService;
             _buttonPermissionService = buttonPermissionService;
             _pCPRegistrationService = pCPRegistrationService;
+            _pCPUploadPaperService = pCPUploadPaperService;
+            _mailService = mailService;
+            _pCPSendReminderService = pCPSendReminderService;
         }
         public async Task<ActionResult> RefereshMenuAsync()
         {
@@ -451,6 +460,94 @@ namespace CoreLayout.Controllers
                 }
             }
             return cipherText;
+        }
+
+        public async Task<ActionResult> SendAutoEmailAsync()
+        {
+            int failedCount = 0;
+            int successCount = 0;
+            PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
+            try
+            {
+                var data = (from upload in await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload()
+                            where upload.PaperPath is null
+                            select upload).ToList();
+                foreach (var _data in data)
+                {
+                    var data1 = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(_data.PCPRegID));
+                    pCPRegistrationModel.PCPRegID = data1.PCPRegID;
+                    pCPRegistrationModel.UserId = data1.UserId;
+                    pCPRegistrationModel.UserName = data1.UserName;
+                    pCPRegistrationModel.MobileNo = data1.MobileNo;
+                    pCPRegistrationModel.EmailID = data1.EmailID;
+                    pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                    pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPRegistrationModel.QPId = data1.QPId;
+                    #region Send email and sms
+                    //send message
+                    bool messageResult = false;
+                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.AssignedQPId);
+                    if (messageResult == false)
+                    {
+                        pCPRegistrationModel.IsMobileReminder = "N";
+                    }
+                    else
+                    {
+                        pCPRegistrationModel.IsMobileReminder = messageResult.ToString();
+                    }
+
+                    //send mail
+                    bool emailResult = false;
+                    emailResult = SendRegistraionMail(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.Password);
+                    if (emailResult == false)
+                    {
+                        pCPRegistrationModel.IsEmailReminder = "N";
+                    }
+                    else
+                    {
+                        pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
+                    }
+                    #endregion
+                    var finaldata = await _pCPSendReminderService.CreateReminderAsync(pCPRegistrationModel);
+                    if (finaldata.Equals(1))
+                    {
+                        successCount += successCount + 1;
+
+                    }
+                    else
+                    {
+                        failedCount += failedCount + 1;
+                    }
+                }
+                pCPRegistrationModel.failedCount = failedCount.ToString();
+                pCPRegistrationModel.successCount = successCount.ToString();
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            return View("~/Views/Common/SendAutoEmail.cshtml", pCPRegistrationModel);
+        }
+
+        public bool SendRegistraionMeassage(string username, string mobile, string loginid, int qpid)
+        {
+            bool result = false;
+            string message = "Dear " + username + ", Attendance for Subject Codes: " + mobile + " is not entered today. Please specify reasons at " + loginid + " " + qpid + ". CSJMU, Kanpur";
+
+            result = SendSMSWithTemplateId(mobile, message, "1607100000000228609");
+            return result;
+        }
+
+        public bool SendRegistraionMail(string username, string email, string loginid, string password)
+        {
+            MailRequest request = new MailRequest();
+
+            request.Subject = "Gentel Reminder!!";
+            request.Body = "<br/> This is reminder mail" +
+                   "<br/> Please upload paper as soon as possible.";
+            //request.Attachments = "";
+            request.ToEmail = email;
+            return _mailService.SendEmailAsync(request);
         }
     }
 }

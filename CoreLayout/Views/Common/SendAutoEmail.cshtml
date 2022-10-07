@@ -1,0 +1,43 @@
+﻿@model CoreLayout.Models.PCP.PCPRegistrationModel
+@{
+    Layout = null;
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Send Auto Reminder</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Reminder</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Send</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div>
+
+                            <label asp-for="successCount">&nbsp;</label> <label style="font-weight:bold; color:green">Reminder Send successfully</label><br />
+                            <label asp-for="failedCount">&nbsp;</label> <label style="font-weight:bold; color:red">Reminder Send failed</label>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

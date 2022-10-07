@@ -92,12 +92,13 @@ namespace CoreLayout.Models.PCP
         public List<QPMasterModel> QPCodeList { get; set; }
 
         [Display(Name = "QP Code")]
-        [Required(ErrorMessage = "Please enter qp code")]
-        public int QPId { get; set; }
+        //[Required(ErrorMessage = "Please enter qp code")]
+        public int? QPId { get; set; }
 
         [Display(Name = "QP Code")]
         public string QPCode { get; set; }
 
+        public int AssignedQPId { get; set; }
         public string QPName { get; set; }
 
         [NotMapped]
@@ -187,8 +188,8 @@ namespace CoreLayout.Models.PCP
         public string BranchAddress { get; set; }
 
 
-        [Display(Name = "Type of Employeement")]
-        [Required(ErrorMessage = "Please enter type of employeement")]
+        [Display(Name = "Type of Employment")]
+        [Required(ErrorMessage = "Please enter type of employment")]
         public string TypeOfEmployeement { get; set; }
 
         [Display(Name = "Paper Setting Experience")]
@@ -257,5 +258,9 @@ namespace CoreLayout.Models.PCP
 
         //new
         public string TeacherCode { get; set; }
+
+        //for autosend reminder
+        public string failedCount { get; set; }
+        public string successCount { get; set; }
     }
 }

@@ -207,6 +207,7 @@ namespace CoreLayout.Repositories.PCP.PCPUploadOldPaper
                         var res = 0;
 
                         DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("FinalSubmitBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("@Query", 6, DbType.Int32);
                         String[] array = entity.oldpaperids.Split(",");
                         for (int i = 0; i < array.Length; i++)

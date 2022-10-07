@@ -202,7 +202,7 @@
                                         <td style="font-weight:bold; color:red">Answer Not Uploaded</td>
                                     }
                                     @*<td>@item.Session</td>*@
-                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-qpid="@item.QPId" target="_blank">View</a></td>
+                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-assignedQPId="@item.AssignedQPId" target="_blank">View</a></td>
                                 </tr>
                             }
                         </tbody>

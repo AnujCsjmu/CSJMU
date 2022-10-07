@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
 {
-    [Authorize(Roles = "QPAssign")]
+    [Authorize(Roles = "QPAssign, Controller Of Examination")]
     public class PCPAssignedQPController : Controller
     {
         private readonly ILogger<PCPAssignedQPController> _logger;
@@ -417,6 +417,23 @@ namespace CoreLayout.Controllers.PCP
                 Value = string.Empty
             });
             return Json(BranchList);
+        }
+        public async Task<JsonResult> GetSetterByCourse(int BranchId)
+        {
+            var SetterList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                              where reg.BranchId == BranchId && reg.IsApproved!=null
+                              select new SelectListItem()
+                              {
+                                  Text = reg.UserName,
+                                  Value = reg.UserId.ToString(),
+                              }).ToList();
+
+            SetterList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(SetterList);
         }
         public async Task<JsonResult> GetSyllabus(int ExamId)
         {

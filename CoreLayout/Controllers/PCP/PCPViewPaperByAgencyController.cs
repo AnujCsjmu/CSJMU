@@ -84,9 +84,9 @@ namespace CoreLayout.Controllers.PCP
             if (sendpaperid != "")
             {
                 pCPSendPaperModel.sendpaperids = sendpaperid;
-                var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(sendpaperid));
-                if (data1 != null)
-                {
+                //var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(sendpaperid));
+                //if (data1 != null)
+               // {
                     var res = await _pCPSendPaperService.FinalSubmitAsync(pCPSendPaperModel);
                     if (res.Equals(1))
                     {
@@ -96,12 +96,12 @@ namespace CoreLayout.Controllers.PCP
                     {
                         TempData["error"] = "Data has not been not accepted";
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Selected data is not available");
-                    TempData["error"] = "Selected data is not available";
-                }
+                //}
+               // else
+               // {
+               ///     ModelState.AddModelError("", "Selected data is not available");
+               //     TempData["error"] = "Selected data is not available";
+               // }
             }
             else
             {
