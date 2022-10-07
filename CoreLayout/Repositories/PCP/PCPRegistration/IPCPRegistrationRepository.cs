@@ -7,5 +7,6 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
     public interface IPCPRegistrationRepository : IRepository<PCPRegistrationModel>
     {
         Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise();
+        Task<List<PCPRegistrationModel>> GetSetterList();
     }
 }

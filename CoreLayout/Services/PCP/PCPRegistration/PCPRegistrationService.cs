@@ -42,5 +42,10 @@ namespace CoreLayout.Services.PCP.PCPRegistration
         {
             return await _pCPRegistrationRepository.GetReportQPAndPaperWise();
         }
+
+        public async Task<List<PCPRegistrationModel>> GetSetterList()
+        {
+            return await _pCPRegistrationRepository.GetSetterList();
+        }
     }
 }

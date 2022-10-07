@@ -13,5 +13,6 @@ namespace CoreLayout.Services.PCP.PCPRegistration
         public Task<int> DeletePCPRegistrationAsync(PCPRegistrationModel pCPRegistrationModel);
 
         public Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise();
+        public Task<List<PCPRegistrationModel>> GetSetterList();
     }
 }

@@ -66,7 +66,7 @@ namespace CoreLayout.Controllers.PCP
 
         }
         [HttpGet]
-        [AuthorizeContext(ViewAction.View)]
+        //[AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
             try
@@ -102,7 +102,7 @@ namespace CoreLayout.Controllers.PCP
             }
         }
         [HttpGet]
-        [AuthorizeContext(ViewAction.Details)]
+        //[AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(string id)
         {
             try
@@ -128,15 +128,15 @@ namespace CoreLayout.Controllers.PCP
 
         //Create Get Action Method
         [HttpGet]
-        [AuthorizeContext(ViewAction.Add)]
+       // [AuthorizeContext(ViewAction.Add)]
         public async Task<ActionResult> CreateAsync(string id)
         {
+           
             try
             {
                 var guid_id = _protector.Unprotect(id);
                 PCPAssignedQPModel pCPAssignedQP = new PCPAssignedQPModel();
-                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                    where reg.IsApproved != null
+                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetSetterList()
                                     select reg).Distinct().ToList();
                 pCPAssignedQP.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
@@ -146,15 +146,14 @@ namespace CoreLayout.Controllers.PCP
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
-                return RedirectToAction(nameof(Index));
             }
-
+            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Add)]
+        //[AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(PCPAssignedQPModel pCPAssignedQPModel)
         {
             try
@@ -176,8 +175,7 @@ namespace CoreLayout.Controllers.PCP
                     }
                 }
                 //end
-                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                    where reg.IsApproved != null
+                ViewBag.UserList = (from reg in await _pCPRegistrationService.GetSetterList()
                                     select reg).Distinct().ToList();
                 pCPAssignedQPModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
@@ -215,15 +213,14 @@ namespace CoreLayout.Controllers.PCP
             return View("~/Views/PCP/PCPAssignedQP/Create.cshtml", pCPAssignedQPModel);
         }
         [HttpGet]
-        [AuthorizeContext(ViewAction.Edit)]
+        //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
         {
             var guid_id = _protector.Unprotect(id);
             var data = await _pCPAssignedQPService.GetPCPAssignedQPById(Convert.ToInt32(guid_id));
             try
             {
-                data.PCPUserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                    where reg.IsApproved != null
+                data.PCPUserList = (from reg in await _pCPRegistrationService.GetSetterList()
                                     select reg).Distinct().ToList();
                 data.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
@@ -262,7 +259,7 @@ namespace CoreLayout.Controllers.PCP
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Edit)]
+        //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int AssignedQPId, PCPAssignedQPModel pCPAssignedQPModel)
         {
             try
@@ -271,8 +268,7 @@ namespace CoreLayout.Controllers.PCP
                 var alreadyexit = await _pCPAssignedQPService.alreadyAssignedQP(pCPAssignedQPModel.UserId, pCPAssignedQPModel.QPId);
 
 
-                pCPAssignedQPModel.PCPUserList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                                    where reg.IsApproved != null
+                pCPAssignedQPModel.PCPUserList = (from reg in await _pCPRegistrationService.GetSetterList()
                                     select reg).Distinct().ToList();
                 pCPAssignedQPModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
@@ -332,7 +328,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [HttpGet]
-        [AuthorizeContext(ViewAction.Delete)]
+        //[AuthorizeContext(ViewAction.Delete)]
         public async Task<IActionResult> Delete(string id)
         {
             try
@@ -418,23 +414,23 @@ namespace CoreLayout.Controllers.PCP
             });
             return Json(BranchList);
         }
-        public async Task<JsonResult> GetSetterByCourse(int BranchId)
-        {
-            var SetterList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
-                              where reg.BranchId == BranchId && reg.IsApproved!=null
-                              select new SelectListItem()
-                              {
-                                  Text = reg.UserName,
-                                  Value = reg.UserId.ToString(),
-                              }).ToList();
+        //public async Task<JsonResult> GetSetterByCourse(int BranchId)
+        //{
+        //    var SetterList = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+        //                      where reg.BranchId == BranchId && reg.IsApproved!=null
+        //                      select new SelectListItem()
+        //                      {
+        //                          Text = reg.UserName,
+        //                          Value = reg.UserId.ToString(),
+        //                      }).ToList();
 
-            SetterList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
-            return Json(SetterList);
-        }
+        //    SetterList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    return Json(SetterList);
+        //}
         public async Task<JsonResult> GetSyllabus(int ExamId)
         {
             var SyllabusList = (from examcourseemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()

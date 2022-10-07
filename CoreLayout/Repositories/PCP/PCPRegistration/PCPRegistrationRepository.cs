@@ -230,5 +230,24 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<List<PCPRegistrationModel>> GetSetterList()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCP";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 7, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<PCPRegistrationModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

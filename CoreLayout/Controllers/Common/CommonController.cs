@@ -40,7 +40,8 @@ namespace CoreLayout.Controllers
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         private readonly IMailService _mailService;
         private readonly IPCPSendReminderService _pCPSendReminderService;
-        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IMailService mailService, IPCPSendReminderService pCPSendReminderService)
+        private IHttpContextAccessor _httpContextAccessor;
+        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IMailService mailService, IPCPSendReminderService pCPSendReminderService, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -53,6 +54,7 @@ namespace CoreLayout.Controllers
             _pCPUploadPaperService = pCPUploadPaperService;
             _mailService = mailService;
             _pCPSendReminderService = pCPSendReminderService;
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<ActionResult> RefereshMenuAsync()
         {
@@ -466,6 +468,7 @@ namespace CoreLayout.Controllers
         {
             int failedCount = 0;
             int successCount = 0;
+            int finaldata = 0;
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             try
             {
@@ -480,9 +483,10 @@ namespace CoreLayout.Controllers
                     pCPRegistrationModel.UserName = data1.UserName;
                     pCPRegistrationModel.MobileNo = data1.MobileNo;
                     pCPRegistrationModel.EmailID = data1.EmailID;
-                    pCPRegistrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    pCPRegistrationModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                    pCPRegistrationModel.IPAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                    pCPRegistrationModel.CreatedBy = _data.CreatedBy;
                     pCPRegistrationModel.QPId = data1.QPId;
+                    pCPRegistrationModel.AssignedQPId = data1.AssignedQPId;
                     #region Send email and sms
                     //send message
                     bool messageResult = false;
@@ -508,19 +512,21 @@ namespace CoreLayout.Controllers
                         pCPRegistrationModel.IsEmailReminder = emailResult.ToString();
                     }
                     #endregion
-                    var finaldata = await _pCPSendReminderService.CreateReminderAsync(pCPRegistrationModel);
+                     finaldata = await _pCPSendReminderService.CreateReminderAsync(pCPRegistrationModel);
                     if (finaldata.Equals(1))
                     {
-                        successCount += successCount + 1;
+                        successCount = successCount+1;
 
                     }
                     else
                     {
-                        failedCount += failedCount + 1;
+                        failedCount = failedCount+1;
                     }
                 }
-                pCPRegistrationModel.failedCount = failedCount.ToString();
-                pCPRegistrationModel.successCount = successCount.ToString();
+                //pCPRegistrationModel.failedCount = failedCount.ToString();
+                //pCPRegistrationModel.successCount = successCount.ToString();
+                ViewBag.successCount = successCount;
+                ViewBag.failedCount = failedCount;
             }
             catch (Exception ex)
             {

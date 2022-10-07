@@ -7,10 +7,10 @@
 <div class="page-header">
     <div>
         <h2 class="main-content-title tx-24 mg-b-5">Send Auto Reminder</h2>
-        <ol class="breadcrumb">
+        @*<ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Reminder</a></li>
             <li class="breadcrumb-item active" aria-current="page">Send</li>
-        </ol>
+        </ol>*@
     </div>
 
 </div>
@@ -30,10 +30,14 @@
 
                         </div>
                         <div>
-
-                            <label asp-for="successCount">&nbsp;</label> <label style="font-weight:bold; color:green">Reminder Send successfully</label><br />
-                            <label asp-for="failedCount">&nbsp;</label> <label style="font-weight:bold; color:red">Reminder Send failed</label>
-
+                            @if (ViewBag.successCount != null)
+                            {
+                                @ViewBag.successCount <label style="font-weight:bold; color:green"> - Reminder Send successfully</label><br />
+                            }
+                            @if (ViewBag.failedCount != null)
+                            {
+                                @ViewBag.failedCount <label style="font-weight:bold; color:red"> - Reminder Send failed</label>
+                            }
                         </div>
                     </div>
                 </form>

@@ -89,6 +89,15 @@
                                 <span id="uservalidation" asp-validation-for="UserId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        <!--<div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UserId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" multiple asp-for="UserList" asp-items="@(new SelectList(string.Empty,"UserId","UserName"))">-->
+                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                        <!--</select>
+                                <span asp-validation-for="UserId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>-->
                     </div>
                     <div class="form-group">
                         <input id="btnSubtmit" type="submit" class="btn btn-primary" value="Save" />
@@ -208,6 +217,27 @@
             });
 
     </script>
+
+    @*bind setter*@
+    <!--<script type="text/javascript">
+            $(document).ready(function () {
+                $("#BranchId").on("change", function () {
+                    $("#UserId").empty();
+                    var ddlsource = "#BranchId";
+                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetSetterByCourse?BranchId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#UserId").empty();
+                        $.each(data, function (i, qp) {
+                            items += "<option value ='" + qp.value + "'>" + qp.text + "</option>";
+                    });
+                        $('#UserId').html(items);
+                });
+                });
+            });
+
+    </script>-->
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript">
