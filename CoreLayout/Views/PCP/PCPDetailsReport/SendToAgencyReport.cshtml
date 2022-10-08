@@ -1,0 +1,111 @@
+﻿@using CoreLayout.Models.PCP
+@model IEnumerable<PCPSendPaperModel>
+@{
+    ViewData["title"] = "Index";
+}
+
+
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Agency Accept Report</h2>
+        @*<ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Report</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Index</li>
+            </ol>*@
+    </div>
+</div>
+<!-- End Page Header -->
+<!--Navbar-->
+<!--End Navbar -->
+<div>
+    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+    </div>
+</div>
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div class="table-responsive-sm">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.UserId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.QPCode)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CourseId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.BranchName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Session)<br />
+                                    @Html.DisplayNameFor(c => c.SemYearId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperOpenTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.StaticIPAddress)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.CreatedDate)
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int sno = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.AgencyName</td>
+                                    <td>@item.QPCode</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.Session <br /> @item.SemYearId</td>
+                                    <td>@item.PaperOpenTime</td>
+                                    <td>@item.StaticIPAddress</td>
+                                    <td>@item.CreatedDate</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+}

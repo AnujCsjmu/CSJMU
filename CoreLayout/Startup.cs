@@ -27,6 +27,7 @@ using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
 using CoreLayout.Repositories.PCP.PCPApproval;
 using CoreLayout.Repositories.PCP.PCPAssignedQP;
+using CoreLayout.Repositories.PCP.PCPDetailsReport;
 using CoreLayout.Repositories.PCP.PCPRegistration;
 using CoreLayout.Repositories.PCP.PCPSendPaper;
 using CoreLayout.Repositories.PCP.PCPSendReminder;
@@ -347,6 +348,10 @@ namespace CoreLayout
             //Exam PCP Upload old paper/Syllabus/Pattern
             services.AddScoped<IPCPUploadOldPaperService, PCPUploadOldPaperService>();
             services.AddScoped<IPCPUploadOldPaperRepository, PCPUploadOldPaperRepository>();
+
+            //Exam PCP Details Report
+            services.AddScoped<IPCPDetailsReportService, PCPDetailsReportService>();
+            services.AddScoped<IPCPDetailsReportRepository, PCPDetailsReportRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

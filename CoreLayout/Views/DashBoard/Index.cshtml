@@ -36,7 +36,7 @@
                 </div>
             </div>
         }
-        </div>
+    </div>
     <!-- End Page Header -->
     <!--Navbar-->
     <div class="responsive-background">
@@ -344,6 +344,7 @@
                             </div>
                         </div>
                         <div>
+                           
                             <h3 class="dash-25">@ViewBag.RegistrationCount</h3>
                         </div>
                         <div class="progress mb-1">
@@ -367,7 +368,8 @@
                             </div>
                         </div>
                         <div>
-                            <h3 class="dash-25">@ViewBag.ApprovedCount</h3>
+                            <a class="dash-25">@ViewBag.ApprovedCount</a>
+                            @*<h3 class="dash-25">@ViewBag.ApprovedCount</h3>*@
                         </div>
                         <div class="progress mb-1">
                             <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
@@ -385,13 +387,14 @@
                 <div class="card custom-card">
                     <div class="card-body dash1">
                         <div class="d-flex">
-                            <p class="mb-1 tx-inverse">No of Paper Setter Rejected</p>
+                            <p class="mb-1 tx-inverse">Number of Paper Setter Rejected</p>
                             <div class="ms-auto">
                                 <i class="fa fa-usd fs-20 text-success"></i>
                             </div>
                         </div>
                         <div>
-                            <h3 class="dash-25">@ViewBag.RejectCount</h3>
+                            <a class="dash-25">@ViewBag.RejectCount</a>
+                            @*<h3 class="dash-25">@ViewBag.RejectCount</h3>*@
                         </div>
                         <div class="progress mb-1">
                             <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
@@ -431,101 +434,110 @@
         <!--End  Row -->
 
         <!-- Row -->
-<div class="row row-sm">
-    <div class="col-sm-6 col-xl-3 col-lg-6">
-        <div class="card custom-card">
-            <div class="card-body dash1">
-                <div class="d-flex">
-                    <p class="mb-1 tx-inverse">Number Of QP Allotted To Paper Setter</p>
-                    <div class="ms-auto">
-                        <i class="fa fa-line-chart fs-20 text-primary"></i>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="dash-25">@ViewBag.QPAllotmentCount</h3>
-                </div>
-                <div class="progress mb-1">
-                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
-                         class="progress-bar progress-bar-xs wd-70p" role="progressbar"></div>
-                </div>
-                <div class="expansion-label d-flex">
-                    <span class="text-muted">Last Month</span>
-                    <span class="ms-auto"><i class="fa fa-caret-up me-1 text-success"></i>0.7%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3 col-lg-6">
-        <div class="card custom-card">
-            <div class="card-body dash1">
-                <div class="d-flex">
-                    <p class="mb-1 tx-inverse">Number Of Paper Uploaded By Setter</p>
-                    <div class="ms-auto">
-                        <i class="fa fa-money fs-20 text-secondary"></i>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="dash-25">@ViewBag.PaperUploadCount</h3>
-                </div>
-                <div class="progress mb-1">
-                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
-                         class="progress-bar progress-bar-xs wd-60p bg-secondary" role="progressbar">
-                    </div>
-                </div>
-                <div class="expansion-label d-flex">
-                    <span class="text-muted">Last Month</span>
-                    <span class="ms-auto"><i class="fa fa-caret-down me-1 text-danger"></i>0.43%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-xl-3 col-lg-6">
-        <div class="card custom-card">
-            <div class="card-body dash1">
-                <div class="d-flex">
-                    <p class="mb-1 tx-inverse">No of Paper Sent To Agency</p>
-                    <div class="ms-auto">
-                        <i class="fa fa-usd fs-20 text-success"></i>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="dash-25">@ViewBag.SendToAgencyCount</h3>
-                </div>
-                <div class="progress mb-1">
-                    <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
-                         class="progress-bar progress-bar-xs wd-50p bg-success" role="progressbar"></div>
-                </div>
-                <div class="expansion-label d-flex text-muted">
-                    <span class="text-muted">Last Month</span>
-                    <span class="ms-auto"><i class="fa fa-caret-down me-1 text-danger"></i>1.44%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    @*<div class="col-sm-6 col-xl-3 col-lg-6">
-            <div class="card custom-card">
-                <div class="card-body dash1">
-                    <div class="d-flex">
-                        <p class="mb-1 tx-inverse">Profit</p>
-                        <div class="ms-auto">
-                            <i class="fa fa-signal fs-20 text-info"></i>
+        <div class="row row-sm">
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card custom-card">
+                    <div class="card-body dash1">
+                        <div class="d-flex">
+                            <p class="mb-1 tx-inverse">Number Of QP Allotted To Paper Setter</p>
+                            <div class="ms-auto">
+                                <i class="fa fa-line-chart fs-20 text-primary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="dash-25">@ViewBag.QPAllotmentCount</a>
+                            @*<h3 class="dash-25">@ViewBag.QPAllotmentCount</h3>*@
+                        </div>
+                        <div class="progress mb-1">
+                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
+                                 class="progress-bar progress-bar-xs wd-70p" role="progressbar"></div>
+                        </div>
+                        <div class="expansion-label d-flex">
+                            <span class="text-muted">Last Month</span>
+                            <span class="ms-auto"><i class="fa fa-caret-up me-1 text-success"></i>0.7%</span>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="dash-25">$789</h3>
-                    </div>
-                    <div class="progress mb-1">
-                        <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
-                             class="progress-bar progress-bar-xs wd-40p bg-info" role="progressbar"></div>
-                    </div>
-                    <div class="expansion-label d-flex text-muted">
-                        <span class="text-muted">Last Month</span>
-                        <span class="ms-auto"><i class="fa fa-caret-up me-1 text-success"></i>0.9%</span>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card custom-card">
+                    <div class="card-body dash1">
+                        <div class="d-flex">
+                            <p class="mb-1 tx-inverse">Number Of Paper Uploaded By Setter</p>
+                            <div class="ms-auto">
+                                <i class="fa fa-money fs-20 text-secondary"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="dash-25">@ViewBag.PaperUploadCount</a>
+                            @*<h3 class="dash-25">@ViewBag.PaperUploadCount</h3>*@
+                        </div>
+                        <div class="progress mb-1">
+                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
+                                 class="progress-bar progress-bar-xs wd-60p bg-secondary" role="progressbar">
+                            </div>
+                        </div>
+                        <div class="expansion-label d-flex">
+                            <span class="text-muted">Last Month</span>
+                            <span class="ms-auto"><i class="fa fa-caret-down me-1 text-danger"></i>0.43%</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>*@
-</div>
+            <div class="col-sm-6 col-xl-3 col-lg-6">
+                <div class="card custom-card">
+                    <div class="card-body dash1">
+                        <div class="d-flex">
+                            <p class="mb-1 tx-inverse">Number of Paper Sent To Agency</p>
+                            <div class="ms-auto">
+                                <i class="fa fa-usd fs-20 text-success"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="dash-25">@ViewBag.SendToAgencyCount</a>
+                            @*<h3 class="dash-25">@ViewBag.SendToAgencyCount</h3>*@
+                        </div>
+                        <div class="progress mb-1">
+                            <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
+                                 class="progress-bar progress-bar-xs wd-50p bg-success" role="progressbar"></div>
+                        </div>
+                        <div class="expansion-label d-flex text-muted">
+                            <span class="text-muted">Last Month</span>
+                            <span class="ms-auto"><i class="fa fa-caret-down me-1 text-danger"></i>1.44%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-sm-6 col-xl-3 col-lg-6">
+                    <div class="card custom-card">
+                        <div class="card-body dash1">
+                            <div class="d-flex">
+                                <p class="mb-1 tx-inverse">Profit</p>
+                                <div class="ms-auto">
+                                    <i class="fa fa-signal fs-20 text-info"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="dash-25">$789</h3>
+                            </div>
+                            <div class="progress mb-1">
+                                <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="70"
+                                     class="progress-bar progress-bar-xs wd-40p bg-info" role="progressbar"></div>
+                            </div>
+                            <div class="expansion-label d-flex text-muted">
+                                <span class="text-muted">Last Month</span>
+                                <span class="ms-auto"><i class="fa fa-caret-up me-1 text-success"></i>0.9%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
         <!--End  Row -->
+        <!-- Modal -->
+       
     }
 </div>
+
+@section Scripts{
+
+}
