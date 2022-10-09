@@ -71,7 +71,7 @@
                         <tbody>
                             @{
                                 int sno = 0;
-                                int sno1 = 0;
+
                                 string space = " - ";
                                 int j = 0;
                             }
@@ -90,32 +90,22 @@
                                     <td>@item.TeachingExp <br /> @item.PaperSettingExp</td>
                                     @*<td>@item.BankName <br />@item.IFSC  <br /> @item.BranchAddress </td>*@
                                     <td style="white-space:nowrap">
-                                        @if (ViewBag.QPList != null)
+
+                                        @{
+                                            int sno1 = 0;
+                                        }
+                                        @if (item.QPAssignedList.Count != 0)
                                         {
-
-                                            foreach (var item1 in ViewBag.QPList)
+                                            @foreach (var item1 in item.QPAssignedList)
                                             {
-
-                                                foreach (var item2 in item1)
-                                                {
-                                                    j++;
-                                                    @if (item.UserId == item2.UserId)
-                                                    {
-                                                        { sno1++; }
-                                                        @sno1 @space @item2.QPCode<br />
-                                                    }
-
-                                                }
-                                                sno1 = 0;
+                                                { sno1++; }
+                                                @sno1 @space @item1.QPCode<br />
                                             }
-
-
                                         }
                                         else
                                         {
-                                            <label>QP Not Assigned</label>
+                                            <label style="font-weight:bold;color:red">QP Not Assigned</label>
                                         }
-
                                     </td>
                                     <td>@item.CreatedDate</td>
                                     <td>

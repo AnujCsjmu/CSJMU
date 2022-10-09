@@ -262,5 +262,8 @@ namespace CoreLayout.Models.PCP
         //for autosend reminder
         public string failedCount { get; set; }
         public string successCount { get; set; }
+
+        //new for qpassignment
+        public List<PCPAssignedQPModel> QPAssignedList { get; set; }
     }
 }
