@@ -96,7 +96,7 @@ namespace CoreLayout.Controllers.PSP
                         var fileExt = System.IO.Path.GetExtension(pCPRegistrationModel.ProfileImage.FileName).Substring(1);
                         if (!supportedTypes.Contains(fileExt))
                         {
-                            ModelState.AddModelError("", "File Extension Is InValid - Only Upload PDF File");
+                            ModelState.AddModelError("", "File Extension Is InValid - Only Upload jpg/jpeg/png File");
                             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                         }
                         else

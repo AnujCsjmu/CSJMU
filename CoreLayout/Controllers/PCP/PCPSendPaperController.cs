@@ -164,7 +164,8 @@ namespace CoreLayout.Controllers.PCP
                     {
                         int paperid = Convert.ToInt32(array[i]);
                         var data = (from sendpaper in await _pCPSendPaperService.GetAllPCPSendPaper()
-                                    where sendpaper.AgencyId == pCPSendPaperModel.UserId && sendpaper.PaperId == paperid
+                                        //where sendpaper.AgencyId == pCPSendPaperModel.UserId && sendpaper.PaperId == paperid
+                                    where sendpaper.PaperId == paperid
                                     select sendpaper).ToList();
                         if (data.Count > 0)
                         {
@@ -183,7 +184,7 @@ namespace CoreLayout.Controllers.PCP
 
             if (result == 1)
             {
-                ModelState.AddModelError("", "Paper already sent to this agency!");
+                ModelState.AddModelError("", "Paper already sent to the agency!");
                 return View("~/Views/PCP/PCPSendPaper/Create.cshtml", pCPSendPaperModel);
             }
             else if (ModelState.IsValid)

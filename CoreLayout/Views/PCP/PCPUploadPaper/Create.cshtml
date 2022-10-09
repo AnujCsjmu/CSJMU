@@ -90,6 +90,7 @@
                             <div class="form-group">
                                 <label asp-for="UploadPaper"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="UploadPaper" class="form-control" />
+                                <label style="font-size:10px; color:red; font-weight:bold">Only pdf</label>
                                 <span asp-validation-for="UploadPaper" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
@@ -97,6 +98,7 @@
                             <div class="form-group">
                                 <label asp-for="AnswerPaper"> </label>@*<span class="tx-danger"> *</span>*@
                                 <input asp-for="AnswerPaper" class="form-control" />
+                                <label style="font-size:10px; color:red; font-weight:bold">Only pdf</label>
                                 <span asp-validation-for="AnswerPaper" class="parsley-errors-list filled"></span>
                             </div>
                         </div>

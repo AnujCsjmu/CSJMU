@@ -54,7 +54,21 @@
 
                             </tr>
                         </thead>
-
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><b>Total:-</b></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="Registration" target="_blank" style="color:green; font-weight:bold"> @Model.Sum(i => i.RegisterCount) </a></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="Approved" target="_blank" style="color: green; font-weight: bold"> @Model.Sum(i => i.AppovedCount) </a></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="QPAssigned" target="_blank" style="color: green; font-weight: bold"> @Model.Sum(i => i.QPAssignedCount) </a></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="PaperUpload" target="_blank" style="color: green; font-weight: bold "> @Model.Sum(i => i.UploadPaperCount) </a></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="SendAgency" target="_blank" style="color: green; font-weight: bold"> @Model.Sum(i => i.SendToPaperAgencyCount) </a></td>
+                                <td><a asp-action="ViewReminder1" asp-route-link="AcceptAgency" target="_blank" style="color: green; font-weight: bold"> @Model.Sum(i => i.AcceptPaperAgencyCount) </a></td>
+                            </tr>
+                            
+                        </tfoot>
                         <tbody>
                             @{
                                 int sno = 0;

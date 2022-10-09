@@ -81,15 +81,70 @@ namespace CoreLayout.Controllers.PCP
                 else if (link == "SendAgency")
                 {
                      data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
-                                //where reg.ExamId == examId && reg.CourseId == courseId && reg.BranchId == subjectId && reg.AcceptedStatus is null
+                                where reg.ExamId == examId && reg.CourseId == courseId && reg.BranchId == subjectId
                                 select reg).ToList();
                     return View("~/Views/PCP/PCPDetailsReport/SendToAgencyReport.cshtml", data);
                 }
                 else if (link == "AcceptAgency")
                 {
                      data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
-                                where  reg.AcceptedStatus != null
-                                select reg).ToList();
+                             where reg.ExamId == examId && reg.CourseId == courseId && reg.BranchId == subjectId && reg.AcceptedStatus!=null
+                             select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/AgencyAcceptReport.cshtml", data);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IActionResult> ViewReminder1(string link)
+        {
+            try
+            {
+                var data = (dynamic)null;
+                if (link == "Registration")
+                {
+                    data = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                            select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/RegisterReport.cshtml", data);
+                }
+                else if (link == "Approved")
+                {
+                    data = (from reg in await _pCPRegistrationService.GetAllPCPRegistration()
+                           where reg.IsApproved != null
+                            select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/ApprovedReport.cshtml", data);
+                }
+                else if (link == "QPAssigned")
+                {
+                    data = (from reg in await _pCPAssignedQPService.GetAllPCPAssignedQP()
+                            select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/QPAssignedReport.cshtml", data);
+                }
+                else if (link == "PaperUpload")
+                {
+                    data = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                            where  reg.FinalSubmit != null
+                            select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/PaperUploadReport.cshtml", data);
+                }
+                else if (link == "SendAgency")
+                {
+                    data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                            select reg).ToList();
+                    return View("~/Views/PCP/PCPDetailsReport/SendToAgencyReport.cshtml", data);
+                }
+                else if (link == "AcceptAgency")
+                {
+                    data = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                            where  reg.AcceptedStatus != null
+                            select reg).ToList();
                     return View("~/Views/PCP/PCPDetailsReport/AgencyAcceptReport.cshtml", data);
                 }
                 else
