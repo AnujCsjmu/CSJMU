@@ -47,5 +47,9 @@ namespace CoreLayout.Services.PCP.PCPRegistration
         {
             return await _pCPRegistrationRepository.GetSetterList();
         }
+        public async Task<PCPRegistrationModel> ForSendReminderGetUseByIdAsync(int AssignedQPId)
+        {
+            return await _pCPRegistrationRepository.ForSendReminderGetUseByIdAsync(AssignedQPId);
+        }
     }
 }

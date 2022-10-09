@@ -8,5 +8,7 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
     {
         Task<List<PCPRegistrationModel>> GetReportQPAndPaperWise();
         Task<List<PCPRegistrationModel>> GetSetterList();
+
+        Task<PCPRegistrationModel> ForSendReminderGetUseByIdAsync(int AssignedQPId);
     }
 }

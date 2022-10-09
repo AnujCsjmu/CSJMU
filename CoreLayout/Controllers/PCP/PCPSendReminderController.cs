@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPSendReminder;
 using CoreLayout.Services.PCP.PCPUploadPaper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CoreLayout.Controllers.PCP
 {
@@ -82,6 +83,10 @@ namespace CoreLayout.Controllers.PCP
                 }
                 //end
                 ViewBag.EncryptPwdList = pcslist;
+
+                //start bind filter qplist
+                ViewBag.QPList = new SelectList(await _pCPUploadPaperService.BothUserPaperUploadAndNotUpload(), "QPId", "QPCode");
+                //end
                 return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
             }
 
@@ -158,22 +163,23 @@ namespace CoreLayout.Controllers.PCP
             }
             return View("~/Views/PCP/PCPSendReminder/Index.cshtml", data);
         }
-        public async Task<IActionResult> SendReminder(string uid)
+        public async Task<IActionResult> SendReminder(string assignedQPId)
         {
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             try
             {
-                if (uid != null)
+                if (assignedQPId != null)
                 {
 
                     List<string> list = new List<string>();
 
-                    String[] array = uid.Split(",");
+                    String[] array = assignedQPId.Split(",");
                     for (int i = 0; i < array.Length; i++)
                     {
                         //list.Add(array[i]);
-                        var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(array[i]));
-                        pCPRegistrationModel.PCPRegID = Convert.ToInt32(array[i]);
+                        var data = await _pCPRegistrationService.ForSendReminderGetUseByIdAsync(Convert.ToInt32(array[i]));
+                        pCPRegistrationModel.AssignedQPId = Convert.ToInt32(array[i]);
+                        pCPRegistrationModel.PCPRegID = data.PCPRegID;
                         pCPRegistrationModel.UserId = data.UserId;
                         pCPRegistrationModel.UserName = data.UserName;
                         pCPRegistrationModel.MobileNo = data.MobileNo;

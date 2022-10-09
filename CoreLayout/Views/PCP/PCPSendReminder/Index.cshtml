@@ -41,8 +41,9 @@
 </div>
 <!-- End Page Header -->
 <!--Navbar-->
-<div class="responsive-background">
-    <form method="post" id="form1">
+
+<form method="post" id="form1">
+    <div class="responsive-background">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="advanced-search br-3">
                 <div class="row align-items-center">
@@ -59,6 +60,12 @@
                             new { @class = "form-control" })
                         </div>
                     </div>
+                    @*<div class="col-md-6 col-xl-3">
+                            <div class="form-group mb-lg-0">
+                                <label class="">QP Code :</label>
+                                @Html.DropDownList("QPCode", ViewBag.QPList as SelectList, "--Please Select--", new { @class = "form-control" })
+                            </div>
+                        </div>*@
 
                 </div>
                 <hr>
@@ -68,8 +75,9 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
 <!--End Navbar -->
 <div>
     <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
@@ -132,7 +140,7 @@
                                         }
                                         else
                                         {
-                                            <input type="checkbox" id="chkid" value="@item.PCPRegID" />
+                                            <input type="checkbox" id="chkid" value="@item.AssignedQPId" />
                                         }
                                     </td>
                                     <td>
@@ -213,7 +221,7 @@
     </div>
 </div>
 <div>
-    <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" onclick="return confirm('Are you sure you want to send reminder?')" />
+    <input type="button" id="btnReminder" name="Reminder" value="Send Reminder" class="btn btn-success" />
 </div>
 @*<div id="global-loader">
         <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
@@ -240,69 +248,42 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#btnReminder").click(function () {
-                var userid = [];
-                var i = 0;
-                //Loop through all checked CheckBoxes in GridView.
-                $("#exportexample tbody input[type=checkbox]:checked").each(function () {
-                    userid[i] = $(this).val();
-                    i++;
-                });
-
-                if (userid.length > 0) {
-                    $('#global-loader').show();
-                    $.ajax({
-                        type: 'POST',
-                        url: '/PCPSendReminder/SendReminder?uid=' + userid,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            var form = document.getElementById("form1");
-                            form.submit();
-                            $('#global-loader').hide();
-                            alert("send reminder");
-                        },
-                        error: function (data) {
-                            alert("failed reminder");
-                        }
-                    });
-                }
-                else {
-                    alert("Select atleast one checkbox");
-                }
-            });
-        });
-    </script>
-
-    @*ViewReminder*@
-    @*<script type="text/javascript">
-            $(document).ready(function () {
-                $("#btnViewReminder").click(function () {
+                var obj = showMessage('Are you sure you want to send reminder?');
+                if (obj == true) {
                     var userid = [];
                     var i = 0;
                     //Loop through all checked CheckBoxes in GridView.
                     $("#exportexample tbody input[type=checkbox]:checked").each(function () {
                         userid[i] = $(this).val();
+                        i++;
                     });
+
                     if (userid.length > 0) {
+                        $('#global-loader').show();
                         $.ajax({
                             type: 'POST',
-                            url: '/PCPSendReminder/ViewReminder?uid=' + userid,
+                            url: '/PCPSendReminder/SendReminder?assignedQPId=' + userid,
                             contentType: "application/json; charset=utf-8",
-                            data: $(this).serialize(),
                             success: function (data) {
-
+                                var form = document.getElementById("form1");
+                                form.submit();
+                                alert("send reminder");
+                                $('#global-loader').hide();
                             },
-
                             error: function (data) {
-                                /*alert("error!");*/
+                                alert("failed reminder");
+                                $('#global-loader').hide();
                             }
                         });
                     }
                     else {
-                        alert("Select atleast one checkbox");
+                        alert('Select atleast one checkbox!');
                     }
-                });
+                }
+               
             });
-        </script>*@
+        });
+    </script>
 
     @*checkbox multi select at one time*@
     <script>
@@ -345,6 +326,17 @@
             });
         });
     </script>
+    <script>
+        function showMessage(Message) {
+            var response = confirm(Message);
 
+            if (response == true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
 
 }

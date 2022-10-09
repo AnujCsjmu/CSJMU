@@ -249,5 +249,25 @@ namespace CoreLayout.Repositories.PCP.PCPRegistration
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<PCPRegistrationModel> ForSendReminderGetUseByIdAsync(int AssignedQPId)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_PCP";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("AssignedQPId", AssignedQPId, DbType.Int32);
+                    parameters.Add("@Query", 8, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<PCPRegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
