@@ -124,7 +124,7 @@ namespace CoreLayout.Controllers.PCP
                 pCPSendPaperModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
                 var data = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                                //where user.CreatedBy == PaperSetterId
+                            where paper.FinalSubmit != null
                             select paper).ToList();
                 ViewBag.PaperList = data;
 
@@ -300,11 +300,12 @@ namespace CoreLayout.Controllers.PCP
             object list = null;
 
             #region 1st cast 7 out of 7 not blank
-            if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId!=0 && PaperSetterId!=0 && QPId!=0 && SemYearId != 0)
+            if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
-                list= (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                       where paper.ExamId==ExamId && paper.CourseId==CourseId && paper.BranchId==BranchId && paper.SessionId==SessionId &&  paper.CreatedBy == PaperSetterId && paper.QPId ==QPId && paper.SemYearId == SemYearId
-                       select paper).ToList();
+                list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                        where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
+                        select paper).ToList();
             }
             #endregion
 
@@ -313,42 +314,49 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             #endregion end 2 case
@@ -358,36 +366,42 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where  paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
@@ -396,30 +410,35 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId  && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //3rd
@@ -427,18 +446,21 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
@@ -446,6 +468,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //4th
@@ -453,18 +476,21 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId  && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //5th
@@ -472,12 +498,14 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //6th
@@ -485,6 +513,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             #endregion end 2 case
@@ -495,55 +524,64 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.CourseId == CourseId &&  paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where  paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
-           // 2nd
+            // 2nd
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.CourseId == CourseId  && paper.CreatedBy == PaperSetterId  && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId  && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //3rd
@@ -551,31 +589,36 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.SessionId == SessionId  && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId && paper.SessionId == SessionId  && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //4th
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId  && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where  paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //5th
@@ -583,23 +626,26 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
             #endregion
 
             #region 4th cast 7 out of 3 is not blank
-         
+
             if (ExamId != 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.BranchId == BranchId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SessionId == SessionId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
@@ -607,62 +653,72 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId
+                      && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId && paper.SemYearId == SemYearId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //2nd
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where  paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId
+                        where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SessionId == SessionId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy== PaperSetterId
+                        where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //3rd
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where  paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId
+                        where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.QPId == QPId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //4th
@@ -670,6 +726,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                       && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
@@ -677,6 +734,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                      && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //5th
@@ -684,6 +742,7 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.SemYearId == SemYearId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             #endregion
@@ -693,37 +752,38 @@ namespace CoreLayout.Controllers.PCP
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
                         where paper.ExamId == ExamId && paper.CourseId == CourseId
+                        && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.BranchId == BranchId
+                        where paper.ExamId == ExamId && paper.BranchId == BranchId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.SessionId == SessionId
+                        where paper.ExamId == ExamId && paper.SessionId == SessionId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.CreatedBy == PaperSetterId
+                        where paper.ExamId == ExamId && paper.CreatedBy == PaperSetterId && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.QPId == QPId
+                        where paper.ExamId == ExamId && paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId && paper.SemYearId == SemYearId
+                        where paper.ExamId == ExamId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //2nd
@@ -731,95 +791,95 @@ namespace CoreLayout.Controllers.PCP
             if (ExamId == 0 && CourseId != 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.BranchId == BranchId
+                        where paper.CourseId == CourseId && paper.BranchId == BranchId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.SessionId == SessionId
+                        where paper.CourseId == CourseId && paper.SessionId == SessionId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId
+                        where paper.CourseId == CourseId && paper.CreatedBy == PaperSetterId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.QPId == QPId
+                        where paper.CourseId == CourseId && paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId && paper.SemYearId == SemYearId
+                        where paper.CourseId == CourseId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //3rd
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId && paper.SessionId == SessionId
+                        where paper.BranchId == BranchId && paper.SessionId == SessionId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId
+                        where paper.BranchId == BranchId && paper.CreatedBy == PaperSetterId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId && paper.QPId == QPId
+                        where paper.BranchId == BranchId && paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId && paper.SemYearId == SemYearId
+                        where paper.BranchId == BranchId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //4th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId
+                        where paper.SessionId == SessionId && paper.CreatedBy == PaperSetterId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.SessionId == SessionId && paper.QPId == QPId
+                        where paper.SessionId == SessionId && paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.SessionId == SessionId && paper.SemYearId == SemYearId
+                        where paper.SessionId == SessionId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //5th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CreatedBy == PaperSetterId && paper.QPId == QPId
+                        where paper.CreatedBy == PaperSetterId && paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId
+                        where paper.CreatedBy == PaperSetterId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             //6th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId != 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.QPId == QPId && paper.SemYearId == SemYearId
+                        where paper.QPId == QPId && paper.SemYearId == SemYearId && paper.FinalSubmit != null
                         select paper).ToList();
             }
 
@@ -832,49 +892,49 @@ namespace CoreLayout.Controllers.PCP
             if (ExamId != 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.ExamId == ExamId
+                        where paper.ExamId == ExamId && paper.FinalSubmit != null
                         select paper).ToList();
             }
-           
+
             //2nd
 
             if (ExamId != 0 && CourseId != 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CourseId == CourseId
+                        where paper.CourseId == CourseId && paper.FinalSubmit != null
                         select paper).ToList();
             }
-            
+
             //3rd
             if (ExamId == 0 && CourseId == 0 && BranchId != 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.BranchId == BranchId
+                        where paper.BranchId == BranchId && paper.FinalSubmit != null
                         select paper).ToList();
             }
-           
+
             //4th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId != 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.SessionId == SessionId 
+                        where paper.SessionId == SessionId && paper.FinalSubmit != null
                         select paper).ToList();
             }
-          
-           
+
+
             //5th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId != 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.CreatedBy == PaperSetterId 
+                        where paper.CreatedBy == PaperSetterId && paper.FinalSubmit != null
                         select paper).ToList();
             }
-           
+
             //6th
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId != 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
-                        where paper.QPId == QPId
+                        where paper.QPId == QPId && paper.FinalSubmit != null
                         select paper).ToList();
             }
             #endregion
@@ -883,6 +943,7 @@ namespace CoreLayout.Controllers.PCP
             if (ExamId == 0 && CourseId == 0 && BranchId == 0 && SessionId == 0 && PaperSetterId == 0 && QPId == 0 && SemYearId == 0)
             {
                 list = (from paper in _pCPUploadPaperService.GetAllPCPUploadPaper().Result
+                        where paper.FinalSubmit != null
                         select paper).ToList();
             }
             #endregion end 7 case
@@ -892,18 +953,18 @@ namespace CoreLayout.Controllers.PCP
         public async Task<JsonResult> GetCourse(int ExamId)
         {
             var CourseList = (from examcoursemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
-                            where examcoursemapping.ExamId == ExamId
-                            select new SelectListItem()
-                            {
-                                Text = examcoursemapping.CourseName,
-                                Value = examcoursemapping.CourseID.ToString(),
-                            }).ToList();
+                              where examcoursemapping.ExamId == ExamId
+                              select new SelectListItem()
+                              {
+                                  Text = examcoursemapping.CourseName,
+                                  Value = examcoursemapping.CourseID.ToString(),
+                              }).ToList();
 
             CourseList.Insert(0, new SelectListItem()
             {
                 Text = "----Select----",
                 Value = string.Empty
-            }); 
+            });
             return Json(CourseList);
         }
 

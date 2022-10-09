@@ -265,5 +265,7 @@ namespace CoreLayout.Models.PCP
 
         //new for qpassignment
         public List<PCPAssignedQPModel> QPAssignedList { get; set; }
+
+        public string FinalSubmit { get; set; }
     }
 }

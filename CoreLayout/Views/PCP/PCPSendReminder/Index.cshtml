@@ -93,8 +93,9 @@
                     <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                         <thead>
                             <tr>
-                                <th><input name="select_all" value="1" type="checkbox"></th>
                                 <th>S.No</th>
+                                <th><input name="select_all" value="1" type="checkbox"></th>
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
@@ -121,8 +122,8 @@
                                     @Html.DisplayNameFor(c => c.AnswerPath)
                                 </th>
                                 @*<th>
-                                        @Html.DisplayNameFor(c => c.Session)
-                                    </th>*@
+            @Html.DisplayNameFor(c => c.Session)
+        </th>*@
                                 <th>Reminder?</th>
                             </tr>
                         </thead>
@@ -133,85 +134,83 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @if (item.PaperPath != null)
-                                        {
-                                        }
-                                        else
-                                        {
-                                            <input type="checkbox" id="chkid" value="@item.AssignedQPId" />
-                                        }
-                                    </td>
-                                    <td>
-                                        @{ sno++; }
-                                        @sno
-                                    </td>
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+                                <td>
+                                    @if (item.FinalSubmit == null)
+                                    {
+                                        <input type="checkbox" id="chkid" value="@item.AssignedQPId" />
+                                    }
+                                </td>
 
-                                    <td>@item.UserName</td>
-                                    <td>@item.QPCode</td>
-                                    <td>@item.CourseName</td>
-                                    <td>@item.BranchName</td>
-                                    <td> @item.Session<br /> @item.SemYearId</td>
 
-                                    <td>
-                                        @*@item.PaperPassword<br />*@
-                                        @if (item.RequestQuestionPwdStatus != null)
+                                <td>@item.UserName</td>
+                                <td>@item.QPCode</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.BranchName</td>
+                                <td> @item.Session<br /> @item.SemYearId</td>
+
+                                <td>
+                                    @*@item.PaperPassword<br />*@
+                                    @if (item.RequestQuestionPwdStatus != null)
+                                    {
+                                        @if (ViewBag.EncryptPwdList != null)
                                         {
-                                            @if (ViewBag.EncryptPwdList != null)
+                                            foreach (var item1 in ViewBag.EncryptPwdList)
                                             {
-                                                foreach (var item1 in ViewBag.EncryptPwdList)
-                                                {
-                                                    @item.DecryptPassword
-                                                    break;
-                                                }
+                                                @item.DecryptPassword
+                                                break;
                                             }
                                         }
-                                    </td>
-                                    @if (item.PaperPath != null)
+                                    }
+                                </td>
+                                @if (item.FinalSubmit != null)
+                                {
+                                    @if (item.RequestQuestionPwdStatus != null)
                                     {
-                                        @if (item.RequestQuestionPwdStatus != null)
-                                        {
-                                            <td>
-                                                <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                                <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <a asp-action="RequestQuestionPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Question Paper Password</a>
-                                            </td>
-                                        }
+                                        <td>
+                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+                                        <td>
+                                            <a asp-action="RequestQuestionPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Question Paper Password</a>
+                                        </td>
                                     }
+                                }
+                                else
+                                {
+                                    <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+                                }
 
-                                    @if (item.AnswerPath != null)
+                                @if (item.FinalSubmit != null)
+                                {
+                                    @if (item.RequestAnswerPwdStatus != null)
                                     {
-                                        @if (item.RequestAnswerPwdStatus != null)
-                                        {
-                                            <td>
-                                                <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                                <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <a asp-action="RequestAnswerPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Answer Paper Password</a>
-                                            </td>
-                                        }
+                                        <td>
+                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                            <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
                                     }
                                     else
                                     {
-                                        <td style="font-weight:bold; color:red">Answer Not Uploaded</td>
+                                        <td>
+                                            <a asp-action="RequestAnswerPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Answer Paper Password</a>
+                                        </td>
                                     }
-                                    @*<td>@item.Session</td>*@
-                                    <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-assignedQPId="@item.AssignedQPId" target="_blank">View</a></td>
-                                </tr>
+                                }
+                                else
+                                {
+                                    <td style="font-weight:bold; color:red">Answer Not Uploaded</td>
+                                }
+                                @*<td>@item.Session</td>*@
+                                <td><a asp-action="ViewReminder" asp-route-id="@item.UserId" asp-route-assignedQPId="@item.AssignedQPId" target="_blank">View</a></td>
+                            </tr>
                             }
                         </tbody>
                     </table>
@@ -280,7 +279,7 @@
                         alert('Select atleast one checkbox!');
                     }
                 }
-               
+
             });
         });
     </script>

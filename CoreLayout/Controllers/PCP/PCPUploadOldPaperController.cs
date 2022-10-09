@@ -108,9 +108,9 @@ namespace CoreLayout.Controllers.PCP
             {
                 pCPUploadOldPaperModel.oldpaperids = oldpaperid;
                 pCPUploadOldPaperModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
-                var data1 = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(oldpaperid));
-                if (data1 != null)
-                {
+                //var data1 = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(oldpaperid));
+                //if (data1 != null)
+                //{
                     var res = await _pCPUploadOldPaperService.FinalSubmitAsync(pCPUploadOldPaperModel);
                     if (res.Equals(1))
                     {
@@ -120,11 +120,11 @@ namespace CoreLayout.Controllers.PCP
                     {
                         TempData["error"] = "Data has not been final submit";
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "data is not available");
-                }
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "data is not available");
+                //}
             }
             else
             {

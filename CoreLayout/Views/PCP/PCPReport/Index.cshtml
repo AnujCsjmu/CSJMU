@@ -23,7 +23,7 @@
     <label style="font-weight:bold; color:red">Total QP Allotted:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.QPAllotmentCount</label>&nbsp;&nbsp;&nbsp;
     <label style="font-weight:bold; color:red">Total Paper Uploaded:- </label>&nbsp;&nbsp;<label style="font-weight:bold; color:black">@ViewBag.PaperUploadCount</label>&nbsp;&nbsp;&nbsp;
     <label style="font-weight:bold; color:red">Total Send to Agency:- </label>&nbsp;&nbsp; <label style="font-weight:bold; color:black">@ViewBag.SendToAgencyCount</label>&nbsp;&nbsp;&nbsp;
-
+    <label style="font-weight:bold; color:red">Total Paper Accept By Agency:- </label>&nbsp;&nbsp; <label style="font-weight:bold; color:black">@ViewBag.AcceptPaper</label>&nbsp;&nbsp;&nbsp;
 </div>
 <!-- Row -->
 <div class="row">
@@ -91,7 +91,7 @@
                                     <td>@item.BranchName</td>
                                     <td>@item.Session<br />@item.SemYearId</td>
                                     
-                                    @if (@item.PaperPath == null)
+                                    @if (@item.FinalSubmit == null)
                                     {
                                         <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
 

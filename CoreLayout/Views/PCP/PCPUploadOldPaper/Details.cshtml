@@ -28,35 +28,35 @@
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="ExamName" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="ExamId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="CourseName" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="CourseId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="SemYearId" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="SemYearId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="Session" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="SessionId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="BranchName" class="form-control" readonly="readonly" />
@@ -64,14 +64,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="QPName" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PaperType"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("PaperType", new List<SelectListItem>

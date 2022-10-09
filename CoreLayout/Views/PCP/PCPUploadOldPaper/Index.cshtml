@@ -47,7 +47,8 @@
                                         @Html.DisplayNameFor(c => c.BranchId)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(c => c.QPCode)
+                                        @Html.DisplayNameFor(c => c.QPCode)<br />
+                                        @Html.DisplayNameFor(c => c.QPName)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(c => c.PaperType)
@@ -102,7 +103,7 @@
                                             @item.SemYearId
                                         </td>
                                         <td> @item.BranchName</td>
-                                        <td> @item.QPCode</td>
+                                        <td> @item.QPCode <br /> @item.QPName </td>
                                         <td> @item.PaperType</td>
                                         <td>
                                             @if (item.OldPaperPath != null)
@@ -129,13 +130,13 @@
                                         <td>
                                             @if (item.OldPatternPath != null)
                                             {
-                                            <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                                <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {
                                                 <label style="font-weight:bold; color:red">No File</label>
                                             }
-                                            
+
                                         </td>
                                         <td>
                                             @if (item.CertificatePath != null)
@@ -219,4 +220,6 @@
             });
         });
     </script>
+
+
 }

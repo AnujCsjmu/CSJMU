@@ -24,7 +24,7 @@
                         <input type="hidden" asp-for="OldPaperId" />
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList,"ExamId","ExamName"))">
@@ -33,7 +33,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="ExamId"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
@@ -42,7 +42,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="SemYearId" asp-items="@(new SelectList(Model.SemYearList,"SemYearId","SemYearId"))">
@@ -51,7 +51,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="SemYearId"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="BranchId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="BranchId" asp-items="@(new SelectList(Model.BranchList,"BranchId","BranchName"))">
@@ -60,7 +60,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="BranchId"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
@@ -69,7 +69,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="SessionId"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
                                 <select class="form-control select" asp-for="QPId" asp-items="@(new SelectList(Model.QPList,"QPId","QPName"))">
@@ -78,7 +78,7 @@
                                 <span asp-validation-for="QPId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PaperType" class="mg-b-10"> </label><span class="tx-danger"> *</span>
                                 @Html.DropDownList("PaperType", new List<SelectListItem>
@@ -91,7 +91,7 @@
                                 <span asp-validation-for="PaperType" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FUOldPaperEdit"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUOldPaperEdit" class="form-control" />
@@ -99,7 +99,7 @@
                                 <span id="uservalidation" asp-validation-for="FUOldPaperEdit" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FUOldSyllabusEdit"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUOldSyllabusEdit" class="form-control" />
@@ -107,7 +107,7 @@
                                 <span id="uservalidation" asp-validation-for="FUOldSyllabusEdit" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FUOldPatternEdit"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUOldPatternEdit" class="form-control" />
@@ -115,7 +115,7 @@
                                 <span id="uservalidation" asp-validation-for="FUOldPatternEdit" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FUCertificateEdit"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUCertificateEdit" class="form-control" />

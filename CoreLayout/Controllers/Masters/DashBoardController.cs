@@ -64,8 +64,12 @@ namespace CoreLayout.Controllers
                         var qpallotted = (from reg in await _pCPAssignedQPService.GetAllPCPAssignedQP()
                                           select reg).ToList();
                         var paperupload = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                                           where reg.FinalSubmit !=null
                                            select reg).ToList();
                         var sendpaper = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                                         select reg).ToList();
+                        var acceptPaper = (from reg in await _pCPSendPaperService.GetAllPCPSendPaper()
+                                         where reg.AcceptedStatus!=null
                                          select reg).ToList();
 
                         ViewBag.RegistrationCount = registercount.Count.ToString();
@@ -74,6 +78,7 @@ namespace CoreLayout.Controllers
                         ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
                         ViewBag.PaperUploadCount = paperupload.Count.ToString();
                         ViewBag.SendToAgencyCount =sendpaper.Count.ToString();
+                        ViewBag.AcceptPaper = acceptPaper.Count.ToString();
                     }
 
                     #endregion
