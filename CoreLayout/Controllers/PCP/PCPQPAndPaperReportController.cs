@@ -78,6 +78,9 @@ namespace CoreLayout.Controllers.PCP
             var reject = (from reg in (await _pCPRegistrationService.GetAllPCPRegistration())
                                  where reg.IsRecordDeleted == 1
                                  select reg).ToList();
+            var qpnotassigned = (from reg in await _pCPRegistrationService.GetReportQPAndPaperWise()
+                                 where reg.QPCode is null
+                                 select reg).ToList();
             var qpallotted = (from reg in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
                           select reg).ToList();
             var paperupload = (from reg in (await _pCPUploadPaperService.GetAllPCPUploadPaper())
@@ -92,6 +95,7 @@ namespace CoreLayout.Controllers.PCP
             ViewBag.RegistrationCount = registercount.Count.ToString();
             ViewBag.ApprovedCount = approvecount.Count.ToString();
             ViewBag.RejectCount = reject.Count.ToString();
+            ViewBag.QPNotAssigned = qpnotassigned.Count.ToString();
             ViewBag.QPAllotmentCount = qpallotted.Count.ToString();
             ViewBag.PaperUploadCount = paperupload.Count.ToString();
             ViewBag.SendToAgencyCount = sendpaper.Count.ToString();
