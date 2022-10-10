@@ -27,14 +27,15 @@ namespace CoreLayout.Controllers.UserManagement
         private readonly IRegistrationService _registrationService;
         private readonly IRoleService _roleService;
         private readonly CommonController _commonController;
+        private IHttpContextAccessor _httpContextAccessor;
         private static string errormsg = "";
-        public UserController(ILogger<UserController> logger, IRegistrationService registrationService, IRoleService roleService, CommonController commonController)
+        public UserController(ILogger<UserController> logger, IRegistrationService registrationService, IRoleService roleService, CommonController commonController, IHttpContextAccessor httpContextAccessor)
         {
             _roleService = roleService;
             _logger = logger;
             _registrationService = registrationService;
             _commonController = commonController;
-
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
@@ -47,18 +48,18 @@ namespace CoreLayout.Controllers.UserManagement
                 ViewBag.errormsg = errormsg;
             }
             object data = null;
-            int? RoleId =  HttpContext.Session.GetInt32("RoleId");
+            int? RoleId = HttpContext.Session.GetInt32("RoleId");
             int? UserId = HttpContext.Session.GetInt32("UserId");
             if (RoleId == 1)
             {
-                 data = await _registrationService.GetAllRegistrationAsync();
+                data = await _registrationService.GetAllRegistrationAsync();
             }
             else
             {
 
                 data = (from registration in _registrationService.GetAllRegistrationAsync().Result
-                               where registration.CreatedBy == UserId /*&& registration.RoleId==RoleId*/
-                               select registration).ToList();
+                        where registration.CreatedBy == UserId /*&& registration.RoleId==RoleId*/
+                        select registration).ToList();
             }
 
             return View(data);
@@ -106,11 +107,11 @@ namespace CoreLayout.Controllers.UserManagement
             {
                 registrationModel.RoleList = await _roleService.GetAllRoleAsync();
             }
-            else 
+            else
             {
                 registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
             }
-         
+
             //BindInstitute();
             return View(registrationModel);
         }
@@ -138,8 +139,8 @@ namespace CoreLayout.Controllers.UserManagement
                 int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
                 if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
                 {
-                   
-                   
+
+
                     string salt = _commonController.CreateSalt();
                     string saltedHash = _commonController.ComputeSaltedHash(registrationModel.Password, salt);
                     registrationModel.Salt = salt;
@@ -398,6 +399,114 @@ namespace CoreLayout.Controllers.UserManagement
                 return RedirectToAction("Login", "Home");
 
             }
+        }
+
+        public async Task<IActionResult> ChangePassword()
+        {
+            int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+            int UserId = (int)HttpContext.Session.GetInt32("UserId");
+            var Data = await _registrationService.GetRegistrationByIdAsync(UserId);
+            if (Data == null)
+            {
+                return NotFound();
+            }
+            return View(Data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(RegistrationModel registrationModel)
+        {
+            try
+            {
+                if (registrationModel.OldPassword != null)
+                {
+                    int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                    int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                    var Data = await _registrationService.GetRegistrationByIdAsync(UserId);
+                    if (Data != null)
+                    {
+                        if (String.Compare(ComputeSaltedHash(registrationModel.OldPassword, Data.Salt), Data.SaltedHash) == 0)
+                        {
+                            string salt = _commonController.CreateSalt();
+                            string saltedHash = _commonController.ComputeSaltedHash(registrationModel.Password, salt);
+                            registrationModel.UserID = UserId;
+                            registrationModel.Salt = salt;
+                            registrationModel.SaltedHash = saltedHash;
+                            registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                            registrationModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
+                            registrationModel.OldSalt = Data.Salt;
+                            registrationModel.OldSaltedHash = Data.SaltedHash;
+                            registrationModel.RoleId = Data.RoleId;
+                            registrationModel.UserName = Data.UserName;
+                            if (ModelState.IsValid)
+                            {
+                                var result = await _registrationService.ChangePassword(registrationModel);
+                                if (result == 1)
+                                {
+                                    TempData["success"] = "Password has been changed";
+                                    _httpContextAccessor.HttpContext.Session.Clear();
+                                    //Clear cookies
+                                    var cookies = _httpContextAccessor.HttpContext.Request.Cookies;
+                                    foreach (var cookie in cookies)
+                                    {
+                                        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie.Key);
+                                    }
+                                }
+                                else
+                                {
+                                    TempData["error"] = "Password has not been changed";
+                                }
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Model State is not valid");
+                                return View(registrationModel);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Invalid old password!");
+                            return View(registrationModel);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Data not found");
+                        return View(registrationModel);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Old Password is not blank");
+                    return View(registrationModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.ToString());
+            }
+            //BindInstitute();
+            return View(registrationModel);
+        }
+
+        public static string ComputeSaltedHash(string password, string salt)
+        {
+            if (string.IsNullOrEmpty(password))
+                throw new ArgumentNullException("password");
+            if (string.IsNullOrEmpty(password))
+                throw new ArgumentNullException("salt");
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
+
+            HashAlgorithm hash = new SHA1Managed();
+
+            List<byte> passwordWithSaltBytes = new List<byte>(passwordBytes);
+            passwordWithSaltBytes.AddRange(saltBytes);
+
+            byte[] hashBytes = hash.ComputeHash(passwordWithSaltBytes.ToArray());
+
+            return Convert.ToBase64String(hashBytes);
         }
     }
 }

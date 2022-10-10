@@ -77,8 +77,11 @@ namespace CoreLayout.Models.UserManagement
         //public List<RoleToRoleMappingModel> RoleToRoleMappingList { get; set; }
         public int? PaperSetterId { get; set; }
         public string PaperSetterName { get; set; }
-        
 
 
+        //chnage password
+        public string OldPassword { get; set; }
+        public string OldSalt { get; set; }
+        public string OldSaltedHash { get; set; }
     }
 }

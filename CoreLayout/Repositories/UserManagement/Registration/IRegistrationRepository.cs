@@ -10,5 +10,7 @@ namespace CoreLayout.Repositories.UserManagement.Registration
     public interface IRegistrationRepository : IRepository<RegistrationModel>
     {
         Task<List<RegistrationModel>> GetAllInstituteAsync();
+
+        Task<int> ChangePassword(RegistrationModel entity);
     }
 }

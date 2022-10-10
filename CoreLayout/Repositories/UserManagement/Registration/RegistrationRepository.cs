@@ -310,5 +310,72 @@ namespace CoreLayout.Repositories.UserManagement.Registration
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<int> ChangePassword(RegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_CRUD_USERLOGIN";
+                        var res = 0;
+                        var res1 = 0;
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("UserID", entity.UserID, DbType.Int32);
+                        parameters.Add("Salt", entity.Salt, DbType.String);
+                        parameters.Add("SaltedHash", entity.SaltedHash, DbType.String);
+                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
+                        parameters.Add("EmailID", entity.EmailID, DbType.String);
+                       // parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
+                        parameters.Add("@Query", 12, DbType.Int32);
+                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        if (res == 1)
+                        {
+                            DynamicParameters parameters1 = new DynamicParameters();
+                            parameters1.Add("UserID", entity.UserID, DbType.Int32);
+                            parameters1.Add("UserName", entity.UserName, DbType.String);
+                            parameters1.Add("RoleId", entity.RoleId, DbType.Int32);
+                            parameters1.Add("Salt", entity.OldSalt, DbType.String);
+                            parameters1.Add("SaltedHash", entity.OldSaltedHash, DbType.String);
+                            parameters1.Add("MobileNo", entity.MobileNo, DbType.String);
+                            parameters1.Add("EmailID", entity.EmailID, DbType.String);
+                            parameters1.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+                            parameters1.Add("IPAddress", entity.IPAddress, DbType.String);
+                            parameters1.Add("@Query", 13, DbType.Int32);
+                            res1 = await SqlMapper.ExecuteAsync(connection, query, parameters1, tran, commandType: CommandType.StoredProcedure);
+                        }
+
+                        if (res1 == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res1;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
     }
 }

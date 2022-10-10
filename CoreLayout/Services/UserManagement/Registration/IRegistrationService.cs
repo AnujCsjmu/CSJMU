@@ -16,5 +16,7 @@ namespace CoreLayout.Services.Registration
         public Task<int> DeleteRegistrationAsync(RegistrationModel roleModel);
 
         public Task<List<RegistrationModel>> GetAllInstituteAsync();
+
+        public Task<int> ChangePassword(RegistrationModel registrationModel);
     }
 }

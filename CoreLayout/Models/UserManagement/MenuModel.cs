@@ -30,7 +30,7 @@ namespace CoreLayout.Models.UserManagement
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [Display(Name = "Action Name")]
         [Required(ErrorMessage = "Please enter menu url")]
-        [StringLength(10)]
+        [StringLength(20)]
         public string Action { get; set; }
 
         public string ParentMenuName { get; set; }

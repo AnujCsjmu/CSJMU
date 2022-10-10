@@ -41,5 +41,10 @@ namespace CoreLayout.Services.Registration
         {
             return await _registrationRepository.GetAllInstituteAsync();
         }
+
+        public async Task<int> ChangePassword(RegistrationModel registrationModel)
+        {
+            return await _registrationRepository.ChangePassword(registrationModel);
+        }
     }
 }
