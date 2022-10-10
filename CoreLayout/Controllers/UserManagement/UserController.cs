@@ -444,13 +444,13 @@ namespace CoreLayout.Controllers.UserManagement
                                 if (result == 1)
                                 {
                                     TempData["success"] = "Password has been changed";
-                                    _httpContextAccessor.HttpContext.Session.Clear();
-                                    //Clear cookies
-                                    var cookies = _httpContextAccessor.HttpContext.Request.Cookies;
-                                    foreach (var cookie in cookies)
-                                    {
-                                        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie.Key);
-                                    }
+                                    //_httpContextAccessor.HttpContext.Session.Clear();
+                                    ////Clear cookies
+                                    //var cookies = _httpContextAccessor.HttpContext.Request.Cookies;
+                                    //foreach (var cookie in cookies)
+                                    //{
+                                    //    _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie.Key);
+                                    //}
                                 }
                                 else
                                 {
