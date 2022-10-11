@@ -54,7 +54,7 @@ namespace CoreLayout.Controllers.PCP
                 List<string> pcslist = new List<string>();
                 foreach (var _data in data)
                 {
-                    var stringId = _data.PaperId.ToString();
+                    var stringId = _data.SendPaperId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
 
                     //for decrypt pwd
@@ -118,7 +118,7 @@ namespace CoreLayout.Controllers.PCP
             List<string> pcslist = new List<string>();
             foreach (var _data in data)
             {
-                var stringId = _data.PaperId.ToString();
+                var stringId = _data.SendPaperId.ToString();
                 _data.EncryptedId = _protector.Protect(stringId);
 
                 //for decrypt pwd
@@ -138,25 +138,25 @@ namespace CoreLayout.Controllers.PCP
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id)); // get paer details for download
-                var data1 = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(guid_id));//get peper open time and static ip
-                var data2 = await _pCPSendPaperService.GetServerDateTime();//get server datetime
+                //var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id)); // get paer details for download
+                var data = await _pCPSendPaperService.GetPCPSendPaperById(Convert.ToInt32(guid_id));//get peper open time and static ip
+                var data1 = await _pCPSendPaperService.GetServerDateTime();//get server datetime
 
                 string getIPAddres = HttpContext.Session.GetString("IPAddress");
-                if (data == null)
+                if (data ==null && data1==null)
                 {
                     return NotFound();
                 }
-                else if (data2.ServerDateTime <= data1.PaperOpenTime)
+                else if (data1.ServerDateTime <= data.PaperOpenTime)
                 {
                     TempData["error"] = "Paper open time is not started";
                     return RedirectToAction(nameof(Index));
                 }
-                else if (getIPAddres != data1.StaticIPAddress)
-                {
-                    TempData["error"] = "Static IP is not matched";
-                    return RedirectToAction(nameof(Index));
-                }
+                //else if (getIPAddres != data.StaticIPAddress)
+                //{
+                //    TempData["error"] = "Static IP is not matched";
+                //    return RedirectToAction(nameof(Index));
+                //}
                 else
                 {
                     //insert download record
@@ -173,7 +173,7 @@ namespace CoreLayout.Controllers.PCP
                         //TempData["success"] = "Paper has been downloaded";
 
                         #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
                         var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
                         //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                         string ReportURL = path;

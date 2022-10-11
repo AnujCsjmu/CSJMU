@@ -289,6 +289,8 @@ namespace CoreLayout.Repositories.PCP.PCPUploadPaper
                         {
                             parameters.Add("PaperId", Convert.ToInt32(array[i]), DbType.Int32);
                             parameters.Add("FinalSubmit", "FinalSubmit", DbType.String);
+                            parameters.Add("PaperPath", entity.PaperPath, DbType.String);
+                            parameters.Add("AnswerPath", entity.AnswerPath, DbType.String);
                             parameters.Add("FinalSubmitBy", entity.CreatedBy, DbType.Int32);
                             parameters.Add("PaperPassword", entity.PaperPassword, DbType.String);
                             res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);

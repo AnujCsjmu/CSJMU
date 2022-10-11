@@ -122,10 +122,14 @@ namespace CoreLayout.Controllers.PCP
                     {
                         #region upload question paper in aes encrytion
                         string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
-                        string uploadsFolder1 = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+
+                        #region create new file path
+                        string newfilename = "E_" + data1.PaperPath;
+                        string newfilePath = System.IO.Path.Combine(uploadsFolder, newfilename);
+                        pCPUploadPaperModel.PaperPath = newfilename;
+                        #endregion
 
                         string filePath = System.IO.Path.Combine(uploadsFolder, data1.PaperPath);
-                        string filePath1 = System.IO.Path.Combine(uploadsFolder1, data1.PaperPath);
 
                         MergeDocument document = new MergeDocument(filePath);
                         Aes256Security security = new Aes256Security(pCPUploadPaperModel.PaperRandomPassword);
@@ -134,9 +138,9 @@ namespace CoreLayout.Controllers.PCP
                         security.AllowFormFilling = false;
                         security.AllowEdit = false;
                         document.Security = security;
-                        //insert file in other folder UploadPaperEncryption
-                        document.Draw(filePath1);
-                        //delete file from UploadPaper folder
+                        document.Draw(newfilePath);
+
+                        //delete old file name from UploadPaper folder
                         FileInfo file = new FileInfo(filePath);
                         if (file.Exists)//check file exsit or not.
                         {
@@ -148,10 +152,17 @@ namespace CoreLayout.Controllers.PCP
                         if (data1.AnswerPath != null)
                         {
                             string uploadsFolderAnswer = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
-                            string uploadsFolder1Answer = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaperEncryption");
+                            //string uploadsFolder1Answer = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaperEncryption");
+
+                            #region create new answer file path
+                            string newanswerfilename = "E_" + data1.AnswerPath;
+                            string newanswerfilePath = System.IO.Path.Combine(uploadsFolderAnswer, newanswerfilename);
+                            pCPUploadPaperModel.AnswerPath = newanswerfilename;
+                            #endregion
+
 
                             string filePathAnswer = System.IO.Path.Combine(uploadsFolderAnswer, data1.AnswerPath);
-                            string filePath1Answer = System.IO.Path.Combine(uploadsFolder1Answer, data1.AnswerPath);
+                            //string filePath1Answer = System.IO.Path.Combine(uploadsFolder1Answer, data1.AnswerPath);
 
                             MergeDocument document1 = new MergeDocument(filePathAnswer);
                             Aes256Security security1 = new Aes256Security(pCPUploadPaperModel.PaperRandomPassword);
@@ -161,7 +172,8 @@ namespace CoreLayout.Controllers.PCP
                             security1.AllowEdit = false;
                             document1.Security = security;
                             //insert file in other folder UploadPaperEncryption
-                            document1.Draw(filePath1Answer);
+                            document1.Draw(newanswerfilePath);
+
                             //delete file from UploadPaper folder
                             FileInfo file1 = new FileInfo(filePathAnswer);
                             if (file1.Exists)//check file exsit or not.

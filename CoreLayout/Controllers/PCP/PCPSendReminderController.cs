@@ -303,7 +303,7 @@ namespace CoreLayout.Controllers.PCP
                     //end
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaperEncrption");
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
                     var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
                     //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                     string ReportURL = path;
@@ -342,7 +342,7 @@ namespace CoreLayout.Controllers.PCP
                     //end
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaperEncryption");
+                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
                     var path = System.IO.Path.Combine(uploadsFolder, data.AnswerPath);
                     //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                     string ReportURL = path;

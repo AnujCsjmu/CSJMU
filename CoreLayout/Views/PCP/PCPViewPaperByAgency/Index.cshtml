@@ -31,8 +31,9 @@
                         <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                             <thead>
                                 <tr>
-                                    <th><input name="select_all" value="1" type="checkbox"></th>
                                     <th>S.No</th>
+                                    <th><input name="select_all" value="1" type="checkbox"></th>
+
                                     <th>
                                         @Html.DisplayNameFor(c => c.QPId)
                                     </th>
@@ -77,62 +78,63 @@
                                 }
                                 @foreach (var item in Model)
                                 {
-                                    <tr>
-                                        @if (@item.AcceptedStatus == null || @item.AcceptedStatus == "")
-                                        {
-                                            <td> <input type="checkbox" id="chkid" value="@item.SendPaperId" /></td>
-                                        }
-                                        else
-                                        {
-                                            <td></td>
-                                        }
-                                        <td>
-                                            @{ sno++; }
-                                            @sno
-                                        </td>
-                                        <td>@item.QPName</td>
-                                        <td>@item.QPCode</td>
-                                        <td>@item.CourseName</td>
-                                        <td>@item.BranchName</td>
-                                        <td>@item.Session <br /> @item.SemYearId</td>
-                                        <td>
-                                            @if (item.AcceptedStatus != null)
-                                            {
-                                                @if (ViewBag.EncryptPwdList != null)
-                                                {
-                                                    foreach (var item1 in ViewBag.EncryptPwdList)
-                                                    {
-                                                        @item.DecryptPassword
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        </td>
-                                        <td>
-                                            <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                            @if (item.AcceptedStatus != null)
-                                            {
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    @if (@item.AcceptedStatus == null || @item.AcceptedStatus == "")
+                                    {
+                                        <td> <input type="checkbox" id="chkid" value="@item.SendPaperId" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
 
-                                                <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                    <td>@item.QPName</td>
+                                    <td>@item.QPCode</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.Session <br /> @item.SemYearId</td>
+                                    <td>
+                                        @if (item.AcceptedStatus != null)
+                                        {
+                                            @if (ViewBag.EncryptPwdList != null)
+                                            {
+                                                foreach (var item1 in ViewBag.EncryptPwdList)
+                                                {
+                                                    @item.DecryptPassword
+                                                    break;
+                                                }
                                             }
-                                        </td>
-                                        <td>@item.PaperOpenTime</td>
-                                        <td>@item.StaticIPAddress</td>
-                                        <td>@item.CreatedByName</td>
-                                        <td>@item.CreatedDate</td>
-                                        <td>
-                                            <div class="table-actions text-center">
-                                                @if (@item.AcceptedStatus == null || @item.AcceptedStatus == "")
-                                                {
-                                                    <label style="font-weight:bold; color:red">Not Accepted</label>
-                                                }
-                                                else
-                                                {
-                                                    <label style="font-weight:bold; color:green">Accepted</label>
-                                                }
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        }
+                                    </td>
+                                    <td>
+                                        <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
+                                        @if (item.AcceptedStatus != null)
+                                        {
+
+                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        }
+                                    </td>
+                                    <td>@item.PaperOpenTime</td>
+                                    <td>@item.StaticIPAddress</td>
+                                    <td>@item.CreatedByName</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
+                                            @if (@item.AcceptedStatus == null || @item.AcceptedStatus == "")
+                                            {
+                                                <label style="font-weight:bold; color:red">Not Accepted</label>
+                                            }
+                                            else
+                                            {
+                                                <label style="font-weight:bold; color:green">Accepted</label>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
