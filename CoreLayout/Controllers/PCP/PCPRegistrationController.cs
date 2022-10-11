@@ -99,6 +99,11 @@ namespace CoreLayout.Controllers.PSP
                             ModelState.AddModelError("", "File Extension Is InValid - Only Upload jpg/jpeg/png File");
                             return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
                         }
+                        else if (pCPRegistrationModel.ProfileImage.Length> 102400)
+                        {
+                            ModelState.AddModelError("", "Image size must be less than 100kb");
+                            return View("~/Views/PCP/PCPRegistration/Registration.cshtml", pCPRegistrationModel);
+                        }
                         else
                         {
                             var uniqueFileName = UploadedFile(pCPRegistrationModel);
@@ -161,6 +166,11 @@ namespace CoreLayout.Controllers.PSP
                     //int mobile = (int)HttpContext.Session.GetInt32("UserId");
                     uniqueFileName = model.MobileNo + "_" + datetime + "_" + model.ProfileImage.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    //if folder not exit
+                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto")))
+                    {
+                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto"));
+                    }
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         model.ProfileImage.CopyTo(fileStream);

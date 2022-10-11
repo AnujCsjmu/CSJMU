@@ -224,6 +224,11 @@ namespace CoreLayout.Controllers.PCP
                             ModelState.AddModelError("", "certificate extention is invalid");
                             return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
                         }
+                        if (pCPUploadOldPaperModel.FUCertificate.Length > 2100000)
+                        {
+                            ModelState.AddModelError("", "FUCertificate size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                        }
                         if (pCPUploadOldPaperModel.FUCertificate.FileName == null)
                         {
                             ModelState.AddModelError("", "Certificate name is blank");
@@ -234,6 +239,11 @@ namespace CoreLayout.Controllers.PCP
                     if (!supportedTypes.Contains(oldPaper) && !supportedTypes.Contains(oldSyllabus) && !supportedTypes.Contains(oldPattern))
                     {
                         ModelState.AddModelError("", "file extention is invalid");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                    }
+                    if (pCPUploadOldPaperModel.FUOldPape.Length > 2100000 && pCPUploadOldPaperModel.FUOldSyllabus.Length > 2100000 && pCPUploadOldPaperModel.FUOldPattern.Length > 2100000)
+                    {
+                        ModelState.AddModelError("", "Old Paper/Syllabus/Pattern size must be less than 2 mb");
                         return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
                     }
                     if (pCPUploadOldPaperModel.FUOldPape.FileName == null && pCPUploadOldPaperModel.FUOldSyllabus.FileName == null && pCPUploadOldPaperModel.FUOldPattern.FileName == null)
@@ -315,6 +325,12 @@ namespace CoreLayout.Controllers.PCP
                     uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
                     string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
                     string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
+                    //if folder not exit
+                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
+                    {
+                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
+                    }
+                    //delete old file if edit the record
                     if (System.IO.File.Exists(deletefilePath))
                     {
                         System.IO.File.Delete(deletefilePath);

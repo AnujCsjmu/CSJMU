@@ -312,6 +312,11 @@ namespace CoreLayout.Controllers.PCP
                             ModelState.AddModelError("", "File Extension Is InValid of Answer Paper - Only Upload PDF File");
                             return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                         }
+                        if (pCPUploadPaper.AnswerPaper.Length > 2100000)
+                        {
+                            ModelState.AddModelError("", "Answer paper size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                        }
                         if (pCPUploadPaper.AnswerPaper.FileName == null)
                         {
                             ModelState.AddModelError("", "File name is blank of answer paper");
@@ -323,7 +328,11 @@ namespace CoreLayout.Controllers.PCP
                         ModelState.AddModelError("", "File Extension Is InValid of Question Paper - Only Upload PDF File");
                         return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                     }
-
+                    if (pCPUploadPaper.UploadPaper.Length > 2100000)
+                    {
+                        ModelState.AddModelError("", "Question paper size must be less than 2 mb");
+                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                    }
                     else if (pCPUploadPaper.UploadPaper.FileName == null)
                     {
                         ModelState.AddModelError("", "File name is blank of question paper");
@@ -407,6 +416,12 @@ namespace CoreLayout.Controllers.PCP
                     int userid = (int)HttpContext.Session.GetInt32("UserId");
                     uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
                     string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+                    //if folder not exit
+                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
+                    {
+                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
+                    }
+                    //delete old file if edit
                     if (oldpath != null)
                     {
                         string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);

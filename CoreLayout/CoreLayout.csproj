@@ -28,10 +28,8 @@
     <Folder Include="wwwroot\AnswerPaperEncryption\" />
     <Folder Include="wwwroot\Attachments\" />
     <Folder Include="wwwroot\UploadCertificate\" />
-    <Folder Include="wwwroot\UploadPaper\" />
     <Folder Include="wwwroot\UploadOldPattern\" />
     <Folder Include="wwwroot\UploadOldSyllabus\" />
-    <Folder Include="wwwroot\UploadOldPaper\" />
     <Folder Include="wwwroot\UploadPaperEncrption\" />
     <Folder Include="wwwroot\PCPPhoto\" />
   </ItemGroup>
