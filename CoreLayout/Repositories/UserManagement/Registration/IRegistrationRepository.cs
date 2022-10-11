@@ -12,5 +12,9 @@ namespace CoreLayout.Repositories.UserManagement.Registration
         Task<List<RegistrationModel>> GetAllInstituteAsync();
 
         Task<int> ChangePassword(RegistrationModel entity);
+
+        Task<int> InsertEmailSMSHistory(RegistrationModel entity);
+
+        Task<RegistrationModel> ForgetPassword(string emailid, string mobileno, string loginid);
     }
 }

@@ -18,5 +18,7 @@ namespace CoreLayout.Services.Registration
         public Task<List<RegistrationModel>> GetAllInstituteAsync();
 
         public Task<int> ChangePassword(RegistrationModel registrationModel);
+        public Task<int> InsertEmailSMSHistory(RegistrationModel registrationModel);
+        public Task<RegistrationModel> ForgetPassword(string emailid, string mobileno, string loginid);
     }
 }

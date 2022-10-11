@@ -53,11 +53,11 @@ namespace CoreLayout.Controllers
                     ViewBag.errormsg = errormsg;
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 _logger.LogError("Exception through...");
             }
-            
+
             return View();
         }
         [HttpPost]
@@ -136,7 +136,7 @@ namespace CoreLayout.Controllers
                 ModelState.AddModelError("", ex.ToString());
             }
             //errormsg = "some thing went wrong!";
-              return View();
+            return View();
         }
 
         [HttpGet]
@@ -148,7 +148,7 @@ namespace CoreLayout.Controllers
             }
             RegistrationModel registrationModel = new RegistrationModel();
             registrationModel.RoleList = (from role in await _roleService.GetAllRoleAsync()
-                                          where role.RoleID ==19
+                                          where role.RoleID == 19
                                           select role).ToList();
             return View(registrationModel);
         }
@@ -221,7 +221,7 @@ namespace CoreLayout.Controllers
                             //falure
                             errormsg = "Data Not Saved!";
                         }
-                       
+
                     }
                     else
                     {
@@ -244,6 +244,62 @@ namespace CoreLayout.Controllers
         public IActionResult Forget()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgetAsync(RegistrationModel registrationModel)
+        {
+            int insertSMSEmail = 0;
+            try
+            {
+                var data = await _registrationService.ForgetPassword(registrationModel.EmailID, registrationModel.MobileNo, registrationModel.LoginID);
+
+                if (data == null)
+                {
+                    ModelState.AddModelError("", "No Data found!");
+                    return View(registrationModel);
+                }
+                else if (data != null)
+                {
+                    string salt = CreateSalt();
+                    string saltedHash = ComputeSaltedHash(registrationModel.Password, salt);
+                    registrationModel.Salt = salt;
+                    registrationModel.SaltedHash = saltedHash;
+                    registrationModel.RoleId = data.RoleId;
+                    registrationModel.MobileNo = data.MobileNo;
+                    registrationModel.EmailID = data.EmailID;
+                    registrationModel.UserID = data.UserID;
+                    registrationModel.UserName = data.UserName;
+                    registrationModel.CreatedBy = data.CreatedBy;
+                    registrationModel.Remarks = "Forget Password";
+                    registrationModel.IPAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+
+                    bool sendmessage = _commonController.SendRegistraionMeassage(registrationModel.UserName, registrationModel.MobileNo, registrationModel.LoginID, registrationModel.Password);
+                    bool sendemail = _commonController.SendRegistraionMail(registrationModel.UserName, registrationModel.EmailID, registrationModel.LoginID, registrationModel.Password);
+                    registrationModel.MobileReminder = sendmessage.ToString();
+                    registrationModel.EmailReminder = sendemail.ToString();
+                    var res =await _registrationService.InsertEmailSMSHistory(registrationModel);
+                    if (res.Equals(1))
+                    {
+                        ModelState.AddModelError("", "Password send your's registered mobile no and email id");
+                        return View(registrationModel);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Email and SMS not send!");
+                        return View(registrationModel);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Multiple record exits!");
+                    return View(registrationModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                errormsg = ex.StackTrace.ToString();
+                return View(registrationModel);
+            }
         }
 
         [HttpGet]
@@ -284,7 +340,7 @@ namespace CoreLayout.Controllers
         {
             return View();
         }
-       
+
 
     }
 }

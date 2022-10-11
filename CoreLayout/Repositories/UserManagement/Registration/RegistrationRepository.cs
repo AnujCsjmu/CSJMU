@@ -377,5 +377,109 @@ namespace CoreLayout.Repositories.UserManagement.Registration
                 }
             }
         }
+
+        public async Task<int> InsertEmailSMSHistory(RegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                // create the transaction
+                // You could use `var` instead of `SqlTransaction`
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = "SP_CRUD_USERLOGIN";
+                        var res = 0;
+                        var res1 = 0;
+                        var res2 = 0;
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("UserID", entity.UserID, DbType.Int32);
+                        parameters.Add("Salt", entity.Salt, DbType.String);
+                        parameters.Add("SaltedHash", entity.SaltedHash, DbType.String);
+                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
+                        parameters.Add("EmailID", entity.EmailID, DbType.String);
+                        parameters.Add("@Query", 12, DbType.Int32);
+                        res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        if (res == 1)
+                        {
+                            DynamicParameters parameters1 = new DynamicParameters();
+                            parameters1.Add("UserID", entity.UserID, DbType.Int32);
+                            parameters1.Add("UserName", entity.UserName, DbType.String);
+                            parameters1.Add("RoleId", entity.RoleId, DbType.Int32);
+                            parameters1.Add("Salt", entity.Salt, DbType.String);
+                            parameters1.Add("SaltedHash", entity.SaltedHash, DbType.String);
+                            parameters1.Add("MobileNo", entity.MobileNo, DbType.String);
+                            parameters1.Add("EmailID", entity.EmailID, DbType.String);
+                            parameters1.Add("CreatedBy", entity.UserID, DbType.Int32);
+                            parameters1.Add("IPAddress", entity.IPAddress, DbType.String);
+                            parameters1.Add("@Query", 13, DbType.Int32);
+                            res1 = await SqlMapper.ExecuteAsync(connection, query, parameters1, tran, commandType: CommandType.StoredProcedure);
+                        }
+
+                        if (res1 == 1)
+                        {
+                            DynamicParameters parameters2 = new DynamicParameters();
+                            parameters2.Add("MobileNo", entity.MobileNo, DbType.String);
+                            parameters2.Add("EmailID", entity.EmailID, DbType.String);
+                            parameters2.Add("UserName", entity.UserName, DbType.String);
+                            parameters2.Add("LoginID", entity.LoginID, DbType.String);
+                            parameters2.Add("IPAddress", entity.IPAddress, DbType.String);
+                            parameters2.Add("CreatedBy", entity.UserID, DbType.Int32);
+                            parameters2.Add("MobileReminder", entity.MobileReminder, DbType.String);
+                            parameters2.Add("EmailReminder", entity.EmailReminder, DbType.String);
+                            parameters2.Add("Remarks", entity.Remarks, DbType.String);
+                            parameters2.Add("@Query", 14, DbType.Int32);
+                            res2 = await SqlMapper.ExecuteAsync(connection, query, parameters2, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        if (res2 == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+
+                        return res2;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        public async Task<RegistrationModel> ForgetPassword(string emailid, string mobileno, string loginid)
+        {
+            try
+            {
+                var query = "SP_CRUD_USERLOGIN";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("LoginID", loginid, DbType.String);
+                    parameters.Add("EmailID", emailid, DbType.String);
+                    parameters.Add("MobileNo", mobileno, DbType.String);
+                    parameters.Add("@Query", 15, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<RegistrationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

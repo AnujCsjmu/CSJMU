@@ -3,6 +3,7 @@
     Layout = null;
 }
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,35 +63,39 @@
                 </div>
                 <div class="card custom-card">
                     <div class="card-body pd-30">
-                        <h4 class="text-center">CSJMU ERP</h4>
-
-                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Password Recovery</h3></div>
-                            <div class="card-body">
-                                @*<div class="small mb-3 text-muted">Enter your email address and we will send you a link to reset your password.</div>*@
-                                <form method="post" asp-controller="Home" asp-action="Forget">
-                                    <div class="form-floating mb-3">
-                                        <input asp-for="EmailID" class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
-                                        <label asp-for="EmailID">Email address</label>
-                                        <span class="text-danger" asp-validation-for="EmailID"></span>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        <a class="small" asp-action="Login">Return to login</a>
-                                        <a class="btn btn-primary">Reset Password</a>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                        @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
-                                        {
-                                            <span style="font:bold; color:red" class="text-danger">@ViewBag.errormsg</span>
-                                        }
-
-                                    </div>
-                                </form>
+                        <h4 class="text-center">CSJMU</h4>
+                        <div class="card-header"><h3 class="text-center font-weight-light my-4">Password Recovery</h3></div>
+                        <form method="post" asp-controller="Home" asp-action="Forget">
+                            <div asp-validation-summary="ModelOnly" style="color:red; font-weight:bold"></div>
+                            <div class="form-group text-start">
+                                <input asp-for="LoginID" class="form-control" type="text" maxlength="30" placeholder="Login ID" />
+                                <span class="text-danger" asp-validation-for="LoginID"></span>
                             </div>
-                            @*<div class="card-footer text-center py-3">
-                                    <div class="small"><a asp-action="Registration">Need an account? Sign up!</a></div>
-                                </div>*@
-                        </div>
+                            <div class="form-group text-start">
+                                <input asp-for="MobileNo" class="form-control" type="text" maxlength="10" placeholder="Mobile No" />
+                                <span class="text-danger" asp-validation-for="MobileNo"></span>
+                            </div>
+                            <div class="form-group text-start">
+                                <input asp-for="EmailID" class="form-control" type="email" maxlength="30" placeholder="Email Id" />
+                                <span class="text-danger" asp-validation-for="EmailID"></span>
+                            </div>
+                            <div class="form-group text-start">
+                                <input asp-for="Password" class="form-control" type="password" maxlength="10" placeholder="Enter New Password" />
+                                <span class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+                            <div class="mt-0 text-center">
+                                <a class="small" asp-action="Login">Return to login</a>
+                                @*<a class="btn btn-primary">Reset Password</a>*@
+                                <input class="btn btn-primary" type="submit" value="Reset Password" onclick="return confirm('Are you sure you want to submit?')" />
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
+                                {
+                                    <span style="font:bold; color:red" class="text-danger">@ViewBag.errormsg</span>
+                                }
+
+                            </div>
+                        </form>
 
                         <div class="mt-0 text-center">
                             @*  <div class="small"><a asp-action="Registration">Need an account? Sign up!</a></div>*@

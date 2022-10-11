@@ -83,5 +83,10 @@ namespace CoreLayout.Models.UserManagement
         public string OldPassword { get; set; }
         public string OldSalt { get; set; }
         public string OldSaltedHash { get; set; }
+
+        //sms/email record insert
+        public string EmailReminder { get; set; }
+        public string MobileReminder { get; set; }
+        public string Remarks { get; set; }
     }
 }

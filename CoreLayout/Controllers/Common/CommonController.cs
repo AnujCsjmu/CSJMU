@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.PCP;
+using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.PCP.PCPRegistration;
@@ -490,7 +491,7 @@ namespace CoreLayout.Controllers
                     #region Send email and sms
                     //send message
                     bool messageResult = false;
-                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.AssignedQPId);
+                    messageResult = SendRegistraionMeassage(pCPRegistrationModel.UserName, pCPRegistrationModel.MobileNo, pCPRegistrationModel.LoginID, pCPRegistrationModel.QPCode);
                     if (messageResult == false)
                     {
                         pCPRegistrationModel.IsMobileReminder = "N";
@@ -535,12 +536,13 @@ namespace CoreLayout.Controllers
             return View("~/Views/Common/SendAutoEmail.cshtml", pCPRegistrationModel);
         }
 
-        public bool SendRegistraionMeassage(string username, string mobile, string loginid, int qpid)
+        public bool SendRegistraionMeassage(string username, string mobile, string loginid, string qpid)
         {
             bool result = false;
             string message = "Dear " + username + ", Attendance for Subject Codes: " + mobile + " is not entered today. Please specify reasons at " + loginid + " " + qpid + ". CSJMU, Kanpur";
 
             result = SendSMSWithTemplateId(mobile, message, "1607100000000228609");
+           
             return result;
         }
 
@@ -555,5 +557,16 @@ namespace CoreLayout.Controllers
             request.ToEmail = email;
             return _mailService.SendEmailAsync(request);
         }
+        //public int InsertEmailSmsRecordHistory(RegistrationModel registrationModel)
+        //{
+        //    int result = 0;
+        //    var data = _registrationService.InsertEmailSMSHistory(registrationModel);
+        //   if(data.Equals(1))
+        //    {
+        //        result = 1;
+        //    }
+        //    return result;
+        //}
+
     }
 }

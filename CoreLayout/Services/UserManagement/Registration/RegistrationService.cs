@@ -46,5 +46,14 @@ namespace CoreLayout.Services.Registration
         {
             return await _registrationRepository.ChangePassword(registrationModel);
         }
+        public async Task<int> InsertEmailSMSHistory(RegistrationModel registrationModel)
+        {
+            return await _registrationRepository.InsertEmailSMSHistory(registrationModel);
+        }
+
+        public async Task<RegistrationModel> ForgetPassword(string emailid, string mobileno, string loginid)
+        {
+            return await _registrationRepository.ForgetPassword(emailid, mobileno, loginid);
+        }
     }
 }
