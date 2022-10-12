@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,9 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
         private readonly CommonController _commonController;
-
+        public IConfiguration _configuration;
         [Obsolete]
-        public PCPViewPaperByAgencyController(ILogger<PCPViewPaperByAgencyController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPSendPaperService pCPSendPaperService, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, CommonController commonController)
+        public PCPViewPaperByAgencyController(ILogger<PCPViewPaperByAgencyController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPSendPaperService pCPSendPaperService, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, CommonController commonController, IConfiguration configuration)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -40,6 +41,7 @@ namespace CoreLayout.Controllers.PCP
             _pCPUploadPaperService = pCPUploadPaperService;
             hostingEnvironment = environment;
             _commonController = commonController;
+            _configuration = configuration;
         }
         public async Task<IActionResult> IndexAsync()
         {
@@ -173,7 +175,8 @@ namespace CoreLayout.Controllers.PCP
                         //TempData["success"] = "Paper has been downloaded";
 
                         #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                        // string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                        string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
                         var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
                         //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                         string ReportURL = path;

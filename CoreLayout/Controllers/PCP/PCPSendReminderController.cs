@@ -20,6 +20,7 @@ using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPSendReminder;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 
 namespace CoreLayout.Controllers.PCP
 {
@@ -38,11 +39,12 @@ namespace CoreLayout.Controllers.PCP
         private readonly CommonController _commonController;
         private static string errormsg = "";
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
+        public IConfiguration _configuration;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
         [Obsolete]
-        public PCPSendReminderController(ILogger<PCPSendReminderController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, IMailService mailService, CommonController commonController, IHostingEnvironment environment, IPCPAssignedQPService pCPAssignedQPService, IPCPSendReminderService pCPSendReminderService, IPCPUploadPaperService pCPUploadPaperService)
+        public PCPSendReminderController(ILogger<PCPSendReminderController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, IMailService mailService, CommonController commonController, IHostingEnvironment environment, IPCPAssignedQPService pCPAssignedQPService, IPCPSendReminderService pCPSendReminderService, IPCPUploadPaperService pCPUploadPaperService, IConfiguration configuration)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -56,6 +58,7 @@ namespace CoreLayout.Controllers.PCP
             _pCPAssignedQPService = pCPAssignedQPService;
             _pCPSendReminderService = pCPSendReminderService;
             _pCPUploadPaperService = pCPUploadPaperService;
+            _configuration = configuration;
         }
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
@@ -303,7 +306,8 @@ namespace CoreLayout.Controllers.PCP
                     //end
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                    //string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
+                    string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
                     var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
                     //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                     string ReportURL = path;
@@ -342,7 +346,8 @@ namespace CoreLayout.Controllers.PCP
                     //end
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
+                    // string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
+                    string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:AnswerPaper").Value.ToString();
                     var path = System.IO.Path.Combine(uploadsFolder, data.AnswerPath);
                     //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
                     string ReportURL = path;

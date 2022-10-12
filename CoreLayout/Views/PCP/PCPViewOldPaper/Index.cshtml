@@ -53,12 +53,15 @@
                                         @Html.DisplayNameFor(c => c.OldPatternPath)
                                     </th>
                                     <th>
+                                        @Html.DisplayNameFor(c => c.CertificatePath)
+                                    </th>
+                                    <th>
                                         @Html.DisplayNameFor(c => c.CreatedBy)
                                     </th>
                                     <th>
                                         @Html.DisplayNameFor(c => c.CreatedDate)
                                     </th>
-                                 
+
                                 </tr>
                             </thead>
 
@@ -90,13 +93,16 @@
                                         <td> @item.BranchName</td>
                                         <td> @item.QPCode</td>
                                         <td>
-                                            <a asp-action="DownloadOldPaper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            <a asp-action="Download" style="color:blue" asp-route-paper="paper" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
                                         <td>
-                                            <a asp-action="DownloadOldSyllabus" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            <a asp-action="Download"  style="color:blue" asp-route-syllabus="syllabus" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
                                         <td>
-                                            <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            <a asp-action="Download" style="color:blue" asp-route-patterns="patterns" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                        </td>
+                                        <td>
+                                            <a asp-action="Download" style="color:blue" asp-route-certificate="certificate" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                         </td>
                                         <td>@item.UserName</td>
                                         <td>@item.CreatedDate</td>

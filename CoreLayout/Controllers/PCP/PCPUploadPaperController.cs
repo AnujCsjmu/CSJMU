@@ -1,5 +1,6 @@
 ﻿using ceTe.DynamicPDF.Cryptography;
 using ceTe.DynamicPDF.Merger;
+using CoreLayout.Helper;
 using CoreLayout.Models.PCP;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -43,11 +45,12 @@ namespace CoreLayout.Controllers.PCP
         //private readonly ICourseBranchMappingService _courseBranchMappingService;
         private readonly IExamMasterService _examMasterService;
         private readonly IQPMasterService _qPMasterService;
+        public IConfiguration _configuration;
 
         [Obsolete]
         public PCPUploadPaperController(ILogger<PCPUploadPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService, CommonController commonController
             //,IExamCourseMappingService examCourseMappingService, ICourseBranchMappingService courseBranchMappingService
-            , IQPMasterService qPMasterService, IExamMasterService examMasterService)
+            , IQPMasterService qPMasterService, IExamMasterService examMasterService, IConfiguration configuration)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
@@ -61,6 +64,7 @@ namespace CoreLayout.Controllers.PCP
             //_courseBranchMappingService = courseBranchMappingService;
             _qPMasterService = qPMasterService;
             _examMasterService = examMasterService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -116,13 +120,12 @@ namespace CoreLayout.Controllers.PCP
                     string aesencrytion = _commonController.Encrypt(pCPUploadPaperModel.PaperRandomPassword);
                     pCPUploadPaperModel.PaperPassword = aesencrytion;
                     pCPUploadPaperModel.paperids = paperid;
-                    pCPUploadPaperModel.CreatedBy= HttpContext.Session.GetInt32("UserId");
+                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                     var data1 = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(paperid));
                     if (data1 != null)
                     {
                         #region upload question paper in aes encrytion
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
-
+                        string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
                         #region create new file path
                         string newfilename = "E_" + data1.PaperPath;
                         string newfilePath = System.IO.Path.Combine(uploadsFolder, newfilename);
@@ -151,8 +154,7 @@ namespace CoreLayout.Controllers.PCP
                         #region upload answer paper in aes encrytion
                         if (data1.AnswerPath != null)
                         {
-                            string uploadsFolderAnswer = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
-                            //string uploadsFolder1Answer = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaperEncryption");
+                            string uploadsFolderAnswer = _configuration.GetSection("FilePaths:PreviousDocuments:AnswerPaper").Value.ToString(); ;
 
                             #region create new answer file path
                             string newanswerfilename = "E_" + data1.AnswerPath;
@@ -218,7 +220,7 @@ namespace CoreLayout.Controllers.PCP
                 //end
                 return View("~/Views/PCP/PCPUploadPaper/Index.cshtml", data);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
             }
@@ -256,14 +258,9 @@ namespace CoreLayout.Controllers.PCP
         {
             try
             {
-                //int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
                 pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadPaperModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
-                //var data = (from qp in (await _pCPAssignedQPService.GetAllPCPAssignedQP())
-                //            where qp.UserId == CreatedBy
-                //            select qp).ToList();
-                //pCPUploadPaperModel.QPList = data;
 
                 var guid_id = _protector.Unprotect(id);
                 return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
@@ -281,18 +278,23 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         public async Task<IActionResult> CreateAsync(PCPUploadPaperModel pCPUploadPaper)
         {
+            string UploadPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
+            string AnswerPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:AnswerPaper").Value.ToString();
+            var supportedTypes = new[] { "pdf", "PDF" };
+            FileHelper fileHelper = new FileHelper();
             try
             {
-                //start check paper already uploaded
-                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
+                pCPUploadPaper.ExamList = await _examMasterService.GetAllExamMasterAsync();
 
+                #region Already exit
+                int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
                 int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
                 var alreadyexit = (dynamic)null;
                 if (RoleId != 19)
-                { 
-                  alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                                    where reg.AssignedQPId == pCPUploadPaper.AssignedQPId
-                                    select reg).ToList();
+                {
+                    alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
+                                   where reg.AssignedQPId == pCPUploadPaper.AssignedQPId
+                                   select reg).ToList();
                 }
                 else
                 {
@@ -300,105 +302,90 @@ namespace CoreLayout.Controllers.PCP
                                    where reg.CreatedBy == CreatedBy && reg.AssignedQPId == pCPUploadPaper.AssignedQPId
                                    select reg).ToList();
                 }
-                //end
-
-                pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
-                //pCPUploadPaper.SessionList = await _courseDetailsService.GetAllSession();
-                //var data = (from qp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
-                //            where qp.UserId == CreatedBy
-                //            select qp).ToList();
-                //pCPUploadPaper.QPList = data;
-                pCPUploadPaper.ExamList = await _examMasterService.GetAllExamMasterAsync();
-                if (pCPUploadPaper.UploadPaper != null)//&& pCPUploadPaper.AnswerPaper != null
+                if (alreadyexit.Count > 0)
                 {
-                    var supportedTypes = new[] { "pdf", "PDF" };
-                    var fileExtQuestion = System.IO.Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
-                    
-                    //2nd file is not mandatory
-                    if (pCPUploadPaper.AnswerPaper != null)
-                    {
-                        var fileExtAnswer = System.IO.Path.GetExtension(pCPUploadPaper.AnswerPaper.FileName).Substring(1);
-                        if (!supportedTypes.Contains(fileExtAnswer))
-                        {
-                            ModelState.AddModelError("", "File Extension Is InValid of Answer Paper - Only Upload PDF File");
-                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                        }
-                        if (pCPUploadPaper.AnswerPaper.Length > 2100000)
-                        {
-                            ModelState.AddModelError("", "Answer paper size must be less than 2 mb");
-                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                        }
-                        if (pCPUploadPaper.AnswerPaper.FileName == null)
-                        {
-                            ModelState.AddModelError("", "File name is blank of answer paper");
-                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                        }
-                    }
-                    if (!supportedTypes.Contains(fileExtQuestion))
-                    {
-                        ModelState.AddModelError("", "File Extension Is InValid of Question Paper - Only Upload PDF File");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                    }
-                    if (pCPUploadPaper.UploadPaper.Length > 2100000)
-                    {
-                        ModelState.AddModelError("", "Question paper size must be less than 2 mb");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                    }
-                    else if (pCPUploadPaper.UploadPaper.FileName == null)
-                    {
-                        ModelState.AddModelError("", "File name is blank of question paper");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                    }
+                    ModelState.AddModelError("", "Paper already uploaded for this QP");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                }
+                #endregion
 
-                    else if (alreadyexit.Count > 0)
+                #region Question paper
+                if (pCPUploadPaper.UploadPaper != null)
+                {
+                    var questionPaperExt = Path.GetExtension(pCPUploadPaper.UploadPaper.FileName).Substring(1);
+                    if (supportedTypes.Contains(questionPaperExt))
                     {
-                        ModelState.AddModelError("", "Paper already uploaded for this QP");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                    }
-                    else if (!ModelState.IsValid)
-                    {
-                        ModelState.AddModelError("", "Model state is not valid");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-                    }
-
-                    else
-                    {
-                        var uniqueFileNameQuestion = UploadedFile(pCPUploadPaper.UploadPaper, "", "UploadPaper");//fileupload,filename,foldername
-                        string uniqueFileNameAnswer = null;
-                        if (pCPUploadPaper.AnswerPaper != null)
+                        if (pCPUploadPaper.UploadPaper.Length < 2100000)
                         {
-                             uniqueFileNameAnswer = UploadedFile(pCPUploadPaper.AnswerPaper, "", "AnswerPaper");//fileupload,filename,foldername
-                        }
-                        if (uniqueFileNameQuestion != null)//&& uniqueFileNameAnswer != null
-                        {
-                            pCPUploadPaper.PaperPath = uniqueFileNameQuestion;
-                            pCPUploadPaper.AnswerPath = uniqueFileNameAnswer;
-
-                            var res = await _pCPUploadPaperService.CreatePCPUploadPaperAsync(pCPUploadPaper);
-                            if (res.Equals(1))
-                            {
-                                TempData["success"] = "Paper has been saved";
-                            }
-                            else
-                            {
-                                TempData["error"] = "Paper has not been saved";
-                                if (System.IO.File.Exists(pCPUploadPaper.PaperPath))
-                                {
-                                    System.IO.File.Delete(pCPUploadPaper.PaperPath);
-                                }
-                                if (System.IO.File.Exists(pCPUploadPaper.AnswerPath))
-                                {
-                                    System.IO.File.Delete(pCPUploadPaper.AnswerPath);
-                                }
-                            }
+                            pCPUploadPaper.PaperPath = fileHelper.SaveFile(UploadPaperDocument, "", pCPUploadPaper.UploadPaper);
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Some thing went wrong in file upload");
+                            ModelState.AddModelError("", "Question Paper size must be less than 2 mb");
                             return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                         }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Question paper extension is invalid- accept only pdf");
+                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please upload Question paper");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                }
+                #endregion
+
+                #region answer paper
+                if (pCPUploadPaper.AnswerPaper != null)
+                {
+                    var answerPaperExt = Path.GetExtension(pCPUploadPaper.AnswerPaper.FileName).Substring(1);
+                    if (supportedTypes.Contains(answerPaperExt))
+                    {
+                        if (pCPUploadPaper.AnswerPaper.Length < 2100000)
+                        {
+                            pCPUploadPaper.AnswerPath = fileHelper.SaveFile(AnswerPaperDocument, "", pCPUploadPaper.AnswerPaper);
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(AnswerPaperDocument, pCPUploadPaper.PaperPath);
+                            ModelState.AddModelError("", "Answer paper size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                        }
+                    }
+                    else
+                    {
+                        fileHelper.DeleteFileAnyException(UploadPaperDocument, pCPUploadPaper.PaperPath);
+                        ModelState.AddModelError("", "Answer paper extension is invalid- accept only pdf");
+                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
+                    }
+                }
+                #endregion
+
+                pCPUploadPaper.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                pCPUploadPaper.IPAddress = HttpContext.Session.GetString("IPAddress");
+              
+                if (pCPUploadPaper.PaperPath != null)//&& pCPUploadPaper.AnswerPaper != null
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var res = await _pCPUploadPaperService.CreatePCPUploadPaperAsync(pCPUploadPaper);
+                        if (res.Equals(1))
+                        {
+                            TempData["success"] = "Paper has been saved";
+                        }
+                        else
+                        {
+                            TempData["error"] = "Paper has not been saved";
+                        }
                         return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Model state is not valid");
+                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
                     }
                 }
                 else
@@ -410,50 +397,50 @@ namespace CoreLayout.Controllers.PCP
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
-            }
-            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
-        }
-
-        [Obsolete]
-        private string UploadedFile(IFormFile model, string oldpath, string foldername)
-        {
-            try
-            {
-                string uniqueFileName = null;
-
-                if (model != null)
-                {
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername);
-                    string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    int userid = (int)HttpContext.Session.GetInt32("UserId");
-                    uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
-                    string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
-                    //if folder not exit
-                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
-                    {
-                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
-                    }
-                    //delete old file if edit
-                    if (oldpath != null)
-                    {
-                        string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
-                        if (System.IO.File.Exists(deletefilePath))
-                        {
-                            System.IO.File.Delete(deletefilePath);
-                        }
-                    }
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.CopyTo(fileStream);
-                    }
-                }
-                return uniqueFileName;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaper);
             }
         }
+
+        //[Obsolete]
+        //private string UploadedFile(IFormFile model, string oldpath, string foldername)
+        //{
+        //    try
+        //    {
+        //        string uniqueFileName = null;
+
+        //        if (model != null)
+        //        {
+        //            string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername);
+        //            string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //            int userid = (int)HttpContext.Session.GetInt32("UserId");
+        //            uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
+        //            string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+        //            //if folder not exit
+        //            if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
+        //            {
+        //                Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
+        //            }
+        //            //delete old file if edit
+        //            if (oldpath != null)
+        //            {
+        //                string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
+        //                if (System.IO.File.Exists(deletefilePath))
+        //                {
+        //                    System.IO.File.Delete(deletefilePath);
+        //                }
+        //            }
+        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                model.CopyTo(fileStream);
+        //            }
+        //        }
+        //        return uniqueFileName;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
@@ -502,15 +489,16 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         public async Task<IActionResult> Edit(int PaperId, PCPUploadPaperModel pCPUploadPaperModel)
         {
+            string UploadPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
+            string AnswerPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:AnswerPaper").Value.ToString();
+            var supportedTypes = new[] { "pdf", "PDF" };
+            FileHelper fileHelper = new FileHelper();
             try
             {
                 var value = await _pCPUploadPaperService.GetPCPUploadPaperById(PaperId);
 
                 int CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
-                //var alreadyexit = (from reg in await _pCPUploadPaperService.GetAllPCPUploadPaper()
-                //                   where reg.CreatedBy == CreatedBy && reg.QPId == pCPUploadPaperModel.QPId
-                //                   select reg).ToList();
-                //end
+               
                 pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
 
@@ -532,59 +520,53 @@ namespace CoreLayout.Controllers.PCP
                 pCPUploadPaperModel.SemYearList = (from qpmaster in await _pCPAssignedQPService.GetAllPCPAssignedQP()
                                                    where qpmaster.AssignedQPId == pCPUploadPaperModel.AssignedQPId
                                                    select qpmaster).ToList();
-                //Question paper upload
-                var supportedTypes = new[] { "pdf", "PDF" };
+                #region Question paper
                 if (pCPUploadPaperModel.UploadPaperEdit != null)
                 {
-                    var fileExtQuestion = System.IO.Path.GetExtension(pCPUploadPaperModel.UploadPaperEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(fileExtQuestion))
+                    var questionPaperExt = Path.GetExtension(pCPUploadPaperModel.UploadPaperEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(questionPaperExt))
                     {
-                        ModelState.AddModelError("", "File Extension Is InValid of Question Paper - Only Upload PDF File");
-                        return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
-                    }
-                    if (pCPUploadPaperModel.UploadPaperEdit.FileName == null)
-                    {
-                        ModelState.AddModelError("", "File name is blank of question paper");
-                        return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
-                    }
-                    var uniqueFileNameQuestion = UploadedFile(pCPUploadPaperModel.UploadPaperEdit, value.PaperPath, "UploadPaper");//fileupload,filename,foldername
-                    if (uniqueFileNameQuestion != null)
-                    {
-                        pCPUploadPaperModel.PaperPath = uniqueFileNameQuestion;
+                        if (pCPUploadPaperModel.UploadPaperEdit.Length < 2100000)
+                        {
+                            pCPUploadPaperModel.PaperPath = fileHelper.SaveFile(UploadPaperDocument, value.PaperPath, pCPUploadPaperModel.UploadPaperEdit);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Question Paper size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Paper is not uploaded");
+                        ModelState.AddModelError("", "Question paper extension is invalid- accept only pdf");
                         return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
                     }
-
                 }
                 else
                 {
                     pCPUploadPaperModel.PaperPath = value.PaperPath;
                 }
-                //answer paper upload
+                #endregion
+
+                #region answer paper
                 if (pCPUploadPaperModel.AnswerPaperEdit != null)
                 {
-                    var fileExtAnswer = System.IO.Path.GetExtension(pCPUploadPaperModel.AnswerPaperEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(fileExtAnswer))
+                    var answerPaperExt = Path.GetExtension(pCPUploadPaperModel.AnswerPaperEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(answerPaperExt))
                     {
-                        ModelState.AddModelError("", "File Extension Is InValid of Answer Paper - Only Upload PDF File");
-                        return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
-                    }
-                    if (pCPUploadPaperModel.AnswerPaperEdit.FileName == null)
-                    {
-                        ModelState.AddModelError("", "File name is blank of answer paper");
-                        return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
-                    }
-                    var uniqueFileNameAnswer = UploadedFile(pCPUploadPaperModel.AnswerPaperEdit, value.AnswerPath, "AnswerPaper");//fileupload,filename,foldername
-                    if (uniqueFileNameAnswer != null)
-                    {
-                        pCPUploadPaperModel.AnswerPath = uniqueFileNameAnswer;
+                        if (pCPUploadPaperModel.AnswerPaperEdit.Length < 2100000)
+                        {
+                            pCPUploadPaperModel.AnswerPath = fileHelper.SaveFile(AnswerPaperDocument, value.AnswerPath, pCPUploadPaperModel.AnswerPaperEdit);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Answer paper size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadPaperModel);
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Answer is not uploaded");
+                        ModelState.AddModelError("", "Answer paper extension is invalid- accept only pdf");
                         return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
                     }
                 }
@@ -592,6 +574,7 @@ namespace CoreLayout.Controllers.PCP
                 {
                     pCPUploadPaperModel.AnswerPath = value.AnswerPath;
                 }
+                #endregion
 
                 var res = await _pCPUploadPaperService.UpdatePCPUploadPaperAsync(pCPUploadPaperModel);
                 if (res.Equals(1))
@@ -609,9 +592,10 @@ namespace CoreLayout.Controllers.PCP
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
+                return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
             }
 
-            return View("~/Views/PCP/PCPUploadPaper/Edit.cshtml", pCPUploadPaperModel);
+           
         }
 
         [HttpGet]
@@ -692,7 +676,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [Obsolete]
-        public async Task<IActionResult> DownloadPaperAsync(string id)
+        public async Task<IActionResult> Download(string id, string question, string answer)
         {
             try
             {
@@ -713,82 +697,34 @@ namespace CoreLayout.Controllers.PCP
                     pCPUploadPaperModel.PaperPath = data.PaperPath;
                     pCPUploadPaperModel.DownloadStatus = "Download Paper By Setter";
                     var res = await _pCPUploadPaperService.InsertDownloadLogAsync(pCPUploadPaperModel);
-                    //end
 
-                    if (res.Equals(1))
+                    #region file download
+                    var path = string.Empty;
+                    var ext = string.Empty;
+                    if (question != null)
                     {
-                        //TempData["success"] = "Paper has been downloaded";
-
-                        #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadPaper");
-                        var path = System.IO.Path.Combine(uploadsFolder, data.PaperPath);
-                        //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
-                        string ReportURL = path;
-                        byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                        string UploadPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadPaper").Value.ToString();
+                        path = Path.Combine(UploadPaperDocument, data.PaperPath);
+                        ext = Path.GetExtension(data.PaperPath).Substring(1);
+                    }
+                    else if (answer != null)
+                    {
+                        string AnswerPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:AnswerPaper").Value.ToString();
+                        path = Path.Combine(AnswerPaperDocument, data.AnswerPath);
+                        ext = Path.GetExtension(data.AnswerPath).Substring(1);
+                    }
+                   
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    if(ext=="pdf" || ext=="PDF")
+                    {
                         return File(FileBytes, "application/pdf");
-                        #endregion
-
                     }
-                    else
-                    {
-                        //TempData["error"] = "Paper has not been downloaded";
-                    }
+                    #endregion
                 }
             }
             catch (Exception ex)
             {
-                //TempData["error"] = "Some thing went wrong";
-            }
-            return await Index();
-        }
-
-        [Obsolete]
-        public async Task<IActionResult> DownloadAnswerAsync(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadPaperService.GetPCPUploadPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    //insert download record
-                    PCPUploadPaperModel pCPUploadPaperModel = new PCPUploadPaperModel();
-                    pCPUploadPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                    pCPUploadPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    pCPUploadPaperModel.PaperId = data.PaperId;
-                    pCPUploadPaperModel.PaperPath = data.AnswerPath;
-                    pCPUploadPaperModel.DownloadStatus = "Download Answer By Setter";
-                    var res = await _pCPUploadPaperService.InsertDownloadLogAsync(pCPUploadPaperModel);
-                    //end
-
-                    if (res.Equals(1))
-                    {
-                        //TempData["success"] = "Paper has been downloaded";
-
-                        #region file download
-                        string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "AnswerPaper");
-                        var path = System.IO.Path.Combine(uploadsFolder, data.AnswerPath);
-                        //string dycriptpassword = _commonController.Decrypt(data.PaperPassword);
-                        string ReportURL = path;
-                        byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                        return File(FileBytes, "application/pdf");
-                        #endregion
-
-                    }
-                    else
-                    {
-                        //TempData["error"] = "Paper has not been downloaded";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //TempData["error"] = "Some thing went wrong";
             }
             return await Index();
         }
@@ -839,13 +775,13 @@ namespace CoreLayout.Controllers.PCP
             }
             else
             {
-                 QPList = (from qp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
-                              where qp.UserId == CreatedBy && qp.ExamId == ExamId
-                              select new SelectListItem()
-                              {
-                                  Text = qp.QPCode + " - " + qp.QPName,
-                                  Value = qp.AssignedQPId.ToString(),
-                              }).ToList();
+                QPList = (from qp in await _pCPAssignedQPService.GetAllPCPAssignedQP()
+                          where qp.UserId == CreatedBy && qp.ExamId == ExamId
+                          select new SelectListItem()
+                          {
+                              Text = qp.QPCode + " - " + qp.QPName,
+                              Value = qp.AssignedQPId.ToString(),
+                          }).ToList();
             }
             QPList.Insert(0, new SelectListItem()
             {

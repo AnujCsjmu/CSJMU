@@ -4,6 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="ceTe.DynamicPDF.CoreSuite.NET" Version="11.35.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
@@ -19,17 +27,12 @@
     <PackageReference Include="NLog" Version="5.0.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.1" />
+    <PackageReference Include="NPOI" Version="2.5.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Logs\" />
-    <Folder Include="wwwroot\AnswerPaper\" />
-    <Folder Include="wwwroot\Attachments\" />
-    <Folder Include="wwwroot\UploadCertificate\" />
-    <Folder Include="wwwroot\UploadOldPattern\" />
-    <Folder Include="wwwroot\UploadOldSyllabus\" />
-    <Folder Include="wwwroot\PCPPhoto\" />
   </ItemGroup>
 
   <ItemGroup>

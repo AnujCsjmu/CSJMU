@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,8 @@ namespace CoreLayout.Controllers
         private readonly IPCPApprovalService _pCPApprovalService;
         private readonly CommonController _commonController;
         private readonly IMailService _mailService;
-        public PCPApprovalController(ILogger<PCPApprovalController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, CommonController commonController, IMailService mailService)
+        public IConfiguration _configuration;
+        public PCPApprovalController(ILogger<PCPApprovalController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, IDataProtectionProvider provider, IPCPApprovalService pCPApprovalService, CommonController commonController, IMailService mailService, IConfiguration configuration)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -41,6 +43,7 @@ namespace CoreLayout.Controllers
             _pCPApprovalService = pCPApprovalService;
             _commonController = commonController;
             _mailService = mailService;
+            _configuration = configuration;
         }
 
         [AuthorizeContext(ViewAction.View)]
@@ -187,10 +190,11 @@ namespace CoreLayout.Controllers
         {
             try
             {
+                string PCPPhotoDocument = _configuration.GetSection("FilePaths:PreviousDocuments:PCPPhoto").Value.ToString();
                 var guid_id = _protector.Unprotect(id);
                 var data = await _pCPRegistrationService.GetPCPRegistrationById(Convert.ToInt32(guid_id));
-                string filePath = "~/PCPPhoto/" + data.UploadFileName;
-                data.UploadFileName = filePath;
+                //string filePath = "~/PCPPhotoDocument/" + data.UploadFileName;
+                //data.UploadFileName = filePath;
                 data.EncryptedId = id;
                 if (data == null)
                 {

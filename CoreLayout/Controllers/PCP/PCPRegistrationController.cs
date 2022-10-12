@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.PCP;
+﻿using CoreLayout.Helper;
+using CoreLayout.Models.PCP;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Course;
 using CoreLayout.Services.Masters.CourseBranchMapping;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -36,9 +38,10 @@ namespace CoreLayout.Controllers.PSP
         private readonly ICourseBranchMappingService _courseBranchMappingService;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
+        public IConfiguration _configuration;
 
         [Obsolete]
-        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService, IInstituteService instituteService, IHostingEnvironment environment, ICourseBranchMappingService courseBranchMappingService)
+        public PCPRegistrationController(ILogger<PCPRegistrationController> logger, IPCPRegistrationService pCPRegistrationService, IHttpContextAccessor httpContextAccessor, IRoleService roleService, CommonController commonController, IQPMasterService qPMasterService, ICourseService courseService, IBranchService branchService, IInstituteService instituteService, IHostingEnvironment environment, ICourseBranchMappingService courseBranchMappingService, IConfiguration configuration)
         {
             _logger = logger;
             _pCPRegistrationService = pCPRegistrationService;
@@ -51,6 +54,7 @@ namespace CoreLayout.Controllers.PSP
             _instituteService = instituteService;
             hostingEnvironment = environment;
             _courseBranchMappingService = courseBranchMappingService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -106,29 +110,39 @@ namespace CoreLayout.Controllers.PSP
                         }
                         else
                         {
-                            var uniqueFileName = UploadedFile(pCPRegistrationModel);
-                            pCPRegistrationModel.UploadFileName = uniqueFileName;
-                            if (ModelState.IsValid)
+                            FileHelper fileHelper = new FileHelper();
+                            string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:PCPPhoto").Value.ToString();
+                            pCPRegistrationModel.UploadFileName = fileHelper.SaveFile(uploadsFolder, "", pCPRegistrationModel.ProfileImage);
+                            //var uniqueFileName = UploadedFile(pCPRegistrationModel);
+                            //pCPRegistrationModel.UploadFileName = uniqueFileName;
+                            if (pCPRegistrationModel.UploadFileName != null)
                             {
-                                var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
-                                if (res.Equals(1))
+                                if (ModelState.IsValid)
                                 {
-                                    ModelState.Clear();
-                                    //success
-                                    ModelState.AddModelError("", "Data saved!");
-                                    errormsg = String.Format("Hello {0}, \n You are successfully registered for paper setter. \n After COE approval, You will get userid and password \n in registered emailid and mobileno", pCPRegistrationModel.UserName);
-                                    return await Registration();
+                                    var res = await _pCPRegistrationService.CreatePCPRegistrationAsync(pCPRegistrationModel);
+                                    if (res.Equals(1))
+                                    {
+                                        ModelState.Clear();
+                                        //success
+                                        ModelState.AddModelError("", "Data saved!");
+                                        errormsg = String.Format("Hello {0}, \n You are successfully registered for paper setter. \n After COE approval, You will get userid and password \n in registered emailid and mobileno", pCPRegistrationModel.UserName);
+                                        return await Registration();
+                                    }
+                                    else
+                                    {
+                                        //falure
+                                        ModelState.AddModelError("", "Data Not Saved!!");
+                                    }
+
                                 }
                                 else
                                 {
-                                    //falure
-                                    ModelState.AddModelError("", "Data Not Saved!!");
+                                    ModelState.AddModelError("", "Model state is not valid!");
                                 }
-                               
                             }
                             else
                             {
-                                ModelState.AddModelError("", "Some thing went wrong!");
+                                ModelState.AddModelError("", "Issue in file upload");
                             }
                         }
                     }
@@ -152,37 +166,38 @@ namespace CoreLayout.Controllers.PSP
             return View("~/Views/PCP/PCPRegistration/Registration.cshtml","PCPRegistration");
         }
 
-        [Obsolete]
-        private string UploadedFile(PCPRegistrationModel model)
-        {
-            try
-            {
-                string uniqueFileName = null;
+        //[Obsolete]
+        //private string UploadedFile(PCPRegistrationModel model)
+        //{
+        //    try
+        //    {
+        //        string uniqueFileName = null;
 
-                if (model.ProfileImage != null)
-                {
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto");
-                    string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    //int mobile = (int)HttpContext.Session.GetInt32("UserId");
-                    uniqueFileName = model.MobileNo + "_" + datetime + "_" + model.ProfileImage.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    //if folder not exit
-                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto")))
-                    {
-                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto"));
-                    }
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.ProfileImage.CopyTo(fileStream);
-                    }
-                }
-                return uniqueFileName;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        if (model.ProfileImage != null)
+        //        {
+        //            string uploadsFolder = _configuration.GetSection("FilePaths:PreviousDocuments:PCPPhoto").Value.ToString();
+        //            //string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto");
+        //            string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //            //int mobile = (int)HttpContext.Session.GetInt32("UserId");
+        //            uniqueFileName = model.MobileNo + "_" + datetime + "_" + model.ProfileImage.FileName;
+        //            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        //            //if folder not exit
+        //            if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto")))
+        //            {
+        //                Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto"));
+        //            }
+        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                model.ProfileImage.CopyTo(fileStream);
+        //            }
+        //        }
+        //        return uniqueFileName;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         [AcceptVerbs("GET", "POST")]
         public IActionResult VerifyMobile(string mobileNo)

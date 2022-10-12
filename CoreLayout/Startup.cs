@@ -379,6 +379,11 @@ namespace CoreLayout
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\PCPPhoto\"),
+                RequestPath = "/PCPPhoto"
+            });
             app.UseRouting();
             app.UseAuthorization();
            

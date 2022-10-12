@@ -108,7 +108,7 @@
                                         <td>
                                             @if (item.OldPaperPath != null)
                                             {
-                                                <a asp-action="DownloadOldPaper" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                                <a asp-action="Download" style="color:blue" asp-route-paper="paper"  asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {
@@ -119,7 +119,7 @@
                                         <td>
                                             @if (item.OldSyllabusPath != null)
                                             {
-                                                <a asp-action="DownloadOldSyllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                                <a asp-action="Download" style="color:blue" asp-route-syllabus="syllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {
@@ -130,7 +130,7 @@
                                         <td>
                                             @if (item.OldPatternPath != null)
                                             {
-                                                <a asp-action="DownloadOldPattern" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                                <a asp-action="Download" style="color:blue" asp-route-patterns="patterns" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {
@@ -141,7 +141,7 @@
                                         <td>
                                             @if (item.CertificatePath != null)
                                             {
-                                                <a asp-action="DownloadCertificate" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                                <a asp-action="Download" style="color:blue"  asp-route-certificate="certificate" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
                                             }
                                             else
                                             {

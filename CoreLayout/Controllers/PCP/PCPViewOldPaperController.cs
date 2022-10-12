@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -31,17 +32,19 @@ namespace CoreLayout.Controllers.PCP
         private IHttpContextAccessor _httpContextAccessor;
         private readonly IDataProtector _protector;
         private readonly IPCPUploadOldPaperService _pCPUploadOldPaperService;
+        public IConfiguration _configuration;
         [Obsolete]
         private readonly IHostingEnvironment hostingEnvironment;//for file upload
 
         [Obsolete]
-        public PCPViewOldPaperController(ILogger<PCPViewOldPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadOldPaperService pCPUploadOldPaperService, IHostingEnvironment environment)
+        public PCPViewOldPaperController(ILogger<PCPViewOldPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadOldPaperService pCPUploadOldPaperService, IHostingEnvironment environment, IConfiguration configuration)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
             _protector = provider.CreateProtector("PCPViewOldPaper.PCPViewOldPaperController");
             _pCPUploadOldPaperService = pCPUploadOldPaperService;
             hostingEnvironment = environment;
+            _configuration = configuration;
         }
         [HttpGet]
         //[AuthorizeContext(ViewAction.View)]
@@ -71,7 +74,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [Obsolete]
-        public async Task<IActionResult> DownloadOldPaper(string id)
+        public async Task<IActionResult> Download(string id, string paper, string syllabus, string patterns, string certificate)
         {
             try
             {
@@ -86,70 +89,50 @@ namespace CoreLayout.Controllers.PCP
                 {
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldPaper");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldPaperPath);
+                    var path = string.Empty;
+                    var ext = string.Empty;
+                    if (paper != null)
+                    {
+                        string UploadOldPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPaper").Value.ToString();
+                        path = Path.Combine(UploadOldPaperDocument, data.OldPaperPath);
+                        ext = Path.GetExtension(data.OldPaperPath).Substring(1);
+                    }
+                    else if (syllabus != null)
+                    {
+                        string UploadOldSyllabusDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldSyllabus").Value.ToString();
+                        path = Path.Combine(UploadOldSyllabusDocument, data.OldSyllabusPath);
+                        ext = Path.GetExtension(data.OldSyllabusPath).Substring(1);
+                    }
+                    else if (patterns != null)
+                    {
+                        string UploadOldPatternDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPattern").Value.ToString();
+                        path = Path.Combine(UploadOldPatternDocument, data.OldPatternPath);
+                        ext = Path.GetExtension(data.OldPatternPath).Substring(1);
+                    }
+                    else if (certificate != null)
+                    {
+                        string UploadCertificateDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadCertificate").Value.ToString();
+                        path = Path.Combine(UploadCertificateDocument, data.CertificatePath);
+                        ext = Path.GetExtension(data.CertificatePath).Substring(1);
+                    }
                     string ReportURL = path;
                     byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return await Index();
-        }
-
-        [Obsolete]
-        public async Task<IActionResult> DownloadOldSyllabus(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldSyllabus");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldSyllabusPath);
-                    string ReportURL = path;
-                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return await Index();
-        }
-        [Obsolete]
-        public async Task<IActionResult> DownloadOldPattern(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldPattern");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldPatternPath);
-                    string ReportURL = path;
-                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
+                    if (ext == "png" || ext == "PNG")
+                    {
+                        return File(FileBytes, "image/png");
+                    }
+                    else if (ext == "jpg" || ext == "JPG")
+                    {
+                        return File(FileBytes, "image/jpg");
+                    }
+                    else if (ext == "jpeg" || ext == "JPEG")
+                    {
+                        return File(FileBytes, "image/jpeg");
+                    }
+                    else
+                    {
+                        return File(FileBytes, "application/pdf");
+                    }
                     #endregion
                 }
             }

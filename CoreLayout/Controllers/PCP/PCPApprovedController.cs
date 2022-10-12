@@ -117,8 +117,8 @@ namespace CoreLayout.Controllers.PCP
 
                 // string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "PCPPhoto");
                 //string filePath = Path.Combine(uploadsFolder, data.UploadFileName);
-                string filePath = "~/PCPPhoto/" + data.UploadFileName;
-                data.UploadFileName = filePath;
+                //string filePath = "~/PCPPhoto/" + data.UploadFileName;
+                //data.UploadFileName = filePath;
                 data.EncryptedId = id;
                 if (data == null)
                 {

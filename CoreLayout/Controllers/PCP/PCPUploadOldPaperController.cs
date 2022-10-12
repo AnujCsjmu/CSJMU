@@ -1,5 +1,6 @@
 ﻿using ceTe.DynamicPDF.Cryptography;
 using ceTe.DynamicPDF.Merger;
+using CoreLayout.Helper;
 using CoreLayout.Models.PCP;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
@@ -16,6 +17,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,10 +43,11 @@ namespace CoreLayout.Controllers.PCP
         private readonly IExamMasterService _examMasterService;
         private readonly IExamCourseMappingService _examCourseMappingService;
         private readonly ICourseBranchMappingService _courseBranchMappingService;
+        public IConfiguration _configuration;
         [Obsolete]
         public PCPUploadOldPaperController(ILogger<PCPUploadOldPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService
             , IQPMasterService qPMasterService, IPCPUploadOldPaperService pCPUploadOldPaperService, IExamMasterService examMasterService,
-            IExamCourseMappingService examCourseMappingService, ICourseBranchMappingService courseBranchMappingService)
+            IExamCourseMappingService examCourseMappingService, ICourseBranchMappingService courseBranchMappingService, IConfiguration configuration)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
@@ -58,6 +61,7 @@ namespace CoreLayout.Controllers.PCP
             _examMasterService = examMasterService;
             _examCourseMappingService = examCourseMappingService;
             _courseBranchMappingService = courseBranchMappingService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -111,15 +115,15 @@ namespace CoreLayout.Controllers.PCP
                 //var data1 = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(oldpaperid));
                 //if (data1 != null)
                 //{
-                    var res = await _pCPUploadOldPaperService.FinalSubmitAsync(pCPUploadOldPaperModel);
-                    if (res.Equals(1))
-                    {
-                        TempData["success"] = "Data has been final submit";
-                    }
-                    else
-                    {
-                        TempData["error"] = "Data has not been final submit";
-                    }
+                var res = await _pCPUploadOldPaperService.FinalSubmitAsync(pCPUploadOldPaperModel);
+                if (res.Equals(1))
+                {
+                    TempData["success"] = "Data has been final submit";
+                }
+                else
+                {
+                    TempData["error"] = "Data has not been final submit";
+                }
                 //}
                 //else
                 //{
@@ -193,9 +197,14 @@ namespace CoreLayout.Controllers.PCP
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[AuthorizeContext(ViewAction.Add)]
-        [Obsolete]
         public async Task<IActionResult> CreateAsync(PCPUploadOldPaperModel pCPUploadOldPaperModel)
         {
+            string UploadOldPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPaper").Value.ToString();
+            string UploadOldPatternDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPattern").Value.ToString();
+            string UploadOldSyllabusDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldSyllabus").Value.ToString();
+            string UploadCertificateDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadCertificate").Value.ToString();
+            var supportedTypes = new[] { "pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
+            FileHelper fileHelper = new FileHelper();
             try
             {
                 //start check paper already uploaded
@@ -203,150 +212,230 @@ namespace CoreLayout.Controllers.PCP
                 var alreadyexit = (from reg in await _pCPUploadOldPaperService.GetAllPCPUploadOldPaper()
                                    where reg.CreatedBy == CreatedBy && reg.QPId == pCPUploadOldPaperModel.QPId
                                    select reg).ToList();
+                if (alreadyexit.Count > 0)
+                {
+                    ModelState.AddModelError("", "Data already exit");
+                    return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                }
                 //end
 
-                pCPUploadOldPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                pCPUploadOldPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                pCPUploadOldPaperModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
-                if (pCPUploadOldPaperModel.FUOldPape != null && pCPUploadOldPaperModel.FUOldSyllabus != null && pCPUploadOldPaperModel.FUOldPattern != null)
+                #region Previous paper
+                if (pCPUploadOldPaperModel.FUOldPape != null)
                 {
-                    var supportedTypes = new[] { "pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
-                    var oldPaper = Path.GetExtension(pCPUploadOldPaperModel.FUOldPape.FileName).Substring(1);
-                    var oldSyllabus = Path.GetExtension(pCPUploadOldPaperModel.FUOldSyllabus.FileName).Substring(1);
-                    var oldPattern = Path.GetExtension(pCPUploadOldPaperModel.FUOldPattern.FileName).Substring(1);
-
-                    //certificate
-                    if (pCPUploadOldPaperModel.FUCertificate != null)
+                    var oldPaperExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldPape.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldPaperExt))
                     {
-                        var certificate = Path.GetExtension(pCPUploadOldPaperModel.FUOldPattern.FileName).Substring(1);
-                        if (!supportedTypes.Contains(certificate))
+                        if (pCPUploadOldPaperModel.FUOldPape.Length < 2100000)
                         {
-                            ModelState.AddModelError("", "certificate extention is invalid");
-                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                        }
-                        if (pCPUploadOldPaperModel.FUCertificate.Length > 2100000)
-                        {
-                            ModelState.AddModelError("", "FUCertificate size must be less than 2 mb");
-                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                        }
-                        if (pCPUploadOldPaperModel.FUCertificate.FileName == null)
-                        {
-                            ModelState.AddModelError("", "Certificate name is blank");
-                            return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadOldPaperModel);
-                        }
-                    }
-
-                    if (!supportedTypes.Contains(oldPaper) && !supportedTypes.Contains(oldSyllabus) && !supportedTypes.Contains(oldPattern))
-                    {
-                        ModelState.AddModelError("", "file extention is invalid");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    if (pCPUploadOldPaperModel.FUOldPape.Length > 2100000 && pCPUploadOldPaperModel.FUOldSyllabus.Length > 2100000 && pCPUploadOldPaperModel.FUOldPattern.Length > 2100000)
-                    {
-                        ModelState.AddModelError("", "Old Paper/Syllabus/Pattern size must be less than 2 mb");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    if (pCPUploadOldPaperModel.FUOldPape.FileName == null && pCPUploadOldPaperModel.FUOldSyllabus.FileName == null && pCPUploadOldPaperModel.FUOldPattern.FileName == null)
-                    {
-                        ModelState.AddModelError("", "File name is blank");
-                        return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    if (alreadyexit.Count > 0)
-                    {
-                        ModelState.AddModelError("", "Data already exit");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    if (ModelState.IsValid)
-                    {
-                        var uniqueFileNameOld = UploadedFile(pCPUploadOldPaperModel.FUOldPape, "", "UploadOldPaper");
-                        var uniqueFileNameSyllabus = UploadedFile(pCPUploadOldPaperModel.FUOldSyllabus, "", "UploadOldSyllabus");
-                        var uniqueFileNamePattern = UploadedFile(pCPUploadOldPaperModel.FUOldPattern, "", "UploadOldPattern");
-
-                        if (uniqueFileNameOld != null && uniqueFileNameSyllabus != null && uniqueFileNamePattern != null)
-                        {
-                            var uniqueFileNameCertificate = (dynamic)null;
-                            if (pCPUploadOldPaperModel.FUCertificate != null)
-                            {
-                                uniqueFileNameCertificate = UploadedFile(pCPUploadOldPaperModel.FUCertificate, "", "UploadCertificate");
-                            }
-                            pCPUploadOldPaperModel.OldPaperPath = uniqueFileNameOld;
-                            pCPUploadOldPaperModel.OldSyllabusPath = uniqueFileNameSyllabus;
-                            pCPUploadOldPaperModel.OldPatternPath = uniqueFileNamePattern;
-                            pCPUploadOldPaperModel.CertificatePath = uniqueFileNameCertificate;
-
-                            var res = await _pCPUploadOldPaperService.CreatePCPUploadOldPaperAsync(pCPUploadOldPaperModel);
-                            if (res.Equals(1))
-                            {
-                                TempData["success"] = "Documents has been saved";
-                            }
-                            else
-                            {
-                                TempData["error"] = "Documents has not been saved";
-                            }
-                            return RedirectToAction(nameof(Index));
+                            pCPUploadOldPaperModel.OldPaperPath = fileHelper.SaveFile(UploadOldPaperDocument, "", pCPUploadOldPaperModel.FUOldPape);
                         }
                         else
                         {
-                            ModelState.AddModelError("", "issue in file uploaded!");
+                            ModelState.AddModelError("", "previous Paper size must be less than 2 mb");
                             return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
                         }
                     }
                     else
                     {
+                        ModelState.AddModelError("", "previous paper extension is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                    }
+
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Please upload previous paper");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadOldPaperModel);
+                }
+                #endregion
+                #region previous syllabus
+                if (pCPUploadOldPaperModel.FUOldSyllabus != null)
+                {
+                    var oldSyllabusExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldSyllabus.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldSyllabusExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUOldSyllabus.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.OldSyllabusPath = fileHelper.SaveFile(UploadOldSyllabusDocument, "", pCPUploadOldPaperModel.FUOldSyllabus);
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                            ModelState.AddModelError("", "previous syllabus size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                        ModelState.AddModelError("", "previous syllabus extension is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                    }
+
+                }
+                else
+                {
+                    fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                    ModelState.AddModelError("", "Please upload previous syllabus");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadOldPaperModel);
+                }
+                #endregion
+                #region prevois pattern             
+                if (pCPUploadOldPaperModel.FUOldPattern != null)
+                {
+                    var oldPatternExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldPattern.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldPatternExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUOldPattern.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.OldPatternPath = fileHelper.SaveFile(UploadOldPatternDocument, "", pCPUploadOldPaperModel.FUOldPattern);
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                            fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                            ModelState.AddModelError("", "previous pattern size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                        fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                        ModelState.AddModelError("", "previous pattern extension is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                    }
+                }
+                else
+                {
+                    fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                    fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                    ModelState.AddModelError("", "Please upload previous pattern");
+                    return View("~/Views/PCP/PCPUploadPaper/Create.cshtml", pCPUploadOldPaperModel);
+                }
+                #endregion
+                #region previous certificate not mandator
+                if (pCPUploadOldPaperModel.FUCertificate != null)
+                {
+                    var oldCertificateExt = Path.GetExtension(pCPUploadOldPaperModel.FUCertificate.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldCertificateExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUCertificate.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.CertificatePath = fileHelper.SaveFile(UploadCertificateDocument, "", pCPUploadOldPaperModel.FUCertificate);
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                            fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                            fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                            ModelState.AddModelError("", "previous certificate size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                        fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                        fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                        ModelState.AddModelError("", "previous certificate is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
+                    }
+
+                }
+                #endregion
+
+                pCPUploadOldPaperModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+                pCPUploadOldPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                pCPUploadOldPaperModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
+
+                if (pCPUploadOldPaperModel.OldPaperPath != null && pCPUploadOldPaperModel.OldPatternPath != null && pCPUploadOldPaperModel.OldSyllabusPath != null)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        var res = await _pCPUploadOldPaperService.CreatePCPUploadOldPaperAsync(pCPUploadOldPaperModel);
+                        if (res.Equals(1))
+                        {
+                            TempData["success"] = "Documents has been saved";
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                            fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                            fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                            fileHelper.DeleteFileAnyException(UploadCertificateDocument, pCPUploadOldPaperModel.CertificatePath);
+                            TempData["error"] = "Documents has not been saved";
+                        }
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                        fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                        fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                        fileHelper.DeleteFileAnyException(UploadCertificateDocument, pCPUploadOldPaperModel.CertificatePath);
                         ModelState.AddModelError("", "Model state is not valid");
                         return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "File not uploaded");
+                    fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                    fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                    fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                    fileHelper.DeleteFileAnyException(UploadCertificateDocument, pCPUploadOldPaperModel.CertificatePath);
+                    ModelState.AddModelError("", "Some thing went wrong in file upload");
                     return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
                 }
             }
             catch (Exception ex)
             {
+                fileHelper.DeleteFileAnyException(UploadOldPaperDocument, pCPUploadOldPaperModel.OldPaperPath);
+                fileHelper.DeleteFileAnyException(UploadOldSyllabusDocument, pCPUploadOldPaperModel.OldSyllabusPath);
+                fileHelper.DeleteFileAnyException(UploadOldPatternDocument, pCPUploadOldPaperModel.OldPatternPath);
+                fileHelper.DeleteFileAnyException(UploadCertificateDocument, pCPUploadOldPaperModel.CertificatePath);
                 ModelState.AddModelError("", ex.ToString());
             }
             return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
         }
 
-        [Obsolete]
-        private string UploadedFile(IFormFile model, string oldpath, string foldername)
-        {
-            try
-            {
-                string uniqueFileName = null;
+        //[Obsolete]
+        //private string UploadedFile(IFormFile model, string oldpath, string foldername)
+        //{
+        //    try
+        //    {
+        //        string uniqueFileName = null;
 
-                if (model != null)
-                {
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername);
-                    string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    int userid = (int)HttpContext.Session.GetInt32("UserId");
-                    uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
-                    string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
-                    string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
-                    //if folder not exit
-                    if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
-                    {
-                        Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
-                    }
-                    //delete old file if edit the record
-                    if (System.IO.File.Exists(deletefilePath))
-                    {
-                        System.IO.File.Delete(deletefilePath);
-                    }
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        model.CopyTo(fileStream);
-                    }
-                }
-                return uniqueFileName;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        //        if (model != null)
+        //        {
+        //            string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername);
+        //            string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
+        //            int userid = (int)HttpContext.Session.GetInt32("UserId");
+        //            uniqueFileName = userid + "_" + datetime + "_" + model.FileName;
+        //            string filePath = System.IO.Path.Combine(uploadsFolder, uniqueFileName);
+        //            string deletefilePath = System.IO.Path.Combine(uploadsFolder, oldpath);
+        //            //if folder not exit
+        //            if (!Directory.Exists(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername)))
+        //            {
+        //                Directory.CreateDirectory(System.IO.Path.Combine(hostingEnvironment.WebRootPath, foldername));
+        //            }
+        //            //delete old file if edit the record
+        //            if (System.IO.File.Exists(deletefilePath))
+        //            {
+        //                System.IO.File.Delete(deletefilePath);
+        //            }
+        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                model.CopyTo(fileStream);
+        //            }
+        //        }
+        //        return uniqueFileName;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
 
         //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(string id)
@@ -400,9 +489,17 @@ namespace CoreLayout.Controllers.PCP
         [Obsolete]
         public async Task<IActionResult> Edit(int OldPaperId, PCPUploadOldPaperModel pCPUploadOldPaperModel)
         {
+            string UploadOldPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPaper").Value.ToString();
+            string UploadOldPatternDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPattern").Value.ToString();
+            string UploadOldSyllabusDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldSyllabus").Value.ToString();
+            string UploadCertificateDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadCertificate").Value.ToString();
+            var supportedTypes = new[] { "pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
+            FileHelper fileHelper = new FileHelper();
             try
             {
                 var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(OldPaperId);
+
+
                 pCPUploadOldPaperModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 pCPUploadOldPaperModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 pCPUploadOldPaperModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
@@ -427,105 +524,142 @@ namespace CoreLayout.Controllers.PCP
                 pCPUploadOldPaperModel.QPList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
                                                  where qpmaster.CourseId == pCPUploadOldPaperModel.CourseId
                                                  select qpmaster).ToList();
-
-                var supportedTypes = new[] { "pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };
-                var uniqueFileNameOld = (dynamic)null;
-                var uniqueFileNameSyllabus = (dynamic)null;
-                var uniqueFileNamePattern = (dynamic)null;
-                var uniqueFileNameCertificate = (dynamic)null;
-                //previus paper
+                #region Previous paper
                 if (pCPUploadOldPaperModel.FUOldPaperEdit != null)
                 {
-                    var oldPaper = Path.GetExtension(pCPUploadOldPaperModel.FUOldPaperEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(oldPaper))
+                    var oldPaperExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldPaperEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldPaperExt))
                     {
-                        ModelState.AddModelError("", "previous paper extention is invalid");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    uniqueFileNameOld = UploadedFile(pCPUploadOldPaperModel.FUOldPape, data.OldPaperPath, "UploadOldPaper");
-                }
-                else
-                {
-                    uniqueFileNameOld = data.OldPaperPath;
-
-                }
-                //previus syllabus
-                if (pCPUploadOldPaperModel.FUOldSyllabusEdit != null)
-                {
-                    var oldSyllabus = Path.GetExtension(pCPUploadOldPaperModel.FUOldSyllabusEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(oldSyllabus))
-                    {
-                        ModelState.AddModelError("", "previous syllabus extention is invalid");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    uniqueFileNameSyllabus = UploadedFile(pCPUploadOldPaperModel.FUOldSyllabus, data.OldSyllabusPath, "UploadOldSyllabus");
-                }
-                else
-                {
-                    uniqueFileNameSyllabus = data.OldSyllabusPath;
-
-                }
-                //previus pattern
-                if (pCPUploadOldPaperModel.FUOldPatternEdit != null)
-                {
-                    var oldPattern = Path.GetExtension(pCPUploadOldPaperModel.FUOldPatternEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(oldPattern))
-                    {
-                        ModelState.AddModelError("", "previous pattern extention is invalid");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    uniqueFileNamePattern = UploadedFile(pCPUploadOldPaperModel.FUOldPattern, data.OldPatternPath, "UploadOldPattern");
-                }
-                else
-                {
-                    uniqueFileNamePattern = data.OldPatternPath;
-                }
-                //previus certificate
-                if (pCPUploadOldPaperModel.FUCertificateEdit != null)
-                {
-                    var certificate = Path.GetExtension(pCPUploadOldPaperModel.FUCertificateEdit.FileName).Substring(1);
-                    if (!supportedTypes.Contains(certificate))
-                    {
-                        ModelState.AddModelError("", "certificate extention is invalid");
-                        return View("~/Views/PCP/PCPUploadOldPaper/Create.cshtml", pCPUploadOldPaperModel);
-                    }
-                    uniqueFileNameCertificate = UploadedFile(pCPUploadOldPaperModel.FUCertificate, data.CertificatePath, "UploadCertificate");
-                }
-                else
-                {
-                    uniqueFileNameCertificate = data.CertificatePath;
-                }
-                //if (ModelState.IsValid) model is not valid due to old file upload
-                //{
-                    if (uniqueFileNameOld != null && uniqueFileNameSyllabus != null && uniqueFileNamePattern != null)
-                    {
-                        pCPUploadOldPaperModel.OldPaperPath = uniqueFileNameOld;
-                        pCPUploadOldPaperModel.OldSyllabusPath = uniqueFileNameSyllabus;
-                        pCPUploadOldPaperModel.OldPatternPath = uniqueFileNamePattern;
-                        pCPUploadOldPaperModel.CertificatePath = uniqueFileNameCertificate;
-
-                        var res = await _pCPUploadOldPaperService.UpdatePCPUploadOldPaperAsync(pCPUploadOldPaperModel);
-                        if (res.Equals(1))
+                        if (pCPUploadOldPaperModel.FUOldPaperEdit.Length < 2100000)
                         {
-                            TempData["success"] = "Documents has been updated";
+                            pCPUploadOldPaperModel.OldPaperPath = fileHelper.SaveFile(UploadOldPaperDocument, data.OldPaperPath, pCPUploadOldPaperModel.FUOldPaperEdit);
                         }
                         else
                         {
-                            TempData["error"] = "Documents has not been updated";
+                            ModelState.AddModelError("", "previous Paper size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
                         }
-                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        ModelState.AddModelError("", "issue in file uploaded!");
+                        ModelState.AddModelError("", "previous paper extention is invalid- accept only pdf,jpg,jpeg,png");
                         return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
                     }
+                }
+                else
+                {
+                    pCPUploadOldPaperModel.OldPaperPath = data.OldPaperPath;
+                }
+                #endregion
+                #region previous syllabus
+                if (pCPUploadOldPaperModel.FUOldSyllabusEdit != null)
+                {
+                    var oldSyllabusExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldSyllabusEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldSyllabusExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUOldSyllabusEdit.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.OldSyllabusPath = fileHelper.SaveFile(UploadOldSyllabusDocument, data.OldSyllabusPath, pCPUploadOldPaperModel.FUOldSyllabusEdit);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "previous syllabus size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "previous syllabus extention is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                    }
+
+                }
+                else
+                {
+                    pCPUploadOldPaperModel.OldSyllabusPath = data.OldSyllabusPath;
+                }
+                #endregion
+                #region prevois pattern             
+                if (pCPUploadOldPaperModel.FUOldPatternEdit != null)
+                {
+                    var oldPatternExt = Path.GetExtension(pCPUploadOldPaperModel.FUOldPatternEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldPatternExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUOldPatternEdit.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.OldPatternPath = fileHelper.SaveFile(UploadOldPatternDocument, data.OldPatternPath, pCPUploadOldPaperModel.FUOldPatternEdit);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "previous pattern size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "previous pattern extention is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                    }
+                }
+                else
+                {
+                    pCPUploadOldPaperModel.OldPatternPath = data.OldPatternPath;
+                }
+                #endregion
+                #region previous certificate not mandator
+                if (pCPUploadOldPaperModel.FUCertificateEdit != null)
+                {
+                    var oldCertificateExt = Path.GetExtension(pCPUploadOldPaperModel.FUCertificateEdit.FileName).Substring(1);
+                    if (supportedTypes.Contains(oldCertificateExt))
+                    {
+                        if (pCPUploadOldPaperModel.FUCertificateEdit.Length < 2100000)
+                        {
+                            pCPUploadOldPaperModel.CertificatePath = fileHelper.SaveFile(UploadCertificateDocument, data.CertificatePath, pCPUploadOldPaperModel.FUCertificateEdit);
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "previous certificate size must be less than 2 mb");
+                            return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "previous certificate is invalid- accept only pdf,jpg,jpeg,png");
+                        return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                    }
+                }
+                else
+                {
+                    pCPUploadOldPaperModel.CertificatePath = data.CertificatePath;
+                }
+                #endregion
+
+                //if (ModelState.IsValid) model is not valid due to old file upload
+                //{
+                if (pCPUploadOldPaperModel.OldPaperPath != null && pCPUploadOldPaperModel.OldSyllabusPath != null && pCPUploadOldPaperModel.OldPatternPath != null)
+                {
+                    var res = await _pCPUploadOldPaperService.UpdatePCPUploadOldPaperAsync(pCPUploadOldPaperModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Documents has been updated";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Documents has not been updated";
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "issue in file uploaded!");
+                    return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
+                }
                 //}
                 //else
                 //{
                 //    ModelState.AddModelError("", "Model state is not valid");
                 //    return View("~/Views/PCP/PCPUploadOldPaper/Edit.cshtml", pCPUploadOldPaperModel);
-               // }
+                // }
             }
             catch (Exception ex)
             {
@@ -596,7 +730,7 @@ namespace CoreLayout.Controllers.PCP
         }
 
         [Obsolete]
-        public async Task<IActionResult> DownloadOldPaper(string id)
+        public async Task<IActionResult> Download(string id, string paper, string syllabus, string patterns, string certificate)
         {
             try
             {
@@ -611,100 +745,50 @@ namespace CoreLayout.Controllers.PCP
                 {
 
                     #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldPaper");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldPaperPath);
+                    var path = string.Empty;
+                    var ext = string.Empty;
+                    if (paper != null)
+                    {
+                        string UploadOldPaperDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPaper").Value.ToString();
+                        path = Path.Combine(UploadOldPaperDocument, data.OldPaperPath);
+                        ext = Path.GetExtension(data.OldPaperPath).Substring(1);
+                    }
+                    else if (syllabus != null)
+                    {
+                        string UploadOldSyllabusDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldSyllabus").Value.ToString();
+                        path = Path.Combine(UploadOldSyllabusDocument, data.OldSyllabusPath);
+                        ext = Path.GetExtension(data.OldSyllabusPath).Substring(1);
+                    }
+                    else if (patterns != null)
+                    {
+                        string UploadOldPatternDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadOldPattern").Value.ToString();
+                        path = Path.Combine(UploadOldPatternDocument, data.OldPatternPath);
+                        ext = Path.GetExtension(data.OldPatternPath).Substring(1);
+                    }
+                    else if (certificate != null)
+                    {
+                        string UploadCertificateDocument = _configuration.GetSection("FilePaths:PreviousDocuments:UploadCertificate").Value.ToString();
+                        path = Path.Combine(UploadCertificateDocument, data.CertificatePath);
+                        ext = Path.GetExtension(data.CertificatePath).Substring(1);
+                    }
                     string ReportURL = path;
                     byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return await Index();
-        }
-
-        [Obsolete]
-        public async Task<IActionResult> DownloadOldSyllabus(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldSyllabus");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldSyllabusPath);
-                    string ReportURL = path;
-                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return await Index();
-        }
-        [Obsolete]
-        public async Task<IActionResult> DownloadOldPattern(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadOldPattern");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.OldPatternPath);
-                    string ReportURL = path;
-                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
-                    #endregion
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return await Index();
-        }
-
-        [Obsolete]
-        public async Task<IActionResult> DownloadCertificate(string id)
-        {
-            try
-            {
-                var guid_id = _protector.Unprotect(id);
-                var data = await _pCPUploadOldPaperService.GetPCPUploadOldPaperById(Convert.ToInt32(guid_id));
-
-                if (data == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-
-                    #region file download
-                    string uploadsFolder = System.IO.Path.Combine(hostingEnvironment.WebRootPath, "UploadCertificate");
-                    var path = System.IO.Path.Combine(uploadsFolder, data.CertificatePath);
-                    string ReportURL = path;
-                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
-                    return File(FileBytes, "application/pdf");
+                    if (ext == "png" || ext == "PNG")
+                    {
+                        return File(FileBytes, "image/png");
+                    }
+                    else if (ext == "jpg" || ext == "JPG")
+                    {
+                        return File(FileBytes, "image/jpg");
+                    }
+                    else if (ext == "jpeg" || ext == "JPEG")
+                    {
+                        return File(FileBytes, "image/jpeg");
+                    }
+                    else
+                    {
+                        return File(FileBytes, "application/pdf");
+                    }
                     #endregion
                 }
             }

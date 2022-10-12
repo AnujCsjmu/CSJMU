@@ -173,13 +173,13 @@
                                     {
                                         <td>
                                             <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                            <a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            <a asp-action="Download" style="color:green" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
                                     }
                                     else
                                     {
                                         <td>
-                                            <a asp-action="RequestQuestionPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Question Paper Password</a>
+                                            <a asp-action="RequestQuestionPassword" style="color:blue" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Question Paper Password</a>
                                         </td>
                                     }
                                 }
@@ -194,13 +194,13 @@
                                     {
                                         <td>
                                             <img src="~/Images/pdfimage.png" height=30 width=30 /><br />
-                                            <a asp-action="DownloadAnswer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                            <a asp-action="DownloadAnswer" style="color:green" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                         </td>
                                     }
                                     else
                                     {
                                         <td>
-                                            <a asp-action="RequestAnswerPassword" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Answer Paper Password</a>
+                                            <a asp-action="RequestAnswerPassword" style="color:blue" asp-route-id="@item.EncryptedId" onclick="return confirm('Are you sure want to request password?')">Request For Answer Paper Password</a>
                                         </td>
                                     }
                                 }
