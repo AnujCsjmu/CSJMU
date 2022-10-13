@@ -50,9 +50,15 @@ namespace CoreLayout.Controllers.UserManagement
             object data = null;
             int? RoleId = HttpContext.Session.GetInt32("RoleId");
             int? UserId = HttpContext.Session.GetInt32("UserId");
-            if (RoleId == 1)
+            if (RoleId == 1)//1 is admin
             {
                 data = await _registrationService.GetAllRegistrationAsync();
+            }
+            else if (RoleId == 3)//3 is coe
+            {
+                data = (from registration in _registrationService.GetAllRegistrationAsync().Result
+                        where registration.CreatedBy == UserId && registration.RoleId!=19
+                        select registration).ToList();//19 is paper setter
             }
             else
             {
@@ -507,6 +513,43 @@ namespace CoreLayout.Controllers.UserManagement
             byte[] hashBytes = hash.ComputeHash(passwordWithSaltBytes.ToArray());
 
             return Convert.ToBase64String(hashBytes);
+        }
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyMobile(string mobileNo)
+        {
+            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+                           where data.MobileNo == mobileNo.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{mobileNo} is already in use.");
+            }
+            return Json(true);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyEmail(string emailID)
+        {
+            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+                           where data.EmailID == emailID.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{emailID} is already in use.");
+            }
+            return Json(true);
+        }
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult VerifyLoginId(string loginID)
+        {
+            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+                           where data.LoginID == loginID.Trim()
+                           select data).ToList();
+            if (already.Count > 0)
+            {
+                return Json($"{loginID} is already in use.");
+            }
+            return Json(true);
         }
     }
 }

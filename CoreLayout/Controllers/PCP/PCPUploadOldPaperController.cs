@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
 {
-    [Authorize(Roles = "QPAssign, Controller Of Examination")]
+    [Authorize(Roles = "Assistant Registrar,Examination AO, Controller Of Examination")]
     public class PCPUploadOldPaperController : Controller
     {
         private readonly ILogger<PCPUploadOldPaperController> _logger;
@@ -820,12 +820,107 @@ namespace CoreLayout.Controllers.PCP
 
         }
 
-        public async Task<JsonResult> GetCourseSubjectSemYearSyl(int QPId)
+        public async Task<JsonResult> GetCourse(int ExamId)
         {
-            var Combinelist = (from qpmaster in await _qPMasterService.GetAllQPMaster()
-                               where qpmaster.QPId == QPId
-                               select qpmaster).ToList();
-            return Json(Combinelist);
+            var ExamList = (from examcoursemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
+                            where examcoursemapping.ExamId == ExamId
+                            select new SelectListItem()
+                            {
+                                Text = examcoursemapping.CourseName,
+                                Value = examcoursemapping.CourseID.ToString(),
+                            }).ToList();
+
+            ExamList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(ExamList);
+        }
+
+        public async Task<JsonResult> GetSemYear(int CourseId)
+        {
+            var SemYearList = (from examcoursemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
+                               where examcoursemapping.CourseID == CourseId
+                               select new SelectListItem()
+                               {
+                                   Text = examcoursemapping.SemYearId.ToString(),
+                                   Value = examcoursemapping.SemYearId.ToString(),
+                               }).ToList();
+
+            SemYearList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(SemYearList);
+        }
+        public async Task<JsonResult> GetBranch(int CourseId)
+        {
+            var BranchList = (from coursbranchemapping in await _courseBranchMappingService.GetAllCourseBranchMapping()
+                              where coursbranchemapping.CourseId == CourseId
+                              select new SelectListItem()
+                              {
+                                  Text = coursbranchemapping.BranchName,
+                                  Value = coursbranchemapping.BranchId.ToString(),
+                              }).ToList();
+
+            BranchList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(BranchList);
+        }
+        //public async Task<JsonResult> GetSetterByCourse(int BranchId)
+        //{
+        //    var SetterList = (from reg in await _pCPRegistrationService.GetSetterList()
+        //                      where reg.BranchId == BranchId
+        //                      select new SelectListItem()
+        //                      {
+        //                          Text = reg.UserName,
+        //                          Value = reg.UserId.ToString(),
+        //                      }).ToList();
+        //    //SetterList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
+        //    return Json(SetterList);
+        //}
+        public async Task<JsonResult> GetSyllabus(int ExamId)
+        {
+            var SyllabusList = (from examcourseemapping in await _examCourseMappingService.GetAllExamCourseMappingAsync()
+                                where examcourseemapping.ExamId == ExamId
+                                select new SelectListItem()
+                                {
+                                    Text = examcourseemapping.Session,
+                                    Value = examcourseemapping.SessionId.ToString(),
+                                }).ToList();
+
+            SyllabusList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(SyllabusList);
+        }
+        public async Task<JsonResult> GetQP(int CourseId)
+        {
+            var QPList = (from qpmaster in await _qPMasterService.GetAllQPMaster()
+                          where qpmaster.CourseId == CourseId
+                          select new SelectListItem()
+                          {
+                              Text = qpmaster.QPCode + "-" + qpmaster.QPName,
+                              Value = qpmaster.QPId.ToString(),
+                          }).ToList();
+
+            QPList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(QPList);
         }
 
     }

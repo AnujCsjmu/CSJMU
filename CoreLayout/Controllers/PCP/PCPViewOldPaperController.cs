@@ -25,7 +25,7 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace CoreLayout.Controllers.PCP
 {
-    [Authorize(Roles = "Paper Setter, Controller Of Examination")]
+    [Authorize(Roles = "Paper Setter,Examination AO, Controller Of Examination")]
     public class PCPViewOldPaperController : Controller
     {
         private readonly ILogger<PCPViewOldPaperController> _logger;

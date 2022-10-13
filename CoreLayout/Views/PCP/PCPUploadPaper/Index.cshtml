@@ -101,7 +101,7 @@
                                             <img src="~/Images/pdfimage.png" height=30 width=40 /><br />
                                             @if (@item.FinalSubmit == null || @item.FinalSubmit == "")
                                             {
-                                                <a asp-action="Download" style="color:blue" asp-route-question="question"asp-route-id="@item.EncryptedId" target="_blank">Download</a>
+                                                <a asp-action="Download" style="color:blue" asp-route-question="question" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                             }
                                         </td>
                                         <td>
@@ -113,6 +113,10 @@
                                                 {
                                                     <a asp-action="Download" style="color:blue" asp-route-answer="answer" asp-route-id="@item.EncryptedId" target="_blank">Download</a>
                                                 }
+                                            }
+                                            else
+                                            {
+                                                <label style="font-weight:bold; color:red">No File</label>
                                             }
                                         </td>
                                         <td>@item.UserName</td>
@@ -230,15 +234,15 @@
         });
     </script>
 
-<script>
-    $(function () {
-        $("input").change(function (e) {
-            e.preventDefault();
-            if ($(this).is(":checked")) {
-                $("input").prop("checked", false);
-                $(this).prop("checked", true);
-            }
+    <script>
+        $(function () {
+            $("input").change(function (e) {
+                e.preventDefault();
+                if ($(this).is(":checked")) {
+                    $("input").prop("checked", false);
+                    $(this).prop("checked", true);
+                }
+            });
         });
-    });
-</script>
+    </script>
 }

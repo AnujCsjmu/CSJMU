@@ -60,10 +60,6 @@ namespace CoreLayout.Controllers.PSP
         [HttpGet]
         public async Task<IActionResult> Registration()
         {
-            if (errormsg != "")
-            {
-                ViewBag.errormsg = errormsg;
-            }
             PCPRegistrationModel pCPRegistrationModel = new PCPRegistrationModel();
             pCPRegistrationModel.QPCodeList =await _qPMasterService.GetAllQPMaster();
             pCPRegistrationModel.CourseList = await _courseService.GetAllCourse();
@@ -124,8 +120,8 @@ namespace CoreLayout.Controllers.PSP
                                     {
                                         ModelState.Clear();
                                         //success
-                                        ModelState.AddModelError("", "Data saved!");
-                                        errormsg = String.Format("Hello {0}, \n You are successfully registered for paper setter. \n After COE approval, You will get userid and password \n in registered emailid and mobileno", pCPRegistrationModel.UserName);
+                                        ModelState.AddModelError("", "You are successfully registered for paper setter. After COE approval, You will get userid and password in registered emailid and mobileno");
+                                        //errormsg = String.Format("Hello {0}, \n You are successfully registered for paper setter. \n After COE approval, You will get userid and password \n in registered emailid and mobileno", pCPRegistrationModel.UserName);
                                         return await Registration();
                                     }
                                     else
@@ -158,8 +154,8 @@ namespace CoreLayout.Controllers.PSP
             }
             catch (Exception ex)
             {
-                errormsg = ex.StackTrace.ToString();
-                ModelState.AddModelError("", errormsg.ToString());
+                //errormsg = ex.StackTrace.ToString();
+                ModelState.AddModelError("", ex.ToString());
                 //return RedirectToAction("Registration", "PSPRegistration");
             }
             //return RedirectToAction(nameof(Registration));

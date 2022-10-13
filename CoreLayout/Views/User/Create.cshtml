@@ -1,4 +1,5 @@
 ﻿@model CoreLayout.Models.UserManagement.RegistrationModel
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Create";
 }
@@ -75,34 +76,47 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteId","InstituteName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="IsUserActive"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("IsUserActive", new List<SelectListItem>
+                                @if (Context.Session.GetInt32("RoleId") == 3) //change for paper upload
                                 {
-                                      new SelectListItem{ Text="Active", Value = "1", Selected=true },
-                                      new SelectListItem{ Text="InActive", Value = "0" },
-                                },
-                                new { @class = "form-control" })
-                                <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
+                                    <label>Secrecy Cell </label><span class="tx-danger"> *</span>
+                                }
+                                else
+                                {
+                                    <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
+                                }
+
                                 <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="IsUserActive"> </label><span class="tx-danger"> *</span>
+                                    @Html.DropDownList("IsUserActive", new List<SelectListItem>
+                                    {
+                                          new SelectListItem{ Text="Active", Value = "1", Selected=true },
+                                          new SelectListItem{ Text="InActive", Value = "0" },
+                                    },
+                                    new { @class = "form-control" })
+                                    <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>*@
+                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        {
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
+                                    <select class="form-control select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList, "InstituteId", "InstituteName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                    <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                        }
+
+
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Save" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

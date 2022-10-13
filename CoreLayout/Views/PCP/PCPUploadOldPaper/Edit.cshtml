@@ -146,7 +146,7 @@
                 $("#ExamId").on("change", function () {
                     $("#CourseId").empty();
                     var ddlsource = "#ExamId";
-                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetCourse?ExamId="+$(ddlsource).val();
+                    var url = '@Url.Content("~/")' + "PCPUploadOldPaper/GetCourse?ExamId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';
@@ -167,7 +167,7 @@
                 $("#CourseId").on("change", function () {
                     $("#SemYearId").empty();
                     var ddlsource = "#CourseId";
-                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetSemYear?CourseId="+$(ddlsource).val();
+                    var url = '@Url.Content("~/")' + "PCPUploadOldPaper/GetSemYear?CourseId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';
@@ -187,7 +187,7 @@
                 $("#CourseId").on("change", function () {
                     $("#BranchId").empty();
                     var ddlsource = "#CourseId";
-                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetBranch?CourseId="+$(ddlsource).val();
+                    var url = '@Url.Content("~/")' + "PCPUploadOldPaper/GetBranch?CourseId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';
@@ -208,7 +208,7 @@
                 $("#ExamId").on("change", function () {
                     $("#SessionId").empty();
                     var ddlsource = "#ExamId";
-                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetSyllabus?ExamId="+$(ddlsource).val();
+                    var url = '@Url.Content("~/")' + "PCPUploadOldPaper/GetSyllabus?ExamId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';
@@ -229,7 +229,7 @@
                 $("#CourseId").on("change", function () {
                     $("#QPId").empty();
                     var ddlsource = "#CourseId";
-                    var url = '@Url.Content("~/")' + "PCPAssignedQP/GetQP?CourseId="+$(ddlsource).val();
+                    var url = '@Url.Content("~/")' + "PCPUploadOldPaper/GetQP?CourseId="+$(ddlsource).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';

@@ -1,5 +1,6 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,18 +19,21 @@ namespace CoreLayout.Models.UserManagement
 
         [Display(Name = "Login ID")]
         [Required(ErrorMessage = "Please enter login id")]
+        [Remote(action: "VerifyLoginId", controller: "User")]
         [StringLength(50)]
         public string LoginID { get; set; }
 
         [Display(Name = "Mobile No")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         [Required(ErrorMessage = "Please enter mobile")]
+        [Remote(action: "VerifyMobile", controller: "User")]
         [StringLength(10)]
         public string MobileNo { get; set; }
 
         [Display(Name = "Email ID")]
         [EmailAddress]
         [Required(ErrorMessage = "Please enter email")]
+        [Remote(action: "VerifyEmail", controller: "User")]
         [StringLength(50)]
         public string EmailID { get; set; }
 
@@ -62,7 +66,7 @@ namespace CoreLayout.Models.UserManagement
         public int RoleId { get; set; }
 
         [Display(Name = "Institute Name")]
-        [Required(ErrorMessage = "Please enter institute name")]
+        //[Required(ErrorMessage = "Please enter institute name")]
         public int InstituteId { get; set; }
         public string InstituteName { get; set; }
         public string IsPasswordChange { get; set; }

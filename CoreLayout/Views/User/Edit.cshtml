@@ -1,4 +1,5 @@
 ﻿@model CoreLayout.Models.UserManagement.RegistrationModel
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Edit";
 }
@@ -60,13 +61,21 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList,"InstituteId","InstituteName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                                @if (Context.Session.GetInt32("RoleId") == 3) //change name for paper upload
+                                {
+                                    <label>Secrecy Cell </label><span class="tx-danger"> *</span>
+                                }
+                                else
+                                {
+                                    <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
+                                }
+                                <select style="width:545px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
-                                <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                                <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="IsUserActive"> </label><span class="tx-danger"> *</span>
@@ -79,15 +88,18 @@
                                 <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
-                                <select style="width:545px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                </select>
-                                <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
+                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        {
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
+                                    <select style="width:545px" class="select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList, "InstituteId", "InstituteName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                    <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="IsPasswordChange"> </label><span class="tx-danger"> *</span>
@@ -101,22 +113,22 @@
                                 <span asp-validation-for="IsPasswordChange" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                     
-                            <div class="col-md-6" id="hidden_div" style="display: none;">
-                                <div class="form-group">
-                                    <label asp-for="Password"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="Password" class="form-control" />
-                                    <span asp-validation-for="Password" class="parsley-errors-list filled"></span>
-                                </div>
+
+                        <div class="col-md-6" id="hidden_div" style="display: none;">
+                            <div class="form-group">
+                                <label asp-for="Password"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="parsley-errors-list filled"></span>
                             </div>
-                            <div class="col-md-6" id="hidden_div1" style="display: none;">
-                                <div class="form-group">
-                                    <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="ConfirmPassword" class="form-control" />
-                                    <span asp-validation-for="ConfirmPassword" class="parsley-errors-list filled"></span>
-                                </div>
+                        </div>
+                        <div class="col-md-6" id="hidden_div1" style="display: none;">
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <span asp-validation-for="ConfirmPassword" class="parsley-errors-list filled"></span>
                             </div>
-                        
+                        </div>
+
                         <div class="form-group">
                             <input type="submit" asp-route-id="@Model.UserID" class="btn btn-primary" value="Update" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

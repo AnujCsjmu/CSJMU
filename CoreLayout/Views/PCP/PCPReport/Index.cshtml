@@ -40,9 +40,7 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.UserName)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.QPCode)
-                                </th>
+
                                 <th>
                                     @Html.DisplayNameFor(c => c.QPName)
                                 </th>
@@ -55,6 +53,9 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.Session)<br />
                                     @Html.DisplayNameFor(c => c.SemYearId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.QPCode)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.PaperPath)
@@ -71,58 +72,58 @@
                             }
                             @foreach (var item in Model)
                             {
-                                <tr>
+                            <tr>
+                                <td>
+                                    @{ sno++; }
+                                    @sno
+                                </td>
+
+                                <td>@item.UserName</td>
+
+                                <td>@item.CourseName</td>
+                                <td>@item.BranchName</td>
+                                <td>@item.Session<br />@item.SemYearId</td>
+                                @if (@item.QPCode == null)
+                                {
+                                    <td style="font-weight:bold; color:red">QP Not Assigned</td>
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    <td>@item.QPCode</td>
+                                    <td>@item.QPName</td>
+                                }
+                                @if (@item.FinalSubmit == null)
+                                {
+                                    <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
+
+                                }
+                                else
+                                {
                                     <td>
-                                        @{ sno++; }
-                                        @sno
+                                        <img src="~/Images/pdfimage.png" height=20 width=30 /><br />
+                                        @*<a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>*@
                                     </td>
+                                }
+                                <td>
+                                    @if (ViewBag.list != null)
+                                    {
 
-                                    <td>@item.UserName</td>
-                                    @if (@item.QPCode == null)
-                                    {
-                                        <td style="font-weight:bold; color:red">QP Not Assigned</td>
-                                        <td></td>
-                                    }
-                                    else
-                                    {
-                                        <td>@item.QPCode</td>
-                                        <td>@item.QPName</td>
-                                    }
-                                    <td>@item.CourseName</td>
-                                    <td>@item.BranchName</td>
-                                    <td>@item.Session<br />@item.SemYearId</td>
-                                    
-                                    @if (@item.FinalSubmit == null)
-                                    {
-                                        <td style="font-weight:bold; color:red">Paper Not Uploaded</td>
-
-                                    }
-                                    else
-                                    {
-                                        <td>
-                                            <img src="~/Images/pdfimage.png" height=20 width=30 /><br />
-                                            @*<a asp-action="Download" asp-route-id="@item.EncryptedId" target="_blank">Download</a>*@
-                                        </td>
-                                    }
-                                    <td>
-                                        @if (ViewBag.list != null)
+                                        foreach (var item1 in ViewBag.list)
                                         {
 
-                                            foreach (var item1 in ViewBag.list)
+                                            foreach (var item2 in item1)
                                             {
-
-                                                foreach (var item2 in item1)
+                                                @if (item.PaperId == item2.PaperId && item.QPId == item2.QPId)
                                                 {
-                                                    @if (item.PaperId == item2.PaperId && item.QPId == item2.QPId)
-                                                    {
-                                                        @item2.AgencyName <br />
-                                                    }
-
+                                                    @item2.AgencyName <br />
                                                 }
+
                                             }
                                         }
-                                    </td>
-                                </tr>
+                                    }
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>

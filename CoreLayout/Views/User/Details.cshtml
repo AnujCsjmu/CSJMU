@@ -1,4 +1,5 @@
 ﻿@model CoreLayout.Models.UserManagement.RegistrationModel
+@using Microsoft.AspNetCore.Http;
 @{
     ViewData["Title"] = "Details";
 }
@@ -59,24 +60,31 @@
                         </div>
 
                         @*<div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Password"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="Password" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <div class="form-group">
+                                    <label asp-for="Password"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="Password" class="form-control" readonly="readonly" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="ConfirmPassword" class="form-control" readonly="readonly" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="ConfirmPassword" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                            </div>
-                        </div>*@
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="InstituteName" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                                @if (Context.Session.GetInt32("RoleId") == 3) //change name for paper upload
+                                {
+                                    <label>Secrecy Cell </label><span class="tx-danger"> *</span>
+                                }
+                                else
+                                {
+                                    <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
+                                }
+                                <input asp-for="RoleName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -91,13 +99,16 @@
                                 <span asp-validation-for="IsUserActive" class="text-danger"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="RoleName" class="form-control" readonly="readonly" />
-                                <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
+                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        {
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="InstituteName" class="form-control" readonly="readonly" />
+                                    <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                                </div>
                             </div>
-                        </div>
+                        }
                         <div class="form-group">
                             <a asp-action="Edit" asp-route-id="@Model.UserID" class="btn btn-primary">Edit</a>
                             <a asp-action="Index" class="btn btn-success">Back to List</a>

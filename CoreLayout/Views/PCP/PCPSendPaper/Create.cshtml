@@ -178,7 +178,22 @@
 </div>
 <!-- Conetnt End-->
 @section Scripts{
+    <script>
+      function  getDatetime (dt) {
+            let fd = new Date(dt);
+            let mn = fd.getMonth() + 1;
+            let dy = fd.getDate();
+            let date = fd.getFullYear() + '-' + format(mn) + '-' + format(dy);
+            let time = format(fd.getHours()) + ':' + format(fd.getMinutes()) + ':' + format(fd.getSeconds());
+            return date + ' ' + time;
+        }
+       function  format (num) {
+            let val = num.toString();
+            val = val.length == 2 ? val : '0' + val;
+            return val;
 
+        }
+    </script>
     @*bing grid on filter*@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script type="text/javascript">
@@ -201,7 +216,7 @@
                     + "&SemYearId=" + $(semYearId).val()
                     + "&PaperSetterId=" + $(paperSetterId).val();
                 $.getJSON(url, function (data) {
-                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + (i.createdDate) + "</td></tr>");
+                    let output = data.map((i, index) => "<tr><td><input type='checkbox' id='chkid' value='" + i.paperId + "' /> </td><td>" + (index + 1) + "</td> <td>" + i.userName + "</td><td>" + i.courseName + "</td><td>" + i.branchName + "</td><td>" + i.session + "</td><td>" + i.semYearId + "</td> <td>" + i.qpName + "</td><td>" + i.qpCode + "</td><td>" + (getDatetime(i.createdDate)) + "</td></tr>");
                         $("#output").html(output);      
                 });
                 $('#global-loader').hide();

@@ -33,6 +33,7 @@ namespace CoreLayout.Repositories.UserManagement.Registration
                         int newID = 0;
                         registrationModel.IsRoleActive = 1;//2nd tabl2
                         registrationModel.IsMainRole = 0;//2nd tabl2
+                        registrationModel.IsUserActive = 1;
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("UserName", registrationModel.UserName, DbType.String);
                         parameters.Add("LoginID", registrationModel.LoginID, DbType.String);

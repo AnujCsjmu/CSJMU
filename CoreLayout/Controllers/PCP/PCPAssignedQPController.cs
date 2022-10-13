@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.PCP
 {
-    [Authorize(Roles = "QPAssign, Controller Of Examination")]
+    [Authorize(Roles = "Assistant Registrar, Controller Of Examination")]
     public class PCPAssignedQPController : Controller
     {
         private readonly ILogger<PCPAssignedQPController> _logger;
