@@ -1,4 +1,5 @@
 ﻿@model CoreLayout.Models.UserManagement.LoginModel
+@using AspNetCore.ReCaptcha
 @{
     Layout = null;
 }
@@ -68,13 +69,13 @@
                         <form method="post" asp-controller="Home" asp-action="Login">
                             <div asp-validation-summary="ModelOnly" style="color:red; font-weight:bold"></div>
                             <div class="form-group text-start">
-                                <label asp-for="LoginID">Login ID</label>
+                                @*<label asp-for="LoginID">Login ID</label>*@
                                 <input asp-for="LoginID" class="form-control" type="text" placeholder="Login ID" />
 
                                 <span class="text-danger" asp-validation-for="LoginID"></span>
                             </div>
                             <div class="form-group text-start">
-                                <label asp-for="Password">Password</label>
+                                @*<label asp-for="Password">Password</label>*@
                                 <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
                                 <span class="text-danger" asp-validation-for="Password"></span>
                             </div>
@@ -82,26 +83,29 @@
                                 <input asp-for="Remember" class="form-check-input" type="checkbox" />
                                 <label asp-for="Remember" class="form-check-label">Remember Password</label>
                             </div>
-
-                            <input class="btn ripple btn-main-primary btn-block" type="submit" value="Login" />
-
-                            <div class="mt-0 text-center">
-                                <a class="small" asp-action="Forget">Forgot Password?</a>
-                                @*&nbsp;&nbsp; <a class="small" asp-controller="PCPRegistration" asp-action="Registration">New Registration?</a>*@
+                            <div class="form-group text-start">
+                                @Html.ReCaptcha() 
+                                @*<recaptcha />*@
                             </div>
-                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
-                                {
-                                    <span style="font:bold; color:red" class="text-danger">@ViewBag.errormsg</span>
-                                }
+                                <input class="btn ripple btn-main-primary btn-block" type="submit" value="Login" />
 
-                            </div>
+                                <div class="mt-0 text-center">
+                                    <a class="small" asp-action="Forget">Forgot Password?</a>
+                                    @*&nbsp;&nbsp; <a class="small" asp-controller="PCPRegistration" asp-action="Registration">New Registration?</a>*@
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                    @if (ViewBag.errormsg != null && ViewBag.errormsg != "")
+                                    {
+                                        <span style="font:bold; color:red" class="text-danger">@ViewBag.errormsg</span>
+                                    }
+
+                                </div>
                         </form>
 
 
                         <div class="mt-0 text-center">
                             @*  <div class="small"><a asp-action="Registration">Need an account? Sign up!</a></div>*@
-                            <p class="mb-0 small">This is official ERP of CSJM University Kanpur</p>
+                            <p class="mb-0 small">This is official website of CSJM University Kanpur</p>
 
                         </div>
                     </div>
@@ -132,6 +136,7 @@
     <script src="~/assets/lib/jquery/dist/jquery.js"></script>
     <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
 
 </body>
 </html>

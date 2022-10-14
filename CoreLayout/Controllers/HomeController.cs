@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.Common;
+﻿using AspNetCore.ReCaptcha;
+using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Registration;
@@ -60,6 +61,7 @@ namespace CoreLayout.Controllers
 
             return View();
         }
+        [ValidateReCaptcha]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginModel loginModel)
@@ -125,7 +127,7 @@ namespace CoreLayout.Controllers
                 else
                 {
                     //errormsg = "Model state is invalid!";
-                    ModelState.AddModelError("", "Model state is invalid!");
+                    ModelState.AddModelError("", "Invalid captcha!");
                     // return RedirectToAction("Login", "Home");
                 }
             }
