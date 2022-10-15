@@ -201,6 +201,29 @@ namespace CoreLayout.Controllers
             }
             return result;
         }
+        public int loginidAlreadyExit(string LoginID)
+        {
+            int result = 0;
+            try
+            {
+                var already = (from user in _registrationService.GetAllRegistrationAsync().Result
+                               where user.LoginID == LoginID
+                               select new SelectListItem()
+                               {
+                                   Text = user.LoginID,
+                                   Value = user.UserID.ToString(),
+                               }).ToList();
+                if (already.Count > 0)
+                {
+                    result = 1;
+                }
+            }
+            catch (Exception)
+            {
+                result = 2;
+            }
+            return result;
+        }
         public int mobileAlreadyExitsPSP(string MobileNo)
         {
             int result = 0;

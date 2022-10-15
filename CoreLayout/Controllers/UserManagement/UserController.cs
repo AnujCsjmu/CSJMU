@@ -141,44 +141,57 @@ namespace CoreLayout.Controllers.UserManagement
                 {
                     registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
                 }
-                int emailAlreadyExit = _commonController.emailAlreadyExits(registrationModel.EmailID);
-                int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
-                if (emailAlreadyExit == 0 && mobileAlreadyExit == 0)
-                {
-
-
-                    string salt = _commonController.CreateSalt();
-                    string saltedHash = _commonController.ComputeSaltedHash(registrationModel.Password, salt);
-                    registrationModel.Salt = salt;
-                    registrationModel.SaltedHash = saltedHash;
-                    registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    registrationModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
-                    if (ModelState.IsValid)
-                    {
-                        var result = await _registrationService.CreateRegistrationAsync(registrationModel);
-                        if (result == 1)
+                ///int emailAlreadyExit = _commonController.emailAlreadyExits(registrationModel.EmailID);
+                //int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
+                int loginidAlreadyExit = _commonController.loginidAlreadyExit(registrationModel.LoginID);
+                //if (emailAlreadyExit == 0)
+                //{
+                    //if (mobileAlreadyExit == 0)
+                    //{
+                        if (loginidAlreadyExit == 0)
                         {
-                            TempData["success"] = "User has been created";
+                            string salt = _commonController.CreateSalt();
+                            string saltedHash = _commonController.ComputeSaltedHash(registrationModel.Password, salt);
+                            registrationModel.Salt = salt;
+                            registrationModel.SaltedHash = saltedHash;
+                            registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+                            registrationModel.CreatedBy = (int)HttpContext.Session.GetInt32("UserId");
+                            if (ModelState.IsValid)
+                            {
+                                var result = await _registrationService.CreateRegistrationAsync(registrationModel);
+                                if (result == 1)
+                                {
+                                    TempData["success"] = "User has been created";
+                                }
+                                else
+                                {
+                                    TempData["error"] = "User has not been created";
+                                }
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "Model state is not valid");
+                                return View(registrationModel);
+                            }
                         }
                         else
                         {
-                            TempData["error"] = "User has not been created";
+                            ModelState.AddModelError("", "LoginId already exits");
+                            return View(registrationModel);
                         }
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Some thing went wrong");
-                        return View(registrationModel);
-                    }
-
-
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Some thing went wrong");
-                    return View(registrationModel);
-                }
+                    //}
+                    //else
+                    //{
+                    //    ModelState.AddModelError("", "Email already exits");
+                    //    return View(registrationModel);
+                    //}
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "Mobile already exits");
+                //    return View(registrationModel);
+                //}
             }
             catch (Exception ex)
             {
@@ -514,42 +527,42 @@ namespace CoreLayout.Controllers.UserManagement
 
             return Convert.ToBase64String(hashBytes);
         }
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyMobile(string mobileNo)
-        {
-            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
-                           where data.MobileNo == mobileNo.Trim()
-                           select data).ToList();
-            if (already.Count > 0)
-            {
-                return Json($"{mobileNo} is already in use.");
-            }
-            return Json(true);
-        }
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult VerifyMobile(string mobileNo)
+        //{
+        //    var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+        //                   where data.MobileNo == mobileNo.Trim()
+        //                   select data).ToList();
+        //    if (already.Count > 0)
+        //    {
+        //        return Json($"{mobileNo} is already in use.");
+        //    }
+        //    return Json(true);
+        //}
 
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyEmail(string emailID)
-        {
-            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
-                           where data.EmailID == emailID.Trim()
-                           select data).ToList();
-            if (already.Count > 0)
-            {
-                return Json($"{emailID} is already in use.");
-            }
-            return Json(true);
-        }
-        [AcceptVerbs("GET", "POST")]
-        public IActionResult VerifyLoginId(string loginID)
-        {
-            var already = (from data in _registrationService.GetAllRegistrationAsync().Result
-                           where data.LoginID == loginID.Trim()
-                           select data).ToList();
-            if (already.Count > 0)
-            {
-                return Json($"{loginID} is already in use.");
-            }
-            return Json(true);
-        }
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult VerifyEmail(string emailID)
+        //{
+        //    var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+        //                   where data.EmailID == emailID.Trim()
+        //                   select data).ToList();
+        //    if (already.Count > 0)
+        //    {
+        //        return Json($"{emailID} is already in use.");
+        //    }
+        //    return Json(true);
+        //}
+        //[AcceptVerbs("GET", "POST")]
+        //public IActionResult VerifyLoginId(string loginID)
+        //{
+        //    var already = (from data in _registrationService.GetAllRegistrationAsync().Result
+        //                   where data.LoginID == loginID.Trim()
+        //                   select data).ToList();
+        //    if (already.Count > 0)
+        //    {
+        //        return Json($"{loginID} is already in use.");
+        //    }
+        //    return Json(true);
+        //}
     }
 }

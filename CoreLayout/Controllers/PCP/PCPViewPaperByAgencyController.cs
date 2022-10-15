@@ -154,11 +154,11 @@ namespace CoreLayout.Controllers.PCP
                     TempData["error"] = "Paper open time is not started";
                     return RedirectToAction(nameof(Index));
                 }
-                //else if (getIPAddres != data.StaticIPAddress)
-                //{
-                //    TempData["error"] = "Static IP is not matched";
-                //    return RedirectToAction(nameof(Index));
-                //}
+                else if (getIPAddres != data.StaticIPAddress)
+                {
+                    TempData["error"] = "Static IP is not matched";
+                    return RedirectToAction(nameof(Index));
+                }
                 else
                 {
                     //insert download record

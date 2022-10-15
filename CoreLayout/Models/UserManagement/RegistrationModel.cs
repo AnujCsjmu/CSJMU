@@ -19,21 +19,21 @@ namespace CoreLayout.Models.UserManagement
 
         [Display(Name = "Login ID")]
         [Required(ErrorMessage = "Please enter login id")]
-        [Remote(action: "VerifyLoginId", controller: "User")]
+        //[Remote(action: "VerifyLoginId", controller: "User")] remove due to forget password is not working
         [StringLength(50)]
         public string LoginID { get; set; }
 
         [Display(Name = "Mobile No")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         [Required(ErrorMessage = "Please enter mobile")]
-        [Remote(action: "VerifyMobile", controller: "User")]
+        //[Remote(action: "VerifyMobile", controller: "User")]remove due to forget password is not working
         [StringLength(10)]
         public string MobileNo { get; set; }
 
         [Display(Name = "Email ID")]
         [EmailAddress]
         [Required(ErrorMessage = "Please enter email")]
-        [Remote(action: "VerifyEmail", controller: "User")]
+        //[Remote(action: "VerifyEmail", controller: "User")]remove due to forget password is not working
         [StringLength(50)]
         public string EmailID { get; set; }
 
