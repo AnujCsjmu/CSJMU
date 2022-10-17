@@ -82,20 +82,21 @@ namespace CoreLayout.Controllers.UserManagement
                 //start encrypt id for update, delete & details
                 //var menu = await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync();
                 //_ = RefereshMenuAsync();
-                //foreach (var _menu in roleToRoleMappingModel.ToRolelListForGrid)
-                //{
-                //    var id = _menu.RoleMappingId.ToString();
-                //    _menu.EncryptedId = _protector.Protect(id);
-                //}
-                ////end
-                ////start generate maxid for create button
-                //int maxmenuid = 0;
-                //foreach (var _menu in roleToRoleMappingModel.ToRolelListForGrid)
-                //{
-                //    maxmenuid = _menu.RoleMappingId;
-                //}
-                //maxmenuid = maxmenuid + 1;
-                //ViewBag.MaxRoleMappingId = _protector.Protect(maxmenuid.ToString());
+                foreach (var _menu in await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync())
+                {
+                    var ids = _menu.RoleMappingId.ToString();
+                    _menu.EncryptedId = _protector.Protect(ids);
+                }
+                //end
+                //start generate maxid for create button
+                int id = 0;
+                foreach (var _menu in await _roleToRoleMappingService.GetAllRoleToRoleMappingAsync())
+                {
+                    id = _menu.RoleMappingId;
+                }
+                id = id + 1;
+                ViewBag.MaxRoleMappingId = _protector.Protect(id.ToString());
+
                 return View(list2);
             }
             catch (Exception ex)

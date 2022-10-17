@@ -40,7 +40,7 @@ namespace CoreLayout.Controllers.UserManagement
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        [AuthorizeContext(ViewAction.View)]
+        //[AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
             if (errormsg != "")
@@ -102,7 +102,7 @@ namespace CoreLayout.Controllers.UserManagement
         //}
 
         //Create Get Action Method
-        [AuthorizeContext(ViewAction.Add)]
+        //[AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create()
         {
             RegistrationModel registrationModel = new RegistrationModel();
@@ -124,7 +124,7 @@ namespace CoreLayout.Controllers.UserManagement
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Add)]
+        //[AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(RegistrationModel registrationModel)
         {
             try
@@ -200,7 +200,7 @@ namespace CoreLayout.Controllers.UserManagement
             }
         }
 
-        [AuthorizeContext(ViewAction.Edit)]
+        //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int id)
         {
             int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
@@ -234,8 +234,8 @@ namespace CoreLayout.Controllers.UserManagement
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        [AuthorizeContext(ViewAction.Edit)]
+        [ValidateAntiForgeryToken]
+        //[AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int id, RegistrationModel registrationModel)
         {
             try
@@ -405,7 +405,7 @@ namespace CoreLayout.Controllers.UserManagement
             //}
         }
 
-        [AuthorizeContext(ViewAction.Details)]
+        //[AuthorizeContext(ViewAction.Details)]
         public async Task<IActionResult> Details(int id)
         {
             if (HttpContext.Session.GetString("Name") != null)
