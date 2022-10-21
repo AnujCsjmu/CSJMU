@@ -9,5 +9,6 @@ namespace CoreLayout.Repositories.Masters.District
 {
     public interface IDistrictRepository : IRepository<DistrictModel>
     {
+       Task<List<DistrictModel>> Get7DistrictAsync();
     }
 }

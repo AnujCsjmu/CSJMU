@@ -9,5 +9,6 @@ namespace CoreLayout.Repositories.Masters.Institute
 {
     public interface IInstituteRepository : IRepository<InstituteModel>
     {
+        Task<List<InstituteModel>> AffiliationInstituteIntakeData();
     }
 }

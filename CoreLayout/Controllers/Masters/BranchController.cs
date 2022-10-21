@@ -196,15 +196,15 @@ namespace CoreLayout.Controllers.Masters
                 var value = await _branchService.GetBranchById(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
-                    //var res = await _branchService.DeleteBranchAsync(value);
-                    //if (res.Equals(1))
-                    //{
-                    //    TempData["success"] = "Branch has been deleted";
-                    //}
-                    //else
-                    //{
-                    //    TempData["error"] = "Branch has not been deleted";
-                    //}
+                    var res = await _branchService.DeleteBranchAsync(value);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Branch has been deleted";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Branch has not been deleted";
+                    }
                 }
                 else
                 {

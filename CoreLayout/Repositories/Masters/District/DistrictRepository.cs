@@ -127,5 +127,23 @@ namespace CoreLayout.Repositories.Masters.District
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<DistrictModel>> Get7DistrictAsync()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_District";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<DistrictModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<DistrictModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

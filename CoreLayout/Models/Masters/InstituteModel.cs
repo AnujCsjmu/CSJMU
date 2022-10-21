@@ -212,6 +212,8 @@ namespace CoreLayout.Models.Masters
         public List<TehsilModel> TehsilList { get; set; }
         public string TehsilName { get; set; }
         public string IPAddress { get; set; }
+
+        public int? CourseId { get; set; }
     }
 
 

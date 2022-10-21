@@ -4,6 +4,7 @@ using CoreLayout.Filters;
 using CoreLayout.Models.Common;
 using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
+using CoreLayout.Repositories.Circular;
 using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
@@ -48,6 +49,7 @@ using CoreLayout.Repositories.UserManagement.Registration;
 using CoreLayout.Repositories.UserManagement.RoleToRoleMapping;
 using CoreLayout.Repositories.UserManagement.SubMenu;
 using CoreLayout.Services.Audit;
+using CoreLayout.Services.Circular;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
@@ -356,6 +358,10 @@ namespace CoreLayout
             //Exam PCP Details Report
             services.AddScoped<IPCPDetailsReportService, PCPDetailsReportService>();
             services.AddScoped<IPCPDetailsReportRepository, PCPDetailsReportRepository>();
+
+            //circular
+            services.AddScoped<ICircularService, CircularService>();
+            services.AddScoped<ICircularRepository, CircularRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

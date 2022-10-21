@@ -43,7 +43,7 @@ namespace CoreLayout.Controllers.PCP
         private readonly IExamMasterService _examMasterService;
         private readonly IExamCourseMappingService _examCourseMappingService;
         private readonly ICourseBranchMappingService _courseBranchMappingService;
-        public IConfiguration _configuration;
+        public readonly IConfiguration _configuration;
         [Obsolete]
         public PCPUploadOldPaperController(ILogger<PCPUploadOldPaperController> logger, IHttpContextAccessor httpContextAccessor, IDataProtectionProvider provider, IPCPUploadPaperService pCPUploadPaperService, IHostingEnvironment environment, ICourseDetailsService courseDetailsService, IPCPAssignedQPService pCPAssignedQPService
             , IQPMasterService qPMasterService, IPCPUploadOldPaperService pCPUploadOldPaperService, IExamMasterService examMasterService,

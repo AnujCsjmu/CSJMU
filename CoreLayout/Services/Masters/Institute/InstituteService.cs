@@ -45,5 +45,9 @@ namespace CoreLayout.Services.Masters.Institute
         {
             return await _instituteRepository.DeleteAsync(instituteModel);
         }
+        public async Task<List<InstituteModel>> AffiliationInstituteIntakeData()
+        {
+            return await _instituteRepository.AffiliationInstituteIntakeData();
+        }
     }
 }

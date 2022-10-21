@@ -61,7 +61,7 @@ namespace CoreLayout.Controllers
 
             return View();
         }
-        [ValidateReCaptcha]
+        //[ValidateReCaptcha]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginModel loginModel)

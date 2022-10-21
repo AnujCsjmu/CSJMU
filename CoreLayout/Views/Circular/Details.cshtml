@@ -1,0 +1,101 @@
+﻿@model CoreLayout.Models.Circular.CircularModel
+@{
+    ViewData["Title"] = "Details";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Circular Details</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Circular</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Details</li>
+        </ol>
+    </div>
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">State Details</h6>
+                        <hr />
+                    </div>*@
+                <form asp-action="Details" method="post">
+                    <div class="row">
+                        <input type="hidden" asp-for="CircularId" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="InstituteName" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Title"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Title" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="Title" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DisplayInWebSite"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("DisplayInWebSite", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                                new SelectListItem{ Text="No", Value = "0" },
+                                },
+                                new { @class = "form-control", @disabled = "disabled" })
+                                <span asp-validation-for="DisplayInWebSite" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DisplayInCollage"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("DisplayInCollage", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                                new SelectListItem{ Text="No", Value = "0" },
+                                },
+                                new { @class = "form-control", @disabled = "disabled" })
+                                <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OriginalFileName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="OriginalFileName" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="OriginalFileName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FileName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FileName" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="FileName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UploadDate"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="UploadDate" readonly="readonly" class="form-control" />
+                                <span asp-validation-for="UploadDate" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.CircularId" class="btn btn-primary">Edit</a>
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Conetnt End-->

@@ -14,5 +14,6 @@ namespace CoreLayout.Services.Masters.District
         public Task<int> CreateDistrictAsync(DistrictModel districtModel);
         public Task<int> UpdateDistrictAsync(DistrictModel districtModel);
         public Task<int> DeleteDistrictAsync(DistrictModel districtModel);
+        public Task<List<DistrictModel>> Get7DistrictAsync();
     }
 }

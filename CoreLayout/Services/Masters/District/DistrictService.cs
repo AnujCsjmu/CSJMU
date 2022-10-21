@@ -43,5 +43,9 @@ namespace CoreLayout.Services.Masters.District
         {
             return await _districtRepository.DeleteAsync(districtModel);
         }
+        public async Task<List<DistrictModel>> Get7DistrictAsync()
+        {
+            return await _districtRepository.Get7DistrictAsync();
+        }
     }
 }

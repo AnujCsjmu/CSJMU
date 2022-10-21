@@ -1,0 +1,167 @@
+﻿@model CoreLayout.Models.Circular.CircularModel
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Create Circular</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Circular</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data" id="form1">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label asp-for="DistrictId"> </label><span class="tx-danger"> *</span>
+                                <select id="distId" multiple="multiple" class="group-filter" asp-for="DistrictId" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
+                                </select>
+                                <span asp-validation-for="DistrictId" class="parsley-errors-list filled"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CourseID"> </label><span class="tx-danger"> *</span>
+                                <select id="courseid" multiple="multiple" class="group-filter" asp-for="CourseID" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                </select>
+                                @*<span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="submit">Get Selected Values</button>
+                                @*<a asp-action="" id="Search" class="btn btn-primary">Search</a>
+                                    <a asp-action="" class="btn btn-success">Reset</a>*@
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
+                                <select id="InstituteId" multiple="multiple" class="form-control select"  asp-for="InstituteList" asp-items="@(new SelectList(string.Empty,"InstituteId","InstituteName"))">
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="InstituteId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Title"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DisplayInWebSite"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("DisplayInWebSite", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                                new SelectListItem{ Text="No", Value = "0" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="DisplayInWebSite" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="DisplayInCollage"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("DisplayInCollage", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                                new SelectListItem{ Text="No", Value = "0" },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="OriginalFileName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="OriginalFileName" class="form-control" />
+                                <span asp-validation-for="OriginalFileName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FileName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FileName" class="form-control" />
+                                <span asp-validation-for="FileName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="UploadDate"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="UploadDate" class="form-control" type="date" value="" />
+                                <span asp-validation-for="UploadDate" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FUCircular"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FUCircular" class="form-control" type="file" />
+                                <span asp-validation-for="FUCircular" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Conetnt End-->
+
+@section Scripts{
+    @*bind Institute*@
+    @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $('#submit').click(function () {
+                var arr = []
+                var arr1 = []
+                var selected = $("#distId :selected").map((_, e) => arr.push(e.value)).get();
+                var selected1 = $("#courseid :selected").map((_, e) => arr1.push(e.value)).get();
+                if (arr.length > 0) {
+                    var url = '@Url.Content("~/")' + "Circular/GetInstitute?districtId=" + arr + "&courseid=" + arr1;
+                    $.getJSON(url, function (data) {
+                        var items = '';
+                        $("#InstituteId").empty();
+                        if (data.length > 0) {
+                            $.each(data, function (i, institute) {
+
+                                items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
+                            });
+                            $('#InstituteId').html(items);
+
+                        }
+
+                    });
+                } else {
+                    alert('Please select...')
+                }
+
+            });
+        });
+    </script>
+}
