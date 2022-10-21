@@ -103,7 +103,7 @@
                                     <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
                                 </div>
                             </div>*@
-                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        @if (Context.Session.GetInt32("RoleId") == 4 || Context.Session.GetInt32("RoleId") == 1)//display only for institute
                         {
                             <div class="col-md-6">
                                 <div class="form-group">

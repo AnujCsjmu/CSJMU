@@ -1,17 +1,23 @@
 ﻿using CoreLayout.Enum;
 using CoreLayout.Filters;
 using CoreLayout.Models.Masters;
+using CoreLayout.Services.Circular;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.PCP.PCPAssignedQP;
 using CoreLayout.Services.PCP.PCPRegistration;
 using CoreLayout.Services.PCP.PCPSendPaper;
 using CoreLayout.Services.PCP.PCPUploadPaper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,14 +26,20 @@ namespace CoreLayout.Controllers
     [Authorize(Roles = "Administrator,Institute,Controller Of Examination,Paper Setter,Assistant Registrar,Examination AO,Paper Printing")]
     public class DashBoardController : Controller
     {
-
+        private readonly IDataProtector _protector;
         private readonly ILogger<DashBoardController> _logger;
         private readonly IDashboardService _dashboardService;
         private readonly IPCPRegistrationService _pCPRegistrationService;
         private readonly IPCPUploadPaperService _pCPUploadPaperService;
         private readonly IPCPSendPaperService _pCPSendPaperService;
         private readonly IPCPAssignedQPService _pCPAssignedQPService;
-        public DashBoardController(ILogger<DashBoardController> logger, IDashboardService dashboardService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IPCPSendPaperService pCPSendPaperService, IPCPAssignedQPService pCPAssignedQPService)
+        private readonly ICircularService _circularService;
+        public IConfiguration _configuration;
+        [Obsolete]
+        private readonly IHostingEnvironment hostingEnvironment;//for file upload
+
+        [Obsolete]
+        public DashBoardController(ILogger<DashBoardController> logger, IDashboardService dashboardService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IPCPSendPaperService pCPSendPaperService, IPCPAssignedQPService pCPAssignedQPService, ICircularService circularService, IHostingEnvironment environment, IDataProtectionProvider provider, IConfiguration configuration)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -35,6 +47,10 @@ namespace CoreLayout.Controllers
             _pCPAssignedQPService = pCPAssignedQPService;
             _pCPUploadPaperService = pCPUploadPaperService;
             _pCPSendPaperService = pCPSendPaperService;
+            _circularService = circularService;
+            hostingEnvironment = environment;
+            _configuration = configuration;
+            _protector = provider.CreateProtector("DashBoard.DashBoardController");
         }
         [HttpGet]
         //[AuthorizeContext(ViewAction.View)]
@@ -86,6 +102,23 @@ namespace CoreLayout.Controllers
                     }
 
                     #endregion
+
+                    #region view circular for collage
+                    if (roleid == 4) 
+                    {
+                        int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
+                        if (SessionInstituteId != 0)
+                        {
+                            var circular = await _circularService.GetAllCircularByCollageId(SessionInstituteId);
+                            foreach (var _data in circular)
+                            {
+                                var stringId = _data.CircularId.ToString();
+                                _data.EncryptedId = _protector.Protect(stringId);
+                            }
+                            ViewBag.Circular = circular;
+                        }
+                    }
+                    #endregion
                     List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
                     HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
                     return View();
@@ -108,13 +141,55 @@ namespace CoreLayout.Controllers
 
         }
 
-        //[HttpGet]
-        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.Session.Clear();
-        //    return RedirectToAction("Login", "Home");
-        //}
+        [Obsolete]
+        public async Task<IActionResult> Download(string id)
+        {
+            try
+            {
+                var guid_id = _protector.Unprotect(id);
+                var data = await _circularService.GetCircularById(Convert.ToInt32(guid_id));
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+
+                    #region file download
+                    var path = string.Empty;
+                    var ext = string.Empty;
+                   
+                        string CircularDocument = _configuration.GetSection("FilePaths:PreviousDocuments:Circular").Value.ToString();
+                        path = Path.Combine(CircularDocument, data.CircularPath);
+                        ext = Path.GetExtension(data.CircularPath).Substring(1);
+                    
+                    string ReportURL = path;
+                    byte[] FileBytes = System.IO.File.ReadAllBytes(ReportURL);
+                    if (ext == "png" || ext == "PNG")
+                    {
+                        return File(FileBytes, "image/png");
+                    }
+                    else if (ext == "jpg" || ext == "JPG")
+                    {
+                        return File(FileBytes, "image/jpg");
+                    }
+                    else if (ext == "jpeg" || ext == "JPEG")
+                    {
+                        return File(FileBytes, "image/jpeg");
+                    }
+                    else
+                    {
+                        return File(FileBytes, "application/pdf");
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return View();
+        }
 
     }
 

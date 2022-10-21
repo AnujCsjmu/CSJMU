@@ -69,7 +69,7 @@
                                 {
                                     <label asp-for="RoleId"> </label><span class="tx-danger"> *</span>
                                 }
-                                <select style="width:545px" class="select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                                <select class="form-control select" asp-for="RoleId" asp-items="@(new SelectList(Model.RoleList,"RoleID","RoleName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="RoleId" class="parsley-errors-list filled"></span>
@@ -88,12 +88,12 @@
                                 <span asp-validation-for="IsUserActive" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        @if (Context.Session.GetInt32("RoleId") == 4 || Context.Session.GetInt32("RoleId") == 1)//display only for institute
                         {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                    <select style="width:545px" class="select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList, "InstituteId", "InstituteName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
+                                    <select class="form-control select" asp-for="InstituteId" asp-items="@(new SelectList(Model.InstituteList, "InstituteId", "InstituteName"))" onchange="return onChange(this.options[this.selectedIndex].value);" required="required" requiredmsg="The Institute field is required">
                                         <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                     </select>
                                     <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>

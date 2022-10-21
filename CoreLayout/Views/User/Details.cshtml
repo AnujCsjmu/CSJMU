@@ -60,19 +60,19 @@
                         </div>
 
                         @*<div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Password"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="Password" class="form-control" readonly="readonly" />
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="ConfirmPassword" class="form-control" readonly="readonly" />
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                            </div>*@
+            <div class="form-group">
+                <label asp-for="Password"> </label><span class="tx-danger"> *</span>
+                <input asp-for="Password" class="form-control" readonly="readonly" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"> </label><span class="tx-danger"> *</span>
+                <input asp-for="ConfirmPassword" class="form-control" readonly="readonly" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 @if (Context.Session.GetInt32("RoleId") == 3) //change name for paper upload
@@ -99,7 +99,7 @@
                                 <span asp-validation-for="IsUserActive" class="text-danger"></span>
                             </div>
                         </div>
-                        @if (Context.Session.GetInt32("RoleId") == 4)//display only for institute
+                        @if (Context.Session.GetInt32("RoleId") == 4 || Context.Session.GetInt32("RoleId") == 1)//display only for institute
                         {
                             <div class="col-md-6">
                                 <div class="form-group">

@@ -37,12 +37,12 @@
                                 <th>
                                     @Html.DisplayNameFor(c => c.DisplayInCollage)
                                 </th>
-                                <th>
+                                @*<th>
                                     @Html.DisplayNameFor(c => c.OriginalFileName)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.FileName)
-                                </th>
+                                </th>*@
                                 <th>
                                     @Html.DisplayNameFor(c => c.Related)
                                 </th>
@@ -72,11 +72,11 @@
                                 <td>@item.Title</td>
                                 <td>@item.DisplayInWebSite</td>
                                 <td>@item.DisplayInCollage</td>
-                                <td>@item.OriginalFileName</td>
-                                <td>@item.FileName</td>
+                                @*<td>@item.OriginalFileName</td>
+                                <td>@item.FileName</td>*@
                                 <td>@item.Related</td>
                                 <td>@item.UploadDate</td>
-                                <td> <a asp-action="View" style="color:blue" asp-route-paper="paper" asp-route-id="@item.EncryptedId" target="_blank">View</a></td>
+                                <td> <a asp-action="ViewFile" style="color:blue" asp-route-paper="paper" asp-route-id="@item.EncryptedId" target="_blank">View</a></td>
                                 <td>
                                     <div class="table-actions text-center">
                                         <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>

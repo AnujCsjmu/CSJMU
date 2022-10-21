@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.Circular
 {
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
     public class CircularController : Controller
     {
         private readonly ILogger<CircularController> _logger;
@@ -360,7 +360,8 @@ namespace CoreLayout.Controllers.Circular
             return Json(InstituteList);
         }
 
-        public async Task<IActionResult> View(string id)
+
+        public async Task<IActionResult> ViewFile(string id)
         {
             try
             {

@@ -54,7 +54,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <select id="InstituteId" multiple="multiple" class="form-control select"  asp-for="InstituteList" asp-items="@(new SelectList(string.Empty,"InstituteId","InstituteName"))">
+                                <select id="InstituteId" multiple="multiple" class="form-control select" asp-for="InstituteList" asp-items="@(new SelectList(string.Empty,"InstituteId","InstituteName"))">
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="InstituteId"></span>
                             </div>
@@ -90,20 +90,20 @@
                                 <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="OriginalFileName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="OriginalFileName" class="form-control" />
-                                <span asp-validation-for="OriginalFileName" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="FileName"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="FileName" class="form-control" />
-                                <span asp-validation-for="FileName" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
+                        @*<div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="OriginalFileName"> </label><span class="tx-danger"> *</span>
+                                            <input asp-for="OriginalFileName" class="form-control" />
+                                            <span asp-validation-for="OriginalFileName" class="parsley-errors-list filled"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="FileName"> </label><span class="tx-danger"> *</span>
+                                            <input asp-for="FileName" class="form-control" />
+                                            <span asp-validation-for="FileName" class="parsley-errors-list filled"></span>
+                                        </div>
+                            </div> *@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UploadDate"> </label><span class="tx-danger"> *</span>
@@ -153,7 +153,6 @@
                                 items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
                             });
                             $('#InstituteId').html(items);
-
                         }
 
                     });

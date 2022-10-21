@@ -94,6 +94,7 @@ namespace CoreLayout.Controllers
                                         HttpContext.Session.SetInt32("Id", getuser.Result.UserID);
                                         HttpContext.Session.SetInt32("UserId", getuser.Result.UserID);
                                         HttpContext.Session.SetInt32("RoleId", getuser.Result.RoleId);
+                                        HttpContext.Session.SetInt32("SessionInstituteId", getuser.Result.InstituteId);
                                         HttpContext.Session.SetString("IPAddress", ipAddress);
                                         return RedirectToAction("Index", "Dashboard");
                                     }

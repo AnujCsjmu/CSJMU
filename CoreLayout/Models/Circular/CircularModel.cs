@@ -66,8 +66,6 @@ namespace CoreLayout.Models.Circular
         public string InstituteName { get; set; }
         public List<int> InstituteList { get; set; }
 
-        public List<InstituteModel> InstituteListssss { get; set; }
-        public List<string> InstituteListString { get; set; }
         //file upload
         [Display(Name = "Upload Circular")]
         public IFormFile FUCircular { get; set; }

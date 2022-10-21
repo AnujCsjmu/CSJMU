@@ -344,7 +344,7 @@
                             </div>
                         </div>
                         <div>
-                           
+
                             <h3 class="dash-25">@ViewBag.RegistrationCount</h3>
                         </div>
                         <div class="progress mb-1">
@@ -538,10 +538,77 @@
         </div>
         <!--End  Row -->
         <!-- Modal -->
-       
+
+    }
+    else if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "Institute")
+    {
+        <div style="text-align:center">
+            <h1>Institute's Circulars (संस्थान के परिपत्र)</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-body">
+                        <div class="table-responsive-sm">
+                            <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>
+                                           Title
+                                        </th>
+                                        <th>
+                                            Attachment
+                                        </th>
+                                        <th>
+                                            Upload Date
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @{
+                                        int sno = 0;
+
+                                    }
+                                    @if (ViewBag.Circular != null)
+                                    {
+                                        @foreach (var item in ViewBag.Circular)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @{ sno++; }
+                                                    @sno
+                                                </td>
+                                                <td>@item.Title</td>
+                                                <td> <a asp-action="Download" style="color:blue" asp-route-id="@item.EncryptedId" target="_blank">View</a></td>
+                                                <td>@item.UploadDate</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 </div>
 
 @section Scripts{
 
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 }

@@ -8,5 +8,6 @@ namespace CoreLayout.Repositories.Circular
 {
     public interface ICircularRepository : IRepository<CircularModel>
     {
+          Task<List<CircularModel>> GetAllCircularByCollageId(int instituteid);
     }
 }
