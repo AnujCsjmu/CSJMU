@@ -42,15 +42,18 @@
                                 @*<span asp-validation-for="CourseID" class="parsley-errors-list filled"></span>*@
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="text-align:right">
                             <div class="form-group">
-                                <button id="submit">Get Selected Values</button>
-                                @*<a asp-action="" id="Search" class="btn btn-primary">Search</a>
-                                    <a asp-action="" class="btn btn-success">Reset</a>*@
-
+                                <button class="btn btn-warning" id="submit">
+                                    <span class="glyphicon
+                glyphicon-search"></span>Search
+                                </button>
                             </div>
                         </div>
-                        <hr />
+                        <div class="col-md-12">
+                            <hr style="border-width:2px; border:solid" />
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
@@ -157,7 +160,7 @@
 
                     });
                 } else {
-                    alert('Please select...')
+                    alert('Please select district or course or both!')
                 }
 
             });

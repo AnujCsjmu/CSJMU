@@ -409,5 +409,19 @@ namespace CoreLayout.Controllers.Circular
             }
             return View();
         }
+
+        public async Task<ActionResult> instituteList(string id)
+        {
+            //ViewBag.type = 1;
+            var guid_id = _protector.Unprotect(id);
+            var data = await _circularService.GetAllInstituteByCircular(Convert.ToInt32(guid_id));
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return PartialView("_InstituteList", data);
+
+        }
     }
 }

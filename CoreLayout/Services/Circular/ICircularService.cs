@@ -13,7 +13,7 @@ namespace CoreLayout.Services.Circular
         public Task<int> CreateCircularAsync(CircularModel circularModel);
         public Task<int> UpdateCircularAsync(CircularModel circularModel);
         public Task<int> DeleteCircularAsync(CircularModel circularModel);
-
-        public Task<List<CircularModel>> GetAllCircularByCollageId(int instituteid);
+        public Task<List<CircularModel>> GetAllCircularByCollageId(int circularid);
+        public Task<List<CircularModel>> GetAllInstituteByCircular(int circularid);
     }
 }

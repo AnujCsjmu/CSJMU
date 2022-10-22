@@ -119,6 +119,7 @@ namespace CoreLayout.Controllers
                         }
                     }
                     #endregion
+
                     List<DashboardModel> alllevels = await _dashboardService.GetDashboardByRoleAndUser(roleid, userid);
                     HttpContext.Session.SetString("AllLevelList", JsonConvert.SerializeObject(alllevels));
                     return View();

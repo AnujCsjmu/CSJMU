@@ -56,14 +56,14 @@
                             <!--</div>
                         </div>
                         <hr />-->
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
                                 <select id="InstituteId" multiple="multiple" class="form-control select" asp-for="InstituteList" asp-items="@(new SelectList(string.Empty,"InstituteId","InstituteName"))">
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="InstituteId"></span>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Title"> </label><span class="tx-danger"> *</span>
@@ -112,17 +112,17 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UploadDate"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="UploadDate" class="form-control" type="date" value="" />
+                                <input asp-for="UploadDate" class="form-control" type="date" />
                                 <span asp-validation-for="UploadDate" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="FUCircular"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FUCircular" class="form-control" type="file" />
                                 <span asp-validation-for="FUCircular" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>
+                        </div>*@
 
                         <div class="form-group">
                             <input type="submit" asp-route-id="@Model.CircularId" class="btn btn-primary" value="Update" />

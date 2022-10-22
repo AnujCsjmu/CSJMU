@@ -28,13 +28,13 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger">
 
                         </div>
-                        <div class="col-md-6">
+                        @*<div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="InstituteName" readonly="readonly" class="form-control" />
                                 <span asp-validation-for="InstituteId" class="parsley-errors-list filled"></span>
                             </div>
-                        </div>
+                        </div>*@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Title"> </label><span class="tx-danger"> *</span>
@@ -83,7 +83,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="UploadDate"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="UploadDate" readonly="readonly" class="form-control" />
+                                <input asp-for="UploadDate" readonly="readonly" class="form-control" type="date" />
                                 <span asp-validation-for="UploadDate" class="parsley-errors-list filled"></span>
                             </div>
                         </div>

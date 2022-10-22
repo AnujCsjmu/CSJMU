@@ -44,5 +44,9 @@ namespace CoreLayout.Services.Circular
         {
             return await _circularRepository.GetAllCircularByCollageId(instituteid);
         }
+        public async Task<List<CircularModel>> GetAllInstituteByCircular(int circularid)
+        {
+            return await _circularRepository.GetAllInstituteByCircular(circularid);
+        }
     }
 }

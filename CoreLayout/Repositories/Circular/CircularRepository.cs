@@ -164,13 +164,14 @@ namespace CoreLayout.Repositories.Circular
                     parameters.Add("Title", entity.Title, DbType.String);
                     parameters.Add("DisplayInWebSite", entity.DisplayInWebSite, DbType.Int32);
                     parameters.Add("DisplayInCollage", entity.DisplayInCollage, DbType.Int32);
-                    parameters.Add("OriginalFileName", entity.OriginalFileName, DbType.String);
-                    parameters.Add("FileName", entity.FileName, DbType.String);
+                    //parameters.Add("OriginalFileName", entity.OriginalFileName, DbType.String);
+                    //parameters.Add("FileName", entity.FileName, DbType.String);
                     parameters.Add("Related", entity.Related, DbType.String);
                     parameters.Add("UploadDate", entity.UploadDate, DbType.Date);
                     parameters.Add("Flag", entity.Flag, DbType.String);
-                    parameters.Add("IsRerodedDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                    parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return res;
@@ -192,6 +193,26 @@ namespace CoreLayout.Repositories.Circular
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 7, DbType.Int32);
                     parameters.Add("@InstituteID", instituteid, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<CircularModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<CircularModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<List<CircularModel>> GetAllInstituteByCircular(int circularid)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_Circular";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 8, DbType.Int32);
+                    parameters.Add("@CircularId", circularid, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<CircularModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return (List<CircularModel>)list;
                 }

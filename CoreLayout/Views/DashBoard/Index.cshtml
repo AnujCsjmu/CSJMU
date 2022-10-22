@@ -555,7 +555,7 @@
                                     <tr>
                                         <th>S.No</th>
                                         <th>
-                                           Title
+                                            Title
                                         </th>
                                         <th>
                                             Attachment
@@ -582,7 +582,7 @@
                                                 </td>
                                                 <td>@item.Title</td>
                                                 <td> <a asp-action="Download" style="color:blue" asp-route-id="@item.EncryptedId" target="_blank">View</a></td>
-                                                <td>@item.UploadDate</td>
+                                                <td> @Convert.ToDateTime(item.UploadDate).ToString("dd/MM/yyyy")</td>
                                             </tr>
                                         }
                                     }
