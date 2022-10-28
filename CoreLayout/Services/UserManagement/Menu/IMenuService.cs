@@ -14,5 +14,7 @@ namespace CoreLayout.Services.UserManagement.Menu
         public Task<int> CreateMenuAsync(MenuModel menuModel);
         public Task<int> UpdateMenuAsync(MenuModel menuModel);
         public Task<int> DeleteMenuAsync(MenuModel menuModel);
+
+        public Task<List<MenuModel>> GetMenuByRoleAndUserForInstitute(int roleid, int userid);
     }
 }

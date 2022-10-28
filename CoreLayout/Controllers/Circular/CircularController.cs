@@ -109,7 +109,7 @@ namespace CoreLayout.Controllers.Circular
                 CircularModel circularModel = new CircularModel();
                 circularModel.DistrictList = await _districtService.Get7DistrictAsync();
                 circularModel.CourseList = await _courseService.GetAllCourse();
-                //circularModel.InstituteList = await _instituteService.GetAllInstitute();
+                //circularModel.InstituteListsss = await _instituteService.GetAllInstitute();
                 var guid_id = _protector.Unprotect(id);
                 return View(circularModel);
             }
@@ -135,54 +135,69 @@ namespace CoreLayout.Controllers.Circular
                 //circularModel.InstituteList = await _instituteService.GetAllInstitute();
                 circularModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 circularModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-
-                #region upload circular
-                if (circularModel.FUCircular != null)
+                if (circularModel.DisplayInCollage != 0 || circularModel.DisplayInWebSite != 0)
                 {
-                    var supportedTypes = new[] { "pdf", "PDF" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
-                    var circularExt = Path.GetExtension(circularModel.FUCircular.FileName).Substring(1);
-                    if (supportedTypes.Contains(circularExt))
+                    if (circularModel.InstituteList != null && circularModel.DisplayInCollage == 1)
                     {
-                        if (circularModel.FUCircular.Length < 2100000)
+                        #region upload circular
+                        if (circularModel.FUCircular != null)
                         {
-                            circularModel.CircularPath = fileHelper.SaveFile(CircularPath, "", circularModel.FUCircular);
+                            var supportedTypes = new[] { "pdf", "PDF" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
+                            var circularExt = Path.GetExtension(circularModel.FUCircular.FileName).Substring(1);
+                            if (supportedTypes.Contains(circularExt))
+                            {
+                                if (circularModel.FUCircular.Length < 2100000)
+                                {
+                                    circularModel.CircularPath = fileHelper.SaveFile(CircularPath, "", circularModel.FUCircular);
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("", "circular size must be less than 2 mb");
+                                    return View(circularModel);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "circular extension is invalid- accept only pdf");//,jpg,jpeg,png
+                                return View(circularModel);
+                            }
                         }
                         else
                         {
-                            ModelState.AddModelError("", "previous Paper size must be less than 2 mb");
+                            ModelState.AddModelError("", "Please upload circular");
+                            return View(circularModel);
+                        }
+                        #endregion
+                        if (ModelState.IsValid)
+                        {
+                            var res = await _circularService.CreateCircularAsync(circularModel);
+                            if (res.Equals(1))
+                            {
+                                TempData["success"] = "Circular has been saved";
+                            }
+                            else
+                            {
+                                TempData["error"] = "Circular has not been saved";
+                                fileHelper.DeleteFileAnyException(CircularPath, circularModel.CircularPath);
+                            }
+                            return RedirectToAction(nameof(Index));
+                        }
+                        else
+                        {
+                            fileHelper.DeleteFileAnyException(CircularPath, circularModel.CircularPath);
+                            ModelState.AddModelError("", "Model state is not valid");
                             return View(circularModel);
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "previous paper extension is invalid- accept only pdf");//,jpg,jpeg,png
+                        ModelState.AddModelError("", "Please select institute");
                         return View(circularModel);
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please upload previous paper");
-                    return View(circularModel);
-                }
-                #endregion
-                if (ModelState.IsValid)
-                {
-                    var res = await _circularService.CreateCircularAsync(circularModel);
-                    if (res.Equals(1))
-                    {
-                        TempData["success"] = "Circular has been saved";
-                    }
-                    else
-                    {
-                        TempData["error"] = "Circular has not been saved";
-                        fileHelper.DeleteFileAnyException(CircularPath, circularModel.CircularPath);
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    fileHelper.DeleteFileAnyException(CircularPath, circularModel.CircularPath);
-                    ModelState.AddModelError("", "Model state is not valid");
+                    ModelState.AddModelError("", "Circular will be Display in Collage or Website or Both!");
                     return View(circularModel);
                 }
             }
@@ -314,8 +329,7 @@ namespace CoreLayout.Controllers.Circular
         }
 
   
-
-        public async Task<JsonResult> GetInstitute(string districtId, string courseid)
+        public async Task<JsonResult> GetInstitute(string districtId, string courseid,CircularModel circularModel)
         {
             var InstituteList = (dynamic)null;
 
@@ -326,7 +340,7 @@ namespace CoreLayout.Controllers.Circular
                                  where districtlist.Contains(institute.DistrictID.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text = institute.InstituteCode + " - " + institute.InstituteName,
+                                     Text = institute.InstituteName,
                                      Value = institute.InstituteID.ToString(),
                                  }).ToList();
             }
@@ -339,7 +353,7 @@ namespace CoreLayout.Controllers.Circular
                                  where courselist.Contains(institute.CourseId.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text = b.InstituteCode + " - " + b.InstituteName,
+                                     Text =  b.InstituteName,
                                      Value = b.InstituteID.ToString(),
                                  }).Distinct().ToList();
             }
@@ -353,7 +367,7 @@ namespace CoreLayout.Controllers.Circular
                                  where districtlist.Contains(b.DistrictID.ToString()) && courselist.Contains(institute.CourseId.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text = b.InstituteCode + " - " + b.InstituteName,
+                                     Text =  b.InstituteName,
                                      Value = b.InstituteID.ToString(),
                                  }).Distinct().ToList();
             }

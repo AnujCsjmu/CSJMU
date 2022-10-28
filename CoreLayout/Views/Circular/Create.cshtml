@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-md-12" style="text-align:right">
                             <div class="form-group">
-                                <button class="btn btn-warning" id="submit">
+                                <button class="btn btn-warning" id="search">
                                     <span class="glyphicon
                 glyphicon-search"></span>Search
                                 </button>
@@ -53,13 +53,24 @@
                         <div class="col-md-12">
                             <hr style="border-width:2px; border:solid" />
                         </div>
-
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="InstituteId"> </label><span class="tx-danger"> *</span>
-                                <select id="InstituteId" multiple="multiple" class="form-control select" asp-for="InstituteList" asp-items="@(new SelectList(string.Empty,"InstituteId","InstituteName"))">
+                                <label asp-for="DisplayInCollage"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownList("DisplayInCollage", new List<SelectListItem>
+                                {
+                                new SelectListItem{ Text="Yes", Value = "1" },
+                                new SelectListItem{ Text="No", Value = "0", Selected=true },
+                                },
+                                new { @class = "form-control" })
+                                <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="InstituteID"> </label><span class="tx-danger"> *</span>
+                                <select id="InstituteIds" style="width:500px" class="js-select2" multiple="multiple" asp-for="InstituteList" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))" disabled>
                                 </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="InstituteId"></span>
+                                <span class="parsley-errors-list filled" asp-validation-for="InstituteID"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -75,24 +86,13 @@
                                 @Html.DropDownList("DisplayInWebSite", new List<SelectListItem>
                                 {
                                 new SelectListItem{ Text="Yes", Value = "1" },
-                                new SelectListItem{ Text="No", Value = "0" },
+                                new SelectListItem{ Text="No", Value = "0", Selected=true },
                                 },
                                 new { @class = "form-control" })
                                 <span asp-validation-for="DisplayInWebSite" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="DisplayInCollage"> </label><span class="tx-danger"> *</span>
-                                @Html.DropDownList("DisplayInCollage", new List<SelectListItem>
-                                {
-                                new SelectListItem{ Text="Yes", Value = "1" },
-                                new SelectListItem{ Text="No", Value = "0" },
-                                },
-                                new { @class = "form-control" })
-                                <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
+
                         @*<div class="col-md-6">
                                         <div class="form-group">
                                             <label asp-for="OriginalFileName"> </label><span class="tx-danger"> *</span>
@@ -123,7 +123,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <input id="submit" type="submit" class="btn btn-primary" value="Save" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
                     </div>
@@ -140,22 +140,27 @@
     @*<script src="~/lib/jquery/dist/jquery.js"></script>*@
     <script>
         $(document).ready(function () {
-            $('#submit').click(function () {
+            $('#search').click(function () {
                 var arr = []
                 var arr1 = []
                 var selected = $("#distId :selected").map((_, e) => arr.push(e.value)).get();
                 var selected1 = $("#courseid :selected").map((_, e) => arr1.push(e.value)).get();
                 if (arr.length > 0) {
+
+                    var $exampleMulti = $(".js-select2").select2();
+                    $exampleMulti.val(null).trigger("change");
+
                     var url = '@Url.Content("~/")' + "Circular/GetInstitute?districtId=" + arr + "&courseid=" + arr1;
                     $.getJSON(url, function (data) {
                         var items = '';
-                        $("#InstituteId").empty();
+                        $("#InstituteIds").empty();
                         if (data.length > 0) {
                             $.each(data, function (i, institute) {
 
                                 items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
                             });
-                            $('#InstituteId').html(items);
+                            $('#InstituteIds').html(items);
+                            console.log(items);
                         }
 
                     });
@@ -164,6 +169,149 @@
                 }
 
             });
+        });
+    </script>
+
+    <script>
+        $(".js-select2").select2({
+            closeOnSelect: false,
+            placeholder: "Select an option",
+            allowHtml: true,
+            allowClear: true,
+            tags: true // создает новые опции на лету
+        });
+
+    </script>
+
+    <style>
+        /* body {
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: normal;
+            font-size:smaller
+        }*/
+
+        .select2-container {
+            min-width: 500px;
+        }
+
+        .select2-results__option {
+            padding-right: 20px;
+        }
+
+            .select2-results__option:before {
+                content: "";
+                display: inline-block;
+                position: relative;
+                height: 20px;
+                width: 20px;
+                border: 2px solid #e9e9e9;
+                border-radius: 4px;
+                background-color: #fff;
+                margin-right: 20px;
+                vertical-align: middle;
+            }
+
+            .select2-results__option[aria-selected=true]:before {
+                font-family: fontAwesome;
+                content: "\f00c";
+                color: #fff;
+                background-color: #f77750;
+                border: 0;
+                display: inline-block;
+                padding-left: 3px;
+            }
+
+        .select2-container--default .select2-results__option[aria-selected=true] {
+            background-color: #fff;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #eaeaeb;
+            color: #272727;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            margin-bottom: 10px;
+        }
+
+        .select2-container--default.select2-container--open.select2-container--below .select2-selection--multiple {
+            border-radius: 4px;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: #f77750;
+            /*border-width: 2px;*/
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            /* border-width: 2px;*/
+        }
+
+        .select2-container--open .select2-dropdown--below {
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .select2-selection .select2-selection--multiple:after {
+            content: 'hhghgh';
+        }
+
+        select with icons badges single
+        .select-icon .select2-selection__placeholder .badge {
+            display: none;
+        }
+
+        .select-icon .placeholder {
+            display: none;
+        }
+
+        .select-icon .select2-results__option:before,
+        .select-icon .select2-results__option[aria-selected=true]:before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        .select-icon .select2-search--dropdown {
+            display: none;
+        }
+    </style>
+
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
+
+    @*reset institute on display in collage*@
+    <script type="text/javascript">
+        document.getElementById('DisplayInCollage').addEventListener('change', function () {
+            var $exampleMulti = $(".js-select2").select2();
+            if (this.value == 1) {
+                $('#InstituteIds').prop('disabled', false)
+            }
+            else {
+                $exampleMulti.val(null).trigger("change");
+                $('#InstituteIds').prop('disabled', true)
+            }
+        });
+    </script>
+    @*validation if display in collage is selected but institute is not selected*@
+    <script type="text/javascript">
+        $('#submit').click(function () {
+            var DisplayInCollage = $('#DisplayInCollage').val();
+            var DisplayInWebSite = $('#DisplayInWebSite').val();
+            if (DisplayInCollage == 0 && DisplayInWebSite == 0) {
+                alert('Circular will be Display in Collage or Website or Both!')
+                return false;
+            }
+        });
+    </script>
+
+    @*select 2 validation*@
+    <script type="text/javascript">
+        $('#submit').click(function () {
+            var DisplayInCollage = $('#DisplayInCollage').val();
+            var institutueValue = $("#InstituteIds").val();
+            if (DisplayInCollage == 1 && institutueValue == "") {
+                alert('Please select institute list!')
+                return false;
+            }
         });
     </script>
 }

@@ -137,5 +137,27 @@ namespace CoreLayout.Repositories.UserManagement.Menu
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<List<MenuModel>> GetMenuByRoleAndUserForInstitute(int roleid, int userid)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_Menu";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("RoleId", roleid, DbType.String);
+                    parameters.Add("UserId", userid, DbType.String);
+                    parameters.Add("@Query", 8, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<MenuModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+
+        }
     }
 }

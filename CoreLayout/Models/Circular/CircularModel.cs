@@ -61,13 +61,16 @@ namespace CoreLayout.Models.Circular
         //institute
         [Display(Name = "Institute Name")]
         [Required(ErrorMessage = "Please select institute")]
-        public int InstituteId { get; set; }
+        public int InstituteID { get; set; }
         //public string InstituteCode { get; set; }
         public string InstituteName { get; set; }
         public List<int> InstituteList { get; set; }
 
+       // public List<InstituteModel> InstituteListsss { get; set; }
+
         //file upload
         [Display(Name = "Upload Circular")]
+        [Required(ErrorMessage = "Please choose cicular")]
         public IFormFile FUCircular { get; set; }
         [Display(Name = "Upload Circular")]
         public string CircularPath { get; set; }

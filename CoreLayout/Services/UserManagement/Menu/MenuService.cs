@@ -38,5 +38,10 @@ namespace CoreLayout.Services.UserManagement.Menu
         {
             return await _menuRepository.DeleteAsync(menuModel);
         }
+
+        public async Task<List<MenuModel>> GetMenuByRoleAndUserForInstitute(int roleid, int userid)
+        {
+            return await _menuRepository.GetMenuByRoleAndUserForInstitute(roleid, userid);
+        }
     }
 }

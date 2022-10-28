@@ -44,18 +44,30 @@ namespace CoreLayout.Controllers
         [AuthorizeContext(ViewAction.View)]
         public async Task<IActionResult> Index()
         {
-            
+            //var data = new object();
+            var data = (dynamic)null;
+            int? RoleId = HttpContext.Session.GetInt32("RoleId");
+            int? UserId = HttpContext.Session.GetInt32("UserId");
+            //start encrypt id for update,delete & details
             try
             {
-                //start encrypt id for update,delete & details
-                var data = await _assignMenuByUserService.GetAllMenuAssignByUserAsync();
-                foreach (var _data in data)
+                if (RoleId == 1)//1 is admin
                 {
-                    var stringId = _data.MenuPermissionId.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
+                    data = await _assignMenuByUserService.GetAllMenuAssignByUserAsync();
                 }
-                //end
+                else if (RoleId == 4)//4 is institute
+                {
+                    data = (from menuassignedbyuser in _assignMenuByUserService.GetAllMenuAssignByUserAsync().Result
+                            where menuassignedbyuser.CreatedBy == UserId
+                            select menuassignedbyuser).ToList();
+                }
 
+                //end
+                foreach (var s in data)
+                {
+                    string stringId = s.MenuPermissionId.ToString();
+                    s.EncryptedId = _protector.Protect(stringId);
+                }
                 //start generate maxid for create button
                 int id = 0;
                 foreach (var _data in data)
@@ -63,7 +75,7 @@ namespace CoreLayout.Controllers
                     id = _data.MenuPermissionId;
                 }
                 id = id + 1;
-                ViewBag.MaxMenuPermissionId = _protector.Protect(id.ToString());
+                ViewBag.MaxMenuPermissionByUser = _protector.Protect(id.ToString());
                 //end
                 int result = RefereshMenuAsync();
                 if (result == 1)
@@ -79,7 +91,7 @@ namespace CoreLayout.Controllers
             {
                 ModelState.AddModelError("", ex.ToString());
             }
-            return RedirectToAction(nameof(Index));
+            return View(data);
         }
         public int RefereshMenuAsync()
         {
@@ -102,8 +114,20 @@ namespace CoreLayout.Controllers
             try
             {
                 AssignMenuByUserModel assignMenuByUserModel = new AssignMenuByUserModel();
-                assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
-                assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
+                int UserId = (int)HttpContext.Session.GetInt32("UserId");
+                if (RoleId == 1)//1 is admin
+                {
+                    assignMenuByUserModel.MenuList = await _menuService.GetAllMenuAsync();
+                    assignMenuByUserModel.UserList = await _registrationService.GetAllRegistrationAsync();
+                }
+                else if (RoleId == 4)//4 is institute
+                {
+                    assignMenuByUserModel.MenuList =await _menuService.GetMenuByRoleAndUserForInstitute(RoleId, UserId);
+                    assignMenuByUserModel.UserList = (from s in await _registrationService.GetAllRegistrationAsync()
+                                                     where s.CreatedBy == UserId
+                                                     select s).ToList();
+                }
                 var guid_id = _protector.Unprotect(id);
 
                 return View(assignMenuByUserModel);

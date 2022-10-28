@@ -9,5 +9,6 @@ namespace CoreLayout.Repositories.UserManagement.Menu
 {
     public interface IMenuRepository : IRepository<MenuModel>
     {
+       Task<List<MenuModel>> GetMenuByRoleAndUserForInstitute(int roleid, int userid);
     }
 }
