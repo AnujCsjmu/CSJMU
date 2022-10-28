@@ -77,8 +77,26 @@
                                         <a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>
                                     </td>
                                     <td>@item.Title</td>
-                                    <td>@item.DisplayInWebSite</td>
-                                    <td>@item.DisplayInCollage</td>
+                                    <td>
+                                        @if (item.DisplayInWebSite == 1)
+                                        {
+                                            <label>Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label>No</label>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.DisplayInCollage == 1)
+                                        {
+                                            <label>Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label>No</label>
+                                        }
+                                    </td>
                                     @*<td>@item.OriginalFileName</td>
                                             <td>@item.FileName</td>
                                         <td>@item.Related</td>*@

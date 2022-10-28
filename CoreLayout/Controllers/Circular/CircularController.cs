@@ -258,23 +258,23 @@ namespace CoreLayout.Controllers.Circular
                         }
                         else
                         {
-                            ModelState.AddModelError("", "previous Paper size must be less than 2 mb");
+                            ModelState.AddModelError("", "circular size must be less than 2 mb");
                             return View(circularModel);
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "previous paper extension is invalid- accept only pdf");//,jpg,jpeg,png
+                        ModelState.AddModelError("", "circular extension is invalid- accept only pdf");//,jpg,jpeg,png
                         return View(circularModel);
                     }
                 }
                
                 #endregion
-                if (ModelState.IsValid)
-                {
-                    var value = await _circularService.GetCircularById(CircularId);
-                    if (await TryUpdateModelAsync<CircularModel>(value))
-                    {
+                //if (ModelState.IsValid) //due to file upload  
+                //{
+                    //var value = await _circularService.GetCircularById(CircularId);
+                    //if (await TryUpdateModelAsync<CircularModel>(value))
+                    //{
                         var res = await _circularService.UpdateCircularAsync(circularModel);
                         if (res.Equals(1))
                         {
@@ -285,8 +285,8 @@ namespace CoreLayout.Controllers.Circular
                             TempData["error"] = "Circular has not been updated";
                         }
                         return RedirectToAction(nameof(Index));
-                    }
-                }
+                    //}
+                //}
             }
             catch (Exception ex)
             {
