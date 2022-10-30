@@ -37,7 +37,7 @@ namespace CoreLayout.Services.Exam.ExamMaster
             return await _examMasterRepository.UpdateAsync(examMasterModel);
         }
 
-        public async Task<int> DeleteExamCourseMappingAsync(ExamMasterModel examMasterModel)
+        public async Task<int> DeleteExamMasterAsync(ExamMasterModel examMasterModel)
         {
             return await _examMasterRepository.DeleteAsync(examMasterModel);
         }

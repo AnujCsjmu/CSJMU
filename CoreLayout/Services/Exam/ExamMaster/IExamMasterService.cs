@@ -12,6 +12,6 @@ namespace CoreLayout.Services.Exam.ExamMaster
         public Task<ExamMasterModel> GetExamMasterByIdAsync(int id);
         public Task<int> CreateExamMasterAsync(ExamMasterModel examMasterModel);
         public Task<int> UpdateExamMasterAsync(ExamMasterModel examMasterModel);
-        public Task<int> DeleteExamCourseMappingAsync(ExamMasterModel examMasterModel);
+        public Task<int> DeleteExamMasterAsync(ExamMasterModel examMasterModel);
     }
 }

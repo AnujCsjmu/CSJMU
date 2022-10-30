@@ -8,6 +8,7 @@ using CoreLayout.Repositories.Circular;
 using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
+using CoreLayout.Repositories.Exam.Student;
 using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
@@ -24,6 +25,7 @@ using CoreLayout.Repositories.Masters.InstituteCategory;
 using CoreLayout.Repositories.Masters.InstituteType;
 using CoreLayout.Repositories.Masters.Pratice;
 using CoreLayout.Repositories.Masters.Program;
+using CoreLayout.Repositories.Masters.Religion;
 using CoreLayout.Repositories.Masters.Role;
 using CoreLayout.Repositories.Masters.State;
 using CoreLayout.Repositories.Masters.Tehsil;
@@ -53,6 +55,7 @@ using CoreLayout.Services.Circular;
 using CoreLayout.Services.Common;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
+using CoreLayout.Services.Exam.Student;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
@@ -69,6 +72,7 @@ using CoreLayout.Services.Masters.InstituteCategory;
 using CoreLayout.Services.Masters.InstituteType;
 using CoreLayout.Services.Masters.Pratice;
 using CoreLayout.Services.Masters.Program;
+using CoreLayout.Services.Masters.Religion;
 using CoreLayout.Services.Masters.Role;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
@@ -362,6 +366,14 @@ namespace CoreLayout
             //circular
             services.AddScoped<ICircularService, CircularService>();
             services.AddScoped<ICircularRepository, CircularRepository>();
+
+            //Student
+            services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IStudentRepository, StudentRepository>();
+
+            //Religion
+            services.AddScoped<IReligionService, ReligionService>();
+            services.AddScoped<IReligionRepository, ReligionRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

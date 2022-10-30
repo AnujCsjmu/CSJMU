@@ -205,7 +205,7 @@ namespace CoreLayout.Controllers.Exam
                 var value = await _examMasterService.GetExamMasterByIdAsync(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
-                    var res = await _examMasterService.DeleteExamCourseMappingAsync(value);
+                    var res = await _examMasterService.DeleteExamMasterAsync(value);
                     if (res.Equals(1))
                     {
                         TempData["success"] = "Exam has been deleted";
