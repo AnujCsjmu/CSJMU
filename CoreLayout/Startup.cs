@@ -9,6 +9,7 @@ using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Exam.Student;
+using CoreLayout.Repositories.Exam.StudentAcademics;
 using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.Category;
 using CoreLayout.Repositories.Masters.City;
@@ -57,6 +58,7 @@ using CoreLayout.Services.Common;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Exam.Student;
+using CoreLayout.Services.Exam.StudentAcademics;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Category;
 using CoreLayout.Services.Masters.City;
@@ -380,6 +382,10 @@ namespace CoreLayout
             //Category
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            //StudentAcademics
+            services.AddScoped<IStudentAcademicsService, StudentAcademicsService>();
+            services.AddScoped<IStudentAcademicsRepository, StudentAcademicsRepository>();
 
             //add for encrypt value
             services.AddDataProtection();
