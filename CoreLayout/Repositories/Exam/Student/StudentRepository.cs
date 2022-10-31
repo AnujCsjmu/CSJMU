@@ -82,13 +82,14 @@ namespace CoreLayout.Repositories.Exam.Student
         {
             try
             {
+                entity.IsActive = false;
                 var query = "SP_InsertUpdateDelete_Student";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("StudentID", entity.StudentID, DbType.Int32);
-                    parameters.Add("IsActive", entity.IsActive, DbType.Int32);
-                    parameters.Add("IPAddress", entity.IPAddress, DbType.Int32);
+                    parameters.Add("IsActive", entity.IsActive, DbType.Boolean);
+                    parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                     parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);

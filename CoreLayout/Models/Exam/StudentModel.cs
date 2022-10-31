@@ -96,7 +96,7 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Correspondence  Tehsil")]
         public int? CTehsilId { get; set; }
         public string CTehsilName { get; set; }
-        //public List<TehsilModel> CTehsilList { get; set; }
+        public List<TehsilModel> CTehsilList { get; set; }
 
         [Display(Name = "Correspondence  PinCode")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pin Code.")]
@@ -119,7 +119,7 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Permanent  Tehsil")]
         public int? PTehsilId { get; set; }
         public string PTehsilName { get; set; }
-        //public List<TehsilModel> PTehsilList { get; set; }
+        public List<TehsilModel> PTehsilList { get; set; }
 
         [Display(Name = "Permanent  PinCode")]
         [RegularExpression(@"^([0-9]{6})$", ErrorMessage = "Invalid Pin Code.")]
@@ -132,8 +132,10 @@ namespace CoreLayout.Models.Exam
         [StringLength(12)]
         public string IdProofNo { get; set; }
 
-        //[Display(Name = "Category")]
-        //public string Category { get; set; }
+        [Display(Name = "Category")]
+       // public int? CategoryId { get; set; }
+        public string Category { get; set; }
+        public List<CategoryModel> CategoryList { get; set; }
 
         [Display(Name = "Is EWS")]
         public bool IsEWS { get; set; }
@@ -180,23 +182,23 @@ namespace CoreLayout.Models.Exam
 
 
         //category
-        [Display(Name = "Category")]
-        public string Category { get; set; }
-        public SelectList CategoryList = new SelectList(new[]
-           {
-                new SelectListItem {  Selected = true ,Text = "--- Select Category ---", Value = "0" },
-                new SelectListItem { Selected = false, Text = "General", Value = "General" },
-                new SelectListItem { Selected = false, Text = "SC", Value = "SC" },
-                new SelectListItem { Selected = false, Text = "ST", Value = "ST" },
-                new SelectListItem { Selected = false, Text = "OBC", Value = "OBC" },
-                new SelectListItem { Selected = false, Text = "Others", Value = "Others" },
-            }, "Value", "Text");
+        //[Display(Name = "Category")]
+        //public string Category { get; set; }
+        //public SelectList CategoryList = new SelectList(new[]
+        //   {
+        //        new SelectListItem { Selected = true ,Text = "--- Select Category ---", Value = "0" },
+        //        new SelectListItem { Selected = false, Text = "General", Value = "General" },
+        //        new SelectListItem { Selected = false, Text = "SC", Value = "SC" },
+        //        new SelectListItem { Selected = false, Text = "ST", Value = "ST" },
+        //        new SelectListItem { Selected = false, Text = "OBC", Value = "OBC" },
+        //        new SelectListItem { Selected = false, Text = "Others", Value = "Others" },
+        //    }, "Value", "Text");
         //gender
         [Display(Name = "Gender")]
         public string Gender { get; set; }
         public SelectList GenderList = new SelectList(new[]
           {
-                new SelectListItem {  Selected = true ,Text = "--- Select Gender ---", Value = "0" },
+                new SelectListItem { Selected = true ,Text = "--- Select Gender ---", Value = "0" },
                 new SelectListItem { Selected = false, Text = "Male", Value = "Male" },
                 new SelectListItem { Selected = false, Text = "Female", Value = "Male" },
                 new SelectListItem { Selected = false, Text = "Others", Value = "Male" },
@@ -207,7 +209,7 @@ namespace CoreLayout.Models.Exam
         public string IdProofType { get; set; }
         public SelectList IdProofTypeList = new SelectList(new[]
           {
-                new SelectListItem {  Selected = true ,Text = "--- Select IdProof ---", Value = "0" },
+                new SelectListItem { Selected = true ,Text = "--- Select IdProof ---", Value = "0" },
                 new SelectListItem { Selected = false, Text = "AadharCard", Value = "AadharCard" },
                 new SelectListItem { Selected = false, Text = "PanCard", Value = "PanCard" },
                 new SelectListItem { Selected = false, Text = "IdentityCard", Value = "IdentityCard" },
@@ -219,7 +221,7 @@ namespace CoreLayout.Models.Exam
         public string SeatType { get; set; }
         public SelectList SeatTypeList = new SelectList(new[]
           {
-                new SelectListItem {  Selected = true ,Text = "--- Select SeatType ---", Value = "0" },
+                new SelectListItem { Selected = true ,Text = "--- Select SeatType ---", Value = "0" },
                 new SelectListItem { Selected = false, Text = "Direct", Value = "Direct" },
                 new SelectListItem { Selected = false, Text = "Reservation", Value = "Reservation" },
                 new SelectListItem { Selected = false, Text = "JEE", Value = "JEE" },
@@ -231,7 +233,7 @@ namespace CoreLayout.Models.Exam
         public string DisabilityType { get; set; }
         public SelectList DisabilityTypeList = new SelectList(new[]
           {
-                new SelectListItem {  Selected = true ,Text = "--- Select DisabilityType ---", Value = "0" },
+                new SelectListItem { Selected = true ,Text = "--- Select DisabilityType ---", Value = "0" },
                 new SelectListItem { Selected = false, Text = "Blindness", Value = "Blindness" },
                 new SelectListItem { Selected = false, Text = "Low-vision", Value = "Low-vision" },
                 new SelectListItem { Selected = false, Text = "Leprosy Cured Persons", Value = "Leprosy Cured Persons" },

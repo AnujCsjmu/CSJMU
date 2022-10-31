@@ -24,34 +24,336 @@
                         <hr />
                     </div>*@
                 <form asp-action="Edit" method="post" enctype="multipart/form-data">
-                    @*<div class="row">
-                        <input type="hidden" asp-for="ExamId" />
-                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
-
+                    <input type="hidden" asp-for="StudentID" />
+                    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color:white; font-size:15px">Student Information</h4>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="ExamName"> </label><span class="tx-danger"> *</span>
-
-                                <input asp-for="ExamName" class="form-control" />
-                                <span asp-validation-for="ExamName" class="parsley-errors-list filled"></span>
+                                <label asp-for="RollNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="RollNo" class="form-control" />
+                                <span asp-validation-for="RollNo" class="parsley-errors-list filled"></span>
                             </div>
-
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="SessionId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="SessionId" asp-items="@(new SelectList(Model.SessionList,"SessionId","Session"))">
+                                <label asp-for="EnrolmentNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="EnrolmentNo" class="form-control" />
+                                <span asp-validation-for="EnrolmentNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EntranceApplicationNo"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="EntranceApplicationNo" class="form-control" />
+                                <span asp-validation-for="EntranceApplicationNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FirstName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MiddleName"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="MiddleName" class="form-control" />
+                                <span asp-validation-for="MiddleName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="LastName"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
+                                <input id="HindiName" asp-for="HindiName" class="form-control" />
+                                <span asp-validation-for="HindiName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DOB"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="DOB" class="form-control" type="date" />
+                                <span asp-validation-for="DOB" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Gender"> </label><span class="tx-danger"> *</span>
+                                @Html.DropDownListFor(m => m.Gender, (IEnumerable<SelectListItem>)Model.GenderList, new { @class = "form-control" })
+                                <span asp-validation-for="Gender" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Mobile"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Mobile" class="form-control" />
+                                <span asp-validation-for="Mobile" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EmailId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="EmailId" class="form-control" />
+                                <span asp-validation-for="EmailId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">Parent Information</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FatherName" class="form-control" />
+                                <span asp-validation-for="FatherName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MotherName"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="MotherName" class="form-control" />
+                                <span asp-validation-for="MotherName" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ParentMobileNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ParentMobileNo" class="form-control" />
+                                <span asp-validation-for="ParentMobileNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">Corrrespondence Address</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CAddress"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="CAddress" class="form-control" />
+                                <span asp-validation-for="CAddress" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CStateId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select id="CStateId" class="form-control select" asp-for="CStateId" asp-items="@(new SelectList(Model.CStateList,"StateId","StateName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
-                                <span class="parsley-errors-list filled" asp-validation-for="SessionId"></span>
+                                <span asp-validation-for="CStateId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="CDistrictId" asp-items="@(new SelectList(Model.CDistrictList,"DistrictId","DistrictName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="CDistrictId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="CTehsilId" asp-items="@(new SelectList(Model.CTehsilList,"TehsilId","TehsilName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="CTehsilId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CPinCode"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="CPinCode" class="form-control" maxlength="6" />
+                                <span asp-validation-for="CPinCode" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px ">Permanent Address</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PAddress"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="PAddress" class="form-control" />
+                                <span asp-validation-for="PAddress" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PStateId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="PStateId" asp-items="@(new SelectList(Model.PStateList,"StateId","StateName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PStateId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="PDistrictId" asp-items="@(new SelectList(Model.PDistrictList,"DistrictId","DistrictName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PDistrictId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="PTehsilId" asp-items="@(new SelectList(Model.PTehsilList,"TehsilId","TehsilName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="PTehsilId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PPinCode"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="PPinCode" class="form-control" maxlength="6" />
+                                <span asp-validation-for="PPinCode" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">Others Information</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Category"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="Category" asp-items="@(new SelectList(Model.CategoryList,"Name","Name"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="Category" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Nationality"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="Nationality" class="form-control" maxlength="10" />
+                                <span asp-validation-for="Nationality" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ReligionID"> </label>@*<span class="tx-danger"> *</span>*@
+                                <select class="form-control select" asp-for="ReligionID" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="ReligionID" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="BloodGroup"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="BloodGroup" class="form-control" />
+                                <span asp-validation-for="BloodGroup" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SeatType"> </label>@*<span class="tx-danger"> *</span>*@
+                                @Html.DropDownListFor(m => m.SeatType, (IEnumerable<SelectListItem>)Model.SeatTypeList, new { @class = "form-control" })
+                                <span asp-validation-for="SeatType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsVaccinated"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input asp-for="IsVaccinated" id="IsVaccinated" name="IsVaccinated" type="checkbox" />
+                                <span asp-validation-for="IsVaccinated" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsEWS"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input asp-for="IsEWS" id="IsEWS" name="IsEWS" type="checkbox" />
+                                <span asp-validation-for="IsEWS" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsMinority"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input asp-for="IsMinority" id="IsMinority" name="IsMinority" type="checkbox" />
+                                <span asp-validation-for="IsMinority" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
+                                <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
+                                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input onchange="checkDisability()" asp-for="IsDisability" id="IsDisability" name="IsDisability" type="checkbox" />
+                                <span asp-validation-for="IsDisability" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" id="divDisabilityType" style="display: none;">
+                                <label asp-for="DisabilityType"> </label>@*<span class="tx-danger"> *</span>*@
+                                @Html.DropDownListFor(m => m.DisabilityType, (IEnumerable<SelectListItem>)Model.DisabilityTypeList, new { @class = "form-control" })
+                                <span asp-validation-for="DisabilityType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">Upload Documents</h4>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FUPhotograph"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="FUPhotograph" class="form-control" />
+                                <span asp-validation-for="FUPhotograph" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FUSignature"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="FUSignature" class="form-control" />
+                                <span asp-validation-for="FUSignature" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IdProofType"> </label>@*<span class="tx-danger"> *</span>*@
+                                @Html.DropDownListFor(m => m.IdProofType, (IEnumerable<SelectListItem>)Model.IdProofTypeList, new { @class = "form-control" })
+                                <span asp-validation-for="IdProofType" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" id="divIdProofNo" style="display: none;">
+                                <label asp-for="IdProofNo"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="IdProofNo" class="form-control" />
+                                <span asp-validation-for="IdProofNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group">
                             <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
-                    </div>*@
+                    </div>
+
                 </form>
 
             </div>
@@ -59,3 +361,169 @@
     </div>
 </div>
 <!-- Conetnt End-->
+@section Scripts{
+    <script type="text/javascript">
+        google.load("elements", "1", { packages: "transliteration" });
+        var control;
+        function onLoad() {
+            var options = {
+                //Source Language
+                sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+                // Destination language to Transliterate
+                destinationLanguage: [google.elements.transliteration.LanguageCode.HINDI],
+                shortcutKey: 'ctrl+g',
+                transliterationEnabled: true
+            };
+            control = new google.elements.transliteration.TransliterationControl(options);
+            control.makeTransliteratable(['HindiName']);
+        }
+        google.setOnLoadCallback(onLoad);
+    </script>
+
+    @*DisabilityType hide/show on page load*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#IsDisability").is(':checked')) {
+                document.getElementById('divDisabilityType').style.display = 'block';
+            }
+            else {
+                document.getElementById('divDisabilityType').style.display = 'none';
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var value = $("#IdProofType").val();
+            if (value != 0) {
+                document.getElementById('divDisabilityType').style.display = 'block';
+            }
+            else {
+                document.getElementById('divDisabilityType').style.display = 'none';
+            }
+        });
+    </script>
+    @*DisabilityType hide/show on click*@
+    <script type="text/javascript">
+        function checkDisability() {
+            console.log('change event')
+            if ($("#IsDisability").is(':checked')) {
+                $('#DisabilityType').val(0);
+                $('#divDisabilityType').css('display', 'block');
+            } else {
+                $('#DisabilityType').val(0);
+                $('#divDisabilityType').css('display', 'none');
+            }
+        }
+    </script>
+    @*IdProofType hide/show*@
+    <script type="text/javascript">
+        document.getElementById('IdProofType').addEventListener('change', function () {
+
+            var style = this.value != 0 ? 'block' : 'none';
+            document.getElementById('IdProofNo').value = "";
+            document.getElementById('divIdProofNo').style.display = style;
+        });
+    </script>
+
+    @*permanent address*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PStateId").on("change", function () {
+
+                $("#PDistrictId").empty();
+                var ddlsource = "#PStateId";
+                var url = '@Url.Content("~/")' + "Student/GetDistrict?StateId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                  /*  $("#DistrictId").empty();*/
+                    $.each(data, function (i, district) {
+                        items += "<option value ='" + district.value + "'>" + district.text + "</option>";
+                });
+                    $('#PDistrictId').html(items);
+            });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PDistrictId").on("change", function () {
+
+                $("#PTehsilId").empty();
+                var ddlsource = "#PDistrictId";
+                var url = '@Url.Content("~/")' + "Student/GetTehsil?DistrictId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                   // $("#TehsilId").empty();
+                    $.each(data, function (i, tehsil) {
+                        items += "<option value ='" + tehsil.value + "'>" + tehsil.text + "</option>";
+                });
+                    $('#PTehsilId').html(items);
+            });
+            });
+        });
+    </script>
+    @*Correspondence address*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CStateId").on("change", function () {
+
+                $("#CDistrictId").empty();
+                var ddlsource = "#CStateId";
+                var url = '@Url.Content("~/")' + "Student/GetDistrict?StateId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                  /*  $("#DistrictId").empty();*/
+                    $.each(data, function (i, district) {
+                        items += "<option value ='" + district.value + "'>" + district.text + "</option>";
+                });
+                    $('#CDistrictId').html(items);
+            });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#CDistrictId").on("change", function () {
+
+                $("#CTehsilId").empty();
+                var ddlsource = "#CDistrictId";
+                var url = '@Url.Content("~/")' + "Student/GetTehsil?DistrictId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                   // $("#TehsilId").empty();
+                    $.each(data, function (i, tehsil) {
+                        items += "<option value ='" + tehsil.value + "'>" + tehsil.text + "</option>";
+                });
+                    $('#CTehsilId').html(items);
+            });
+            });
+        });
+    </script>
+
+    @*validation*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").on("click", function () {
+                if ($("#IsDisability").is(':checked') && $('#DisabilityType').val() == '0') {
+                    alert('Please select disability type');
+                    return false;
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").on("click", function () {
+                if ($('#IdProofType').val() != '0' && $('#IdProofNo').val() == '') {
+                    alert('Please enter id proof number');
+                    return false;
+                }
+            });
+        });
+    </script>
+}

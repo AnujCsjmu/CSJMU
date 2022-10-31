@@ -10,6 +10,7 @@ using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Exam.Student;
 using CoreLayout.Repositories.Masters.Branch;
+using CoreLayout.Repositories.Masters.Category;
 using CoreLayout.Repositories.Masters.City;
 using CoreLayout.Repositories.Masters.Country;
 using CoreLayout.Repositories.Masters.Course;
@@ -57,6 +58,7 @@ using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Exam.Student;
 using CoreLayout.Services.Masters.Branch;
+using CoreLayout.Services.Masters.Category;
 using CoreLayout.Services.Masters.City;
 using CoreLayout.Services.Masters.Country;
 using CoreLayout.Services.Masters.Course;
@@ -375,6 +377,10 @@ namespace CoreLayout
             services.AddScoped<IReligionService, ReligionService>();
             services.AddScoped<IReligionRepository, ReligionRepository>();
 
+            //Category
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             //add for encrypt value
             services.AddDataProtection();
 
@@ -405,6 +411,16 @@ namespace CoreLayout
             {
                 FileProvider = new PhysicalFileProvider(@"E:\Core\PCPPhoto\"),
                 RequestPath = "/PCPPhoto"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\StudentPhoto\"),
+                RequestPath = "/StudentPhoto"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\StudentSignature\"),
+                RequestPath = "/StudentSignature"
             });
             app.UseRouting();
             app.UseAuthorization();

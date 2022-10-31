@@ -149,7 +149,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CStateId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="CStateId" asp-items="@(new SelectList(Model.CStateList,"StateId","StateName"))">
+                                <select id="CStateId" class="form-control select" asp-for="CStateId" asp-items="@(new SelectList(Model.CStateList,"StateId","StateName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CStateId" class="parsley-errors-list filled"></span>
@@ -158,7 +158,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="CDistrictId" asp-items="@(new SelectList(Model.CDistrictList,"DistrictId","DistrictName"))">
+                                <select class="form-control select" asp-for="CDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CDistrictId" class="parsley-errors-list filled"></span>
@@ -204,7 +204,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="PDistrictId" asp-items="@(new SelectList(Model.PDistrictList,"DistrictId","DistrictName"))">
+                                <select class="form-control select" asp-for="PDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PDistrictId" class="parsley-errors-list filled"></span>
@@ -234,7 +234,9 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="Category"> </label>@*<span class="tx-danger"> *</span>*@
-                                @Html.DropDownListFor(m => m.Category, (IEnumerable<SelectListItem>)Model.CategoryList, new { @class = "form-control" })
+                                <select class="form-control select" asp-for="Category" asp-items="@(new SelectList(Model.CategoryList,"Name","Name"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
                                 <span asp-validation-for="Category" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
@@ -299,7 +301,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
-                                <input asp-for="IsDisability" id="IsDisability" name="IsDisability" type="checkbox" />
+                                <input onchange="checkDisability()" asp-for="IsDisability" id="IsDisability" name="IsDisability" type="checkbox" />
                                 <span asp-validation-for="IsDisability" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
@@ -347,7 +349,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <input id="submit" type="submit" class="btn btn-primary" value="Save" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
                     </div>
@@ -358,6 +360,7 @@
     </div>
 </div>
 @section Scripts{
+    <script src="~/assets/js/google_translate.js"></script>
     <script type="text/javascript">
         google.load("elements", "1", { packages: "transliteration" });
         var control;
@@ -375,15 +378,20 @@
         }
         google.setOnLoadCallback(onLoad);
     </script>
-
+    @*DisabilityType hide/show*@
     <script type="text/javascript">
-        document.getElementById('IsDisability').addEventListener('change', function () {
-            alert(this.value);
-            var style = this.value != true ? 'block' : 'none';
-            document.getElementById('DisabilityType').value = 0;
-            document.getElementById('divDisabilityType').style.display = style;
-        });
+        function checkDisability() {
+            console.log('change event')
+            if ($("#IsDisability").is(':checked')) {
+                $('#DisabilityType').val(0);
+                $('#divDisabilityType').css('display', 'block');
+            } else {
+                $('#DisabilityType').val(0);
+                $('#divDisabilityType').css('display', 'none');
+            }
+        }
     </script>
+    @*IdProofType hide/show*@
     <script type="text/javascript">
         document.getElementById('IdProofType').addEventListener('change', function () {
 
@@ -392,12 +400,53 @@
             document.getElementById('divIdProofNo').style.display = style;
         });
     </script>
+
+    @*permanent address*@
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PStateId").on("change", function () {
+
+                $("#PDistrictId").empty();
+                var ddlsource = "#PStateId";
+                var url = '@Url.Content("~/")' + "Student/GetDistrict?StateId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                  /*  $("#DistrictId").empty();*/
+                    $.each(data, function (i, district) {
+                        items += "<option value ='" + district.value + "'>" + district.text + "</option>";
+                });
+                    $('#PDistrictId').html(items);
+            });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PDistrictId").on("change", function () {
+
+                $("#PTehsilId").empty();
+                var ddlsource = "#PDistrictId";
+                var url = '@Url.Content("~/")' + "Student/GetTehsil?DistrictId="+$(ddlsource).val();
+
+                $.getJSON(url, function (data) {
+                var items = '';
+                   // $("#TehsilId").empty();
+                    $.each(data, function (i, tehsil) {
+                        items += "<option value ='" + tehsil.value + "'>" + tehsil.text + "</option>";
+                });
+                    $('#PTehsilId').html(items);
+            });
+            });
+        });
+    </script>
+    @*Correspondence address*@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#CStateId").on("change", function () {
 
-                $("#CDistrictID").empty();
-
+                $("#CDistrictId").empty();
                 var ddlsource = "#CStateId";
                 var url = '@Url.Content("~/")' + "Student/GetDistrict?StateId="+$(ddlsource).val();
 
@@ -407,19 +456,17 @@
                     $.each(data, function (i, district) {
                         items += "<option value ='" + district.value + "'>" + district.text + "</option>";
                 });
-                    $('#CDistrictID').html(items);
+                    $('#CDistrictId').html(items);
             });
             });
         });
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#CDistrictID").on("change", function () {
+            $("#CDistrictId").on("change", function () {
 
                 $("#CTehsilId").empty();
-
-                var ddlsource = "#CDistrictID";
-                alert(ddlsource);
+                var ddlsource = "#CDistrictId";
                 var url = '@Url.Content("~/")' + "Student/GetTehsil?DistrictId="+$(ddlsource).val();
 
                 $.getJSON(url, function (data) {
@@ -427,55 +474,31 @@
                    // $("#TehsilId").empty();
                     $.each(data, function (i, tehsil) {
                         items += "<option value ='" + tehsil.value + "'>" + tehsil.text + "</option>";
-                    });
-                    alert(items);
+                });
                     $('#CTehsilId').html(items);
             });
             });
         });
     </script>
 
+    @*validation*@
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#PStateId").on("change", function () {
-
-                $("#PDistrictID").empty();
-
-                var ddlsource = "#PStateId";
-                alert(ddlsource);
-                var url = '@Url.Content("~/")' + "Student/GetDistrict?StateId="+$(ddlsource).val();
-
-                $.getJSON(url, function (data) {
-                var items = '';
-                  /*  $("#DistrictId").empty();*/
-                    $.each(data, function (i, district) {
-                        items += "<option value ='" + district.value + "'>" + district.text + "</option>";
-                    });
-                    alert(items);
-                    $('#PDistrictID').html(items);
-            });
+            $("#submit").on("click", function () {
+                if ($("#IsDisability").is(':checked') && $('#DisabilityType').val() == '0') {
+                    alert('Please select disability type');
+                    return false;
+                }
             });
         });
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#PDistrictID").on("change", function () {
-
-               /* $("#PTehsilId").empty();*/
-
-                var ddlsource = "#PDistrictID";
-                alert(ddlsource);
-                var url = '@Url.Content("~/")' + "Student/GetTehsil?DistrictId="+$(ddlsource).val();
-
-                $.getJSON(url, function (data) {
-                var items = '';
-                   // $("#TehsilId").empty();
-                    $.each(data, function (i, tehsil) {
-                        items += "<option value ='" + tehsil.value + "'>" + tehsil.text + "</option>";
-                    });
-                    alert(items);
-                    $('#PTehsilId').html(items);
-            });
+            $("#submit").on("click", function () {
+                if ($('#IdProofType').val() != '0' && $('#IdProofNo').val() == '') {
+                    alert('Please enter id proof number');
+                    return false;
+                }
             });
         });
     </script>
