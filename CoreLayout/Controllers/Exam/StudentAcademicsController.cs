@@ -131,13 +131,16 @@ namespace CoreLayout.Controllers.Exam
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> CreateAsync(string id)
         {
+            StudentAcademicsModel studentAcademicsModel = new StudentAcademicsModel();
             try
             {
                 var guid_id = _protector.Unprotect(id);
-                StudentAcademicsModel studentAcademicsModel = new StudentAcademicsModel();
-                studentAcademicsModel.StudentList = await _studentService.GetAllStudentAsync();
-                studentAcademicsModel.InstituteList = await _instituteService.GetAllInstitute();
-                studentAcademicsModel.CourseList = await _courseService.GetAllCourse();
+               
+                //studentAcademicsModel.StudentList = await _studentService.GetAllStudentAsync();
+               var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
+                                                       select new {s.InstituteID,s.InstituteName }).Distinct().ToList();
+                ViewBag.InstituteList = instituteList;
+                //studentAcademicsModel.CourseList = await _courseService.GetAllCourse();
                 studentAcademicsModel.SyllabusSessionList = await _courseDetailsService.GetAllSession();
                 studentAcademicsModel.ExamCenterList = await _instituteService.GetAllInstitute();
                 studentAcademicsModel.AcademicSessionList = await _courseDetailsService.GetAllSession();
@@ -149,8 +152,8 @@ namespace CoreLayout.Controllers.Exam
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.ToString());
+                return View("~/Views/Exam/StudentAcademics/Create.cshtml", studentAcademicsModel);
             }
-            return RedirectToAction(nameof(Index));
         }
 
         //Create Post Action Method
@@ -204,10 +207,23 @@ namespace CoreLayout.Controllers.Exam
             {
                 var guid_id = _protector.Unprotect(id);
                 var data = await _studentAcademicsService.GetStudentAcademicsByIdAsync(Convert.ToInt32(guid_id));
-                data.StudentList = await _studentService.GetAllStudentAsync();
-                data.InstituteList = await _instituteService.GetAllInstitute();
-                data.CourseList = await _courseService.GetAllCourse();
-                data.SubjectList = await _branchService.GetAllBranch();
+                //var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
+                //                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                data.StudentList = (from s in await _studentService.GetAllStudentAsync()
+                                    where s.RollNo == data.RollNo
+                                    select s).Distinct().ToList() ;
+                //data.InstituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
+                //                      where s.InstituteID == data.InstituteID
+                //                      select s).Distinct().ToList();
+                var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
+                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                ViewBag.InstituteList = instituteList;
+                data.CourseList = (from s in await _instituteService.AffiliationInstituteIntakeData()
+                                                    where s.InstituteID == data.InstituteID
+                                                    select s).Distinct().ToList();
+                data.SubjectList = (from s in await _instituteService.All_AffiliationInstituteIntakeData()
+                                                     where s.CourseId == data.CourseId && s.InstituteID==data.InstituteID
+                                                     select s).Distinct().ToList();
                 data.SyllabusSessionList = await _courseDetailsService.GetAllSession();
                 data.ExamCenterList = await _instituteService.GetAllInstitute();
                 data.AcademicSessionList = await _courseDetailsService.GetAllSession();
@@ -231,21 +247,10 @@ namespace CoreLayout.Controllers.Exam
         [AuthorizeContext(ViewAction.Edit)]
         public async Task<IActionResult> Edit(int AcademicId, StudentAcademicsModel studentAcademicsModel)
         {
-           
             try
             {
                 studentAcademicsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 studentAcademicsModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
-                studentAcademicsModel.StudentList = await _studentService.GetAllStudentAsync();
-                studentAcademicsModel.InstituteList = await _instituteService.GetAllInstitute();
-                studentAcademicsModel.CourseList = await _courseService.GetAllCourse();
-                studentAcademicsModel.SubjectList = await _branchService.GetAllBranch();
-                studentAcademicsModel.SyllabusSessionList = await _courseDetailsService.GetAllSession();
-                studentAcademicsModel.ExamCenterList = await _instituteService.GetAllInstitute();
-                studentAcademicsModel.AcademicSessionList = await _courseDetailsService.GetAllSession();
-                studentAcademicsModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
-                studentAcademicsModel.PreviousSessionIdList = await _courseDetailsService.GetAllSession();
-
                 if (ModelState.IsValid)
                 {
                     var value = await _studentAcademicsService.GetStudentAcademicsByIdAsync(AcademicId);
@@ -310,15 +315,33 @@ namespace CoreLayout.Controllers.Exam
 
             return RedirectToAction(nameof(Index));
         }
-        public async Task<JsonResult> GetBranch(int CourseId)
+
+        public async Task<JsonResult> GetCourse(int InstituteId)
         {
-            var BranchList = (from coursbranchemapping in await _courseBranchMappingService.GetAllCourseBranchMapping()
-                              where coursbranchemapping.CourseId == CourseId
+            var CourseList = (from instituteintake in await _instituteService.AffiliationInstituteIntakeData()
+                              where instituteintake.InstituteID == InstituteId
                               select new SelectListItem()
                               {
-                                  Text = coursbranchemapping.BranchName,
-                                  Value = coursbranchemapping.BranchId.ToString(),
-                              }).ToList();
+                                  Text = instituteintake.CourseName,
+                                  Value = instituteintake.CourseId.ToString(),
+                              }).Distinct().ToList();
+
+            CourseList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(CourseList);
+        }
+        public async Task<JsonResult> GetBranch(int CourseId,int inst)
+        {
+            var BranchList = (from instituteintake in await _instituteService.All_AffiliationInstituteIntakeData()
+                              where instituteintake.CourseId == CourseId && instituteintake.InstituteID== inst
+                              select new SelectListItem()
+                              {
+                                  Text = instituteintake.BranchName,
+                                  Value = instituteintake.BranchId.ToString(),
+                              }).Distinct().ToList();
 
             BranchList.Insert(0, new SelectListItem()
             {
@@ -327,5 +350,59 @@ namespace CoreLayout.Controllers.Exam
             });
             return Json(BranchList);
         }
+        public async Task<JsonResult> GetStudent(string rollno)
+        {
+            var studentlist = (from data in await _studentService.GetAllStudentAsync()
+                               where data.RollNo == rollno.Trim()
+                               select new SelectListItem()
+                               {
+                                   Text = data.FullName,
+                                   Value = data.StudentID.ToString(),
+                               }).ToList();
+
+            return Json(studentlist);
+        }
+
+
+
+        //[AcceptVerbs("GET", "POST")]
+        //public async Task<IActionResult> VerifyRollNoAsync(string rollNo)
+        //{
+
+        //    var studentlist = (from data in await _studentService.GetAllStudentAsync()
+        //                   where data.RollNo == rollNo.Trim()
+        //                   select new SelectListItem()
+        //                   {
+        //                       Text = data.FullName,
+        //                       Value = data.StudentID.ToString(),
+        //                   }).ToList();
+
+        //    if (studentlist.Count <= 0)
+        //    {
+        //        return Json($"{rollNo} is not found.");
+        //    }
+        //    ViewBag.Studentlist = studentlist;
+        //    //return Json(studentlist);
+        //    return View(studentlist);
+
+
+        //}
+        //    public async Task<JsonResult> GetStudent(int Instituteid,int courseid,int subjectid)
+        //    {
+        //        var StudentList = (from student in await _studentAcademicsService.GetAllStudentAcademicsAsync()
+        //                           where student.InstituteID == Instituteid && student.CourseId == courseid && student.SubjectId == subjectid
+        //                           select new SelectListItem()
+        //                           {
+        //                               Text = student.FullName,
+        //                               Value = student.StudentID.ToString(),
+        //                           }).ToList();
+
+        //        StudentList.Insert(0, new SelectListItem()
+        //        {
+        //            Text = "----Select----",
+        //            Value = string.Empty
+        //        });
+        //        return Json(StudentList);
+        //    }
     }
 }

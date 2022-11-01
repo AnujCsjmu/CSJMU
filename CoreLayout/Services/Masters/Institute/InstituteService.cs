@@ -49,5 +49,9 @@ namespace CoreLayout.Services.Masters.Institute
         {
             return await _instituteRepository.AffiliationInstituteIntakeData();
         }
+        public async Task<List<InstituteModel>> All_AffiliationInstituteIntakeData()
+        {
+            return await _instituteRepository.All_AffiliationInstituteIntakeData();
+        }
     }
 }

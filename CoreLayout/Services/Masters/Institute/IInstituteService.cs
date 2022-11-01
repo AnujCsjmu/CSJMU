@@ -16,5 +16,6 @@ namespace CoreLayout.Services.Masters.Institute
         public Task<int> DeleteInstituteAsync(InstituteModel instituteModel);
 
         public Task<List<InstituteModel>> AffiliationInstituteIntakeData();
+        public Task<List<InstituteModel>> All_AffiliationInstituteIntakeData();
     }
 }

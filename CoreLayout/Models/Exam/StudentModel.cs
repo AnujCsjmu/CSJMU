@@ -42,6 +42,8 @@ namespace CoreLayout.Models.Exam
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         public string LastName { get; set; }
 
+        public string FullName { get; set; }
+
         [Display(Name = "Hindi Name")]
         [Required(ErrorMessage = "Please enter hindi name")]
         [StringLength(100)]

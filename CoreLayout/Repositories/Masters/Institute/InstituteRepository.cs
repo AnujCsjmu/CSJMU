@@ -215,5 +215,24 @@ namespace CoreLayout.Repositories.Masters.Institute
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<List<InstituteModel>> All_AffiliationInstituteIntakeData()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_Institute";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 7, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<InstituteModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<InstituteModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

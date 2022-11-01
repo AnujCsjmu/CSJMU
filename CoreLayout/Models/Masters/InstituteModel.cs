@@ -214,6 +214,12 @@ namespace CoreLayout.Models.Masters
         public string IPAddress { get; set; }
 
         public int? CourseId { get; set; }
+
+        public string CourseName { get; set; }
+
+        public int? BranchId { get; set; }
+
+        public string BranchName { get; set; }
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,8 +17,14 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Student")]
         [Required(ErrorMessage = "Please select student")]
         public int StudentID { get; set; }
-        public string Name { get; set; }
+        public string FullName { get; set; }
         public List<StudentModel> StudentList { get; set; }
+
+        //[Remote(action: "VerifyRollNo", controller: "StudentAcademics")]
+        [Display(Name = "Roll No")]
+        [Required(ErrorMessage = "Please select roll no")]
+        [StringLength(20)]
+        public string RollNo { get; set; }
 
         [Display(Name = "Institute")]
         [Required(ErrorMessage = "Please select institute")]
@@ -29,13 +36,13 @@ namespace CoreLayout.Models.Exam
         [Required(ErrorMessage = "Please select course")]
         public int CourseId { get; set; }
         public string CourseName { get; set; }
-        public List<CourseModel> CourseList { get; set; }
+        public List<InstituteModel> CourseList { get; set; }
 
         [Display(Name = "Subject")]
         [Required(ErrorMessage = "Please select subject")]
         public int SubjectId { get; set; }
         public string SubjectName { get; set; }
-        public List<BranchModel> SubjectList { get; set; }
+        public List<InstituteModel> SubjectList { get; set; }
 
         [Display(Name = "SemYear")]
         [Required(ErrorMessage = "Please select sem year")]

@@ -31,17 +31,25 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="RollNo"> </label><span class="tx-danger"> *</span>
+                                <input id="myInput" asp-for="RollNo" class="form-control" />
+                                <span asp-validation-for="RollNo" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="StudentID"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="StudentID" asp-items="@(new SelectList(Model.StudentList,"StudentID","FirstName"))">
-                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                <select class="form-control" asp-for="StudentID" asp-items="@(new SelectList(Model.StudentList, "StudentID", "FullName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
+
                                 <span asp-validation-for="StudentID" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="InstituteID"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="InstituteID" asp-items="@(new SelectList(Model.InstituteList,"InstituteID","InstituteName"))">
+                                <select class="form-control select" asp-for="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="InstituteID" class="parsley-errors-list filled"></span>
@@ -50,7 +58,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseID","CourseName"))">
+                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList,"CourseId","CourseName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CourseId" class="parsley-errors-list filled"></span>
@@ -59,7 +67,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(Model.SubjectList,"BranchID","BranchName"))">
+                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(Model.SubjectList,"BranchId","BranchName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
@@ -219,13 +227,33 @@
 <!-- Conetnt End-->
 @section Scripts{
     <script src="~/lib/jquery/dist/jquery.js"></script>
-    @*bind branch/subject*@
+    @*bind course from institute*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#InstituteID").on("change", function () {
+                    $("#CourseId").empty();
+                    var ddlsource = "#InstituteID";
+                    var url = '@Url.Content("~/")' + "StudentAcademics/GetCourse?InstituteId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#CourseId").empty();
+                        $.each(data, function (i, course) {
+                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                    });
+                        $('#CourseId').html(items);
+                });
+                });
+            });
+    </script>
+    @*bind branch/subject from course*@
     <script type="text/javascript">
             $(document).ready(function () {
                 $("#CourseId").on("change", function () {
                     $("#SubjectId").empty();
                     var ddlsource = "#CourseId";
-                    var url = '@Url.Content("~/")' + "StudentAcademics/GetBranch?CourseId="+$(ddlsource).val();
+                    var ddlInstituteID = "#InstituteID";
+                    var url = '@Url.Content("~/")' + "StudentAcademics/GetBranch?CourseId=" + $(ddlsource).val() + "&inst=" + $(ddlInstituteID).val();
 
                     $.getJSON(url, function (data) {
                     var items = '';
@@ -239,4 +267,40 @@
             });
     </script>
 
+    @*bind student from rollno*@
+    <script type="text/javascript">
+        //setup before functions
+        let typingTimer;                //timer identifier
+        let doneTypingInterval = 3000;  //time in ms (3 seconds)
+        let myInput = document.getElementById('myInput');
+
+        //on keyup, start the countdown
+        myInput.addEventListener('keyup', () => {
+            clearTimeout(typingTimer);
+            if (myInput.value) {
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            }
+        });
+
+        //user is "finished typing," do something
+        function doneTyping() {
+            //do something
+            let myInput = document.getElementById('myInput');
+            var url = '@Url.Content("~/")' + "StudentAcademics/GetStudent?rollno=" + $(myInput).val();
+            $.getJSON(url, function (data) {
+                if (data.length > 0) {
+                    var items = '';
+                    $("#StudentID").empty();
+                    $.each(data, function (i, student) {
+                        items += "<option value ='" + student.value + "'>" + student.text + "</option>";
+                    });
+                    $('#StudentID').html(items);
+                }
+                else {
+                    $("#StudentID").empty();
+                    alert('Student record not found!');
+                }
+            });
+        }
+    </script>
 }
