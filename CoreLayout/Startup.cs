@@ -9,6 +9,7 @@ using CoreLayout.Repositories.Common;
 using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Exam.Student;
+using CoreLayout.Repositories.Exam.StudentAcademicQPDetails;
 using CoreLayout.Repositories.Exam.StudentAcademics;
 using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.Category;
@@ -21,6 +22,7 @@ using CoreLayout.Repositories.Masters.Dashboard;
 using CoreLayout.Repositories.Masters.Degree;
 using CoreLayout.Repositories.Masters.Deparment;
 using CoreLayout.Repositories.Masters.District;
+using CoreLayout.Repositories.Masters.ExamCategory;
 using CoreLayout.Repositories.Masters.Faculty;
 using CoreLayout.Repositories.Masters.Institute;
 using CoreLayout.Repositories.Masters.InstituteCategory;
@@ -58,6 +60,7 @@ using CoreLayout.Services.Common;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Exam.Student;
+using CoreLayout.Services.Exam.StudentAcademicQPDetails;
 using CoreLayout.Services.Exam.StudentAcademics;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Category;
@@ -70,6 +73,7 @@ using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.Masters.Degree;
 using CoreLayout.Services.Masters.Department;
 using CoreLayout.Services.Masters.District;
+using CoreLayout.Services.Masters.ExamCategory;
 using CoreLayout.Services.Masters.Faculty;
 using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.Masters.InstituteCategory;
@@ -386,6 +390,14 @@ namespace CoreLayout
             //StudentAcademics
             services.AddScoped<IStudentAcademicsService, StudentAcademicsService>();
             services.AddScoped<IStudentAcademicsRepository, StudentAcademicsRepository>();
+
+            //Exam Category
+            services.AddScoped<IExamCategoryService, ExamCategoryService>();
+            services.AddScoped<IExamCategoryRepository, ExamCategoryRepository>();
+
+            //StudentAcademics QP Details
+            services.AddScoped<IStudentAcademicQPDetailsService, StudentAcademicQPDetailsService>();
+            services.AddScoped<IStudentAcademicQPDetailsRepository, StudentAcademicQPDetailsRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

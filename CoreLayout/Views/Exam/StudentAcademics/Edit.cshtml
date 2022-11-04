@@ -23,7 +23,7 @@
                         <h6 class="card-title mb-1">Edit State</h6>
                         <hr />
                     </div>*@
-                <form asp-action="Edit" method="post">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="AcademicId" />
                     <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
                     </div>
@@ -114,9 +114,11 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="ExamCategory"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="ExamCategory" class="form-control" />
-                                <span class="parsley-errors-list filled" asp-validation-for="ExamCategory"></span>
+                                <label asp-for="ExamCategoryCode"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ExamCategoryCode" asp-items="@(new SelectList(Model.ExamCategoryList,"ExamCategoryCode","ExamCategoryName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="ExamCategoryCode"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -204,6 +206,13 @@
                                 <label asp-for="Batch"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="Batch" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="Batch"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FUApprovalLetter"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FUApprovalLetter" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="FUApprovalLetter"></span>
                             </div>
                         </div>
                         <div class="col-md-3">

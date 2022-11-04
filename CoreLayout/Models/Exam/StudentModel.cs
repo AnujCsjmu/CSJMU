@@ -42,6 +42,7 @@ namespace CoreLayout.Models.Exam
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         public string LastName { get; set; }
 
+        [Display(Name = "Full Name")]
         public string FullName { get; set; }
 
         [Display(Name = "Hindi Name")]
@@ -169,10 +170,12 @@ namespace CoreLayout.Models.Exam
 
         [Display(Name = "Photograph")]
         public IFormFile FUPhotograph { get; set; }
+        [Display(Name = "Photograph")]
         public string PhotographPath { get; set; }
 
         [Display(Name = "Signature")]
         public IFormFile FUSignature { get; set; }
+        [Display(Name = "Signature")]
         public string SignaturePath { get; set; }
 
 
@@ -182,19 +185,28 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
 
+        [Display(Name = "Is Literal")]
+        public bool IsLiteral { get; set; }
 
-        //category
-        //[Display(Name = "Category")]
-        //public string Category { get; set; }
-        //public SelectList CategoryList = new SelectList(new[]
-        //   {
-        //        new SelectListItem { Selected = true ,Text = "--- Select Category ---", Value = "0" },
-        //        new SelectListItem { Selected = false, Text = "General", Value = "General" },
-        //        new SelectListItem { Selected = false, Text = "SC", Value = "SC" },
-        //        new SelectListItem { Selected = false, Text = "ST", Value = "ST" },
-        //        new SelectListItem { Selected = false, Text = "OBC", Value = "OBC" },
-        //        new SelectListItem { Selected = false, Text = "Others", Value = "Others" },
-        //    }, "Value", "Text");
+        [Display(Name = "Reservation Category")]
+        public string ReservationCategory { get; set; }
+
+        [Display(Name = "Admission Session")]
+        public int AdmissionSessionId { get; set; }
+        public string AdmissionSessionName { get; set; }
+        public List<SessionModel> AdmissionSessionList { get; set; }
+
+
+        [Display(Name = "Data Source")]
+        public string DataSource { get; set; }
+
+        //reservation category
+        public SelectList ReservationCategoryList = new SelectList(new[]
+           {
+                new SelectListItem { Selected = true ,Text = "--- Select Reservation Category ---", Value = "0" },
+                new SelectListItem { Selected = false, Text = "Freedom Fighter", Value = "Freedom Fighter" },
+                new SelectListItem { Selected = false, Text = "Others", Value = "Others" },
+            }, "Value", "Text");
         //gender
         [Display(Name = "Gender")]
         public string Gender { get; set; }

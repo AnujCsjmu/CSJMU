@@ -169,5 +169,27 @@ namespace CoreLayout.Repositories.QPDetails.QPMaster
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<QPMasterModel>> GetAllQPByFilter(int CourseId, int SubjectId, int SemYearId,int SyllabusSessionId)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_QPMaster";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    parameters.Add("@CourseId", CourseId, DbType.Int32);
+                    parameters.Add("@SubjectId", SubjectId, DbType.Int32);
+                    parameters.Add("@SemYearId", SemYearId, DbType.Int32);
+                    parameters.Add("@SyllabusId", SyllabusSessionId, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<QPMasterModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<QPMasterModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

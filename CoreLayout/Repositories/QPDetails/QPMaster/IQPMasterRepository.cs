@@ -8,5 +8,6 @@ namespace CoreLayout.Repositories.QPDetails.QPMaster
 {
     public interface IQPMasterRepository : IRepository<QPMasterModel>
     {
+        Task<List<QPMasterModel>> GetAllQPByFilter(int CourseId, int SubjectId, int SemYearId, int SyllabusSessionId);
     }
 }

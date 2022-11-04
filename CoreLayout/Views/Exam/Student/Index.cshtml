@@ -5,17 +5,85 @@
 }
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Student List</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">StudentDetails List</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Student</a></li>
+            <li class="breadcrumb-item"><a href="#">StudentDetails</a></li>
             <li class="breadcrumb-item active" aria-current="page">List</li>
         </ol>
     </div>
+    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "Administrator")
+    {
+        <div class="d-flex">
+            <div class="me-2">
+                <a class="btn ripple btn-outline-primary dropdown-toggle mb-0" href="#"
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fe fe-external-link"></i> Export <i class="fa fa-caret-down ms-1"></i>
+                </a>
+                <div class="dropdown-menu tx-13">
+                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf me-2"></i>Export as Pdf</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-image me-2"></i>Export as Image</a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-file-excel me-2"></i>Export as
+                        Excel
+                    </a>
+                </div>
+            </div>
+            <div class="">
+                <a href="#" class="btn ripple btn-secondary navresponsive-toggler mb-0"
+                   data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                   aria-controls="navbarSupportedContent" aria-expanded="false"
+                   aria-label="Toggle navigation">
+                    <i class="fe fe-filter me-1"></i> Filter <i class="fa fa-caret-down ms-1"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+<div style="text-align:right">
     <div class="btn btn-list">
         <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxStudentId><i class="fe fe-plus"></i> New Student</a>
     </div>
 </div>
-
+<!-- End Page Header -->
+<!--Navbar-->
+<div class="responsive-background">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="advanced-search br-3">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-xl-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                <label class="">Upload Student Details :</label>
+                                <div class="">
+                                    <input class="form-control" type="file">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                <label class="">Format Download :</label>
+                                <div class="">
+                                   <a href="#">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="text-end">
+                <a href="#" class="btn btn-primary" data-bs-toggle="collapse"
+                   data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                   aria-expanded="false" aria-label="Toggle navigation">Upload</a>
+                <a href="#" class="btn btn-secondary" data-bs-toggle="collapse"
+                   data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                   aria-expanded="false" aria-label="Toggle navigation">Reset</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Navbar -->
 <!-- Row -->
 <div class="row">
     <div class="col-lg-12">
@@ -27,20 +95,23 @@
                             <tr>
                                 <th>S.No</th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.RollNo)
-                                </th>
-                                <th>
+                                    @Html.DisplayNameFor(c => c.RollNo)<br />
                                     @Html.DisplayNameFor(c => c.EnrolmentNo)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(c => c.FirstName)
+                                    @Html.DisplayNameFor(c => c.FullName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.FatherName)<br />
+                                    @Html.DisplayNameFor(c => c.MotherName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.AdmissionSessionId)
                                 </th>
                                 <th>
                                     @Html.DisplayNameFor(c => c.CreatedDate)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(c => c.ModifiedDate)
-                                </th>
+
                                 <th>
                                     Action
                                 </th>
@@ -58,11 +129,12 @@
                                     @{ sno++; }
                                     @sno
                                 </td>
-                                <td>@item.RollNo</td>
-                                <td>@item.EnrolmentNo</td>
-                                <td>@item.FirstName</td>
+                                <td>@item.RollNo <br /> @item.EnrolmentNo</td>
+
+                                <td>@item.FullName</td>
+                                <td>@item.FatherName <br /> @item.MotherName</td>
+                                <td>@item.AdmissionSessionName</td>
                                 <td>@item.CreatedDate</td>
-                                <td>@item.ModifiedDate</td>
                                 <td>
                                     <div class="table-actions text-center">
                                         <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>

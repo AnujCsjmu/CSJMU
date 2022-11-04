@@ -11,5 +11,7 @@ namespace CoreLayout.Services.Exam.StudentAcademics
         public Task<int> CreateStudentAcademicsAsync(StudentAcademicsModel studentAcademicsModel);
         public Task<int> UpdateStudentAcademicsAsync(StudentAcademicsModel studentAcademicsModel);
         public Task<int> DeleteStudentAcademicsAsync(StudentAcademicsModel studentAcademicsModel);
+
+        public Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId);
     }
 }

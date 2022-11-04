@@ -21,6 +21,9 @@ namespace CoreLayout.Repositories.Exam.Student
             try
             {
                 int res = 0;
+                entity.IsRecordDeleted = 0;
+                entity.IsActive = true;
+                entity.DataSource = "New";
                 var query = "SP_InsertUpdateDelete_Student";
                 using (var connection = CreateConnection())
                 {
@@ -64,7 +67,14 @@ namespace CoreLayout.Repositories.Exam.Student
                     parameters.Add("SignaturePath", entity.SignaturePath, DbType.String);
                     parameters.Add("SeatType", entity.SeatType, DbType.String);
                     parameters.Add("IsActive", entity.IsActive, DbType.Boolean);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+
+                    parameters.Add("IsLiteral", entity.IsLiteral, DbType.Boolean);
+                    parameters.Add("ReservationCategory", entity.ReservationCategory, DbType.String);
+                    parameters.Add("AdmissionSessionId", entity.AdmissionSessionId, DbType.Int32);
+                    parameters.Add("DataSource", entity.DataSource, DbType.String);
+
                     parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                     parameters.Add("@Query", 1, DbType.Int32);
                     res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
@@ -82,13 +92,13 @@ namespace CoreLayout.Repositories.Exam.Student
         {
             try
             {
-                entity.IsActive = false;
+                entity.IsRecordDeleted = 1;
                 var query = "SP_InsertUpdateDelete_Student";
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("StudentID", entity.StudentID, DbType.Int32);
-                    parameters.Add("IsActive", entity.IsActive, DbType.Boolean);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
                     parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
@@ -146,6 +156,9 @@ namespace CoreLayout.Repositories.Exam.Student
         {
             try
             {
+                entity.IsRecordDeleted = 0;
+                entity.IsActive = true;
+                entity.DataSource = "New";
                 var query = "SP_InsertUpdateDelete_Student";
                 using (var connection = CreateConnection())
                 {
@@ -190,7 +203,14 @@ namespace CoreLayout.Repositories.Exam.Student
                     parameters.Add("SignaturePath", entity.SignaturePath, DbType.String);
                     parameters.Add("SeatType", entity.SeatType, DbType.String);
                     parameters.Add("IsActive", entity.IsActive, DbType.Boolean);
+                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+
+                    parameters.Add("IsLiteral", entity.IsLiteral, DbType.Boolean);
+                    parameters.Add("ReservationCategory", entity.ReservationCategory, DbType.String);
+                    parameters.Add("AdmissionSessionId", entity.AdmissionSessionId, DbType.Int32);
+                    parameters.Add("DataSource", entity.DataSource, DbType.String);
+
                     parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                     parameters.Add("@Query", 2, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);

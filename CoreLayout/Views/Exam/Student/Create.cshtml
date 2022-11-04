@@ -5,9 +5,9 @@
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Student</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Student Details</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Student</a></li>
+            <li class="breadcrumb-item"><a href="#">StudentDetails</a></li>
             <li class="breadcrumb-item active" aria-current="page">Create</li>
         </ol>
     </div>
@@ -167,7 +167,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="CTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
+                                <select class="form-control select" id="CTehsilId" asp-for="CTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CTehsilId" class="parsley-errors-list filled"></span>
@@ -183,7 +183,7 @@
                     </div>
                     <div class="row">
                         <div style="background-color:teal;">
-                            <h4 style="color: white; font-size: 15px ">Permanent Address</h4>
+                            <h4 style="color: white; font-size: 15px">If Permanent Address Same As Corrrespondence Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h4>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
@@ -195,7 +195,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PStateId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="PStateId" asp-items="@(new SelectList(Model.PStateList,"StateId","StateName"))">
+                                <select class="form-control select" id="PStateId" asp-for="PStateId" asp-items="@(new SelectList(Model.PStateList,"StateId","StateName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PStateId" class="parsley-errors-list filled"></span>
@@ -204,7 +204,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="PDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
+                                <select class="form-control select" id="PDistrictId" asp-for="PDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PDistrictId" class="parsley-errors-list filled"></span>
@@ -213,7 +213,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="PTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
+                                <select class="form-control select" id="PTehsilId" asp-for="PTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PTehsilId" class="parsley-errors-list filled"></span>
@@ -222,7 +222,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PPinCode"> </label>@*<span class="tx-danger"> *</span>*@
-                                <input asp-for="PPinCode" class="form-control" maxlength="6" />
+                                <input asp-for="PPinCode" id="PPinCode" class="form-control" maxlength="6" />
                                 <span asp-validation-for="PPinCode" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
@@ -238,6 +238,13 @@
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="Category" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ReservationCategory"> </label>@*<span class="tx-danger"> *</span>*@
+                                @Html.DropDownListFor(m => m.ReservationCategory, (IEnumerable<SelectListItem>)Model.ReservationCategoryList, new { @class = "form-control" })
+                                <span asp-validation-for="ReservationCategory" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -272,6 +279,15 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="AdmissionSessionId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="AdmissionSessionId" asp-items="@(new SelectList(Model.AdmissionSessionList,"SessionId","Session"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="AdmissionSessionId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="IsVaccinated"> </label>@*<span class="tx-danger"> *</span>*@<br />
                                 <input asp-for="IsVaccinated" id="IsVaccinated" name="IsVaccinated" type="checkbox" />
                                 <span asp-validation-for="IsVaccinated" class="parsley-errors-list filled"></span>
@@ -293,11 +309,18 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
-                                <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
-                                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
+                                <label asp-for="IsLiteral"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input asp-for="IsLiteral" id="IsLiteral" name="IsLiteral" type="checkbox" />
+                                <span asp-validation-for="IsLiteral" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
+                        @*<div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
+                <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
+                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
+            </div>
+        </div>*@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
@@ -381,7 +404,6 @@
     @*DisabilityType hide/show*@
     <script type="text/javascript">
         function checkDisability() {
-            console.log('change event')
             if ($("#IsDisability").is(':checked')) {
                 $('#DisabilityType').val(0);
                 $('#divDisabilityType').css('display', 'block');
@@ -402,7 +424,7 @@
     </script>
 
     @*permanent address*@
-    <script src="~/lib/jquery/dist/jquery.js"></script>
+     
     <script type="text/javascript">
         $(document).ready(function () {
             $("#PStateId").on("change", function () {
@@ -501,5 +523,107 @@
                 }
             });
         });
+    </script>
+
+    @*fill permanent address same as correspondence address*@
+    @*<script type="text/javascript">
+        function filladdress() {
+            if ($("#chkaddress").prop('checked') == true) {
+                var caddress = $('#CAddress').val();
+                var cstate = $('#CStateId').val();
+                var cdistrict = $('#CDistrictId').val();
+                alert(cdistrict);
+                var ctehsil = $('#CTehsilId').val();
+                alert(ctehsil);
+                var cpincode = $('#CPinCode').val();
+                if (caddress != '' && cstate != 0 && cdistrict != null && ctehsil != null && cpincode != '') {
+                    alert("1");
+                    $('#PAddress').val(caddress);
+                    $('#PStateId').val(cstate).change();;
+                    //$('#PDistrictId').val(cdistrict).change();;
+                    $('#PDistrictId').select2().html(cdistrict).trigger("change");
+                    $('#PTehsilId').val(ctehsil);
+                    $('#PPinCode').val(cpincode);
+                }
+                else {
+                    alert("2");
+                    $('#PAddress').val('');
+                    $('#PStateId').val('');
+                    $('#PDistrictId').val('');
+                    $('#PTehsilId').val('');
+                    $('#PPinCode').val('');
+                    alert('Please first fill corrrespondence address');
+                    return false;
+                }
+            }
+            else {
+                alert("3");
+            }
+        }
+    </script>*@
+
+    <script>
+        function filladdress() {
+            var caddress = $('#CAddress').val();
+            var cstate = $('#CStateId').val();
+            var cdistrict = $('#CDistrictId').val();
+            var ctehsil = $('#CTehsilId').val();
+            var cpincode = $('#CPinCode').val();
+            var st = '';
+            $('#CStateId option').each(function () {
+                let vl = $(this).val();
+                let ht = $(this).html();
+               
+                if (cstate == vl) {
+                    st += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                } else {
+                    st += '<option value="' + vl + '"> ' + ht + ' </option>';
+                }
+            });
+
+            var dt = '';
+            $('#CDistrictId option').each(function () {
+                let vl = $(this).val();
+                let ht = $(this).html();
+              
+                if (cdistrict == vl) {
+                    dt += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                } else {
+                    dt += '<option value="' + vl + '"> ' + ht + ' </option>';
+                }
+            });
+            var th = '';
+            $('#CTehsilId option').each(function () {
+                let vl = $(this).val();
+                let ht = $(this).html();
+
+                if (ctehsil == vl) {
+                    th += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                } else {
+                    th += '<option value="' + vl + '"> ' + ht + ' </option>';
+                }
+            });
+
+            var pad =  $('#PAddress').val();
+            var pstate = $('#PStateId').val();
+            var pdis = $('#PDistrictId').val();
+            var ppin = $('#PPinCode').val();
+            var pteh = $('#PTehsilId').val();
+
+            if ($("#chkaddress").prop('checked') == true) {
+                $('#PAddress').val(caddress);
+                $('#PStateId').select2().html(st).trigger('change')
+                $('#PDistrictId').select2().html(dt).trigger('change')
+                $('#PTehsilId').select2().html(th).trigger('change')
+                $('#PPinCode').val(cpincode);
+            } else {
+                $('#PAddress').val('');
+                $('#PStateId').val(0);
+                $('#PPinCode').val(''); 
+                $('#PDistrictId').val('');
+                $('#PTehsilId').val('')
+            }
+
+}
     </script>
 }

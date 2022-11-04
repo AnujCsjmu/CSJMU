@@ -5,9 +5,9 @@
 <!-- Page Header -->
 <div class="page-header">
     <div>
-        <h2 class="main-content-title tx-24 mg-b-5">Edit Student</h2>
+        <h2 class="main-content-title tx-24 mg-b-5">Edit StudentDetails</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Student</a></li>
+            <li class="breadcrumb-item"><a href="#">StudentDetails</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </div>
@@ -242,6 +242,13 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="ReservationCategory"> </label>@*<span class="tx-danger"> *</span>*@
+                                @Html.DropDownListFor(m => m.ReservationCategory, (IEnumerable<SelectListItem>)Model.ReservationCategoryList, new { @class = "form-control" })
+                                <span asp-validation-for="ReservationCategory" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="Nationality"> </label>@*<span class="tx-danger"> *</span>*@
                                 <input asp-for="Nationality" class="form-control" maxlength="10" />
                                 <span asp-validation-for="Nationality" class="parsley-errors-list filled"></span>
@@ -272,89 +279,105 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label asp-for="IsVaccinated"> </label>@*<span class="tx-danger"> *</span>*@<br />
-                                <input asp-for="IsVaccinated" id="IsVaccinated" name="IsVaccinated" type="checkbox" />
-                                <span asp-validation-for="IsVaccinated" class="parsley-errors-list filled"></span>
+                                <label asp-for="AdmissionSessionId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="AdmissionSessionId" asp-items="@(new SelectList(Model.AdmissionSessionList,"SessionId","Session"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="AdmissionSessionId"></span>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsVaccinated"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                    <input asp-for="IsVaccinated" id="IsVaccinated" name="IsVaccinated" type="checkbox" />
+                                    <span asp-validation-for="IsVaccinated" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsEWS"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                    <input asp-for="IsEWS" id="IsEWS" name="IsEWS" type="checkbox" />
+                                    <span asp-validation-for="IsEWS" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsMinority"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                    <input asp-for="IsMinority" id="IsMinority" name="IsMinority" type="checkbox" />
+                                    <span asp-validation-for="IsMinority" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsLiteral"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                    <input asp-for="IsLiteral" id="IsLiteral" name="IsLiteral" type="checkbox" />
+                                    <span asp-validation-for="IsLiteral" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
+                                    <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
+                                    <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                    <input onchange="checkDisability()" asp-for="IsDisability" id="IsDisability" name="IsDisability" type="checkbox" />
+                                    <span asp-validation-for="IsDisability" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" id="divDisabilityType" style="display: none;">
+                                    <label asp-for="DisabilityType"> </label>@*<span class="tx-danger"> *</span>*@
+                                    @Html.DropDownListFor(m => m.DisabilityType, (IEnumerable<SelectListItem>)Model.DisabilityTypeList, new { @class = "form-control" })
+                                    <span asp-validation-for="DisabilityType" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="background-color:teal;">
+                                <h4 style="color: white; font-size: 15px">Upload Documents</h4>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="FUPhotograph"> </label>@*<span class="tx-danger"> *</span>*@
+                                    <input asp-for="FUPhotograph" class="form-control" />
+                                    <span asp-validation-for="FUPhotograph" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="FUSignature"> </label>@*<span class="tx-danger"> *</span>*@
+                                    <input asp-for="FUSignature" class="form-control" />
+                                    <span asp-validation-for="FUSignature" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IdProofType"> </label>@*<span class="tx-danger"> *</span>*@
+                                    @Html.DropDownListFor(m => m.IdProofType, (IEnumerable<SelectListItem>)Model.IdProofTypeList, new { @class = "form-control" })
+                                    <span asp-validation-for="IdProofType" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" id="divIdProofNo" style="display: none;">
+                                    <label asp-for="IdProofNo"> </label>@*<span class="tx-danger"> *</span>*@
+                                    <input asp-for="IdProofNo" class="form-control" />
+                                    <span asp-validation-for="IdProofNo" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="form-group">
-                                <label asp-for="IsEWS"> </label>@*<span class="tx-danger"> *</span>*@<br />
-                                <input asp-for="IsEWS" id="IsEWS" name="IsEWS" type="checkbox" />
-                                <span asp-validation-for="IsEWS" class="parsley-errors-list filled"></span>
+                                <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
+                                <a asp-action="Index" class="btn btn-success">Back to List</a>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="IsMinority"> </label>@*<span class="tx-danger"> *</span>*@<br />
-                                <input asp-for="IsMinority" id="IsMinority" name="IsMinority" type="checkbox" />
-                                <span asp-validation-for="IsMinority" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
-                                <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
-                                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
-                                <input onchange="checkDisability()" asp-for="IsDisability" id="IsDisability" name="IsDisability" type="checkbox" />
-                                <span asp-validation-for="IsDisability" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" id="divDisabilityType" style="display: none;">
-                                <label asp-for="DisabilityType"> </label>@*<span class="tx-danger"> *</span>*@
-                                @Html.DropDownListFor(m => m.DisabilityType, (IEnumerable<SelectListItem>)Model.DisabilityTypeList, new { @class = "form-control" })
-                                <span asp-validation-for="DisabilityType" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div style="background-color:teal;">
-                            <h4 style="color: white; font-size: 15px">Upload Documents</h4>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="FUPhotograph"> </label>@*<span class="tx-danger"> *</span>*@
-                                <input asp-for="FUPhotograph" class="form-control" />
-                                <span asp-validation-for="FUPhotograph" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="FUSignature"> </label>@*<span class="tx-danger"> *</span>*@
-                                <input asp-for="FUSignature" class="form-control" />
-                                <span asp-validation-for="FUSignature" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label asp-for="IdProofType"> </label>@*<span class="tx-danger"> *</span>*@
-                                @Html.DropDownListFor(m => m.IdProofType, (IEnumerable<SelectListItem>)Model.IdProofTypeList, new { @class = "form-control" })
-                                <span asp-validation-for="IdProofType" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" id="divIdProofNo" style="display: none;">
-                                <label asp-for="IdProofNo"> </label>@*<span class="tx-danger"> *</span>*@
-                                <input asp-for="IdProofNo" class="form-control" />
-                                <span asp-validation-for="IdProofNo" class="parsley-errors-list filled"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <input type="submit" asp-route-id="@Model.EncryptedId" class="btn btn-primary" value="Update" />
-                            <a asp-action="Index" class="btn btn-success">Back to List</a>
-                        </div>
-                    </div>
-
-                </form>
+</form>
 
             </div>
         </div>

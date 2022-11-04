@@ -137,7 +137,7 @@ namespace CoreLayout.Controllers.Exam
                 //studentModel.CTehsilList = await _tehsilService.GetAllTehsil();
                 studentModel.ReligionList = await _religionService.GetAllReligion();
                 studentModel.CategoryList = await _categoryService.GetAllCategory();
-                
+                studentModel.AdmissionSessionList = await _courseDetailsService.GetAllSession();
                 return View("~/Views/Exam/Student/Create.cshtml", studentModel);
             }
             catch (Exception ex)
@@ -169,6 +169,7 @@ namespace CoreLayout.Controllers.Exam
                 //studentModel.CTehsilList = await _tehsilService.GetAllTehsil();
                 studentModel.ReligionList = await _religionService.GetAllReligion();
                 studentModel.CategoryList = await _categoryService.GetAllCategory();
+                studentModel.AdmissionSessionList = await _courseDetailsService.GetAllSession();
 
                 #region upload photo
                 if (studentModel.FUPhotograph != null)
@@ -282,6 +283,7 @@ namespace CoreLayout.Controllers.Exam
                 data.CTehsilList = await _tehsilService.GetAllTehsil();
                 data.ReligionList = await _religionService.GetAllReligion();
                 data.CategoryList = await _categoryService.GetAllCategory();
+                data.AdmissionSessionList = await _courseDetailsService.GetAllSession();
                 if (data == null)
                 {
                     return NotFound();
@@ -309,6 +311,15 @@ namespace CoreLayout.Controllers.Exam
             {
                 studentModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 studentModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+                studentModel.PStateList = await _stateService.GetAllState();
+                studentModel.PDistrictList = await _districtService.GetAllDistrict();
+                studentModel.PTehsilList = await _tehsilService.GetAllTehsil();
+                studentModel.CStateList = await _stateService.GetAllState();
+                studentModel.CDistrictList = await _districtService.GetAllDistrict();
+                studentModel.CTehsilList = await _tehsilService.GetAllTehsil();
+                studentModel.ReligionList = await _religionService.GetAllReligion();
+                studentModel.CategoryList = await _categoryService.GetAllCategory();
+                studentModel.AdmissionSessionList = await _courseDetailsService.GetAllSession();
 
                 #region upload photo
                 if (studentModel.FUPhotograph != null)

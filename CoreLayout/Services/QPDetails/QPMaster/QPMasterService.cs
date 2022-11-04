@@ -40,5 +40,9 @@ namespace CoreLayout.Services.QPDetails.QPMaster
         {
             return await _qPMasterRepository.DeleteAsync(qPMasterModel);
         }
+        public async Task<List<QPMasterModel>> GetAllQPByFilter(int CourseId, int SubjectId, int SemYearId, int SyllabusSessionId)
+        {
+            return await _qPMasterRepository.GetAllQPByFilter(CourseId, SubjectId, SemYearId, SyllabusSessionId);
+        }
     }
 }

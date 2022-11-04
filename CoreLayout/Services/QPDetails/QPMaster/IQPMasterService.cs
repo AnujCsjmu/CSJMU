@@ -13,5 +13,6 @@ namespace CoreLayout.Services.QPDetails.QPMaster
         public Task<int> CreateQPMasterAsync(QPMasterModel qPMasterModel);
         public Task<int> UpdateQPMasterAsync(QPMasterModel qPMasterModel);
         public Task<int> DeleteQPMasterAsync(QPMasterModel qPMasterModel);
+        public Task<List<QPMasterModel>> GetAllQPByFilter(int CourseId,int SubjectId,int SemYearId,int SyllabusSessionId);
     }
 }

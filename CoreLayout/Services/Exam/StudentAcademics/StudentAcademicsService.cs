@@ -40,5 +40,10 @@ namespace CoreLayout.Services.Exam.StudentAcademics
         {
             return await _studentAcademicsRepository.DeleteAsync(studentAcademicsModel);
         }
+
+        public async Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId)
+        {
+            return await _studentAcademicsRepository.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId);
+        }
     }
 }

@@ -7,7 +7,7 @@
     <div>
         <h2 class="main-content-title tx-24 mg-b-5">Student Details</h2>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Student</a></li>
+            <li class="breadcrumb-item"><a href="#">StudentDetails</a></li>
             <li class="breadcrumb-item active" aria-current="page">Details</li>
         </ol>
     </div>
@@ -227,6 +227,13 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="ReservationCategory"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="ReservationCategory" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="ReservationCategory" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="Nationality"> </label>@*<span class="tx-danger"> *</span>*@
                                 <input asp-for="Nationality" class="form-control" readonly="readonly" />
                                 <span asp-validation-for="Nationality" class="parsley-errors-list filled"></span>
@@ -255,6 +262,13 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label asp-for="AdmissionSessionId"> </label>@*<span class="tx-danger"> *</span>*@
+                                <input asp-for="AdmissionSessionName" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="AdmissionSessionId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label asp-for="IsVaccinated"> </label>@*<span class="tx-danger"> *</span>*@<br />
                                 <input asp-for="IsVaccinated" id="IsVaccinated" name="IsVaccinated" type="checkbox" readonly="readonly" />
                                 <span asp-validation-for="IsVaccinated" class="parsley-errors-list filled"></span>
@@ -272,6 +286,13 @@
                                 <label asp-for="IsMinority"> </label>@*<span class="tx-danger"> *</span>*@<br />
                                 <input asp-for="IsMinority" id="IsMinority" name="IsMinority" type="checkbox" readonly="readonly" />
                                 <span asp-validation-for="IsMinority" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="IsLiteral"> </label>@*<span class="tx-danger"> *</span>*@<br />
+                                <input asp-for="IsLiteral" id="IsLiteral" name="IsLiteral" type="checkbox" readonly="readonly" />
+                                <span asp-validation-for="IsLiteral" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -359,3 +380,27 @@
     </div>
 </div>
 <!-- Conetnt End-->
+@section Scripts{
+    @*DisabilityType hide/show on page load*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($("#IsDisability").is(':checked')) {
+                document.getElementById('divDisabilityType').style.display = 'block';
+            }
+            else {
+                document.getElementById('divDisabilityType').style.display = 'none';
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var value = $("#IdProofType").val();
+            if (value != 0) {
+                document.getElementById('divDisabilityType').style.display = 'block';
+            }
+            else {
+                document.getElementById('divDisabilityType').style.display = 'none';
+            }
+        });
+    </script>
+}

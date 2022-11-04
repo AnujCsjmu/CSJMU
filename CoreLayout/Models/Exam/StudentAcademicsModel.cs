@@ -62,7 +62,17 @@ namespace CoreLayout.Models.Exam
         public List<InstituteModel> ExamCenterList { get; set; }
 
         [Display(Name = "Exam Category")]
-        public string ExamCategory { get; set; }
+        //public string ExamCategoryId { get; set; }
+        public string ExamCategoryName { get; set; }
+        [Display(Name = "Exam Category Code")]
+        public string ExamCategoryCode { get; set; }
+        public List<ExamCategoryModel> ExamCategoryList { get; set; }
+
+        //[Required(ErrorMessage = "Please select approval letter")]
+        [Display(Name = "Approval Letter")]
+        public IFormFile FUApprovalLetter { get; set; }
+        [Display(Name = "Approval Letter")]
+        public string ApprovalLetterPath { get; set; }
 
         [Display(Name = "Academic Session")]
         [Required(ErrorMessage = "Please select academic session")]
@@ -79,7 +89,11 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Previous Session")]
         [Required(ErrorMessage = "Please select previous session")]
         public int PreviousSessionId { get; set; }
+
+        [Display(Name = "Previous Session Name")]
         public string PreviousSessionName { get; set; }
+
+        [Display(Name = "Previous Result Status")]
         public string PreviousResultStatus { get; set; }
         public List<SessionModel> PreviousSessionIdList { get; set; }
 
@@ -95,6 +109,15 @@ namespace CoreLayout.Models.Exam
 
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
-       
+
+        [Display(Name = "Approved Status")]
+        public string ApprovedStatus { get; set; }
+
+        //edit file upload
+        //[Display(Name = "Approval Letter")]
+        //public IFormFile FUEditApprovalLetter { get; set; }
+        //[Display(Name = "Approval Letter")]
+        //public string EditApprovalLetterPath { get; set; }
+
     }
 }
