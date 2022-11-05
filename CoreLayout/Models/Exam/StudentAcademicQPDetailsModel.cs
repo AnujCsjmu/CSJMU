@@ -15,7 +15,7 @@ namespace CoreLayout.Models.Exam
         public int StudentAcademicQPId { get; set; }
 
         [Display(Name = "AcademicId")]
-        //[Required(ErrorMessage = "Please select course")]
+        [Required(ErrorMessage = "Please enter academic id")]
         public int AcademicId { get; set; }
 
         [Display(Name = "Course")]
@@ -31,7 +31,7 @@ namespace CoreLayout.Models.Exam
         public List<BranchModel> SubjectList { get; set; }
 
         [Display(Name = "SemYear")]
-        [Required(ErrorMessage = "Please select sem year")]
+        [Required(ErrorMessage = "Please enter sem year")]
         public int SemYearId { get; set; }
        // public List<BranchModel> SemYearList { get; set; }
 
@@ -47,11 +47,12 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "QP Name")]
         public string QPName { get; set; }
         public List<QPMasterModel> QPList { get; set; }
+        public List<int> QPListForInsert { get; set; }
         [Display(Name = "QP Code")]
         public string QPCode { get; set; }
 
         [Display(Name = "Exam")]
-        [Required(ErrorMessage = "Please enter exam")]
+        [Required(ErrorMessage = "Please select exam")]
         public int ExamId { get; set; }
         public string ExamName { get; set; }
         public List<ExamMasterModel> ExamList { get; set; }

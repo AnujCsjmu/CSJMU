@@ -128,7 +128,6 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
             {
                 entity.IsActive = true;
                 entity.IsRecordDeleted = 0;
-                entity.ApprovedStatus = "P";
                 var query = "SP_InsertUpdateDelete_StudentAcademics";
                 using (var connection = CreateConnection())
                 {

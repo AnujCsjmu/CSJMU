@@ -1,0 +1,266 @@
+﻿@model CoreLayout.Models.Exam.StudentAcademicQPDetailsModel
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">AddSubject</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">AddSubject</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+
+                <form asp-action="Create" method="post" enctype="multipart/form-data" id="formid">
+                    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled" style="font-weight:bold; font-size:15px">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="AcademicId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AcademicId" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="AcademicId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.CourseList != null)
+                                {
+                                    <select class="form-control" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList, "CourseID", "CourseName"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" asp-for="CourseId" asp-items="@(new SelectList(string.Empty, "CourseID", "CourseName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span asp-validation-for="CourseId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.SubjectList != null)
+                                {
+                                    <select class="form-control" asp-for="SubjectId" asp-items="@(new SelectList(Model.SubjectList, "BranchID", "BranchName"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty, "BranchID", "BranchName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SemYearId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="SemYearId" class="form-control" readonly="readonly" />
+                                <span asp-validation-for="SemYearId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="SyllabusSessionId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.SyllabusSessionList != null)
+                                {
+                                    <select class="form-control" asp-for="SyllabusSessionId" asp-items="@(new SelectList(Model.SyllabusSessionList, "SessionId", "Session"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" asp-for="SyllabusSessionId" asp-items="@(new SelectList(string.Empty, "SessionId", "Session"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span class="parsley-errors-list filled" asp-validation-for="SyllabusSessionId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.ExamList != null)
+                                {
+                                    <select class="form-control" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList, "ExamId", "ExamName"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" asp-for="ExamId" asp-items="@(new SelectList(string.Empty, "ExamId", "ExamName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span class="parsley-errors-list filled" asp-validation-for="ExamId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="QPId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.QPList != null)
+                                {
+                                    <select id="qpid" multiple="multiple" class="group-filter" asp-for="QPListForInsert" asp-items="@(new SelectList(Model.QPList, "QPId", "QPCode"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select class="form-control" asp-for="QPId" asp-items="@(new SelectList(string.Empty, "QPId", "QPCode"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span class="parsley-errors-list filled" asp-validation-for="QPId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="vertical-align:bottom">
+                            <div>
+                                <br />
+                                <input id="submit" type="submit" class="btn btn-primary" value="Save" />
+                                <a asp-action="Index" asp-controller="StudentAcademics" class="btn btn-success">Back to List</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div class="table-responsive-sm">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                        <thead>
+                            <tr>
+                                <th>
+                                    S.No.
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CourseId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SubjectId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SemYearId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.SyllabusSessionId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QPCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.QPName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CreatedDate)
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int sno = 0;
+                            }
+                            @if (Model.DataList != null)
+                            {
+                                @foreach (var item in Model.DataList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @{ sno++; }
+                                            @sno
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CourseName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SubjectName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SemYearId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SyllabusSessionName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.QPCode)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.QPName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                                        </td>
+                                        <td>
+                                            <div class="table-actions text-center">
+                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr style="text-align:center">
+                                    <td colspan="9"><div style="font-weight:bold; color:red">No record Found</div></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+    @*select 2 validation*@
+    <script type="text/javascript">
+        $('#submit').click(function () {
+            var qpid = $("#qpid").val();
+            if (qpid == "") {
+                alert('Please select qp list!')
+                return false;
+            }
+        });
+    </script>
+}

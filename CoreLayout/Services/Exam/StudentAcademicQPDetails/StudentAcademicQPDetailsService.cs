@@ -42,9 +42,9 @@ namespace CoreLayout.Services.Exam.StudentAcademicQPDetails
             return await _studentAcademicQPDetailsRepository.DeleteAsync(studentAcademicQPDetailsModel);
         }
 
-        public async Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int courseid, int subjectid, int semyearid, int syllabussessionid, int examid)
+        public async Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int academicid, int courseid, int subjectid, int semyearid, int syllabussessionid, int examid)
         {
-            return await _studentAcademicQPDetailsRepository.GetFilterStudentAcademicsQPData(courseid, subjectid, semyearid,syllabussessionid, examid);
+            return await _studentAcademicQPDetailsRepository.GetFilterStudentAcademicsQPData(academicid, courseid, subjectid, semyearid,syllabussessionid, examid);
         }
     }
 }

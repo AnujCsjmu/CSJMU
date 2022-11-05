@@ -18,34 +18,59 @@ namespace CoreLayout.Repositories.Exam.StudentAcademicQPDetails
         { }
         public async Task<int> CreateAsync(StudentAcademicQPDetailsModel entity)
         {
-            try
+            using (var connection = CreateConnection())
             {
-                int res = 0;
-                entity.IsRecordDeleted = 0;
-                var query = "SP_InsertUpdateDelete_StudentAcademicsQPDetails";
-                using (var connection = CreateConnection())
+                connection.Open();
+                using (var tran = connection.BeginTransaction())
                 {
-                    DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("AcademicId", entity.AcademicId, DbType.Int32);
-                    parameters.Add("CourseId", entity.CourseId, DbType.Int32);
-                    parameters.Add("SubjectId", entity.SubjectId, DbType.Int32);
-                    parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
-                    parameters.Add("SyllabusSessionId", entity.SyllabusSessionId, DbType.Int32);
-                    parameters.Add("QPId", entity.QPId, DbType.Int32);
-                    parameters.Add("QPCode", entity.QPCode, DbType.String);
-                    parameters.Add("ExamId", entity.ExamId, DbType.Int32);
-                    parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                    parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
-                    parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
-                    parameters.Add("@Query", 1, DbType.Int32);
-                    res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                    return res;
+                    try
+                    {
+                        int res = 0;
+                        entity.IsRecordDeleted = 0;
+                        var query = "SP_InsertUpdateDelete_StudentAcademicsQPDetails";
 
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("AcademicId", entity.AcademicId, DbType.Int32);
+                        parameters.Add("CourseId", entity.CourseId, DbType.Int32);
+                        parameters.Add("SubjectId", entity.SubjectId, DbType.Int32);
+                        parameters.Add("SemYearId", entity.SemYearId, DbType.Int32);
+                        parameters.Add("SyllabusSessionId", entity.SyllabusSessionId, DbType.Int32);
+                        //parameters.Add("QPId", entity.QPId, DbType.Int32);
+                        parameters.Add("QPCode", entity.QPCode, DbType.String);
+                        parameters.Add("ExamId", entity.ExamId, DbType.Int32);
+                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
+                        
+                        foreach (int qpid in entity.QPListForInsert)
+                        {
+                            parameters.Add("@Query", 1, DbType.Int32);
+                            parameters.Add("QPId", qpid, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        }
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+                        return res;
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -82,7 +107,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademicQPDetails
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 4, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<StudentAcademicQPDetailsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                   
+
                     return (List<StudentAcademicQPDetailsModel>)list;
                 }
             }
@@ -143,7 +168,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademicQPDetails
                 throw new Exception(ex.Message, ex);
             }
         }
-        public async Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int courseid, int subjectid, int semyearid,int syllabussessionid,int examid)
+        public async Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int academicid,int courseid, int subjectid, int semyearid, int syllabussessionid, int examid)
         {
             try
             {
@@ -151,6 +176,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademicQPDetails
                 using (var connection = CreateConnection())
                 {
                     DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@AcademicId", academicid, DbType.Int32);
                     parameters.Add("@CourseId", courseid, DbType.Int32);
                     parameters.Add("@SubjectId", subjectid, DbType.Int32);
                     parameters.Add("@SemYearId", semyearid, DbType.Int32);

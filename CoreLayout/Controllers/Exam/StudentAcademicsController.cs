@@ -344,61 +344,93 @@ namespace CoreLayout.Controllers.Exam
                 studentAcademicsModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
                 studentAcademicsModel.PreviousSessionIdList = await _courseDetailsService.GetAllSession();
                 studentAcademicsModel.ExamCategoryList = await _examCategoryService.GetExamCategoryAsync();
-
-                #region upload approval letter
-                string ApprovalLetter = _configuration.GetSection("FilePaths:PreviousDocuments:ApprovalLetter").Value.ToString();
-                var supportedTypes = new[] { "pdf", "PDF" };
-                FileHelper fileHelper = new FileHelper();
-                if (studentAcademicsModel.FUApprovalLetter != null)
+                int result = 0;
+                var data = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(value.AcademicId, value.CourseId, value.SubjectId, value.SemYearId, value.SyllabusSessionId, value.ExamId);
+                if (data == null)
                 {
-                    var approvalLetterExt = Path.GetExtension(studentAcademicsModel.FUApprovalLetter.FileName).Substring(1);
-                    if (supportedTypes.Contains(approvalLetterExt))
+                }
+                else
+                {
+                    //you can't change course,subject,semyear,syllabus if subject already added.
+
+                    foreach (var _data in data)
                     {
-                        if (studentAcademicsModel.FUApprovalLetter.Length < 2100000)
+                        if (_data.CourseId != studentAcademicsModel.CourseId
+                            || _data.SubjectId != studentAcademicsModel.SubjectId
+                            || _data.SemYearId != studentAcademicsModel.SemYearId
+                            || _data.SyllabusSessionId != studentAcademicsModel.SyllabusSessionId
+                            || _data.AcademicId != studentAcademicsModel.AcademicId)
                         {
-                            studentAcademicsModel.ApprovalLetterPath = fileHelper.SaveFile(ApprovalLetter, "", studentAcademicsModel.FUApprovalLetter);
+                            result = 1;
+                            studentAcademicsModel.ApprovedStatus = "P";
                         }
                         else
                         {
-                            ModelState.AddModelError("", "approval letter size must be less than 2 mb");
+                            studentAcademicsModel.ApprovedStatus = "A";
+                        }
+                    }
+                }
+                if (result == 0)
+                {
+                    #region upload approval letter
+                    string ApprovalLetter = _configuration.GetSection("FilePaths:PreviousDocuments:ApprovalLetter").Value.ToString();
+                    var supportedTypes = new[] { "pdf", "PDF" };
+                    FileHelper fileHelper = new FileHelper();
+                    if (studentAcademicsModel.FUApprovalLetter != null)
+                    {
+                        var approvalLetterExt = Path.GetExtension(studentAcademicsModel.FUApprovalLetter.FileName).Substring(1);
+                        if (supportedTypes.Contains(approvalLetterExt))
+                        {
+                            if (studentAcademicsModel.FUApprovalLetter.Length < 2100000)
+                            {
+                                studentAcademicsModel.ApprovalLetterPath = fileHelper.SaveFile(ApprovalLetter, "", studentAcademicsModel.FUApprovalLetter);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "approval letter size must be less than 2 mb");
+                                return View("~/Views/Exam/StudentAcademics/Edit.cshtml", studentAcademicsModel);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "approval letter extension is invalid- accept only pdf");
                             return View("~/Views/Exam/StudentAcademics/Edit.cshtml", studentAcademicsModel);
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "approval letter extension is invalid- accept only pdf");
-                        return View("~/Views/Exam/StudentAcademics/Edit.cshtml", studentAcademicsModel);
+
+                        studentAcademicsModel.ApprovalLetterPath = value.ApprovalLetterPath;
                     }
-                }
-                else
-                {
+                    #endregion
 
-                    studentAcademicsModel.ApprovalLetterPath = value.ApprovalLetterPath;
-                }
-                #endregion
-                if (ModelState.IsValid)
-                {
-
-                    if (await TryUpdateModelAsync<StudentAcademicsModel>(value))
+                    if (ModelState.IsValid)
                     {
-                        var res = await _studentAcademicsService.UpdateStudentAcademicsAsync(studentAcademicsModel);
-                        if (res.Equals(1))
+                        if (await TryUpdateModelAsync<StudentAcademicsModel>(value))
                         {
-                            TempData["success"] = "StudentAcademics has been updated";
-                            return RedirectToAction(nameof(Index));
+                            var res = await _studentAcademicsService.UpdateStudentAcademicsAsync(studentAcademicsModel);
+                            if (res.Equals(1))
+                            {
+                                TempData["success"] = "StudentAcademics has been updated";
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                // TempData["error"] = "Student has not been updated";
+                                ModelState.AddModelError("", "StudentAcademics has not been updated");
+                                return View("~/Views/Exam/StudentAcademics/Create.cshtml", studentAcademicsModel);
+                            }
                         }
-                        else
-                        {
-                            // TempData["error"] = "Student has not been updated";
-                            ModelState.AddModelError("", "StudentAcademics has not been updated");
-                            return View("~/Views/Exam/StudentAcademics/Create.cshtml", studentAcademicsModel);
-                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Model state is not valid");
+                        return View("~/Views/Exam/StudentAcademics/Create.cshtml", studentAcademicsModel);
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Model state is not valid");
-                    return View("~/Views/Exam/StudentAcademics/Create.cshtml", studentAcademicsModel);
+                    ModelState.AddModelError("", "you can't any changes in course,subject,semyear and syllabus, if subject already added");
                 }
             }
             catch (Exception ex)
@@ -418,14 +450,22 @@ namespace CoreLayout.Controllers.Exam
                 var value = await _studentAcademicsService.GetStudentAcademicsByIdAsync(Convert.ToInt32(guid_id));
                 if (value != null)
                 {
-                    var res = await _studentAcademicsService.DeleteStudentAcademicsAsync(value);
-                    if (res.Equals(1))
+                    var data = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(value.AcademicId, value.CourseId, value.SubjectId, value.SemYearId, value.SyllabusSessionId, value.ExamId);
+                    if (data == null)
                     {
-                        TempData["success"] = "StudentAcademics has been deleted";
+                        var res = await _studentAcademicsService.DeleteStudentAcademicsAsync(value);
+                        if (res.Equals(1))
+                        {
+                            TempData["success"] = "StudentAcademics has been deleted";
+                        }
+                        else
+                        {
+                            TempData["error"] = "StudentAcademics has not been deleted";
+                        }
                     }
                     else
                     {
-                        TempData["error"] = "StudentAcademics has not been deleted";
+                        TempData["error"] = "Data can't delete due to subject already exit!";
                     }
                 }
                 else
@@ -539,165 +579,105 @@ namespace CoreLayout.Controllers.Exam
             }
             return await Index();
         }
-        public async Task<ActionResult> PartialViewForAddSubject(string id, int? courseid, int? subjectid, int? semyearid, int? syllabussessionid, int? examid)
-        {
-            StudentAcademicQPDetailsModel studentAcademicQPDetailsModel = new StudentAcademicQPDetailsModel();
-            try
-            {
-                if (id != null && courseid != null && subjectid != null && semyearid != null && syllabussessionid != null && examid != null)
-                {
-                    //ViewBag.type = 1;
-                    var guid_id = _protector.Unprotect(id);
-
-                    //var data = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(courseid, subjectid, semyearid);
-                    studentAcademicQPDetailsModel.QPList = await _qPMasterService.GetAllQPByFilter((int)courseid, (int)subjectid, (int)semyearid, (int)syllabussessionid);
-
-                    studentAcademicQPDetailsModel.CourseList = (from s in await _courseService.GetAllCourse()
-                                                                where s.CourseID == courseid
-                                                                select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.SubjectList = (from s in await _branchService.GetAllBranch()
-                                                                 where s.BranchID == subjectid
-                                                                 select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.SemYearId = (int)semyearid;
-                    studentAcademicQPDetailsModel.SyllabusSessionList = (from s in await _courseDetailsService.GetAllSession()
-                                                                         where s.SessionId == syllabussessionid
-                                                                         select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.AcademicId = Convert.ToInt32(guid_id);
-                    studentAcademicQPDetailsModel.ExamList = (from s in await _examMasterService.GetAllExamMasterAsync()
-                                                              where s.ExamId == examid
-                                                              select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.DataList = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData((int)courseid, (int)subjectid, (int)semyearid, (int)syllabussessionid, (int)examid);
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Some thing went wrong!");
-                    return View("~/Views/Exam/StudentAcademics/Index.cshtml", studentAcademicQPDetailsModel);
-                }
-            }
-            catch(Exception ex)
-            {
-                ModelState.AddModelError("", ex.ToString());
-            }
-            //return PartialView("_AddSubject", data);
-            return PartialView("~/Views/Exam/StudentAcademics/_AddSubject.cshtml", studentAcademicQPDetailsModel);
-
-        }
-        //[HttpGet]
-        //public Task<IActionResult> AddSubject()
+        //public Task<ActionResult> PartialViewForAddSubject(string id, int courseid, int subjectid, int semyearid, int syllabussessionid, int examid)
         //{
-        //    StudentAcademicQPDetailsModel  studentAcademicQPDetailsModel = new StudentAcademicQPDetailsModel();
+        //    StudentAcademicQPDetailsModel studentAcademicQPDetailsModel = new StudentAcademicQPDetailsModel();
         //    try
         //    {
-        //        ////var guid_id = _protector.Unprotect(id);
-        //        //var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
-        //        //                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
-        //        //ViewBag.InstituteList = instituteList;
-        //        //studentAcademicsModel.SyllabusSessionList = await _courseDetailsService.GetAllSession();
-        //        //studentAcademicsModel.ExamCenterList = await _instituteService.GetAllInstitute();
-        //        //studentAcademicsModel.AcademicSessionList = await _courseDetailsService.GetAllSession();
-        //        //studentAcademicsModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
-        //        //studentAcademicsModel.PreviousSessionIdList = await _courseDetailsService.GetAllSession();
-        //        //studentAcademicsModel.ExamCategoryList = await _examCategoryService.GetExamCategoryAsync();
+        //        if (id != null && courseid != 0 && subjectid != 0 && semyearid != 0 && syllabussessionid != 0 && examid != 0)
+        //        {
+        //            var guid_id = _protector.Unprotect(id);
+        //            studentAcademicQPDetailsModel.CourseId = courseid;
+        //            studentAcademicQPDetailsModel.SubjectId = subjectid;
+        //            studentAcademicQPDetailsModel.SemYearId = semyearid;
+        //            studentAcademicQPDetailsModel.SyllabusSessionId = syllabussessionid;
+        //            studentAcademicQPDetailsModel.ExamId = examid;
+        //            studentAcademicQPDetailsModel.EncryptedId = id;//AcademicId
 
-        //        //return PartialView("~/Views/Exam/StudentAcademics/_AddSubject.cshtml", studentAcademicQPDetailsModel);
+
+        //            //studentAcademicQPDetailsModel.QPList = await _qPMasterService.GetAllQPByFilter((int)courseid, (int)subjectid, (int)semyearid, (int)syllabussessionid);
+
+        //            //studentAcademicQPDetailsModel.CourseList = (from s in await _courseService.GetAllCourse()
+        //            //                                            where s.CourseID == courseid
+        //            //                                            select s).Distinct().ToList();
+        //            //studentAcademicQPDetailsModel.SubjectList = (from s in await _branchService.GetAllBranch()
+        //            //                                             where s.BranchID == subjectid
+        //            //                                             select s).Distinct().ToList();
+        //            //studentAcademicQPDetailsModel.SemYearId = (int)semyearid;
+        //            //studentAcademicQPDetailsModel.SyllabusSessionList = (from s in await _courseDetailsService.GetAllSession()
+        //            //                                                     where s.SessionId == syllabussessionid
+        //            //                                                     select s).Distinct().ToList();
+        //            //studentAcademicQPDetailsModel.AcademicId = Convert.ToInt32(guid_id);
+        //            //studentAcademicQPDetailsModel.ExamList = (from s in await _examMasterService.GetAllExamMasterAsync()
+        //            //                                          where s.ExamId == examid
+        //            //                                          select s).Distinct().ToList();
+        //            //studentAcademicQPDetailsModel.DataList = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData((int)courseid, (int)subjectid, (int)semyearid, (int)syllabussessionid, (int)examid);
+        //            //return View("~/Views/Exam/StudentAcademicsQPDetails/Create.cshtml", studentAcademicQPDetailsModel);
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Some thing went wrong!");
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        ModelState.AddModelError("", ex.ToString());
+        //    }
+        //    return View("~/Views/Exam/StudentAcademics/Index.cshtml", studentAcademicQPDetailsModel);
+        //}
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddSubject(StudentAcademicQPDetailsModel studentAcademicQPDetailsModel)
+        //{
+        //    try
+        //    {
+        //        if (studentAcademicQPDetailsModel.AcademicId != 0 && studentAcademicQPDetailsModel.CourseId != 0 && studentAcademicQPDetailsModel.SubjectId != 0 && studentAcademicQPDetailsModel.SemYearId != 0 && studentAcademicQPDetailsModel.SyllabusSessionId != 0 && studentAcademicQPDetailsModel.ExamId != 0)
+        //        {
+        //            studentAcademicQPDetailsModel.QPList = await _qPMasterService.GetAllQPByFilter(studentAcademicQPDetailsModel.CourseId, studentAcademicQPDetailsModel.SubjectId, studentAcademicQPDetailsModel.SemYearId, studentAcademicQPDetailsModel.SyllabusSessionId);
+
+        //            studentAcademicQPDetailsModel.CourseList = (from s in await _courseService.GetAllCourse()
+        //                                                        where s.CourseID == studentAcademicQPDetailsModel.CourseId
+        //                                                        select s).Distinct().ToList();
+        //            studentAcademicQPDetailsModel.SubjectList = (from s in await _branchService.GetAllBranch()
+        //                                                         where s.BranchID == studentAcademicQPDetailsModel.SubjectId
+        //                                                         select s).Distinct().ToList();
+        //            studentAcademicQPDetailsModel.SemYearId = studentAcademicQPDetailsModel.SemYearId;
+        //            studentAcademicQPDetailsModel.SyllabusSessionList = (from s in await _courseDetailsService.GetAllSession()
+        //                                                                 where s.SessionId == studentAcademicQPDetailsModel.SyllabusSessionId
+        //                                                                 select s).Distinct().ToList();
+        //            studentAcademicQPDetailsModel.AcademicId = studentAcademicQPDetailsModel.AcademicId;
+        //            studentAcademicQPDetailsModel.ExamList = (from s in await _examMasterService.GetAllExamMasterAsync()
+        //                                                      where s.ExamId == studentAcademicQPDetailsModel.ExamId
+        //                                                      select s).Distinct().ToList();
+        //            studentAcademicQPDetailsModel.DataList = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(studentAcademicQPDetailsModel.CourseId, studentAcademicQPDetailsModel.SubjectId, studentAcademicQPDetailsModel.SemYearId, studentAcademicQPDetailsModel.SyllabusSessionId, studentAcademicQPDetailsModel.ExamId);
+        //            studentAcademicQPDetailsModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+        //            studentAcademicQPDetailsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+        //            if (ModelState.IsValid)
+        //            {
+        //                var res = await _studentAcademicQPDetailsService.CreateStudentAcademicsQPDetailsAsync(studentAcademicQPDetailsModel);
+        //                if (res.Equals(1))
+        //                {
+        //                    //TempData["success"] = "Data has been saved";
+        //                    ModelState.AddModelError("", "Data has been saved");
+        //                }
+        //                else
+        //                {
+        //                    ModelState.AddModelError("", "Data has not been saved");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError("", "Model state is not valid");
+        //            }
+        //        }
         //    }
         //    catch (Exception ex)
         //    {
         //        ModelState.AddModelError("", ex.ToString());
-        //        //return PartialView("~/Views/Exam/StudentAcademics/_AddSubject.cshtml", studentAcademicQPDetailsModel);
         //    }
-        //    return View(studentAcademicQPDetailsModel);
+        //    return PartialView("~/Views/Exam/StudentAcademics/_AddSubject.cshtml", studentAcademicQPDetailsModel);
         //}
 
-        [HttpPost]
-        public async Task<IActionResult> AddSubject(StudentAcademicQPDetailsModel studentAcademicQPDetailsModel)
-        {
-            try
-            {
-                if (studentAcademicQPDetailsModel.AcademicId != 0 && studentAcademicQPDetailsModel.CourseId != 0 && studentAcademicQPDetailsModel.SubjectId != 0 && studentAcademicQPDetailsModel.SemYearId != 0 && studentAcademicQPDetailsModel.SyllabusSessionId != 0 && studentAcademicQPDetailsModel.ExamId != 0)
-                {
-                    studentAcademicQPDetailsModel.QPList = await _qPMasterService.GetAllQPByFilter(studentAcademicQPDetailsModel.CourseId, studentAcademicQPDetailsModel.SubjectId, studentAcademicQPDetailsModel.SemYearId, studentAcademicQPDetailsModel.SyllabusSessionId);
-
-                    studentAcademicQPDetailsModel.CourseList = (from s in await _courseService.GetAllCourse()
-                                                                where s.CourseID == studentAcademicQPDetailsModel.CourseId
-                                                                select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.SubjectList = (from s in await _branchService.GetAllBranch()
-                                                                 where s.BranchID == studentAcademicQPDetailsModel.SubjectId
-                                                                 select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.SemYearId = studentAcademicQPDetailsModel.SemYearId;
-                    studentAcademicQPDetailsModel.SyllabusSessionList = (from s in await _courseDetailsService.GetAllSession()
-                                                                         where s.SessionId == studentAcademicQPDetailsModel.SyllabusSessionId
-                                                                         select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.AcademicId = studentAcademicQPDetailsModel.AcademicId;
-                    studentAcademicQPDetailsModel.ExamList = (from s in await _examMasterService.GetAllExamMasterAsync()
-                                                              where s.ExamId == studentAcademicQPDetailsModel.ExamId
-                                                              select s).Distinct().ToList();
-                    studentAcademicQPDetailsModel.DataList = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(studentAcademicQPDetailsModel.CourseId, studentAcademicQPDetailsModel.SubjectId, studentAcademicQPDetailsModel.SemYearId, studentAcademicQPDetailsModel.SyllabusSessionId, studentAcademicQPDetailsModel.ExamId);
-                    studentAcademicQPDetailsModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-                    studentAcademicQPDetailsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-                    if (ModelState.IsValid)
-                    {
-                        var res = await _studentAcademicQPDetailsService.CreateStudentAcademicsQPDetailsAsync(studentAcademicQPDetailsModel);
-                        if (res.Equals(1))
-                        {
-                            //TempData["success"] = "Data has been saved";
-                            ModelState.AddModelError("", "Data has been saved");
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Data has not been saved");
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Model state is not valid");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.ToString());
-            }
-            return PartialView("~/Views/Exam/StudentAcademics/_AddSubject.cshtml", studentAcademicQPDetailsModel);
-        }
-        //[AcceptVerbs("GET", "POST")]
-        //public async Task<IActionResult> VerifyRollNoAsync(string rollNo)
-        //{
-
-        //    var studentlist = (from data in await _studentService.GetAllStudentAsync()
-        //                   where data.RollNo == rollNo.Trim()
-        //                   select new SelectListItem()
-        //                   {
-        //                       Text = data.FullName,
-        //                       Value = data.StudentID.ToString(),
-        //                   }).ToList();
-
-        //    if (studentlist.Count <= 0)
-        //    {
-        //        return Json($"{rollNo} is not found.");
-        //    }
-        //    ViewBag.Studentlist = studentlist;
-        //    //return Json(studentlist);
-        //    return View(studentlist);
-
-
-        //}
-        //    public async Task<JsonResult> GetStudent(int Instituteid,int courseid,int subjectid)
-        //    {
-        //        var StudentList = (from student in await _studentAcademicsService.GetAllStudentAcademicsAsync()
-        //                           where student.InstituteID == Instituteid && student.CourseId == courseid && student.SubjectId == subjectid
-        //                           select new SelectListItem()
-        //                           {
-        //                               Text = student.FullName,
-        //                               Value = student.StudentID.ToString(),
-        //                           }).ToList();
-
-        //        StudentList.Insert(0, new SelectListItem()
-        //        {
-        //            Text = "----Select----",
-        //            Value = string.Empty
-        //        });
-        //        return Json(StudentList);
-        //    }
     }
 }

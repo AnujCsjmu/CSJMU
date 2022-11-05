@@ -37,4 +37,12 @@
     <Folder Include="wwwroot\assets\anuj\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="Views\Exam\StudentAcademics\_AddSubject.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

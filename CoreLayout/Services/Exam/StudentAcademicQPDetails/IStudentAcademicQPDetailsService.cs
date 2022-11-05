@@ -11,6 +11,6 @@ namespace CoreLayout.Services.Exam.StudentAcademicQPDetails
         public Task<int> CreateStudentAcademicsQPDetailsAsync(StudentAcademicQPDetailsModel studentAcademicQPDetailsModel);
         public Task<int> UpdateStudentAcademicsQPDetailsAsync(StudentAcademicQPDetailsModel studentAcademicQPDetailsModel);
         public Task<int> DeleteStudentAcademicsQPDetailsAsync(StudentAcademicQPDetailsModel studentAcademicQPDetailsModel);
-        public Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int courseid, int subjectid, int semyearid, int syllabussessionid, int examid);
+        public Task<List<StudentAcademicQPDetailsModel>> GetFilterStudentAcademicsQPData(int academicid,int courseid, int subjectid, int semyearid, int syllabussessionid, int examid);
     }
 }
