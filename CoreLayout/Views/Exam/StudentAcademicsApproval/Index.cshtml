@@ -1,0 +1,286 @@
+﻿@using CoreLayout.Models.Exam
+@model IEnumerable<StudentAcademicsModel>
+@{
+    ViewData["title"] = "Index";
+}
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Student Academics Approval List</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">StudentAcademicsApproval</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List</li>
+        </ol>
+    </div>
+    @if (@User.FindFirst(claim => claim.Type == System.Security.Claims.ClaimTypes.Role)?.Value == "Administrator")
+    {
+        <div class="d-flex">
+            <div class="me-2">
+                <a class="btn ripple btn-outline-primary dropdown-toggle mb-0" href="#"
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fe fe-external-link"></i> Export <i class="fa fa-caret-down ms-1"></i>
+                </a>
+                <div class="dropdown-menu tx-13">
+                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf me-2"></i>Export as Pdf</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-image me-2"></i>Export as Image</a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-file-excel me-2"></i>Export as
+                        Excel
+                    </a>
+                </div>
+            </div>
+            <div class="">
+                <a href="#" class="btn ripple btn-secondary navresponsive-toggler mb-0"
+                   data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                   aria-controls="navbarSupportedContent" aria-expanded="false"
+                   aria-label="Toggle navigation">
+                    <i class="fe fe-filter me-1"></i> Filter <i class="fa fa-caret-down ms-1"></i>
+                </a>
+            </div>
+        </div>
+    }
+</div>
+<!--Navbar-->
+<form action="Index" method="post">
+    <div class="responsive-background">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="advanced-search br-3">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-xl-8">
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">Institute :</label>
+                                    @*<select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
+                                            <option selected="selected" value="">--Select-- </option>
+                                        </select>*@
+                                    @*@Html.DropDownList("InstituteID", new SelectList(ViewBag.InstituteList, "InstituteID", "InstituteName"), new { @class = "form-control" })*@
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">Course :</label>
+                                    <select class="form-control" id="CourseId" asp-items="@(new SelectList(string.Empty,"CourseID","CourseName"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                    @*@Html.DropDownList("CourseID", new SelectList(string.Empty, "CourseID", "CourseName"), new { @class = "form-control" })*@
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">Subject :</label>
+                                    <select class="form-control" id="SubjectId" asp-items="@(new SelectList(string.Empty,"BranchID","BranchName"))">
+                                        @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                    </select>
+                                    @*@Html.DropDownList("SubjectId", new SelectList(string.Empty, "BranchID", "BranchName"), new { @class = "form-control" })*@
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</form>
+<!--End Navbar -->
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div class="table-responsive-sm">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>
+                                    Full Name
+                                </th>
+                                <th>
+                                    Institute Name
+                                </th>
+                                <th>
+                                    Course Name
+                                </th>
+                                <th>
+                                    Subject Name
+                                </th>
+                                <th>
+                                    SemYear<br />
+                                    Syllabus
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ExamCategoryCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ApprovalLetterPath)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ApprovedStatus)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ApprovedBy)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.ApprovedDate)
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int sno = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.InstituteName</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.SubjectName</td>
+                                    <td>@item.SemYearId <br />@item.SyllabusSessionName</td>
+                                    <td>@item.ExamCategoryName</td>
+                                    <td>
+                                        @if (item.ApprovalLetterPath != null)
+                                        {
+                                            <a asp-action="Download" style="color:blue" asp-route-syllabus="syllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                        }
+                                        else
+                                        {
+                                            <label style="font-weight:bold; color:red">No File</label>
+                                        }
+
+                                    </td>
+                                    @if (item.ApprovedStatus == "P")
+                                    {
+                                        <td style="color:blue; font-weight:bold">@item.ApprovedStatus</td>
+                                    }
+                                    else@if (item.ApprovedStatus == "A")
+                                    {
+                                        <td style="color: green; font-weight: bold">@item.ApprovedStatus</td>
+                                    }
+                                    else
+                                    {
+                                        <td style="color: red; font-weight: bold">@item.ApprovedStatus</td>
+                                    }
+                                    <td>@item.ApprovedBy</td>
+                                    <td>@item.ApprovedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
+                                            <a asp-action="Details" id="details" data-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a><br />
+                                            @if (item.ApprovedStatus != "A")
+                                            {
+                                                <a href="#" id="btnEdit" class="btn btn-primary btn-sm" data-id="@item.AcademicId" data-fullname="@item.FullName">Edit</a>
+                                            }
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+<!-- Modal Popup -->
+
+<div id="MyPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Update Status</h4>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Edit" asp-controller="StudentAcademicsApproval" method="post">
+                    <div class="form-group">
+                        <label>Academic Id</label>
+                        <input type="text" class="form-control" required="required" name="AcademicId" id="AcademicId" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label>Student Name</label>
+                        <input type="text" class="form-control" required="required" name="FullName" id="FullName" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        @Html.DropDownList("ApprovedStatus", new List<SelectListItem>
+                         {
+                         new SelectListItem{ Text="-Select-", Value = "" },
+                         new SelectListItem{ Text="Approved", Value = "A" },
+                         new SelectListItem{ Text="Pending", Value = "P" },
+                         new SelectListItem{ Text="Reject", Value = "R" },
+                         },
+                         new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <input type="text" class="form-control" required="required" name="ApprovedRemarks" id="ApprovedRemarks" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-success btn-sm" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="button" id="btnClosePopup" value="Close" data-bs-dismiss="modal" class="btn btn-danger" />
+                @*<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("body").on('click', '#btnEdit', function () {
+                var id = $(this).data("id")
+                var name = $(this).data("fullname")
+                $('#AcademicId').val('');
+                $('#FullName').val('');
+                $('#AcademicId').val(id);
+                $('#FullName').val(name);
+                $("#MyPopup").modal("show");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("body").on('click', '#btnClosePopup', function () {
+                $('#AcademicId').val('');
+                $('#FullName').val('');
+                $('#ApprovedStatus').val('');
+                $('#ApprovedRemarks').val('');
+            });
+        });
+    </script>
+    /**/
+}

@@ -399,6 +399,10 @@ namespace CoreLayout
             services.AddScoped<IStudentAcademicQPDetailsService, StudentAcademicQPDetailsService>();
             services.AddScoped<IStudentAcademicQPDetailsRepository, StudentAcademicQPDetailsRepository>();
 
+            //Student Academics Approval
+           // services.AddScoped<IStudentAcademicsApprovalService, StudentAcademicsApprovalService>();
+            //services.AddScoped<IStudentAcademicsApprovalRepository, StudentAcademicsApprovalRepository>();
+
             //add for encrypt value
             services.AddDataProtection();
 

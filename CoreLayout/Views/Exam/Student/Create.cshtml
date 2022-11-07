@@ -158,7 +158,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="CDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
+                                <select class="form-control" asp-for="CDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CDistrictId" class="parsley-errors-list filled"></span>
@@ -167,7 +167,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" id="CTehsilId" asp-for="CTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
+                                <select class="form-control" id="CTehsilId" asp-for="CTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="CTehsilId" class="parsley-errors-list filled"></span>
@@ -195,7 +195,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PStateId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" id="PStateId" asp-for="PStateId" asp-items="@(new SelectList(Model.PStateList,"StateId","StateName"))">
+                                <select class="form-control" id="PStateId" asp-for="PStateId" asp-items="@(new SelectList(Model.PStateList,"StateId","StateName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PStateId" class="parsley-errors-list filled"></span>
@@ -204,7 +204,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PDistrictId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" id="PDistrictId" asp-for="PDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
+                                <select class="form-control" id="PDistrictId" asp-for="PDistrictId" asp-items="@(new SelectList(string.Empty,"DistrictId","DistrictName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PDistrictId" class="parsley-errors-list filled"></span>
@@ -213,7 +213,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PTehsilId"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" id="PTehsilId" asp-for="PTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
+                                <select class="form-control" id="PTehsilId" asp-for="PTehsilId" asp-items="@(new SelectList(string.Empty,"TehsilId","TehsilName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="PTehsilId" class="parsley-errors-list filled"></span>
@@ -569,61 +569,66 @@
             var cdistrict = $('#CDistrictId').val();
             var ctehsil = $('#CTehsilId').val();
             var cpincode = $('#CPinCode').val();
-            var st = '';
-            $('#CStateId option').each(function () {
-                let vl = $(this).val();
-                let ht = $(this).html();
-               
-                if (cstate == vl) {
-                    st += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+            if (caddress != '' && cdistrict != null && ctehsil != null && cpincode != '') {
+                var st = '';
+                $('#CStateId option').each(function () {
+                    let vl = $(this).val();
+                    let ht = $(this).html();
+
+                    if (cstate == vl) {
+                        st += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    } else {
+                        st += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    }
+                });
+
+                var dt = '';
+                $('#CDistrictId option').each(function () {
+                    let vl = $(this).val();
+                    let ht = $(this).html();
+
+                    if (cdistrict == vl) {
+                        dt += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    } else {
+                        dt += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    }
+                });
+                var th = '';
+                $('#CTehsilId option').each(function () {
+                    let vl = $(this).val();
+                    let ht = $(this).html();
+
+                    if (ctehsil == vl) {
+                        th += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    } else {
+                        th += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    }
+                });
+
+                var pad = $('#PAddress').val();
+                var pstate = $('#PStateId').val();
+                var pdis = $('#PDistrictId').val();
+                var ppin = $('#PPinCode').val();
+                var pteh = $('#PTehsilId').val();
+
+                if ($("#chkaddress").prop('checked') == true) {
+                    $('#PAddress').val(caddress);
+                    $('#PStateId').html(st);//.select2().html(st).trigger('change')
+                    $('#PDistrictId').html(dt);//.select2().html(dt).trigger('change')
+                    $('#PTehsilId').html(th);//.select2().html(th).trigger('change')
+                    $('#PPinCode').val(cpincode);
                 } else {
-                    st += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    $('#PAddress').val('');
+                    $('#PStateId').val(0);
+                    $('#PPinCode').val('');
+                    $('#PDistrictId').val('');
+                    $('#PTehsilId').val('')
                 }
-            });
-
-            var dt = '';
-            $('#CDistrictId option').each(function () {
-                let vl = $(this).val();
-                let ht = $(this).html();
-              
-                if (cdistrict == vl) {
-                    dt += '<option value="' + vl + '" selected> ' + ht + ' </option>';
-                } else {
-                    dt += '<option value="' + vl + '"> ' + ht + ' </option>';
-                }
-            });
-            var th = '';
-            $('#CTehsilId option').each(function () {
-                let vl = $(this).val();
-                let ht = $(this).html();
-
-                if (ctehsil == vl) {
-                    th += '<option value="' + vl + '" selected> ' + ht + ' </option>';
-                } else {
-                    th += '<option value="' + vl + '"> ' + ht + ' </option>';
-                }
-            });
-
-            var pad =  $('#PAddress').val();
-            var pstate = $('#PStateId').val();
-            var pdis = $('#PDistrictId').val();
-            var ppin = $('#PPinCode').val();
-            var pteh = $('#PTehsilId').val();
-
-            if ($("#chkaddress").prop('checked') == true) {
-                $('#PAddress').val(caddress);
-                $('#PStateId').select2().html(st).trigger('change')
-                $('#PDistrictId').select2().html(dt).trigger('change')
-                $('#PTehsilId').select2().html(th).trigger('change')
-                $('#PPinCode').val(cpincode);
-            } else {
-                $('#PAddress').val('');
-                $('#PStateId').val(0);
-                $('#PPinCode').val(''); 
-                $('#PDistrictId').val('');
-                $('#PTehsilId').val('')
             }
-
+            else {
+                $('#chkaddress').prop('checked', false); // Unchecks it
+                alert('Please fill complete correspondence address!');
+            }
 }
     </script>
 }

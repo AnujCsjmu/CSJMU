@@ -113,6 +113,15 @@ namespace CoreLayout.Models.Exam
         [Display(Name = "Approved Status")]
         public string ApprovedStatus { get; set; }
 
+        [Display(Name = "Approved By")]
+        public int? ApprovedBy { get; set; }
+
+        [Display(Name = "Approved Date")]
+        public string ApprovedDate { get; set; }
+
+        [Display(Name = "Approved Remarks")]
+        public string ApprovedRemarks { get; set; }
+
         //edit file upload
         //[Display(Name = "Approval Letter")]
         //public IFormFile FUEditApprovalLetter { get; set; }

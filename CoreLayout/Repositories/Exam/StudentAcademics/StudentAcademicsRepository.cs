@@ -92,7 +92,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Query", 4, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<StudentAcademicsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
-                   
+
                     return (List<StudentAcademicsModel>)list;
                 }
             }
@@ -179,6 +179,76 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
                     var list = await SqlMapper.QueryAsync<StudentAcademicsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
 
                     return (List<StudentAcademicsModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<int> InsertUpdateApprovalAsync(StudentAcademicsModel entity)
+        {
+            try
+            {
+                using (var connection = CreateConnection())
+                {
+                    connection.Open();
+                    // create the transaction
+                    // You could use `var` instead of `SqlTransaction`
+                    using (var tran = connection.BeginTransaction())
+                    {
+                        try
+                        {
+                            entity.IsRecordDeleted = 0;
+                            var query = "SP_InsertUpdateDelete_StudentAcademics";
+                            var res = 0;
+                            var res1 = 0;
+
+                            DynamicParameters parameters = new DynamicParameters();
+                            parameters.Add("AcademicId", entity.AcademicId, DbType.Int32);
+                            parameters.Add("ApprovedStatus", entity.ApprovedStatus, DbType.String);
+                            parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                            parameters.Add("ApprovedBy", entity.ApprovedBy, DbType.Int32);
+                            parameters.Add("@Query", 7, DbType.Int32);
+                            res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+
+
+                            if (res == 1)
+                            {
+                                parameters.Add("AcademicId", entity.AcademicId, DbType.Int32);
+                                parameters.Add("ApprovedStatus", entity.ApprovedStatus, DbType.String);
+                                parameters.Add("ApprovedRemarks", entity.ApprovedRemarks, DbType.String);
+                                parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                                parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                                parameters.Add("ApprovedBy", entity.ApprovedBy, DbType.Int32);
+                                parameters.Add("@Query", 8, DbType.Int32);
+                                res1 = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+
+                            }
+                            if (res1 == 1)
+                            {
+                                tran.Commit();
+                            }
+                            else
+                            {
+                                tran.Rollback();
+                            }
+                            return res1;
+                        }
+                        catch (Exception ex)
+                        {
+                            // roll the transaction back
+                            tran.Rollback();
+
+                            // handle the error however you need to.
+                            throw new Exception(ex.Message, ex);
+                        }
+                        finally
+                        {
+                            connection.Close();
+                        }
+                    }
                 }
             }
             catch (Exception ex)

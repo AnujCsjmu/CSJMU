@@ -45,5 +45,9 @@ namespace CoreLayout.Services.Exam.StudentAcademics
         {
             return await _studentAcademicsRepository.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId);
         }
+        public async Task<int> InsertUpdateApprovalAsync(StudentAcademicsModel studentAcademicsModel)
+        {
+            return await _studentAcademicsRepository.InsertUpdateApprovalAsync(studentAcademicsModel);
+        }
     }
 }

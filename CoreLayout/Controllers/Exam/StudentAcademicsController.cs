@@ -346,8 +346,9 @@ namespace CoreLayout.Controllers.Exam
                 studentAcademicsModel.ExamCategoryList = await _examCategoryService.GetExamCategoryAsync();
                 int result = 0;
                 var data = await _studentAcademicQPDetailsService.GetFilterStudentAcademicsQPData(value.AcademicId, value.CourseId, value.SubjectId, value.SemYearId, value.SyllabusSessionId, value.ExamId);
-                if (data == null)
+                if (data.Count == 0)
                 {
+                    studentAcademicsModel.ApprovedStatus = "P";
                 }
                 else
                 {

@@ -24,7 +24,7 @@ namespace CoreLayout.Models.UserManagement
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [Display(Name = "Controller Name")]
         [Required(ErrorMessage = "Please enter controller name")]
-        [StringLength(20)]
+        [StringLength(50)]
         public string Controller { get; set; }
 
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
