@@ -40,6 +40,7 @@
     }
 </div>
 <!--Navbar-->
+<!--Navbar-->
 <form action="Index" method="post">
     <div class="responsive-background">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -50,9 +51,9 @@
                             <div class="col-md-6 col-xl-3">
                                 <div class="form-group mb-lg-0">
                                     <label class="">Institute :</label>
-                                    @*<select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
-                                            <option selected="selected" value="">--Select-- </option>
-                                        </select>*@
+                                    <select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
+                                        <option selected="selected" value="">--Select-- </option>
+                                    </select>
                                     @*@Html.DropDownList("InstituteID", new SelectList(ViewBag.InstituteList, "InstituteID", "InstituteName"), new { @class = "form-control" })*@
                                 </div>
                             </div>
@@ -74,16 +75,42 @@
                                     @*@Html.DropDownList("SubjectId", new SelectList(string.Empty, "BranchID", "BranchName"), new { @class = "form-control" })*@
                                 </div>
                             </div>
-
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">SemYear :</label>
+                                    <select class="form-control" id="SemYearId">
+                                        <option selected="selected" value="">--Select-- </option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
+                <hr>
+                <div class="text-end">
+                    <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" />
+                    <input asp-action="Reset" type="submit" class="btn btn-secondary" value="Reset" />
+                    <input type='hidden' id='hdnInstituteID' name="hdnInstituteID" value=''>
+                    <input type='hidden' id='hdnCourseId' name="hdnCourseId" value=''>
+                    <input type='hidden' id='hdnSubjectId' name="hdnSubjectId" value=''>
+                    <input type='hidden' id='hdnSemYearId' name="hdnSemYearId" value=''>
+                    <input type='hidden' id='hdnSyllabusSessionId' name="hdnSyllabusSessionId" value=''>
+                </div>
             </div>
         </div>
     </div>
 </form>
+<!--End Navbar -->
 <!--End Navbar -->
 <!-- Row -->
 <div class="row">
@@ -176,7 +203,7 @@
                                     <td>@item.ApprovedDate</td>
                                     <td>
                                         <div class="table-actions text-center">
-                                            <a asp-action="Details" id="details" data-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a><br />
+                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a><br />
                                             @if (item.ApprovedStatus != "A")
                                             {
                                                 <a href="#" id="btnEdit" class="btn btn-primary btn-sm" data-id="@item.AcademicId" data-fullname="@item.FullName">Edit</a>
@@ -259,6 +286,48 @@
     <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
     <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*bind course from institute*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#InstituteID").on("change", function () {
+                    $("#CourseId").empty();
+                    var ddlsource = "#InstituteID";
+                    var url = '@Url.Content("~/")' + "StudentAcademics/GetCourse?InstituteId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#CourseId").empty();
+                        $.each(data, function (i, course) {
+                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                    });
+                        $('#CourseId').html(items);
+                });
+                });
+            });
+    </script>
+    @*bind branch/subject from course*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    $("#SubjectId").empty();
+                    var ddlsource = "#CourseId";
+                    var ddlInstituteID = "#InstituteID";
+                    var url = '@Url.Content("~/")' + "StudentAcademics/GetBranch?CourseId=" + $(ddlsource).val() + "&inst=" + $(ddlInstituteID).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#SubjectId").empty();
+                        $.each(data, function (i, subject) {
+                            items += "<option value ='" + subject.value + "'>" + subject.text + "</option>";
+                    });
+                        $('#SubjectId').html(items);
+                });
+                });
+            });
+    </script>
+
+    @*open popup on edit button click*@
     <script type="text/javascript">
         $(function () {
             $("body").on('click', '#btnEdit', function () {
@@ -272,6 +341,7 @@
             });
         });
     </script>
+    @*reset popup on close*@
     <script type="text/javascript">
         $(function () {
             $("body").on('click', '#btnClosePopup', function () {
@@ -283,4 +353,23 @@
         });
     </script>
     /**/
+    @*set value in hidden field *@
+    <script>
+        $('#InstituteID').bind('change', function () {
+            $('#hdnInstituteID').val($(this).val());
+
+        });
+        $('#CourseId').bind('change', function () {
+            $('#hdnCourseId').val($(this).val());
+
+        });
+        $('#SubjectId').bind('change', function () {
+            $('#hdnSubjectId').val($(this).val());
+
+        });
+        $('#SemYearId').bind('change', function () {
+            $('#hdnSemYearId').val($(this).val());
+
+        });
+    </script>
 }

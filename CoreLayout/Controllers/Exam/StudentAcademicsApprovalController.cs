@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -85,7 +86,10 @@ namespace CoreLayout.Controllers.Exam
                 }
                 //end
 
-
+                //bind institute
+                var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
+                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                ViewBag.InstituteList = instituteList;
 
                 return View("~/Views/Exam/StudentAcademicsApproval/Index.cshtml", data);
             }
@@ -110,14 +114,6 @@ namespace CoreLayout.Controllers.Exam
                     var stringId = _data.AcademicId.ToString();
                     _data.EncryptedId = _protector.Protect(stringId);
                 }
-                //start generate maxid for create button
-                int id = 0;
-                foreach (var _data in data)
-                {
-                    id = _data.AcademicId;
-                }
-                id = id + 1;
-                ViewBag.MaxStudentAcademicsId = _protector.Protect(id.ToString());
             }
 
 
@@ -125,7 +121,7 @@ namespace CoreLayout.Controllers.Exam
             var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
                                  select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
             ViewBag.InstituteList = instituteList;
-            return View("~/Views/Exam/StudentAcademics/Index.cshtml", data);
+            return View("~/Views/Exam/StudentAcademicsApproval/Index.cshtml", data);
         }
         [HttpGet]
         [AuthorizeContext(ViewAction.Details)]
@@ -140,7 +136,7 @@ namespace CoreLayout.Controllers.Exam
                 {
                     return NotFound();
                 }
-                return View("~/Views/Exam/StudentAcademics/Details.cshtml", data);
+                return View("~/Views/Exam/StudentAcademicsApproval/Details.cshtml", data);
 
             }
             catch (Exception ex)
@@ -252,6 +248,53 @@ namespace CoreLayout.Controllers.Exam
             {
             }
             return await Index();
+        }
+
+        public async Task<JsonResult> GetCourse(int InstituteId)
+        {
+            var CourseList = (from instituteintake in await _instituteService.AffiliationInstituteIntakeData()
+                              where instituteintake.InstituteID == InstituteId
+                              select new SelectListItem()
+                              {
+                                  Text = instituteintake.CourseName,
+                                  Value = instituteintake.CourseId.ToString(),
+                              }).Distinct().ToList();
+
+            CourseList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(CourseList);
+        }
+        public async Task<JsonResult> GetBranch(int CourseId, int inst)
+        {
+            var BranchList = (from instituteintake in await _instituteService.All_AffiliationInstituteIntakeData()
+                              where instituteintake.CourseId == CourseId && instituteintake.InstituteID == inst
+                              select new SelectListItem()
+                              {
+                                  Text = instituteintake.BranchName,
+                                  Value = instituteintake.BranchId.ToString(),
+                              }).Distinct().ToList();
+
+            BranchList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(BranchList);
+        }
+        public async Task<JsonResult> GetStudent(string rollno)
+        {
+            var studentlist = (from data in await _studentService.GetAllStudentAsync()
+                               where data.RollNo == rollno.Trim()
+                               select new SelectListItem()
+                               {
+                                   Text = data.FullName,
+                                   Value = data.StudentID.ToString(),
+                               }).ToList();
+
+            return Json(studentlist);
         }
     }
 }
