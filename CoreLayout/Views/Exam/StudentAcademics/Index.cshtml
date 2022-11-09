@@ -50,12 +50,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="advanced-search br-3">
                 <div class="row align-items-center">
-                    <div class="col-md-12 col-xl-8">
+                    <div class="col-md-12 col-xl-12">
                         <div class="row">
                             <div class="col-md-6 col-xl-3">
                                 <div class="form-group mb-lg-0">
                                     <label class="">Institute :</label>
-                                    <select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
+                                    <select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteCodeWithName"))">
                                         <option selected="selected" value="">--Select-- </option>
                                     </select>
                                     @*@Html.DropDownList("InstituteID", new SelectList(ViewBag.InstituteList, "InstituteID", "InstituteName"), new { @class = "form-control" })*@
@@ -97,18 +97,26 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">Roll No. :</label>
+                                    <input type="text" class="form-control" id="RollNo" />
+                                    @*@Html.DropDownList("SubjectId", new SelectList(string.Empty, "BranchID", "BranchName"), new { @class = "form-control" })*@
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <hr>
                 <div class="text-end">
-                    <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" />
+                    <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" id="Index" />
                     <input asp-action="Reset" type="submit" class="btn btn-secondary" value="Reset" />
                     <input type='hidden' id='hdnInstituteID' name="hdnInstituteID" value=''>
                     <input type='hidden' id='hdnCourseId' name="hdnCourseId" value=''>
                     <input type='hidden' id='hdnSubjectId' name="hdnSubjectId" value=''>
                     <input type='hidden' id='hdnSemYearId' name="hdnSemYearId" value=''>
                     <input type='hidden' id='hdnSyllabusSessionId' name="hdnSyllabusSessionId" value=''>
+                    <input type='hidden' id='hdnRollNo' name="hdnRollNo" value=''>
                 </div>
             </div>
         </div>
@@ -167,55 +175,55 @@
                             }
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>
-                                    @{ sno++; }
-                                    @sno
-                                </td>
-                                <td>@item.FullName</td>
-                                <td>@item.InstituteName</td>
-                                <td>@item.CourseName</td>
-                                <td>@item.SubjectName</td>
-                                <td>@item.SemYearId</td>
-                                <td>@item.SyllabusSessionName</td>
-                                <td>@item.ExamCategoryName</td>
-                                <td>
-                                    @if (item.ApprovalLetterPath != null)
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item.FullName</td>
+                                    <td>@item.InstituteCodeWithName</td>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.SubjectName</td>
+                                    <td>@item.SemYearId</td>
+                                    <td>@item.SyllabusSessionName</td>
+                                    <td>@item.ExamCategoryName</td>
+                                    <td>
+                                        @if (item.ApprovalLetterPath != null)
+                                        {
+                                            <a asp-action="Download" style="color:blue" asp-route-syllabus="syllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                        }
+                                        else
+                                        {
+                                            <label style="font-weight:bold; color:red">No File</label>
+                                        }
+
+                                    </td>
+                                    @if (item.ApprovedStatus == "P")
                                     {
-                                        <a asp-action="Download" style="color:blue" asp-route-syllabus="syllabus" asp-route-id="@item.EncryptedId" target="_blank">Uploaded</a>
+                                        <td style="color:blue; font-weight:bold">@item.ApprovedStatus</td>
+                                    }
+                                    else@if (item.ApprovedStatus == "A")
+                                    {
+                                        <td style="color: green; font-weight: bold">@item.ApprovedStatus</td>
                                     }
                                     else
                                     {
-                                        <label style="font-weight:bold; color:red">No File</label>
+                                        <td style="color: red; font-weight: bold">@item.ApprovedStatus</td>
                                     }
 
-                                </td>
-                                @if (item.ApprovedStatus == "P")
-                                {
-                                    <td style="color:blue; font-weight:bold">@item.ApprovedStatus</td>
-                                }
-                                else@if (item.ApprovedStatus == "A")
-                                {
-                                    <td style="color: green; font-weight: bold">@item.ApprovedStatus</td>
-                                }
-                                else
-                                {
-                                    <td style="color: red; font-weight: bold">@item.ApprovedStatus</td>
-                                }
-
-                                <td>@item.CreatedDate</td>
-                                <td>
-                                    <div class="table-actions text-center">
-                                        <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                        @if (item.ApprovedStatus == "A")
-                                        {
-                                            <a asp-route-id="@item.EncryptedId" asp-route-courseid="@item.CourseId" asp-route-subjectid="@item.SubjectId" asp-route-semyearid="@item.SemYearId" asp-route-syllabussessionid="@item.SyllabusSessionId" asp-route-examid="@item.ExamId" asp-action="Create" asp-controller="StudentAcademicQPDetails">AddSubject</a>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <div class="table-actions text-center">
+                                            <a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
+                                            <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                            @if (item.ApprovedStatus == "A")
+                                            {
+                                                <a asp-route-id="@item.EncryptedId" asp-route-courseid="@item.CourseId" asp-route-subjectid="@item.SubjectId" asp-route-semyearid="@item.SemYearId" asp-route-syllabussessionid="@item.SyllabusSessionId" asp-route-examid="@item.ExamId" asp-action="Create" asp-controller="StudentAcademicQPDetails">AddSubject</a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -226,12 +234,12 @@
 </div>
 <!-- End Row -->
 @*<div id='myModal' class='modal badge-light bs-example-modal-lg' tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="height:650px; width:1100px">
-            <div id='myModalContent'></div>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="height:650px; width:1100px">
+                <div id='myModalContent'></div>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 @section Scripts{
 
     <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
@@ -307,39 +315,47 @@
 
         });
     </script>
-
-    @*popup*@
-    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script>
-        var TeamDetailPostBackURL = '/StudentAcademics/PartialViewForAddSubject';
-        $(function () {
-            $(".anchorDetail").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                var courseid = $buttonClicked.attr('data-courseid');
-                var subjectid = $buttonClicked.attr('data-subjectid');
-                var semyearid = $buttonClicked.attr('data-semyearid');
-                var syllabussessionid = $buttonClicked.attr('data-syllabussessionid');
-                var examid = $buttonClicked.attr('data-examid');
-                $.ajax({
-                    type: "GET",
-                    url: TeamDetailPostBackURL,
-                    contentType: "application/json; charset=utf-8",
-                    data: { "Id": id, "courseid": courseid, "subjectid": subjectid, "semyearid": semyearid, "syllabussessionid": syllabussessionid, "examid": examid},
-                    datatype: "json",
-                    success: function (data) {
-                        $('#myModalContent').html(data);
-                        $('#myModal').modal('show');
-
-                    },
-                    error: function () {
-                        alert("Dynamic content load failed.");
-                    }
-                });
+    @*set rollno in hidden field *@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Index").on("click", function () {
+                var getTxtValue = $("#RollNo").val(); // this gives textbox value
+                $("#hdnRollNo").val(getTxtValue); // this will set hidden field value
             });
         });
+    </script>
+    @*popup*@
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script>
+            var TeamDetailPostBackURL = '/StudentAcademics/PartialViewForAddSubject';
+            $(function () {
+                $(".anchorDetail").click(function () {
+                    var $buttonClicked = $(this);
+                    var id = $buttonClicked.attr('data-id');
+                    var courseid = $buttonClicked.attr('data-courseid');
+                    var subjectid = $buttonClicked.attr('data-subjectid');
+                    var semyearid = $buttonClicked.attr('data-semyearid');
+                    var syllabussessionid = $buttonClicked.attr('data-syllabussessionid');
+                    var examid = $buttonClicked.attr('data-examid');
+                    $.ajax({
+                        type: "GET",
+                        url: TeamDetailPostBackURL,
+                        contentType: "application/json; charset=utf-8",
+                        data: { "Id": id, "courseid": courseid, "subjectid": subjectid, "semyearid": semyearid, "syllabussessionid": syllabussessionid, "examid": examid},
+                        datatype: "json",
+                        success: function (data) {
+                            $('#myModalContent').html(data);
+                            $('#myModal').modal('show');
 
-    </script>*@
+                        },
+                        error: function () {
+                            alert("Dynamic content load failed.");
+                        }
+                    });
+                });
+            });
+
+        </script>*@
 }

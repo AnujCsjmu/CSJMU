@@ -103,7 +103,7 @@ namespace CoreLayout.Controllers.Exam
                 ViewBag.MaxStudentAcademicsId = _protector.Protect(id.ToString());
                 //end
                 var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
 
                 return View("~/Views/Exam/StudentAcademics/Index.cshtml", data);
@@ -116,12 +116,12 @@ namespace CoreLayout.Controllers.Exam
         }
 
         [HttpPost]
-        public async Task<IActionResult> IndexAsync(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId)
+        public async Task<IActionResult> IndexAsync(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId,string hdnRollNo)
         {
             //var data = (dynamic)null;
             //object data = null;
 
-            var data = await _studentAcademicsService.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId);
+            var data = await _studentAcademicsService.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId, hdnRollNo);
             if (data != null)
             {
                 foreach (var _data in data)
@@ -142,7 +142,7 @@ namespace CoreLayout.Controllers.Exam
 
             //end
             var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
-                                 select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                 select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
             ViewBag.InstituteList = instituteList;
             return View("~/Views/Exam/StudentAcademics/Index.cshtml", data);
         }
@@ -179,7 +179,7 @@ namespace CoreLayout.Controllers.Exam
             {
                 var guid_id = _protector.Unprotect(id);
                 var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
                 studentAcademicsModel.SyllabusSessionList = await _courseDetailsService.GetAllSession();
                 studentAcademicsModel.ExamCenterList = await _instituteService.GetAllInstitute();
@@ -197,8 +197,6 @@ namespace CoreLayout.Controllers.Exam
             }
         }
 
-
-
         //Create Post Action Method
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -212,7 +210,7 @@ namespace CoreLayout.Controllers.Exam
                 studentAcademicsModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
                 studentAcademicsModel.IPAddress = HttpContext.Session.GetString("IPAddress");
                 var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
                 studentAcademicsModel.SyllabusSessionList = await _courseDetailsService.GetAllSession();
                 studentAcademicsModel.ExamCenterList = await _instituteService.GetAllInstitute();
@@ -289,7 +287,7 @@ namespace CoreLayout.Controllers.Exam
                                     where s.RollNo == data.RollNo
                                     select s).Distinct().ToList();
                 var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
                 data.CourseList = (from s in await _instituteService.AffiliationInstituteIntakeData()
                                    where s.InstituteID == data.InstituteID
@@ -330,7 +328,7 @@ namespace CoreLayout.Controllers.Exam
                                                      where s.RollNo == value.RollNo
                                                      select s).Distinct().ToList();
                 var instituteList = (from s in await _instituteService.AffiliationInstituteIntakeData()
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
                 studentAcademicsModel.CourseList = (from s in await _instituteService.AffiliationInstituteIntakeData()
                                                     where s.InstituteID == value.InstituteID

@@ -31,6 +31,7 @@ namespace CoreLayout.Models.Exam
         public int InstituteID { get; set; }
         public string InstituteName { get; set; }
         public List<InstituteModel> InstituteList { get; set; }
+        public string InstituteCodeWithName { get; set; }
 
         [Display(Name = "Course")]
         [Required(ErrorMessage = "Please select course")]

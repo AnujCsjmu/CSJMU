@@ -88,7 +88,7 @@ namespace CoreLayout.Controllers.Exam
 
                 //bind institute
                 var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
-                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                     select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
                 ViewBag.InstituteList = instituteList;
 
                 return View("~/Views/Exam/StudentAcademicsApproval/Index.cshtml", data);
@@ -101,12 +101,12 @@ namespace CoreLayout.Controllers.Exam
         }
 
         [HttpPost]
-        public async Task<IActionResult> IndexAsync(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId)
+        public async Task<IActionResult> IndexAsync(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId,string hdnRollNo)
         {
             //var data = (dynamic)null;
             //object data = null;
 
-            var data = await _studentAcademicsService.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId);
+            var data = await _studentAcademicsService.GetFilterStudentAcademicsData(hdnInstituteID, hdnCourseId, hdnSubjectId, hdnSemYearId, hdnRollNo);
             if (data != null)
             {
                 foreach (var _data in data)
@@ -119,7 +119,7 @@ namespace CoreLayout.Controllers.Exam
 
             //end
             var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
-                                 select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                                 select new { s.InstituteID, s.InstituteCodeWithName }).Distinct().ToList();
             ViewBag.InstituteList = instituteList;
             return View("~/Views/Exam/StudentAcademicsApproval/Index.cshtml", data);
         }

@@ -205,7 +205,8 @@ namespace CoreLayout.Models.Exam
            {
                 new SelectListItem { Selected = true ,Text = "--- Select Reservation Category ---", Value = "0" },
                 new SelectListItem { Selected = false, Text = "Freedom Fighter", Value = "Freedom Fighter" },
-                new SelectListItem { Selected = false, Text = "Others", Value = "Others" },
+                new SelectListItem { Selected = false, Text = "Defence Personnel", Value = "Defence Personnel" },
+                  new SelectListItem { Selected = false, Text = "Not Applicable", Value = "Not Applicable" },
             }, "Value", "Text");
         //gender
         [Display(Name = "Gender")]

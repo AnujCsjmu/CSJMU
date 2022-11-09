@@ -108,8 +108,7 @@
                                 <span asp-validation-for="EmailId" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                  
                         <div style="background-color:teal;">
                             <h4 style="color: white; font-size: 15px">Parent Information</h4>
                         </div>
@@ -134,8 +133,7 @@
                                 <span asp-validation-for="ParentMobileNo" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                  
                         <div style="background-color:teal;">
                             <h4 style="color: white; font-size: 15px">Corrrespondence Address</h4>
                         </div>
@@ -180,8 +178,7 @@
                                 <span asp-validation-for="CPinCode" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                  
                         <div style="background-color:teal;">
                             <h4 style="color: white; font-size: 15px">If Permanent Address Same As Corrrespondence Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h4>
                         </div>
@@ -226,15 +223,14 @@
                                 <span asp-validation-for="PPinCode" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                   
                         <div style="background-color:teal;">
                             <h4 style="color: white; font-size: 15px">Others Information</h4>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="Category"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="Category" asp-items="@(new SelectList(Model.CategoryList,"Name","Name"))">
+                                <select class="form-control" asp-for="Category" asp-items="@(new SelectList(Model.CategoryList,"Name","Name"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="Category" class="parsley-errors-list filled"></span>
@@ -257,7 +253,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ReligionID"> </label>@*<span class="tx-danger"> *</span>*@
-                                <select class="form-control select" asp-for="ReligionID" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
+                                <select class="form-control" asp-for="ReligionID" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="ReligionID" class="parsley-errors-list filled"></span>
@@ -314,13 +310,7 @@
                                 <span asp-validation-for="IsLiteral" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        @*<div class="col-md-3">
-            <div class="form-group">
-                <label asp-for="IsActive"> </label><span class="tx-danger"> *</span><br />
-                <input asp-for="IsActive" id="IsActive" name="IsActive" type="checkbox" checked />
-                <span asp-validation-for="IsActive" class="parsley-errors-list filled"></span>
-            </div>
-        </div>*@
+                       
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="IsDisability"> </label>@*<span class="tx-danger"> *</span>*@<br />
@@ -335,8 +325,7 @@
                                 <span asp-validation-for="DisabilityType" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                   
                         <div style="background-color:teal;">
                             <h4 style="color: white; font-size: 15px">Upload Documents</h4>
                         </div>
@@ -369,14 +358,12 @@
                                 <span asp-validation-for="IdProofNo" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                  
                         <div class="form-group">
                             <input id="submit" type="submit" class="btn btn-primary" value="Save" />
                             <a asp-action="Index" class="btn btn-success">Back to List</a>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>

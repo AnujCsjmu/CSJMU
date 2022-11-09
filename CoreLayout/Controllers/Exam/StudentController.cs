@@ -9,6 +9,7 @@ using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Category;
 using CoreLayout.Services.Masters.CourseDetails;
 using CoreLayout.Services.Masters.District;
+using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.Masters.Religion;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.Masters.Tehsil;
@@ -43,10 +44,12 @@ namespace CoreLayout.Controllers.Exam
         private readonly IReligionService _religionService;
         private readonly ICategoryService _categoryService;
         public readonly IConfiguration _configuration;
+        private readonly IInstituteService _instituteService;
         public StudentController(ILogger<StudentController> logger, IDataProtectionProvider provider, 
             IExamMasterService examMasterService, ICourseDetailsService courseDetailsService,
             IStudentService studentService, IStateService stateService, IDistrictService districtService,
-            ITehsilService tehsilService, IReligionService religionService, ICategoryService categoryService, IConfiguration configuration)
+            ITehsilService tehsilService, IReligionService religionService, ICategoryService categoryService, 
+            IConfiguration configuration, IInstituteService instituteService)
         {
             _logger = logger;
             _examMasterService = examMasterService;
@@ -60,6 +63,7 @@ namespace CoreLayout.Controllers.Exam
             _religionService = religionService;
             _categoryService = categoryService;
             _configuration = configuration;
+            _instituteService = instituteService;
         }
 
         [HttpGet]
@@ -86,6 +90,10 @@ namespace CoreLayout.Controllers.Exam
                 id = id + 1;
                 ViewBag.MaxStudentId = _protector.Protect(id.ToString());
                 //end
+                //bind institute
+                var instituteList = (from s in _instituteService.AffiliationInstituteIntakeData().Result
+                                     select new { s.InstituteID, s.InstituteName }).Distinct().ToList();
+                ViewBag.InstituteList = instituteList;
                 return View("~/Views/Exam/Student/Index.cshtml", data);
 
             }
@@ -476,7 +484,52 @@ namespace CoreLayout.Controllers.Exam
             return Json(GetTehsilList);
         }
 
-   
+        public async Task<JsonResult> GetCourse(int InstituteId)
+        {
+            var CourseList = (from instituteintake in await _instituteService.AffiliationInstituteIntakeData()
+                              where instituteintake.InstituteID == InstituteId
+                              select new SelectListItem()
+                              {
+                                  Text = instituteintake.CourseName,
+                                  Value = instituteintake.CourseId.ToString(),
+                              }).Distinct().ToList();
+
+            CourseList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(CourseList);
+        }
+        public async Task<JsonResult> GetBranch(int CourseId, int inst)
+        {
+            var BranchList = (from instituteintake in await _instituteService.All_AffiliationInstituteIntakeData()
+                              where instituteintake.CourseId == CourseId && instituteintake.InstituteID == inst
+                              select new SelectListItem()
+                              {
+                                  Text = instituteintake.BranchName,
+                                  Value = instituteintake.BranchId.ToString(),
+                              }).Distinct().ToList();
+
+            BranchList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(BranchList);
+        }
+        public async Task<JsonResult> GetStudent(string rollno)
+        {
+            var studentlist = (from data in await _studentService.GetAllStudentAsync()
+                               where data.RollNo == rollno.Trim()
+                               select new SelectListItem()
+                               {
+                                   Text = data.FullName,
+                                   Value = data.StudentID.ToString(),
+                               }).ToList();
+
+            return Json(studentlist);
+        }
         //[AcceptVerbs("GET", "POST")]
         //public IActionResult VerifyName(string examName)
         //{

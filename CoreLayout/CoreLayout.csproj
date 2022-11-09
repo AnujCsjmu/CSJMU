@@ -7,9 +7,6 @@
     	<TargetFramework>netcoreapp3.1</TargetFramework>
     	<!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
     </PropertyGroup>
-<ItemGroup>
-  <_ContentIncludedByDefault Remove="wwwroot\assets\anuj\sumoselect.css" />
-</ItemGroup>
 
 
   <ItemGroup>
@@ -34,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
-    <Folder Include="wwwroot\assets\anuj\" />
   </ItemGroup>
 
 

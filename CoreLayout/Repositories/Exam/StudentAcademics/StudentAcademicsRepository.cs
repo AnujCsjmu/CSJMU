@@ -163,7 +163,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
                 throw new Exception(ex.Message, ex);
             }
         }
-        public async Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId)
+        public async Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId,string rollno)
         {
             try
             {
@@ -175,6 +175,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
                     parameters.Add("@CourseId", hdnCourseId, DbType.Int32);
                     parameters.Add("@SubjectId", hdnSubjectId, DbType.Int32);
                     parameters.Add("@SemYearId", hdnSemYearId, DbType.Int32);
+                    parameters.Add("@RollNo", rollno, DbType.String);
                     parameters.Add("@Query", 6, DbType.Int32);
                     var list = await SqlMapper.QueryAsync<StudentAcademicsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
 

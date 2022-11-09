@@ -40,7 +40,7 @@
     }
 </div>
 <!--Navbar-->
-<!--Navbar-->
+
 <form action="Index" method="post">
     <div class="responsive-background">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -51,7 +51,7 @@
                             <div class="col-md-6 col-xl-3">
                                 <div class="form-group mb-lg-0">
                                     <label class="">Institute :</label>
-                                    <select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
+                                    <select class="form-control" id="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteCodeWithName"))">
                                         <option selected="selected" value="">--Select-- </option>
                                     </select>
                                     @*@Html.DropDownList("InstituteID", new SelectList(ViewBag.InstituteList, "InstituteID", "InstituteName"), new { @class = "form-control" })*@
@@ -93,25 +93,33 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-6 col-xl-3">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">Roll No. :</label>
+                                    <input type="text" class="form-control" id="RollNo" />
+                                    @*@Html.DropDownList("SubjectId", new SelectList(string.Empty, "BranchID", "BranchName"), new { @class = "form-control" })*@
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <hr>
                 <div class="text-end">
-                    <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" />
+                    <input asp-action="Index" type="submit" class="btn btn-primary" value="Apply" id="Index" />
                     <input asp-action="Reset" type="submit" class="btn btn-secondary" value="Reset" />
                     <input type='hidden' id='hdnInstituteID' name="hdnInstituteID" value=''>
                     <input type='hidden' id='hdnCourseId' name="hdnCourseId" value=''>
                     <input type='hidden' id='hdnSubjectId' name="hdnSubjectId" value=''>
                     <input type='hidden' id='hdnSemYearId' name="hdnSemYearId" value=''>
                     <input type='hidden' id='hdnSyllabusSessionId' name="hdnSyllabusSessionId" value=''>
+                    <input type='hidden' id='hdnRollNo' name="hdnRollNo" value=''>
                 </div>
             </div>
         </div>
     </div>
 </form>
 <!--End Navbar -->
-<!--End Navbar -->
+
 <!-- Row -->
 <div class="row">
     <div class="col-lg-12">
@@ -171,7 +179,7 @@
                                         @sno
                                     </td>
                                     <td>@item.FullName</td>
-                                    <td>@item.InstituteName</td>
+                                    <td>@item.InstituteCodeWithName</td>
                                     <td>@item.CourseName</td>
                                     <td>@item.SubjectName</td>
                                     <td>@item.SemYearId <br />@item.SyllabusSessionName</td>
@@ -370,6 +378,17 @@
         $('#SemYearId').bind('change', function () {
             $('#hdnSemYearId').val($(this).val());
 
+        });
+        var getTxtValue = $("#RollNo").val(); // this gives textbox value
+        $("#hdnRollNo").val(getTxtValue); // this will set hidden field value
+    </script>
+    @*set rollno in hidden field *@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Index").on("click", function () {
+                var getTxtValue = $("#RollNo").val(); // this gives textbox value
+                $("#hdnRollNo").val(getTxtValue); // this will set hidden field value
+            });
         });
     </script>
 }

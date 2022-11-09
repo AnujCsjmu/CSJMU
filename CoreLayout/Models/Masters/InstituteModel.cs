@@ -220,6 +220,8 @@ namespace CoreLayout.Models.Masters
         public int? BranchId { get; set; }
 
         public string BranchName { get; set; }
+
+        public string InstituteCodeWithName { get; set; }
     }
 
 

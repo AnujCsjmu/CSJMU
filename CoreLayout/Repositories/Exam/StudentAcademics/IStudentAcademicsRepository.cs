@@ -6,7 +6,7 @@ namespace CoreLayout.Repositories.Exam.StudentAcademics
 {
     public interface IStudentAcademicsRepository : IRepository<StudentAcademicsModel>
     {
-        Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId);
+        Task<List<StudentAcademicsModel>> GetFilterStudentAcademicsData(int? hdnInstituteID, int? hdnCourseId, int? hdnSubjectId, int? hdnSemYearId,string rollno);
         Task<int> InsertUpdateApprovalAsync(StudentAcademicsModel entity);
     }
 }

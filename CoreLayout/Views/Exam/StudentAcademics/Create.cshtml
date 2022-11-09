@@ -48,7 +48,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="InstituteID"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteName"))">
+                                <select class="form-control select" asp-for="InstituteID" asp-items="@(new SelectList(ViewBag.InstituteList,"InstituteID","InstituteCodeWithName"))">
                                     <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                 </select>
                                 <span asp-validation-for="InstituteID" class="parsley-errors-list filled"></span>
