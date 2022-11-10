@@ -68,7 +68,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="InstituteID"> </label><span class="tx-danger"> *</span>
-                                <select id="InstituteIds" style="width:500px" class="js-select2" multiple="multiple" asp-for="InstituteList" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))" disabled>
+                                <select multiple="multiple" class="group-filter" asp-for="InstituteID" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))">
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="InstituteID"></span>
                             </div>
@@ -156,10 +156,9 @@
                         $("#InstituteIds").empty();
                         if (data.length > 0) {
                             $.each(data, function (i, institute) {
-
                                 items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
                             });
-                            $('#InstituteIds').html(items);
+                            $('#InstituteIds').html(items1);
                             console.log(items);
                         }
 
@@ -172,7 +171,7 @@
         });
     </script>
 
-    <script>
+    @*<script>
         $(".js-select2").select2({
             closeOnSelect: false,
             placeholder: "Select an option",
@@ -274,7 +273,7 @@
         .select-icon .select2-search--dropdown {
             display: none;
         }
-    </style>
+    </style>*@
 
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
 

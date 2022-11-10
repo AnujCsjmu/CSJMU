@@ -1,0 +1,335 @@
+﻿@model CoreLayout.Models.Exam.SubjectProfileModel
+@{
+    ViewData["Title"] = "Create";
+}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Create SubjectProfile</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">SubjectProfile</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
+
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
+                @*<div>
+                        <h6 class="card-title mb-1">Create State</h6>
+                        <hr>
+                    </div>*@
+
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ExamId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="ExamId" asp-items="@(new SelectList(Model.ExamList,"ExamId","ExamName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span asp-validation-for="ExamId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(string.Empty,"CourseId","CourseName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="CourseId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FacultyID"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="FacultyID" asp-items="@(new SelectList(string.Empty,"FacultyID","FacultyName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="FacultyID" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div style="font-weight:bold; color:red;font-size:large; visibility:hidden" id="div2major" class="blink_me">
+                                    Two Major subject will be from <label></label>
+                                </div>
+                                <div style="background-color:teal; height:35px; vertical-align:middle">
+                                    <h4 style="color: white; font-size: 15px">Will you add 3rd Major subject from? *</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="radio" name="SameFaculty" value="1">
+                                <label id="lblSameFaculty">Same Faculty</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="radio" name="SameFaculty" value="2">
+                                <label>Other Faculty</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="div3major" style="visibility:hidden">
+                            <div class="form-group">
+                                <label asp-for="OtherFacultyId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="OtherFacultyId" asp-items="@(new SelectList(string.Empty,"OtherFacultyId","OtherFacultyName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="OtherFacultyId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div style="background-color:teal; height:35px; vertical-align:middle">
+                                    <h4 style="color: white; font-size: 15px">Select Major Subject as per nep rule of Major subject *</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"SubjectId","SubjectName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"SubjectId","SubjectName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div style="background-color:teal; height:35px; vertical-align:middle">
+                                    <h4 style="color: white; font-size: 15px">Do you want to add MINOR in 1st semester? *</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input type="radio" name="AddMinorin1Sem" value="1">
+                                <label id="lblSameFaculty">Yes</label>
+                                <input type="radio" name="AddMinorin1Sem" value="2">
+                                <label id="lblSameFaculty">No</label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="divMinorFacultyMsg" style="visibility:hidden">
+                            <div class="form-group">
+                                <div style="font-weight:bold; color:red;font-size:medium; visibility:hidden" id="div2major" class="blink_me">
+                                    एकल संबद्धता वाले महाविद्यालय "Single Faculty College" ऑप्शन को सेलेक्ट करें
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="divMinorFaculty" style="visibility:hidden">
+                            <div class="form-group">
+                                <label asp-for="MinorFacultyId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="MinorFacultyId" asp-items="@(new SelectList(string.Empty,"MinorFacultyId","MinorFacultyName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="MinorFacultyId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="divMinorSubject" style="visibility:hidden">
+                            <div class="form-group">
+                                <label asp-for="MinorSubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="MinorSubjectId" asp-items="@(new SelectList(string.Empty,"MinorSubjectId","MinorSubjectName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="MinorSubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div style="background-color:teal; height:35px; vertical-align:middle">
+                                    <h4 style="color: white; font-size: 15px">Select Vocational/Co-curricular</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VocationalSubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="VocationalSubjectId" asp-items="@(new SelectList(string.Empty,"VocationalSubjectId","VocationalSubjectName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="VocationalSubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="CoCurricularSubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control select" asp-for="CoCurricularSubjectId" asp-items="@(new SelectList(string.Empty,"CoCurricularSubjectId","CoCurricularSubjectName"))">
+                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                </select>
+                                <span asp-validation-for="CoCurricularSubjectId" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-primary" value="Save" />
+                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    @*bind intake course from exam*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ExamId").on("change", function () {
+                    $("#CourseId").empty();
+                    var ddlsource = "#ExamId";
+                    var url = '@Url.Content("~/")' + "SubjectProfile/GetCourse?Examid="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $("#CourseId").empty();
+                        $.each(data, function (i, course) {
+                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                    });
+                        $('#CourseId').html(items);
+                        console.log(items)
+                });
+                });
+            });
+    </script>
+    @*bind intake faculty from course*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#CourseId").on("change", function () {
+                    var ddlsource = "#CourseId";
+                    var ddlsource1 = "#ExamId";
+                    var url = '@Url.Content("~/")' + "SubjectProfile/GetFaculty?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+
+                    //bind faculty
+                    if (url != null) {
+                        $.getJSON(url, function (data) {
+                            var items = '';
+                            $("#FacultyID").empty();
+                            $.each(data, function (i, faculty) {
+                                items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                            });
+                            $('#FacultyID').html(items);
+                        });
+                    }
+                    //bind vocational subject
+                    var url1 = '@Url.Content("~/")' + "SubjectProfile/GetVocationalSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                    if (url1 != null) {
+                        $.getJSON(url1, function (data1) {
+                            var items1 = '';
+                            $("#VocationalSubjectId").empty();
+                            $.each(data1, function (i, vocsubject) {
+                                items1 += "<option value ='" + vocsubject.value + "'>" + vocsubject.text + "</option>";
+                            });
+                            $('#VocationalSubjectId').html(items1);
+                        });
+                    }
+                    //bind Curricular subject
+                    var url2 = '@Url.Content("~/")' + "SubjectProfile/GetCurricularSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                    if (url2 != null) {
+                        $.getJSON(url2, function (data2) {
+                            var items2 = '';
+                            $("#CoCurricularSubjectId").empty();
+                            $.each(data2, function (i, cursubject) {
+                                items2 += "<option value ='" + cursubject.value + "'>" + cursubject.text + "</option>";
+                            });
+                            $('#CoCurricularSubjectId').html(items2);
+                        });
+                    }
+                });
+            });
+    </script>
+    @*faculty change chnage text of same faculty and hide/show div*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name$='cars']").click(function () {
+                $("#lblSameFaculty").empty();
+                var text = $("#FacultyID option:selected").text();
+                var value = $("#FacultyID option:selected").val();
+
+                if (value != '') {
+                    $("#lblSameFaculty").text(text);
+                    $('#div2major').css('visibility', 'visible');
+                }
+                else {
+                    $("#lblSameFaculty").text('Same Facuty');
+                    $('#div2major').css('visibility', 'hidden');
+                }
+            });
+        });
+    </script>
+
+    @*same/other faculty radio click then hide/show div*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name$='SameFaculty']").click(function () {
+                var value = $(this).val();
+                alert(value);
+                if (value == 1) {
+                    $('#div3major').css('visibility', 'hidden');
+                }
+                else if (value == 2) {
+                    $('#div3major').css('visibility', 'visible');
+                    //bind other faculty
+                    $("#OtherFacultyId").empty();
+                    var ddlsource = "#ExamId";
+                    var url = '@Url.Content("~/")' + "SubjectProfile/GetOtherFaculty?Examid=" + $(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                        var items = '';
+                        $("#OtherFacultyId").empty();
+                        $.each(data, function (i, faculty) {
+                            items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                        });
+                        $('#OtherFacultyId').html(items);
+                    });
+                }
+            });
+        });
+    </script>
+
+    @* add MINOR in 1st semester radio click then hide/show div*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input[name$='AddMinorin1Sem']").click(function () {
+                var value = $(this).val();
+                alert(value);
+                if (value == 1) {
+                    $('#divMinorFaculty').css('visibility', 'hidden');
+                    $('#divMinorSubject').css('visibility', 'hidden');
+                    $('#divMinorFacultyMsg').css('visibility', 'hidden');
+
+                }
+                else if (value == 2) {
+                    $('#divMinorFaculty').css('visibility', 'visible');
+                    $('#divMinorSubject').css('visibility', 'visible');
+                    $('#divMinorFacultyMsg').css('visibility', 'visible');
+                }
+            });
+        });
+    </script>
+
+    <script>
+        (function blink() {
+            $('.blink_me').fadeOut(500).fadeIn(500, blink);
+        })();
+    </script>
+}

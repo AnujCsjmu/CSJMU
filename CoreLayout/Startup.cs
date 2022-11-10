@@ -11,6 +11,7 @@ using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Exam.Student;
 using CoreLayout.Repositories.Exam.StudentAcademicQPDetails;
 using CoreLayout.Repositories.Exam.StudentAcademics;
+using CoreLayout.Repositories.Exam.SubjectProfile;
 using CoreLayout.Repositories.Masters.Branch;
 using CoreLayout.Repositories.Masters.Category;
 using CoreLayout.Repositories.Masters.City;
@@ -62,6 +63,7 @@ using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Exam.Student;
 using CoreLayout.Services.Exam.StudentAcademicQPDetails;
 using CoreLayout.Services.Exam.StudentAcademics;
+using CoreLayout.Services.Exam.SubjectProfile;
 using CoreLayout.Services.Masters.Branch;
 using CoreLayout.Services.Masters.Category;
 using CoreLayout.Services.Masters.City;
@@ -399,9 +401,9 @@ namespace CoreLayout
             services.AddScoped<IStudentAcademicQPDetailsService, StudentAcademicQPDetailsService>();
             services.AddScoped<IStudentAcademicQPDetailsRepository, StudentAcademicQPDetailsRepository>();
 
-            //Student Academics Approval
-           // services.AddScoped<IStudentAcademicsApprovalService, StudentAcademicsApprovalService>();
-            //services.AddScoped<IStudentAcademicsApprovalRepository, StudentAcademicsApprovalRepository>();
+            //subject Profile
+            services.AddScoped<ISubjectProfileService, SubjectProfileService>();
+            services.AddScoped<ISubjectProfileRepository, SubjectProfileRepository>();
 
             //add for encrypt value
             services.AddDataProtection();

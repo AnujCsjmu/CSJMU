@@ -106,16 +106,22 @@ namespace CoreLayout.Controllers.UserManagement
         public async Task<IActionResult> Create()
         {
             RegistrationModel registrationModel = new RegistrationModel();
-            registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
+           
             int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
             int UserId = (int)HttpContext.Session.GetInt32("UserId");
+           
             if (RoleId == 1)
             {
                 registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
             }
             else
             {
+                int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
                 registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                registrationModel.InstituteList = (from s in await _registrationService.GetAllInstituteAsync()
+                                                   where s.InstituteId == SessionInstituteId
+                                                   select s).ToList();
             }
 
             //BindInstitute();
@@ -129,17 +135,23 @@ namespace CoreLayout.Controllers.UserManagement
         {
             try
             {
-                registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
+                
                 // registrationModel.RoleList = await _roleService.GetAllRoleAsync();
                 int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
+
                 if (RoleId == 1)
                 {
                     registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                    registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
                 }
                 else
                 {
+                    int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
                     registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                    registrationModel.InstituteList = (from s in await _registrationService.GetAllInstituteAsync()
+                                                       where s.InstituteId == SessionInstituteId
+                                                       select s).ToList();
                 }
                 ///int emailAlreadyExit = _commonController.emailAlreadyExits(registrationModel.EmailID);
                 //int mobileAlreadyExit = _commonController.mobileAlreadyExits(registrationModel.MobileNo);
@@ -206,15 +218,18 @@ namespace CoreLayout.Controllers.UserManagement
             int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
             int UserId = (int)HttpContext.Session.GetInt32("UserId");
             var Data = await _registrationService.GetRegistrationByIdAsync(id);
-            Data.InstituteList = await _registrationService.GetAllInstituteAsync();
             //Data.RoleList = await _roleService.GetAllRoleAsync();
             if (RoleId == 1)
             {
                 Data.RoleList = await _roleService.GetAllRoleAsync();
+                Data.InstituteList = await _registrationService.GetAllInstituteAsync();
             }
             else
             {
                 Data.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                Data.InstituteList = (from s in await _registrationService.GetAllInstituteAsync()
+                                      where s.InstituteId == Data.InstituteId
+                                      select s).ToList();
             }
             if (Data == null)
             {
@@ -240,17 +255,21 @@ namespace CoreLayout.Controllers.UserManagement
         {
             try
             {
-                registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
+               
                 //registrationModel.RoleList = await _roleService.GetAllRoleAsync();
                 int RoleId = (int)HttpContext.Session.GetInt32("RoleId");
                 int UserId = (int)HttpContext.Session.GetInt32("UserId");
                 if (RoleId == 1)
                 {
                     registrationModel.RoleList = await _roleService.GetAllRoleAsync();
+                    registrationModel.InstituteList = await _registrationService.GetAllInstituteAsync();
                 }
                 else
                 {
                     registrationModel.RoleList = await _roleService.GetRoleToRoleMappingByRoleAsync(RoleId);
+                    registrationModel.InstituteList = (from s in await _registrationService.GetAllInstituteAsync()
+                                                       where s.InstituteId == registrationModel.InstituteId
+                                                       select s).ToList();
                 }
                 registrationModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
                 registrationModel.IPAddress = HttpContext.Session.GetString("IPAddress");

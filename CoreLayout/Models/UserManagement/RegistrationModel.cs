@@ -69,6 +69,7 @@ namespace CoreLayout.Models.UserManagement
         //[Required(ErrorMessage = "Please enter institute name")]
         public int InstituteId { get; set; }
         public string InstituteName { get; set; }
+        public string InstituteCode { get; set; }
         public string IsPasswordChange { get; set; }
         public int ReturnUserId { get; set; }
         public int UserRoleId { get; set; }

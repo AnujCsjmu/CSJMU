@@ -56,6 +56,15 @@
             <div class="container-fluid main-container">
                 <div class="main-header-left sidemenu">
                     <a class="main-header-menu-icon" href="" id="mainSidebarToggle"><span></span></a>
+                    <h3>
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("RoleId") == 4 || HttpContextAccessor.HttpContext.Session.GetInt32("RoleId") == 24)
+                        {
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteCode") != null && HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteName") != null)
+                            {
+                                @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteCode") @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteName")
+                            }
+                        }
+                    </h3>
                 </div>
                 <a class="main-header-menu-icon  horizontal  d-lg-none" href="" id="mainNavShow"><span></span></a>
                 <div class="main-header-left horizontal">
