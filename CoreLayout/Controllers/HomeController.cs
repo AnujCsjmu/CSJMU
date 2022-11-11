@@ -72,54 +72,112 @@ namespace CoreLayout.Controllers
                 {
                     if (loginModel.LoginID != null && loginModel.Password != null)
                     {
-                        var getuser = _userService.GetUserDetailByLoginId(loginModel.LoginID);
-                        if (getuser.Result != null)
+                        var abc = loginModel.LoginID;
+                        bool exists = abc.IndexOf("~", StringComparison.CurrentCultureIgnoreCase) > -1;
+                        if (exists == false)
                         {
-                            if (String.Compare(ComputeSaltedHash(loginModel.Password, getuser.Result.Salt), getuser.Result.SaltedHash) == 0)
+                            var getuser = _userService.GetUserDetailByLoginId(loginModel.LoginID);
+                            if (getuser.Result != null)
                             {
-                                if (getuser.Result.IsUserActive == 1 && getuser.Result.IsRoleActive == 1)
+                                if (String.Compare(ComputeSaltedHash(loginModel.Password, getuser.Result.Salt), getuser.Result.SaltedHash) == 0)
                                 {
-                                    ClaimsIdentity identity = null;
-                                    bool isAuthenticated = false;
-
-                                    //Create the identity for the user  
-                                    identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, getuser.Result.LoginID), new Claim(ClaimTypes.Role, getuser.Result.RoleName) }, CookieAuthenticationDefaults.AuthenticationScheme);
-                                    isAuthenticated = true;
-                                    if (isAuthenticated)
+                                    if (getuser.Result.IsUserActive == 1 && getuser.Result.IsRoleActive == 1)
                                     {
-                                        string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                                        var principal = new ClaimsPrincipal(identity);
-                                        var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                                        HttpContext.Session.SetString("Name", getuser.Result.UserName);
-                                        HttpContext.Session.SetInt32("Id", getuser.Result.UserID);
-                                        HttpContext.Session.SetInt32("UserId", getuser.Result.UserID);
-                                        HttpContext.Session.SetInt32("RoleId", getuser.Result.RoleId);
-                                        HttpContext.Session.SetInt32("SessionInstituteId", getuser.Result.InstituteId);
-                                        HttpContext.Session.SetString("SessionInstituteName", getuser.Result.InstituteName);
-                                        HttpContext.Session.SetString("SessionInstituteCode", getuser.Result.InstituteCode);
-                                        HttpContext.Session.SetString("IPAddress", ipAddress);
-                                        return RedirectToAction("Index", "Dashboard");
+                                        ClaimsIdentity identity = null;
+                                        bool isAuthenticated = false;
+
+                                        //Create the identity for the user  
+                                        identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, getuser.Result.LoginID), new Claim(ClaimTypes.Role, getuser.Result.RoleName) }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                        isAuthenticated = true;
+                                        if (isAuthenticated)
+                                        {
+                                            string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                                            var principal = new ClaimsPrincipal(identity);
+                                            var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                            HttpContext.Session.SetString("Name", getuser.Result.UserName);
+                                            HttpContext.Session.SetInt32("Id", getuser.Result.UserID);
+                                            HttpContext.Session.SetInt32("UserId", getuser.Result.UserID);
+                                            HttpContext.Session.SetInt32("RoleId", getuser.Result.RoleId);
+                                            HttpContext.Session.SetInt32("SessionInstituteId", getuser.Result.InstituteId);
+                                            HttpContext.Session.SetString("SessionInstituteName", getuser.Result.InstituteName);
+                                            HttpContext.Session.SetString("SessionInstituteCode", getuser.Result.InstituteCode);
+                                            HttpContext.Session.SetString("IPAddress", ipAddress);
+                                            return RedirectToAction("Index", "Dashboard");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //errormsg = "User is not active!";
+                                        ModelState.AddModelError("", "User is not active!");
+                                        //return View();
                                     }
                                 }
                                 else
                                 {
-                                    //errormsg = "User is not active!";
-                                    ModelState.AddModelError("", "User is not active!");
+                                    ModelState.AddModelError("", "Invalid password!");
+                                    // errormsg = "Invalid password!!";
                                     //return View();
                                 }
                             }
                             else
                             {
-                                ModelState.AddModelError("", "Invalid password!");
-                                // errormsg = "Invalid password!!";
+                                ModelState.AddModelError("", "Invalid UserName or Password");
                                 //return View();
                             }
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Invalid UserName or Password");
-                            //return View();
+                            //collage login with admin id and password
+                            var loginid = loginModel.LoginID;
+                            var stringAfterChar = loginid.Split('~').Last();
+                            string stringBeforeChar = loginid.Split('~').First();
+
+                            var getuser = _userService.GetUserDetailByLoginId(stringAfterChar);
+                            var getadminuser = _userService.GetUserDetailByLoginId(stringBeforeChar);
+                            if (getuser.Result != null && getadminuser.Result !=null)
+                            {
+                                if (String.Compare(ComputeSaltedHash(loginModel.Password, getadminuser.Result.Salt), getadminuser.Result.SaltedHash) == 0)
+                                {
+                                    if (getuser.Result.IsUserActive == 1 && getuser.Result.IsRoleActive == 1 && getadminuser.Result.IsUserActive == 1 && getadminuser.Result.IsRoleActive == 1)
+                                    {
+                                        ClaimsIdentity identity = null;
+                                        bool isAuthenticated = false;
+
+                                        //Create the identity for the user  
+                                        identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, getuser.Result.LoginID), new Claim(ClaimTypes.Role, getuser.Result.RoleName) }, CookieAuthenticationDefaults.AuthenticationScheme);
+                                        isAuthenticated = true;
+                                        if (isAuthenticated)
+                                        {
+                                            string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                                            var principal = new ClaimsPrincipal(identity);
+                                            var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                            HttpContext.Session.SetString("Name", getuser.Result.UserName);
+                                            HttpContext.Session.SetInt32("Id", getuser.Result.UserID);
+                                            HttpContext.Session.SetInt32("UserId", getuser.Result.UserID);
+                                            HttpContext.Session.SetInt32("RoleId", getuser.Result.RoleId);
+                                            HttpContext.Session.SetInt32("SessionInstituteId", getuser.Result.InstituteId);
+                                            HttpContext.Session.SetString("SessionInstituteName", getuser.Result.InstituteName);
+                                            HttpContext.Session.SetString("SessionInstituteCode", getuser.Result.InstituteCode);
+                                            HttpContext.Session.SetString("IPAddress", ipAddress);
+                                            return RedirectToAction("Index", "Dashboard");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //errormsg = "User is not active!";
+                                        ModelState.AddModelError("", "User is not active!");
+                                        //return View();
+                                    }
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("", "Invalid password!");
+                                    // errormsg = "Invalid password!!";
+                                    //return View();
+                                }
+                            }
                         }
+
                     }
                     else
                     {
@@ -282,7 +340,7 @@ namespace CoreLayout.Controllers
                     bool sendemail = _commonController.SendRegistraionMail(registrationModel.UserName, registrationModel.EmailID, registrationModel.LoginID, registrationModel.Password);
                     registrationModel.MobileReminder = sendmessage.ToString();
                     registrationModel.EmailReminder = sendemail.ToString();
-                    var res =await _registrationService.InsertEmailSMSHistory(registrationModel);
+                    var res = await _registrationService.InsertEmailSMSHistory(registrationModel);
                     if (res.Equals(1))
                     {
                         ModelState.AddModelError("", "Password send your's registered mobile no and email id");

@@ -65,10 +65,11 @@
                                 <span asp-validation-for="DisplayInCollage" class="parsley-errors-list filled"></span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                       
+                        <div class="col-md-6" id="InstituteIdsUl">
                             <div class="form-group">
                                 <label asp-for="InstituteID"> </label><span class="tx-danger"> *</span>
-                                <select multiple="multiple" class="group-filter" asp-for="InstituteID" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))">
+                                <select id="InstituteIds" multiple="multiple" class="group-filter" asp-for="InstituteID" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))">
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="InstituteID"></span>
                             </div>
@@ -153,12 +154,19 @@
                     var url = '@Url.Content("~/")' + "Circular/GetInstitute?districtId=" + arr + "&courseid=" + arr1;
                     $.getJSON(url, function (data) {
                         var items = '';
+                        var ul_li = '';
+                        
                         $("#InstituteIds").empty();
                         if (data.length > 0) {
-                            $.each(data, function (i, institute) {
-                                items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
-                            });
-                            $('#InstituteIds').html(items1);
+                            //ul_li += '<li class="ms-select-all"><label><input type="checkbox" data-name="selectAllCourseID"><span>[Select all]</span></label></li >';
+                            //$.each(data, function (i, institute) {
+                            //    items += "<option value ='" + institute.value + "'>" + institute.text + "</option>";
+                            //    ul_li += '<li class="multiple " style="width: 80px;"><label class="" >' +
+                            //        '<input type="checkbox" value="' + institute.value + '" data-key="option_' + institute.value + '" data-name="selectItemCourseID">' +
+                            //        '<span>' + institute.text + '</span></label></li >';
+                            //});
+                            $('#InstituteIds').html(items);
+                            //$('#InstituteIdsUl ul').html(ul_li)
                             console.log(items);
                         }
 
