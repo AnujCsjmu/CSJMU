@@ -58,14 +58,14 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <div style="font-weight:bold; color:red;font-size:large; visibility:hidden" id="div2major" class="blink_me">
-                                    Two Major subject will be from <label></label>
-                                </div>
-                                <div style="background-color:teal; height:35px; vertical-align:middle">
-                                    <h4 style="color: white; font-size: 15px">Will you add 3rd Major subject from? *</h4>
+                                <div style="font-weight: bold; color: red; font-size: medium; visibility: hidden" id="div2major" class="blink_me">
+                                        Two Major subject will be from <label id="lbltwomajaorsubject"></label>
+                                    </div>
+                                    <div style="background-color:teal; height:35px; vertical-align:middle">
+                                        <h4 style="color: white; font-size: 15px">Will you add 3rd Major subject from? *</h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <input type="radio" name="SameFaculty" value="1">
@@ -129,7 +129,7 @@
                         </div>
                         <div class="col-md-12" id="divMinorFacultyMsg" style="visibility:hidden">
                             <div class="form-group">
-                                <div style="font-weight:bold; color:red;font-size:medium; visibility:hidden" id="div2major" class="blink_me">
+                                <div style="font-weight:bold; color:red;font-size:medium;" class="blink_me">
                                     एकल संबद्धता वाले महाविद्यालय "Single Faculty College" ऑप्शन को सेलेक्ट करें
                                 </div>
 
@@ -197,17 +197,18 @@
                 $("#ExamId").on("change", function () {
                     $("#CourseId").empty();
                     var ddlsource = "#ExamId";
-                    var url = '@Url.Content("~/")' + "SubjectProfile/GetCourse?Examid="+$(ddlsource).val();
-
-                    $.getJSON(url, function (data) {
-                    var items = '';
-                        $("#CourseId").empty();
-                        $.each(data, function (i, course) {
-                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
-                    });
-                        $('#CourseId').html(items);
-                        console.log(items)
-                });
+                    if ($(ddlsource).val() != null) {
+                        var url = '@Url.Content("~/")' + "SubjectProfile/GetCourse?Examid=" + $(ddlsource).val();
+                        $.getJSON(url, function (data) {
+                            var items = '';
+                            $("#CourseId").empty();
+                            $.each(data, function (i, course) {
+                                items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                            });
+                            $('#CourseId').html(items);
+                            console.log(items)
+                        });
+                    }
                 });
             });
     </script>
@@ -217,42 +218,43 @@
                 $("#CourseId").on("change", function () {
                     var ddlsource = "#CourseId";
                     var ddlsource1 = "#ExamId";
-                    var url = '@Url.Content("~/")' + "SubjectProfile/GetFaculty?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
-
-                    //bind faculty
-                    if (url != null) {
-                        $.getJSON(url, function (data) {
-                            var items = '';
-                            $("#FacultyID").empty();
-                            $.each(data, function (i, faculty) {
-                                items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                    if ($(ddlsource).val() != null && $(ddlsource1).val() != null) {
+                        var url = '@Url.Content("~/")' + "SubjectProfile/GetFaculty?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                        //bind faculty
+                        if (url != null) {
+                            $.getJSON(url, function (data) {
+                                var items = '';
+                                $("#FacultyID").empty();
+                                $.each(data, function (i, faculty) {
+                                    items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                                });
+                                $('#FacultyID').html(items);
                             });
-                            $('#FacultyID').html(items);
-                        });
-                    }
-                    //bind vocational subject
-                    var url1 = '@Url.Content("~/")' + "SubjectProfile/GetVocationalSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
-                    if (url1 != null) {
-                        $.getJSON(url1, function (data1) {
-                            var items1 = '';
-                            $("#VocationalSubjectId").empty();
-                            $.each(data1, function (i, vocsubject) {
-                                items1 += "<option value ='" + vocsubject.value + "'>" + vocsubject.text + "</option>";
+                        }
+                        //bind vocational subject
+                        var url1 = '@Url.Content("~/")' + "SubjectProfile/GetVocationalSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                        if (url1 != null) {
+                            $.getJSON(url1, function (data1) {
+                                var items1 = '';
+                                $("#VocationalSubjectId").empty();
+                                $.each(data1, function (i, vocsubject) {
+                                    items1 += "<option value ='" + vocsubject.value + "'>" + vocsubject.text + "</option>";
+                                });
+                                $('#VocationalSubjectId').html(items1);
                             });
-                            $('#VocationalSubjectId').html(items1);
-                        });
-                    }
-                    //bind Curricular subject
-                    var url2 = '@Url.Content("~/")' + "SubjectProfile/GetCurricularSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
-                    if (url2 != null) {
-                        $.getJSON(url2, function (data2) {
-                            var items2 = '';
-                            $("#CoCurricularSubjectId").empty();
-                            $.each(data2, function (i, cursubject) {
-                                items2 += "<option value ='" + cursubject.value + "'>" + cursubject.text + "</option>";
+                        }
+                        //bind Curricular subject
+                        var url2 = '@Url.Content("~/")' + "SubjectProfile/GetCurricularSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                        if (url2 != null) {
+                            $.getJSON(url2, function (data2) {
+                                var items2 = '';
+                                $("#CoCurricularSubjectId").empty();
+                                $.each(data2, function (i, cursubject) {
+                                    items2 += "<option value ='" + cursubject.value + "'>" + cursubject.text + "</option>";
+                                });
+                                $('#CoCurricularSubjectId').html(items2);
                             });
-                            $('#CoCurricularSubjectId').html(items2);
-                        });
+                        }
                     }
                 });
             });
@@ -260,17 +262,19 @@
     @*faculty change chnage text of same faculty and hide/show div*@
     <script type="text/javascript">
         $(document).ready(function () {
-            $("input[name$='cars']").click(function () {
+            $("#FacultyID").on("change", function () {
                 $("#lblSameFaculty").empty();
                 var text = $("#FacultyID option:selected").text();
                 var value = $("#FacultyID option:selected").val();
 
                 if (value != '') {
                     $("#lblSameFaculty").text(text);
+                    $("#lbltwomajaorsubject").text(text);
                     $('#div2major').css('visibility', 'visible');
                 }
                 else {
                     $("#lblSameFaculty").text('Same Facuty');
+                    $("#lbltwomajaorsubject").text('');
                     $('#div2major').css('visibility', 'hidden');
                 }
             });
@@ -288,19 +292,21 @@
                 }
                 else if (value == 2) {
                     $('#div3major').css('visibility', 'visible');
+
                     //bind other faculty
                     $("#OtherFacultyId").empty();
                     var ddlsource = "#ExamId";
-                    var url = '@Url.Content("~/")' + "SubjectProfile/GetOtherFaculty?Examid=" + $(ddlsource).val();
-
-                    $.getJSON(url, function (data) {
-                        var items = '';
-                        $("#OtherFacultyId").empty();
-                        $.each(data, function (i, faculty) {
-                            items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                    if ($(ddlsource).val() != null) {
+                        var url = '@Url.Content("~/")' + "SubjectProfile/GetOtherFaculty?Examid=" + $(ddlsource).val();
+                        $.getJSON(url, function (data) {
+                            var items = '';
+                            $("#OtherFacultyId").empty();
+                            $.each(data, function (i, faculty) {
+                                items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                            });
+                            $('#OtherFacultyId').html(items);
                         });
-                        $('#OtherFacultyId').html(items);
-                    });
+                    }
                 }
             });
         });
@@ -313,15 +319,14 @@
                 var value = $(this).val();
                 alert(value);
                 if (value == 1) {
-                    $('#divMinorFaculty').css('visibility', 'hidden');
-                    $('#divMinorSubject').css('visibility', 'hidden');
-                    $('#divMinorFacultyMsg').css('visibility', 'hidden');
-
-                }
-                else if (value == 2) {
                     $('#divMinorFaculty').css('visibility', 'visible');
                     $('#divMinorSubject').css('visibility', 'visible');
                     $('#divMinorFacultyMsg').css('visibility', 'visible');
+                }
+                else if (value == 2) {
+                    $('#divMinorFaculty').css('visibility', 'hidden');
+                    $('#divMinorSubject').css('visibility', 'hidden');
+                    $('#divMinorFacultyMsg').css('visibility', 'hidden');
                 }
             });
         });
