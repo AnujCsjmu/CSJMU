@@ -46,6 +46,7 @@ namespace CoreLayout.Controllers.Exam
             {
                 //start encrypt id for update,delete & details
                 var data = await _subjectProfileService.GetAllSubjectProfileAsync();
+                ViewBag.Subjects = await _subjectProfileService.GetSubjectFromSubjectProfileMapping();
                 foreach (var _data in data)
                 {
                     var stringId = _data.SubjectProfileId.ToString();
@@ -121,27 +122,26 @@ namespace CoreLayout.Controllers.Exam
         [HttpPost]
         [ValidateAntiForgeryToken]
         //[AuthorizeContext(ViewAction.Add)]
-        public async Task<IActionResult> Create(ExamMasterModel examMasterModel)
+        public async Task<IActionResult> Create(SubjectProfileModel subjectProfileModel)
         {
-            examMasterModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
-            examMasterModel.IPAddress = HttpContext.Session.GetString("IPAddress");
-            examMasterModel.SessionList = await _courseDetailsService.GetAllSession();//sllabus
+            subjectProfileModel.CreatedBy = HttpContext.Session.GetInt32("UserId");
+            subjectProfileModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+            subjectProfileModel.ExamList = await _examMasterService.GetAllExamMasterAsync();
             if (ModelState.IsValid)
             {
-
-                var res = await _examMasterService.CreateExamMasterAsync(examMasterModel);
+                var res = await _subjectProfileService.CreateSubjectProfileAsync(subjectProfileModel);
                 if (res.Equals(1))
                 {
-                    TempData["success"] = "Exam has been saved";
+                    TempData["success"] = "Subject Combination has been saved";
                 }
                 else
                 {
-                    TempData["error"] = "Exam has not been saved";
+                    TempData["error"] = "Subject Combination has not been saved";
                 }
                 return RedirectToAction(nameof(Index));
 
             }
-            return View("~/Views/Exam/ExamMaster/Create.cshtml", examMasterModel);
+            return View("~/Views/Exam/SubjectProfile/Create.cshtml", subjectProfileModel);
 
         }
 
@@ -201,6 +201,25 @@ namespace CoreLayout.Controllers.Exam
             return Json(OtherFacultyList);
         }
 
+        public async Task<JsonResult> GetMinorFaculty(int Examid)
+        {
+            int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
+            var sessionid = await _examMasterService.GetExamMasterByIdAsync(Examid);
+            var MinorFacultyList = (from s in await _subjectProfileService.GetMinorFacultyFromAff_SubjectProfile(SessionInstituteId, sessionid.SessionId)
+                                    select new SelectListItem()
+                                    {
+                                        Text = s.MinorFacultyName,
+                                        Value = s.MinorFacultyId.ToString(),
+                                    }).Distinct().ToList();
+
+            MinorFacultyList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(MinorFacultyList);
+        }
+
         public async Task<JsonResult> GetVocationalSubject(int Examid, int CourseId)
         {
             int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
@@ -226,7 +245,7 @@ namespace CoreLayout.Controllers.Exam
             int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
             var sessionid = await _examMasterService.GetExamMasterByIdAsync(Examid);
             var CurricularSubjectList = (from s in await _subjectProfileService.GetSubjectFromAff_SubjectProfile(SessionInstituteId, sessionid.SessionId, CourseId)
-                                         where s.SubjectType == "Curricular"
+                                         where s.SubjectType == "Vocational"//change it Curricular 
                                          select new SelectListItem()
                                          {
                                              Text = s.CoCurricularSubjectName,
@@ -239,6 +258,45 @@ namespace CoreLayout.Controllers.Exam
                 Value = string.Empty
             });
             return Json(CurricularSubjectList);
+        }
+
+        public async Task<JsonResult> GetMinorSubject(int Examid, int CourseId)
+        {
+            int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
+            var sessionid = await _examMasterService.GetExamMasterByIdAsync(Examid);
+            var MinorSubjectList = (from s in await _subjectProfileService.GetSubjectFromAff_SubjectProfile(SessionInstituteId, sessionid.SessionId, CourseId)
+                                         where s.SubjectType == "Vocational"//change it minor 
+                                    select new SelectListItem()
+                                         {
+                                             Text = s.MinorSubjectName,
+                                             Value = s.MinorSubjectId.ToString(),
+                                         }).Distinct().ToList();
+
+            MinorSubjectList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(MinorSubjectList);
+        }
+        public async Task<JsonResult> GetMajorSubject(int Examid, int CourseId)
+        {
+            int SessionInstituteId = (int)HttpContext.Session.GetInt32("SessionInstituteId");
+            var sessionid = await _examMasterService.GetExamMasterByIdAsync(Examid);
+            var MajorSubjectList = (from s in await _subjectProfileService.GetSubjectFromAff_SubjectProfile(SessionInstituteId, sessionid.SessionId, CourseId)
+                                    where s.SubjectType == "Vocational"//change it major 
+                                    select new SelectListItem()
+                                    {
+                                        Text = s.MajorSubjectName,
+                                        Value = s.MajorSubjectId.ToString(),
+                                    }).Distinct().ToList();
+
+            //MajorSubjectList.Insert(0, new SelectListItem()
+            //{
+            //    Text = "----Select----",
+            //    Value = string.Empty
+            //});
+            return Json(MajorSubjectList);
         }
     }
 }

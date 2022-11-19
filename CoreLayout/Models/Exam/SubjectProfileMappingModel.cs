@@ -13,7 +13,7 @@ namespace CoreLayout.Models.Exam
     {
         [Key]
         public int SubjectProfileMapId { get; set; }
-        //public int SubjectProfileId { get; set; }
+        public int ReturnSubjectProfileId { get; set; }
 
         [Display(Name = "QP Code")]
         [Required(ErrorMessage = "Please enter qp code")]
@@ -25,11 +25,12 @@ namespace CoreLayout.Models.Exam
         [Required(ErrorMessage = "Please enter qp type")]
         public int QPType { get; set; }
 
-        [Display(Name = "Subject Code")]
+        [Display(Name = "Subjects")]
         [Required(ErrorMessage = "Please enter subject code")]
         public int SubjectId { get; set; }
-        public string SubjectCode { get; set; }
-        public List<BranchModel> SubjectList { get; set; }
+        public string SubjectName { get; set; }
+        //public List<BranchModel> SubjectList { get; set; }
+        public List<int> SubjectList { get; set; }
 
         [Display(Name = "Subject Category")]
         [Required(ErrorMessage = "Please enter subject category")]

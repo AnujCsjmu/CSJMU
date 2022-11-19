@@ -53,6 +53,13 @@ namespace CoreLayout.Services.Exam.SubjectProfile
         {
             return await _examFormRepository.GetSubjectFromAff_SubjectProfile(sessioninstituteid, sessionid, courseid);
         }
-        
+        public async Task<List<SubjectProfileModel>> GetMinorFacultyFromAff_SubjectProfile(int sessioninstituteid, int sessionid)
+        {
+            return await _examFormRepository.GetMinorFacultyFromAff_SubjectProfile(sessioninstituteid, sessionid);
+        }
+        public async Task<List<SubjectProfileModel>> GetSubjectFromSubjectProfileMapping()
+        {
+            return await _examFormRepository.GetSubjectFromSubjectProfileMapping();
+        }
     }
 }

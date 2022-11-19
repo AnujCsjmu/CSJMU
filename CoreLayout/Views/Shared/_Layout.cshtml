@@ -61,7 +61,8 @@
                         {
                             @if (HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteCode") != null && HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteName") != null)
                             {
-                                @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteCode") @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteName")
+                                @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteCode") 
+                                @HttpContextAccessor.HttpContext.Session.GetString("SessionInstituteName")
                             }
                         }
                     </h3>

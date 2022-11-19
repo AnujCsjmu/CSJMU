@@ -59,22 +59,22 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <div style="font-weight: bold; color: red; font-size: medium; visibility: hidden" id="div2major" class="blink_me">
-                                        Two Major subject will be from <label id="lbltwomajaorsubject"></label>
-                                    </div>
-                                    <div style="background-color:teal; height:35px; vertical-align:middle">
-                                        <h4 style="color: white; font-size: 15px">Will you add 3rd Major subject from? *</h4>
-                                    </div>
+                                    Two Major subject will be from <label id="lbltwomajaorsubject"></label>
+                                </div>
+                                <div style="background-color:teal; height:35px; vertical-align:middle">
+                                    <h4 style="color: white; font-size: 15px">Will you add 3rd Major subject from? *</h4>
                                 </div>
                             </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="radio" name="SameFaculty" value="1">
+                                <input type="radio" name="SameFaculty" value="1" asp-for="IsOtherFaculty">
                                 <label id="lblSameFaculty">Same Faculty</label>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <input type="radio" name="SameFaculty" value="2">
+                                <input type="radio" name="SameFaculty" value="2" asp-for="IsOtherFaculty">
                                 <label>Other Faculty</label>
                             </div>
                         </div>
@@ -96,18 +96,21 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"SubjectId","SubjectName"))">
+                                <label asp-for="MajorSubjectId"> </label><span class="tx-danger"> *</span>
+                                <select class="form-control" multiple asp-for="MajorSubjectId" asp-items="@(new SelectList(string.Empty,"MajorSubjectId","MajorSubjectName"))">
                                     @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
                                 </select>
-                                <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
+                                <span asp-validation-for="MajorSubjectId" class="parsley-errors-list filled"></span><br />
+                                <input type='button' value="click to clone" id="cloneBtn" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="SubjectId"> </label><span class="tx-danger"> *</span>
-                                <select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"SubjectId","SubjectName"))">
-                                    @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                <!--<select class="form-control select" asp-for="SubjectId" asp-items="@(new SelectList(string.Empty,"SubjectId","SubjectName"))">-->
+                                @*<option selected="selected" disabled="disabled" value="">--Select-- </option>*@
+                                <!--</select>-->
+                                <select id="SubjectId"  class="form-control" asp-for="SubjectList">
                                 </select>
                                 <span asp-validation-for="SubjectId" class="parsley-errors-list filled"></span>
                             </div>
@@ -121,9 +124,9 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="radio" name="AddMinorin1Sem" value="1">
+                                <input type="radio" name="AddMinorin1Sem" value="1" asp-for="IsAddMinor">
                                 <label id="lblSameFaculty">Yes</label>
-                                <input type="radio" name="AddMinorin1Sem" value="2">
+                                <input type="radio" name="AddMinorin1Sem" value="2" asp-for="IsAddMinor">
                                 <label id="lblSameFaculty">No</label>
                             </div>
                         </div>
@@ -255,6 +258,31 @@
                                 $('#CoCurricularSubjectId').html(items2);
                             });
                         }
+
+                    //bind minor subject
+                    var url3 = '@Url.Content("~/")' + "SubjectProfile/GetMinorSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                        if (url3 != null) {
+                            $.getJSON(url3, function (data3) {
+                                var items3 = '';
+                                $("#MinorSubjectId").empty();
+                                $.each(data3, function (i, minorsubject) {
+                                    items3 += "<option value ='" + minorsubject.value + "'>" + minorsubject.text + "</option>";
+                                });
+                                $('#MinorSubjectId').html(items3);
+                            });
+                        }
+                    //bind major subject
+                        var url4 = '@Url.Content("~/")' + "SubjectProfile/GetMajorSubject?CourseId=" + $(ddlsource).val() + "&Examid=" + $(ddlsource1).val();
+                        if (url4 != null) {
+                            $.getJSON(url4, function (data4) {
+                                var items4 = '';
+                                $("#MajorSubjectId").empty();
+                                $.each(data4, function (i, majorsubject) {
+                                    items4 += "<option value ='" + majorsubject.value + "'>" + majorsubject.text + "</option>";
+                                });
+                                $('#MajorSubjectId').html(items4);
+                            });
+                        }
                     }
                 });
             });
@@ -322,6 +350,21 @@
                     $('#divMinorFaculty').css('visibility', 'visible');
                     $('#divMinorSubject').css('visibility', 'visible');
                     $('#divMinorFacultyMsg').css('visibility', 'visible');
+
+                    //bind minor faculty
+                    $("#MinorFacultyId").empty();
+                    var ddlsource = "#ExamId";
+                    if ($(ddlsource).val() != null) {
+                        var url = '@Url.Content("~/")' + "SubjectProfile/GetMinorFaculty?Examid=" + $(ddlsource).val();
+                        $.getJSON(url, function (data) {
+                            var items = '';
+                            $("#MinorFacultyId").empty();
+                            $.each(data, function (i, faculty) {
+                                items += "<option value ='" + faculty.value + "'>" + faculty.text + "</option>";
+                            });
+                            $('#MinorFacultyId').html(items);
+                        });
+                    }
                 }
                 else if (value == 2) {
                     $('#divMinorFaculty').css('visibility', 'hidden');
@@ -336,5 +379,12 @@
         (function blink() {
             $('.blink_me').fadeOut(500).fadeIn(500, blink);
         })();
+    </script>
+    @*clone data from one major subject dropdown to another*@
+    <script>
+        $('#cloneBtn').click(function () {
+            var $options = $("#MajorSubjectId > option").clone();
+            $('#SubjectId').append($options);
+        });
     </script>
 }

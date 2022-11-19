@@ -32,7 +32,7 @@ namespace CoreLayout.Models.Exam
         public List<InstituteModel> FacultyList { get; set; }
 
         [Display(Name = "IsOtherFaculty")]
-        public int? IsOtherFaculty { get; set; }
+        public bool IsOtherFaculty { get; set; }
 
         [Display(Name = "Other Faculty Name")]
         //[Required(ErrorMessage = "Please enter other faculty name")]
@@ -41,7 +41,7 @@ namespace CoreLayout.Models.Exam
         public List<InstituteModel> OtherFacultyList { get; set; }
 
         [Display(Name = "IsAddMinor")]
-        public int? IsAddMinor { get; set; }
+        public bool IsAddMinor { get; set; }
 
         [Display(Name = "Minor Faculty Name")]
         //[Required(ErrorMessage = "Please enter minor faculty name")]
@@ -68,5 +68,16 @@ namespace CoreLayout.Models.Exam
         public List<BranchModel> CoCurricularSubjectList { get; set; }
 
         public string SubjectType { get; set; }
+
+        [Display(Name = "Major Subject Name")]
+        //[Required(ErrorMessage = "Please enter minor subject name")]
+        public int? MajorSubjectId { get; set; }
+        public string MajorSubjectName { get; set; }
+
+        [Display(Name = "Collage")]
+        public int? InstituteId { get; set; }
+        public string InstituteName { get; set; }
+
+        public string Status { get; set; }
     }
 }
