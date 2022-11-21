@@ -1,0 +1,201 @@
+﻿@using CoreLayout.Models.Exam
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<AssignProfileModel>
+@{
+    ViewData["title"] = "Index";
+}
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Assignment of subjects to student</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Selected Subjects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List</li>
+        </ol>
+    </div>
+    <div class="btn btn-list">
+        <a asp-action="Index" asp-controller="SubjectProfile" class="btn btn-success">Back to List</a>
+    </div>
+</div>
+<div>
+    <div>
+        <ul>
+            <li style="color:red;font-weight:bold">&#x2022; चेतावनी: परीक्षा फॉर्म ऑनलाइन सबमिट करने से पूर्व प्रवेशित छात्र/छात्रों के प्रवेश समबन्धी समस्त विवरण, पाठ्यक्रम, विषय आदि को जाँच लें। सब्मिशन के उपरांत किसी भी प्रकार का संशोधन विश्वविद्यालय द्वारा नहीं किया जायेगा एवं किसी भी प्रकार त्रुटि होने या पाए जाने पर सम्पूर्ण उत्तरदायित्व महाविद्यालय का होगा एवं ऐसे प्रति सबमिशन पर ₹5000 का अर्थदण्ड लागू होगा। <br /></li>
+
+        </ul>
+    </div>
+</div>
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div>
+                    <h2>Selected Course/Programme Name - MASTER OF COMMERCE (M COM)</h2>
+                    <br />
+                </div>
+                <div class="table-responsive-sm">
+                    <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperCode)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.PaperName)
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int sno = 0;
+                            }
+                            @foreach (var item1 in ViewBag.QPList)
+                            {
+                                <tr>
+                                    <td>
+                                        @{ sno++; }
+                                        @sno
+                                    </td>
+                                    <td>@item1.QPCode</td>
+                                    <td>@item1.QPName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card custom-card overflow-hidden">
+            <div class="card-body">
+                <div>
+
+                </div>
+                <div class="table-responsive-sm">
+                    <table id="table1" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th><input name="select_all" value="1" type="checkbox"></th>
+                                <th>S.No</th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.EnrollmentNo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.RollNo)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(c => c.StudentName)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(c => c.FatherName)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(c => c.Seat)
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                int sno1 = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" id="chkid" value="@item.EnrollmentNo" />
+                                </td>
+                                <td>
+                                    @{ sno1++; }
+                                    @sno1
+                                </td>
+                                <td>@item.EnrollmentNo</td>
+                                <td>@item.RollNo</td>
+                                <td>@item.StudentName</td>
+                                <td>@item.FatherName</td>
+                                <td>@item.Seat</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <input id="submit" type="submit" class="btn btn-primary" value="Final Submit" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row -->
+
+@section Scripts{
+
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+    <script>
+        (function blink() {
+            $('.blink_me').fadeOut(800).fadeIn(800, blink);
+        })();
+    </script>
+
+    @*checkbox multi select at one time*@
+    <script>
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+        }
+        $(document).ready(function () {
+            // Array holding selected row IDs
+
+            var rows_selected = [];
+            var table = $('#table1').DataTable();
+            // Handle click on checkbox
+            $('#table1 tbody').on('click', 'input[type="checkbox"]', function (e) {
+
+                var $row = $(this).closest('tr');
+
+                // Get row data
+                var data = table.row($row).data();
+
+                // Update state of "Select all" control
+                updateDataTableSelectAllCtrl(table);
+
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+
+            // Handle click on "Select all" control
+            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                if (this.checked) {
+                    $('#table1 tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                } else {
+                    $('#table1 tbody input[type="checkbox"]:checked').trigger('click');
+                }
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+        });
+    </script>
+}

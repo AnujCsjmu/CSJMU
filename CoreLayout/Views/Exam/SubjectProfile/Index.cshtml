@@ -20,8 +20,8 @@
 <div style="background-color: #fff3cd">
     <div class="blink_me">
         <ul>
-            <li style="color:lightcoral">&#x2022; समस्त महाविद्यालयों को सूचित किया जाता है कि सत्र 2021-22 में बनाये गए सब्जेक्ट कॉम्बिनेशन सत्र 2022-23 हेतु कार्यप्रयोगी नहीं होंगे, सत्र 2022-23 हेतु समस्त महाविद्यालयों को सम्बद्धता से प्राप्त विषयों के आधार पर सब्जेक्ट कॉम्बिनेशन बना कर परीक्षा फॉर्म भरने की प्रक्रिया को पूर्ण करना होगा। <br /></li>
-            <li style="color:lightblue">&#x2022; 1st सेमेस्टर कॉम्बिनेशन बनाने में बिषय न प्रदर्शित होने की स्थिति में, आप सहायक कुल सचिव (संबद्धता) से संपर्क कर सकते हैं। <br /></li>
+            <li style="color:lightcoral; font-weight:bold">&#x2022; समस्त महाविद्यालयों को सूचित किया जाता है कि सत्र 2021-22 में बनाये गए सब्जेक्ट कॉम्बिनेशन सत्र 2022-23 हेतु कार्यप्रयोगी नहीं होंगे, सत्र 2022-23 हेतु समस्त महाविद्यालयों को सम्बद्धता से प्राप्त विषयों के आधार पर सब्जेक्ट कॉम्बिनेशन बना कर परीक्षा फॉर्म भरने की प्रक्रिया को पूर्ण करना होगा। <br /></li>
+            <li style="color:lightblue; font-weight:bold">&#x2022; 1st सेमेस्टर कॉम्बिनेशन बनाने में बिषय न प्रदर्शित होने की स्थिति में, आप सहायक कुल सचिव (संबद्धता) से संपर्क कर सकते हैं। <br /></li>
         </ul>
     </div>
 </div>
@@ -92,10 +92,11 @@
                                     <td style="font-weight:bold;color:lightgreen">Approved</td>
                                     <td>
                                         <div class="table-actions text-center">
-                                            <input type="submit" class="btn btn-success" value="Assign" />
+                                            @*<input type="button" class="btn btn-success" value="Assign" asp-action="Index" asp-controller="AssignProfile" />*@
+                                            <a asp-route-id="@item.EncryptedId" asp-route-subjectprofileid="@item.SubjectProfileId" asp-route-examid="@item.ExamId" asp-action="Index" asp-controller="AssignProfile">Assign</a>
                                             @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>
-                                                <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
-                                                <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>*@
+        <a asp-action="Details" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>
+        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>*@
                                         </div>
                                     </td>
                                 </tr>
@@ -127,7 +128,7 @@
 
     <script>
         (function blink() {
-            $('.blink_me').fadeOut(800).fadeIn(800, blink);
+            $('.blink_me').fadeOut(800).fadeIn(1100, blink);
         })();
     </script>
 }

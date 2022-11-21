@@ -12,5 +12,6 @@ namespace CoreLayout.Repositories.Exam.SubjectProfile
        Task<List<SubjectProfileModel>> GetSubjectFromAff_SubjectProfile(int sessioninstituteid, int sessionid, int courseid);
        Task<List<SubjectProfileModel>> GetMinorFacultyFromAff_SubjectProfile(int sessioninstituteid, int sessionid);
        Task<List<SubjectProfileModel>> GetSubjectFromSubjectProfileMapping();
+       Task<List<AssignProfileModel>> GetAllStudent();
     }
 }

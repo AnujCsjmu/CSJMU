@@ -61,5 +61,9 @@ namespace CoreLayout.Services.Exam.SubjectProfile
         {
             return await _examFormRepository.GetSubjectFromSubjectProfileMapping();
         }
+        public async Task<List<AssignProfileModel>> GetAllStudent()
+        {
+            return await _examFormRepository.GetAllStudent();
+        }
     }
 }

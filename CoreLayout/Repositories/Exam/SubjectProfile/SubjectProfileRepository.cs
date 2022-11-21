@@ -308,5 +308,24 @@ namespace CoreLayout.Repositories.Exam.SubjectProfile
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<AssignProfileModel>> GetAllStudent()
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_SubjectProfile";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Query", 13, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<AssignProfileModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<AssignProfileModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
