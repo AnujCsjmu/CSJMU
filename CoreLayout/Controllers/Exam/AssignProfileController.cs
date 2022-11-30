@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.Exam
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator,Institute,Sub-Institute")]
     public class AssignProfileController : Controller
     {
         private readonly ILogger<AssignProfileController> _logger;

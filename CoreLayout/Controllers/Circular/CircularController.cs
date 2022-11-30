@@ -340,7 +340,7 @@ namespace CoreLayout.Controllers.Circular
                                  where districtlist.Contains(institute.DistrictID.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text = institute.InstituteName,
+                                     Text = institute.InstituteCode+" - "+institute.InstituteName,
                                      Value = institute.InstituteID.ToString(),
                                  }).ToList();
             }
@@ -353,7 +353,7 @@ namespace CoreLayout.Controllers.Circular
                                  where courselist.Contains(institute.CourseId.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text =  b.InstituteName,
+                                     Text = institute.InstituteCode + " - " + b.InstituteName,
                                      Value = b.InstituteID.ToString(),
                                  }).Distinct().ToList();
             }
@@ -367,7 +367,7 @@ namespace CoreLayout.Controllers.Circular
                                  where districtlist.Contains(b.DistrictID.ToString()) && courselist.Contains(institute.CourseId.ToString())
                                  select new SelectListItem()
                                  {
-                                     Text =  b.InstituteName,
+                                     Text = institute.InstituteCode + " - " + b.InstituteName,
                                      Value = b.InstituteID.ToString(),
                                  }).Distinct().ToList();
             }
