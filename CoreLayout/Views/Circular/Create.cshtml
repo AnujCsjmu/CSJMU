@@ -73,7 +73,7 @@
                                 <button id="unselect">Unselect All</button>
                                 @*<select id="InstituteIds" multiple="multiple" class="group-filter" asp-for="InstituteID" asp-items="@(new SelectList(string.Empty, "InstituteID", "InstituteName"))">
                                     </select>*@
-                                <select id="InstituteIds" multiple="multiple" class="form-control car" asp-for="InstituteList" asp-items="@(new SelectList(Enumerable.Empty<SelectListItem>(),"value", "text"))">
+                                <select style="height:150px" id="InstituteIds" multiple="multiple" class="form-control car" asp-for="InstituteList" asp-items="@(new SelectList(Enumerable.Empty<SelectListItem>(),"value", "text"))">
                                 </select>
                                 <span class="parsley-errors-list filled" asp-validation-for="InstituteID"></span>
 
@@ -219,6 +219,7 @@
         document.getElementById('DisplayInCollage').addEventListener('change', function () {
             var style = this.value == 1 ? 'block' : 'none';
             document.getElementById('divInstitute').style.display = style;
+            $('.car').val([]);
         });
     </script>
 }

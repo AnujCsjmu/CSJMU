@@ -20,5 +20,7 @@ namespace CoreLayout.Models.Masters
 
         public string isChecked { get; set; }
 
+        public int? Id { get; set; }
+
     }
 }

@@ -61,8 +61,10 @@ namespace CoreLayout.Controllers
                 {
                     ButtonModel buttonModel = new ButtonModel();
                     buttonModel.ButtonName = _allButtonsData.ButtonName;
+                   
                     foreach (var item3 in ButtonPermissionDataUserWise)
                     {
+                        buttonPermission.Id = item3.Id;
                         if (_allButtonsData.ButtonId == item3.ButtonId)
                         {
                             buttonModel.isChecked = "checked";
@@ -79,97 +81,105 @@ namespace CoreLayout.Controllers
             return View(buttonPermissionModels);
         }
 
-        //[HttpGet("[search]")]
-        //public async Task<IActionResult> Search()
-        //{
-        //    try
-        //    {
-        //        int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
-        //        int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
+        [HttpPost]
+        [AuthorizeContext(ViewAction.View)]
+        public async Task<IActionResult> Index(ButtonPermissionModel buttonPermissionModel)
+        {
+            var data = await _buttonPermissionService.DistinctButtonPermissionAsync();
+            return View(data);
+        }
 
-        //        List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
-        //        permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
-        //        var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
-        //        if (result == null)
-        //        {
-        //            TempData["error"] = "User has not been updated";
-        //            return View(result);
-        //        }
+            //[HttpGet("[search]")]
+            //public async Task<IActionResult> Search()
+            //{
+            //    try
+            //    {
+            //        int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
+            //        int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
 
-        //        HttpContext.Session.SetString("SearchList", result.ToString());
-        //        HttpContext.Session.SetInt32("SearchRoleId", RoleId);
-        //        HttpContext.Session.SetInt32("SearchUserId", UserId);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        ModelState.AddModelError("", ex.ToString());
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+            //        List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
+            //        permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
+            //        var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
+            //        if (result == null)
+            //        {
+            //            TempData["error"] = "User has not been updated";
+            //            return View(result);
+            //        }
 
-    
-        //public void bindRoleDropdown()
-        //{
-        //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
-        //                          select new SelectListItem()
-        //                          {
-        //                              Text = menu.Controller,
-        //                              Value = menu.Controller.ToString(),
-        //                          }).ToList();
-        //    ControllerList.Insert(0, new SelectListItem()
-        //    {
-        //        Text = "----Select----",
-        //        Value = string.Empty
-        //    });
-        //    ViewBag.ControllerList = ControllerList;
+            //        HttpContext.Session.SetString("SearchList", result.ToString());
+            //        HttpContext.Session.SetInt32("SearchRoleId", RoleId);
+            //        HttpContext.Session.SetInt32("SearchUserId", UserId);
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        ModelState.AddModelError("", ex.ToString());
+            //    }
+            //    return RedirectToAction("Index");
+            //}
 
 
-        //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
-        //                    select new SelectListItem()
-        //                    {
-        //                        Text = role.RoleName,
-        //                        Value = role.RoleID.ToString(),
-        //                    }).ToList();
-        //    RoleList.Insert(0, new SelectListItem()
-        //    {
-        //        Text = "----Select----",
-        //        Value = string.Empty
-        //    });
+            //public void bindRoleDropdown()
+            //{
+            //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
+            //                          select new SelectListItem()
+            //                          {
+            //                              Text = menu.Controller,
+            //                              Value = menu.Controller.ToString(),
+            //                          }).ToList();
+            //    ControllerList.Insert(0, new SelectListItem()
+            //    {
+            //        Text = "----Select----",
+            //        Value = string.Empty
+            //    });
+            //    ViewBag.ControllerList = ControllerList;
 
-        //    ViewBag.RoleList = RoleList;
 
-        //    var GetButtonList = (from button in _buttonService.GetAllButton().Result
-        //                         select new SelectListItem()
-        //                         {
-        //                             Text = button.ButtonName,
-        //                             Value = button.ButtonId.ToString(),
-        //                         }).ToList();
-        //    //GetButtonList.Insert(0, new SelectListItem()
-        //    //{
-        //    //    Text = "----Select----",
-        //    //    Value = string.Empty
-        //    //});
+            //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
+            //                    select new SelectListItem()
+            //                    {
+            //                        Text = role.RoleName,
+            //                        Value = role.RoleID.ToString(),
+            //                    }).ToList();
+            //    RoleList.Insert(0, new SelectListItem()
+            //    {
+            //        Text = "----Select----",
+            //        Value = string.Empty
+            //    });
 
-        //    ViewBag.GetButtonList = GetButtonList;
-        //}
-        //public void bindUserDropdown(int RoleId)
-        //{
+            //    ViewBag.RoleList = RoleList;
 
-        //    var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
-        //                       select new SelectListItem()
-        //                       {
-        //                           Text = user.UserName,
-        //                           Value = user.UserID.ToString(),
-        //                       }).ToList();
-        //    GetUserList.Insert(0, new SelectListItem()
-        //    {
-        //        Text = "----Select----",
-        //        Value = string.Empty
-        //    });
-        //    ViewBag.GetUserList = GetUserList;
-        //}
-        //Create Get Action Method
-        [AuthorizeContext(ViewAction.Add)]
+            //    var GetButtonList = (from button in _buttonService.GetAllButton().Result
+            //                         select new SelectListItem()
+            //                         {
+            //                             Text = button.ButtonName,
+            //                             Value = button.ButtonId.ToString(),
+            //                         }).ToList();
+            //    //GetButtonList.Insert(0, new SelectListItem()
+            //    //{
+            //    //    Text = "----Select----",
+            //    //    Value = string.Empty
+            //    //});
+
+            //    ViewBag.GetButtonList = GetButtonList;
+            //}
+            //public void bindUserDropdown(int RoleId)
+            //{
+
+            //    var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
+            //                       select new SelectListItem()
+            //                       {
+            //                           Text = user.UserName,
+            //                           Value = user.UserID.ToString(),
+            //                       }).ToList();
+            //    GetUserList.Insert(0, new SelectListItem()
+            //    {
+            //        Text = "----Select----",
+            //        Value = string.Empty
+            //    });
+            //    ViewBag.GetUserList = GetUserList;
+            //}
+            //Create Get Action Method
+            [AuthorizeContext(ViewAction.Add)]
         public async Task<ActionResult> CreateAsync()
         {
 
@@ -285,23 +295,30 @@ namespace CoreLayout.Controllers
 
             }
         }
-        [AuthorizeContext(ViewAction.Edit)]
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (HttpContext.Session.GetString("Name") != null)
-            {
-                var list = await _buttonPermissionService.GetButtonPermissionByIdAsync(id);
+        //[AuthorizeContext(ViewAction.Edit)]
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    if (HttpContext.Session.GetString("Name") != null)
+        //    {
+        //        var list = await _buttonPermissionService.GetButtonPermissionByIdAsync(id);
+        //        if(list==null)
+        //        {
+        //            NotFound();
+        //        }
 
-                //bindRoleDropdown();
-                // bindUserDropdown(list.RoleId);
-                return View(list);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-
-            }
-        }
+        //        //bindRoleDropdown();
+        //        // bindUserDropdown(list.RoleId);
+        //        list.MenuList = await _menuService.GetAllMenuAsync();
+        //        list.ButtonModelList = await _buttonService.GetAllButton();
+        //        list.RoleList =await _roleService.GetAllRoleAsync();
+        //        list.UserList = await _registrationService.GetAllRegistrationAsync();
+        //        return View(list);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
