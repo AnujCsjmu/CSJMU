@@ -590,6 +590,18 @@ namespace CoreLayout.Controllers
         //    }
         //    return result;
         //}
-
+        public bool SendMail_Fromcsjmusms(string SendMailId,string subject,string body)
+        {
+            bool result = false;
+            //StringBuilder sbSMS = new StringBuilder();
+            //sbSMS.Append("Dear Student,");
+            //sbSMS.Append("12345");
+            //sbSMS.Append(" is the OTP to verify your mobile number. It is valid for 10 minutes. Please do not share with anyone.");
+            //sbSMS.Append("CHHATRAPATI SHAHU JI MAHARAJ UNIVERSITY.");
+            string emailBody = string.Empty;
+            //emailBody = PopulateBody(txtFirstName.Text, "OTP Verification (Ph.D. Admission - 2020-21 Phase-II registration)", OTPVerification.Otp);
+            result= NewEmailHelper.SendMsg(SendMailId, subject, body.ToString(), true);
+            return result;
+        }
     }
 }
