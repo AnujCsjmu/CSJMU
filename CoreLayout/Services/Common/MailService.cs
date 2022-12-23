@@ -30,7 +30,7 @@ namespace CoreLayout.Services.Common
                 if (mailRequest.Attachments != null)
                 {
                     byte[] fileBytes;
-                    foreach (var file in mailRequest.Attachments)
+                    foreach (var file in mailRequest.MailAttachments)
                     {
                         if (file.Length > 0)
                         {

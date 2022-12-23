@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CoreLayout.Models.Common
 {
-    public class MailSettings
+    public class MailSettings :BaseEntity
     {
         public string Mail { get; set; }
         public string DisplayName { get; set; }

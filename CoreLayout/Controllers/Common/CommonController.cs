@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.Common;
+﻿using CoreLayout.Helper;
+using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
 using CoreLayout.Models.PCP;
 using CoreLayout.Models.UserManagement;
@@ -14,6 +15,7 @@ using CoreLayout.Services.UserManagement.ParentMenu;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -42,7 +44,8 @@ namespace CoreLayout.Controllers
         private readonly IMailService _mailService;
         private readonly IPCPSendReminderService _pCPSendReminderService;
         private IHttpContextAccessor _httpContextAccessor;
-        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IMailService mailService, IPCPSendReminderService pCPSendReminderService, IHttpContextAccessor httpContextAccessor)
+        public IConfiguration _configuration;
+        public CommonController(ILogger<CommonController> logger, IDashboardService dashboardService, ICommonService commonService, IRegistrationService registrationService, IAssignRoleService assignRoleService, IParentMenuService parentMenuService, IButtonPermissionService buttonPermissionService, IPCPRegistrationService pCPRegistrationService, IPCPUploadPaperService pCPUploadPaperService, IMailService mailService, IPCPSendReminderService pCPSendReminderService, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _logger = logger;
             _dashboardService = dashboardService;
@@ -56,6 +59,7 @@ namespace CoreLayout.Controllers
             _mailService = mailService;
             _pCPSendReminderService = pCPSendReminderService;
             _httpContextAccessor = httpContextAccessor;
+            _configuration = configuration;
         }
         public async Task<ActionResult> RefereshMenuAsync()
         {
@@ -590,8 +594,11 @@ namespace CoreLayout.Controllers
         //    }
         //    return result;
         //}
+
+        //new mail configuration given by yogesh ji
         public bool SendMail_Fromcsjmusms(string SendMailId,string subject,string body)
         {
+            NewEmailHelper newEmailHelper = new NewEmailHelper(_configuration);
             bool result = false;
             //StringBuilder sbSMS = new StringBuilder();
             //sbSMS.Append("Dear Student,");
@@ -600,7 +607,7 @@ namespace CoreLayout.Controllers
             //sbSMS.Append("CHHATRAPATI SHAHU JI MAHARAJ UNIVERSITY.");
             string emailBody = string.Empty;
             //emailBody = PopulateBody(txtFirstName.Text, "OTP Verification (Ph.D. Admission - 2020-21 Phase-II registration)", OTPVerification.Otp);
-            result= NewEmailHelper.SendMsg(SendMailId, subject, body.ToString(), true);
+            result= newEmailHelper.SendMsg(SendMailId, subject, body, true);
             return result;
         }
     }

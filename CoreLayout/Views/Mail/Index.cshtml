@@ -1,0 +1,221 @@
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CoreLayout.Models.Common.MailRequest
+
+
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Bulk Mail</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">BulkMail</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List</li>
+        </ol>
+    </div>
+    @*<div class="btn btn-list">
+            <a class="btn ripple btn-success btn-sm" asp-action="Create" asp-route-id=@ViewBag.MaxInstituteId><i class="fe fe-plus"></i> New Institute</a>
+        </div>*@
+</div>
+
+
+<form asp-controller="Mail" asp-action="Index" method="post" enctype="multipart/form-data">
+   
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filledr">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Attachments"></label><span class="tx-danger"> *</span>
+                                <input type="file" asp-for="Attachments" class="form-control" />
+                                <span asp-validation-for="Attachments" class="parsley-errors-list filled"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <br />
+                                <input type="submit" class="btn btn-primary" value="Import" />
+                                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+   
+   
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                            <thead>
+                                <tr>
+                                    <th><input name="select_all" value="1" type="checkbox"></th>
+                                    <th>S.No</th>
+                                    <th>
+                                        Email Id
+                                    </th>
+                                    <th>
+                                        Entry Date
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @{
+                                    int sno = 0;
+                                }
+                                @if (Model.SendMailList.Count() > 0)
+                                {
+                                    @foreach (var item in Model.SendMailList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="chkid" value="@item.Id" />
+                                            </td>
+                                            <td>
+                                                @{ sno++; }
+                                                @sno
+                                            </td>
+                                            <td>@item.ToEmail</td>
+                                            <td>@item.CreatedDate</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" style="font:bold; color:red; text-align:center">No Record Found</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form asp-controller="Mail" asp-action="Send" method="post" enctype="multipart/form-data">
+        @Html.Hidden("ids", (object)ViewBag.ids)
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card custom-card overflow-hidden">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Subject"></label><span class="tx-danger"> *</span>
+                                    <input type="text" asp-for="Subject" class="form-control" />
+                                    <span asp-validation-for="Subject" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Body"></label><span class="tx-danger"> *</span>
+                                    <input type="text" asp-for="Body" class="form-control" style="height:90px" />
+                                    <span asp-validation-for="Body" class="parsley-errors-list filled"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input id="submit" type="submit" class="btn btn-primary" value="Send Mail" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+<!-- End Row -->
+@section Scripts{
+    <script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>
+
+    @*select atlest one checkbox*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            document.getElementById("ids").value = '';
+            var ids = [];
+            var i = 0;
+            //Loop through all checked CheckBoxes in GridView.
+            $("#exportexample tbody input[type=checkbox]:checked").each(function () {
+                ids[i] = $(this).val();
+                i++;
+            });
+            if (ids.length > 0) {
+                document.getElementById("ids").value = ids;
+            }
+            else {
+                alert("Select atleast one checkbox");
+                return false;
+            }
+        });
+    });
+</script>
+
+    @*checkbox multi select at one time*@
+    <script>
+        function updateDataTableSelectAllCtrl(table) {
+            var $table = table.table().node();
+            var chkbox_select_all = $('thead input[name="select_all"]', $table).get(0);
+        }
+        $(document).ready(function () {
+            // Array holding selected row IDs
+
+            var rows_selected = [];
+            //var table = $('#exportexample').DataTable({
+            //    /*$("#exportexample").dataTable().fnDestroy();*/
+            //});
+            var table = $('#exportexample').DataTable();
+            // Handle click on checkbox
+            $('#exportexample tbody').on('click', 'input[type="checkbox"]', function (e) {
+
+                var $row = $(this).closest('tr');
+
+                // Get row data
+                var data = table.row($row).data();
+
+                // Update state of "Select all" control
+                updateDataTableSelectAllCtrl(table);
+
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+
+            // Handle click on "Select all" control
+            $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
+                if (this.checked) {
+                    $('#exportexample tbody input[type="checkbox"]:not(:checked)').trigger('click');
+                } else {
+                    $('#exportexample tbody input[type="checkbox"]:checked').trigger('click');
+                }
+                // Prevent click event from propagating to parent
+                e.stopPropagation();
+            });
+        });
+    </script>
+}

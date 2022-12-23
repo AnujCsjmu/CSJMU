@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Models.Common
+namespace CoreLayout.Helper
 {
     public class NewEmailHelper
     {
@@ -17,6 +17,8 @@ namespace CoreLayout.Models.Common
         {
             _configuration = configuration;
         }
+
+
         #region Private Data
         static string _emailPostURL;
         static string _emailUserId;
@@ -26,12 +28,12 @@ namespace CoreLayout.Models.Common
         #endregion
 
         #region Public Data
-        public static string EmailPostURL
+        public string EmailPostURL
         {
             get
             {
                 if (string.IsNullOrEmpty(_emailPostURL))
-                    _emailPostURL = _configuration.GetSection("NewEmail:PreviousDocuments:BulkEmailPostURL").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailPostURL"].ToString();
+                    _emailPostURL = _configuration.GetSection("NewEmail:BulkEmail:BulkEmailPostURL").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailPostURL"].ToString();
                 return _emailPostURL;
             }
             set
@@ -45,7 +47,7 @@ namespace CoreLayout.Models.Common
             get
             {
                 if (string.IsNullOrEmpty(_emailUserId))
-                    _emailUserId = _configuration.GetSection("NewEmail:PreviousDocuments:BulkEmailUserId").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailUserId"].ToString();
+                    _emailUserId = _configuration.GetSection("NewEmail:BulkEmail:BulkEmailUserId").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailUserId"].ToString();
                 return _emailUserId;
             }
             set
@@ -58,7 +60,7 @@ namespace CoreLayout.Models.Common
             get
             {
                 if (string.IsNullOrEmpty(_emailPassword))
-                    _emailPassword = _configuration.GetSection("NewEmail:PreviousDocuments:BulkEmailPassword").Value.ToString();//ConfigurationManager.AppSettings["BulkEmailPassword"].ToString();
+                    _emailPassword = _configuration.GetSection("NewEmail:BulkEmail:BulkEmailPassword").Value.ToString();//ConfigurationManager.AppSettings["BulkEmailPassword"].ToString();
                 return _emailPassword;
             }
             set
@@ -71,7 +73,7 @@ namespace CoreLayout.Models.Common
             get
             {
                 if (string.IsNullOrEmpty(_emailDomainName))
-                    _emailDomainName = _configuration.GetSection("NewEmail:PreviousDocuments:BulkEmailDomain").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailDomain"].ToString();
+                    _emailDomainName = _configuration.GetSection("NewEmail:BulkEmail:BulkEmailDomain").Value.ToString(); //ConfigurationManager.AppSettings["BulkEmailDomain"].ToString();
                 return _emailDomainName;
             }
             set
@@ -85,7 +87,7 @@ namespace CoreLayout.Models.Common
             get
             {
                 if (string.IsNullOrEmpty(_emailFrom))
-                    _emailFrom = _configuration.GetSection("NewEmail:PreviousDocuments:BulkEmailFrom").Value.ToString();//ConfigurationManager.AppSettings["BulkEmailFrom"].ToString();
+                    _emailFrom = _configuration.GetSection("NewEmail:BulkEmail:BulkEmailFrom").Value.ToString();//ConfigurationManager.AppSettings["BulkEmailFrom"].ToString();
                 return _emailFrom;
             }
             set
@@ -110,7 +112,7 @@ namespace CoreLayout.Models.Common
 
         #endregion
 
-        public static bool SendMsg(string receiver, string subject, string body, bool sendAsync)
+        public bool SendMsg(string receiver, string subject, string body, bool sendAsync)
         {
             bool response = false;
             if (!string.IsNullOrEmpty(receiver))
@@ -158,7 +160,7 @@ namespace CoreLayout.Models.Common
             return response;
         }
 
-        private static string EmailAPICall(string APIPostContent)
+        private string EmailAPICall(string APIPostContent)
         {
             HttpWebRequest httpreq = (HttpWebRequest)WebRequest.Create(APIPostContent);
             try

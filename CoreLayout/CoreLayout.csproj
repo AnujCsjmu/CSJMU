@@ -25,12 +25,14 @@
     <PackageReference Include="NLog" Version="5.0.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.0.2" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.1" />
+    <PackageReference Include="System.Data.OleDb" Version="4.7.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="wwwroot\MailUploads\" />
   </ItemGroup>
 
 
