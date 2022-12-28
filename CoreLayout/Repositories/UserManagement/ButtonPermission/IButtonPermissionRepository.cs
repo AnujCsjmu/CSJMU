@@ -12,7 +12,7 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
     public interface IButtonPermissionRepository : IRepository<ButtonPermissionModel>
     {
         Task<List<RegistrationModel>> GetAllUserAsync(int roleid);
-
+        Task<ButtonPermissionModel> GetButtonPermissionByMenuIdAsync(int menuid);
         Task<List<ButtonPermissionModel>> GetAllButtonPermissionUserWiseAsync(int userid);
         Task<List<ButtonPermissionModel>> GetAllButtonPermissionMenuWiseAsync(int menuid);
         Task<List<ButtonPermissionModel>> DistinctButtonPermissionAsync();

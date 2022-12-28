@@ -89,7 +89,7 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                 {
                     entity.IsRecordDeleted = 1;
                     DynamicParameters parameters = new DynamicParameters();
-                    parameters.Add("Id", entity.Id, DbType.Int32);
+                    parameters.Add("MenuId", entity.MenuId, DbType.Int32);
                     parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                     parameters.Add("@Query", 3, DbType.Int32);
                     var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
@@ -140,7 +140,25 @@ namespace CoreLayout.Repositories.UserManagement.ButtonPermission
                 throw new Exception(ex.Message, ex);
             }
         }
-
+        public async Task<ButtonPermissionModel> GetButtonPermissionByMenuIdAsync(int menuid)
+        {
+            try
+            {
+                var query = "Usp_Crud_ButtonPermission";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("MenuId", menuid, DbType.Int32);
+                    parameters.Add("@Query", 16, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<ButtonPermissionModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
         public async Task<int> UpdateAsync(ButtonPermissionModel entity)
         {
             using (var connection = CreateConnection())

@@ -1,0 +1,429 @@
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CoreLayout.Models.WRN.WRNRegistrationModel
+@{
+    Layout = null;
+}
+@*<!DOCTYPE html>
+    <html>*@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style type="text/css">
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f1f1f1;
+    }
+
+    #regForm {
+        background-color: #ffffff;
+        margin: 100px auto;
+        font-family: Raleway;
+        padding: 40px;
+        width: 70%;
+        min-width: 300px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    input {
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-family: Raleway;
+        border: 1px solid #aaaaaa;
+    }
+
+        /* Mark input boxes that gets an error on validation: */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+
+    /* Hide all steps by default: */
+    .tab {
+        display: none;
+    }
+
+    button {
+        background-color: #04AA6D;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 17px;
+        font-family: Raleway;
+        cursor: pointer;
+    }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+    #prevBtn {
+        background-color: #bbbbbb;
+    }
+
+    /* Make circles that indicate the steps of the form: */
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #04AA6D;
+        }
+</style>
+@*//for validation*@
+<script src="~/assets/lib/jquery/dist/jquery.js"></script>
+<script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@*upper case*@
+<script type="text/javascript">
+    function upperCaseF(a) {
+        setTimeout(function () {
+            a.value = a.value.toUpperCase();
+        }, 1);
+    }
+</script>
+
+@*model validation css*@
+<style type="text/css">
+    body {
+        font-family: Arial;
+        font-size: 10pt;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+
+@*sweet alert*@
+<link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+<link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+@if (TempData["success"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Success!", '@TempData["success"]', "success");
+            };
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Failed!", '@TempData["error"]', "error");
+            };
+    </script>
+}
+@if (TempData["warning"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Warning!", '@TempData["warning"]', "warning");
+            };
+    </script>
+}
+<style>
+
+    .note {
+        text-align: center;
+        height: 80px;
+        background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+        color: #fff;
+        font-weight: bold;
+        line-height: 80px;
+        font-size: x-large;
+    }
+</style>
+
+<body>
+    <div class="note">
+        <p>Chhatrapati Shahu Ji Maharaj University, Kanpur</p>
+    </div>
+    <form id="regForm" method="post" asp-action="Registration" asp-controller="WRNRegistration">
+        <h1>WRN Registration:</h1>
+        <!-- One "tab" for each step in the form: -->
+        <div asp-validation-summary="ModelOnly" class="error">
+        </div>
+        <div class="tab">
+            Name:
+            <p>
+                <input placeholder="First name..." oninput="this.className = ''" asp-for="FirstName" onkeydown="upperCaseF(this)">
+                <span class="error" asp-validation-for="FirstName"></span>
+            </p>
+            <p>
+                <input placeholder="Middle name..." asp-for="MiddleName" onkeydown="upperCaseF(this)">
+                @*<span class="error" asp-validation-for="MiddleName"></span>*@
+            </p>
+            <p>
+                <input placeholder="Last name..." oninput="this.className = ''" asp-for="LastName" onkeydown="upperCaseF(this)">
+                <span class="error" asp-validation-for="LastName"></span>
+            </p>
+        </div>
+        <div class="tab">
+            Parent's Info:
+            <p>
+                <input placeholder="Father's name..." oninput="this.className = ''" asp-for="FatherName" onkeydown="upperCaseF(this)">
+                <span class="error" asp-validation-for="FatherName"></span>
+            </p>
+            <p>
+                <input placeholder="Mother's name..." oninput="this.className = ''" asp-for="MotherName" onkeydown="upperCaseF(this)">
+                <span class="error" asp-validation-for="MotherName"></span>
+            </p>
+        </div>
+        <div class="tab">
+            Birthday:
+            <p>
+                <input placeholder="dd-mm-yyyy" type="date" oninput="this.className = ''" asp-for="DOB">
+                <span class="error" asp-validation-for="DOB"></span>
+            </p>
+            @*<p><input placeholder="mm" oninput="this.className = ''" name="nn"></p>
+                <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"></p>*@
+
+        </div>
+        <div class="tab">
+            Contact Info:
+            <p>
+                <input placeholder="E-mail..." oninput="this.className = ''" asp-for="EmailId">
+                <span class="error" asp-validation-for="EmailId"></span>
+            </p>
+
+            <p>
+                <input placeholder="Mobile..." oninput="this.className = ''" asp-for="MobileNo">
+                <span class="error" asp-validation-for="MobileNo"></span>
+            </p>
+        </div>
+        <div class="tab">
+            Contact Verification:
+            <p>
+                <input placeholder="E-mail OTP..." oninput="this.className = ''" asp-for="EmailVerificationCode">
+                <span class="error" asp-validation-for="EmailVerificationCode"></span>
+            </p>
+            <p>
+                <input placeholder="Mobile OTP..." oninput="this.className = ''" asp-for="MobileVerificationCode">
+                <span class="error" asp-validation-for="MobileVerificationCode"></span>
+            </p>
+        </div>
+        <div class="tab">
+            Declaration:
+            <p>
+                <input class="form-check-input" type="checkbox" oninput="this.className = ''" asp-for="TermsConditions">
+                &nbsp;&nbsp;&nbsp; <label class="form-check-label" asp-for="TermsConditions">
+                </label><br />
+                <span asp-validation-for="TermsConditions" class="error"></span>
+            </p>
+        </div>
+        <div style="overflow:auto;">
+            <div style="float:right;">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            </div>
+        </div>
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px;">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <input type="hidden" id="hdnCurrentTab" value="" />
+        </div>
+        <div class="col-12" style="text-align:center">
+            <div class="small"><a asp-action="Login" asp-controller="WRNRegistration">Have an account? Go to login</a></div>
+        </div>
+    </form>
+
+    <script>
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+        function showTab(n) {
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Submit";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+            }
+            //... and run a function that will display the correct step indicator:
+            fixStepIndicator(n)
+        }
+
+        async function nextPrev(n) {
+            try {
+                // This function will figure out which tab to display
+                var x = document.getElementsByClassName("tab");
+                // Exit the function if any field in the current tab is invalid:
+                if (n == 1 && !validateForm()) return false;
+                // Hide the current tab:
+                x[currentTab].style.display = "none";
+                hdnCurrentTab.value = currentTab;//add new for send otp
+                // Increase or decrease the current tab by 1:
+                // 3 tab is send email and 4 tab is verify otp
+                console.log(currentTab, n)
+                if (currentTab == 3 && n > 0) {
+                    let res = await sendEmail(currentTab, n)
+                    if (res.res == true) {
+                        currentTab = currentTab + n;
+                    } else {
+                        currentTab = currentTab;
+                    }
+                } else if (currentTab == 4 && n > 0) {
+                    let res = await validateOtp(currentTab, n)
+                    if (res.res == true) {
+                        currentTab = currentTab + n;
+                    } else {
+                        currentTab = currentTab;
+                    }
+                } else {
+                    currentTab = currentTab + n;
+                    //showTab(currentTab);
+                }
+                console.log(currentTab)
+                console.log(x.length)
+                // if you have reached the end of the form...
+                if (currentTab >= x.length) {
+                    // ... the form gets submitted:
+                    document.getElementById("regForm").submit();
+                    return false;
+                }
+                // Otherwise, display the correct tab:
+                showTab(currentTab)
+            } catch (e) {
+                console.log(e)
+            }
+
+        }
+
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, i, valid = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            // A loop that checks every input field in the current tab:
+            for (i = 0; i < y.length; i++) {
+                // If a field is empty...
+                if (y[i].value == "") {
+                    // add an "invalid" class to the field:
+                    y[i].className += " invalid";
+                    // and set the current valid status to false
+                    valid = false;
+                }
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class on the current step:
+            x[n].className += " active";
+        }
+    </script>
+
+
+
+    <script>
+        function sendEmail(currentTab, n) {
+            var sdata = $("#regForm").serialize();
+            var res = false;
+            if (sdata != null) {
+                return $.ajax({
+                    type: 'POST',
+                    url: '/WRNRegistration/SendOTPEmail',
+                    //contentType: 'application/json',
+                    data: sdata,
+                    success: function (response) {
+                        if (response.res == true) {
+                            swal("Success!", response.msg, "success");
+                        }
+                        else {
+                            swal("Failed!", response.msg, "error");
+                        }
+                    }
+                });
+            }
+
+        }
+        function validateOtp(currentTab, n) {
+            var sdata = $("#regForm").serialize();
+            if (sdata != null) {
+                return $.ajax({
+                    type: 'POST',
+                    url: '/WRNRegistration/VerifyOTPEmail',
+                    //contentType: 'application/json',
+                    data: sdata,
+                    success: function (response) {
+                        if (response.res == true) {
+                            swal("Success!", response.msg, "success");
+                        }
+                        else {
+                            swal("Failed!", response.msg, "error");
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    @*checkbox validation*@
+    <!--OPTIONAL: Add the following scripts for enabling Client Side validation.-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript">
+        (function ($) {
+            $.validator.unobtrusive.adapters.addBool("checkboxrequired", "required");
+        }(jQuery));
+    </script>
+    <style type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 10pt;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</body>
+@*</html>*@
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

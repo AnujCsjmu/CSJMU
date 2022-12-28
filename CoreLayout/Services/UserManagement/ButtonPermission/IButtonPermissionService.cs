@@ -13,6 +13,7 @@ namespace CoreLayout.Services.UserManagement.ButtonPermission
     {
         public Task<List<ButtonPermissionModel>> GetAllButtonPermissionAsync();
         public Task<ButtonPermissionModel> GetButtonPermissionByIdAsync(int id);
+        public Task<ButtonPermissionModel> GetButtonPermissionByMenuIdAsync(int menuid);
         public Task<int> CreateButtonPermissionAsync(ButtonPermissionModel buttonPermissionModel);
         public Task<int> UpdateButtonPermissionAsync(ButtonPermissionModel buttonPermissionModel);
         public Task<int> DeleteButtonPermissionAsync(ButtonPermissionModel buttonPermissionModel);

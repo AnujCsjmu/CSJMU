@@ -61,23 +61,21 @@ namespace CoreLayout.Controllers
                 {
                     ButtonModel buttonModel = new ButtonModel();
                     buttonModel.ButtonName = _allButtonsData.ButtonName;
-                   
+
                     foreach (var item3 in ButtonPermissionDataUserWise)
                     {
                         buttonPermission.Id = item3.Id;
+                        buttonPermission.MenuId = item3.MenuId;
                         if (_allButtonsData.ButtonId == item3.ButtonId)
                         {
                             buttonModel.isChecked = "checked";
-
                         }
                     }
                     buttonModellist.Add(buttonModel);
-
                 }
                 buttonPermission.ButtonModelList = buttonModellist;
                 buttonPermissionModels.Add(buttonPermission);
             }
-
             return View(buttonPermissionModels);
         }
 
@@ -89,97 +87,97 @@ namespace CoreLayout.Controllers
             return View(data);
         }
 
-            //[HttpGet("[search]")]
-            //public async Task<IActionResult> Search()
-            //{
-            //    try
-            //    {
-            //        int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
-            //        int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
+        //[HttpGet("[search]")]
+        //public async Task<IActionResult> Search()
+        //{
+        //    try
+        //    {
+        //        int RoleId = 1;//Convert.ToInt32(Request.Form["RoleId"]);
+        //        int UserId = 13353; //Convert.ToInt32(Request.Form["UserId"]);
 
-            //        List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
-            //        permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
-            //        var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
-            //        if (result == null)
-            //        {
-            //            TempData["error"] = "User has not been updated";
-            //            return View(result);
-            //        }
+        //        List<ButtonPermissionModel> permissionModels = new List<ButtonPermissionModel>();
+        //        permissionModels = await _buttonPermissionService.GetAllButtonPermissionAsync();
+        //        var result = permissionModels.Where(x => x.RoleId == RoleId && x.UserId==UserId);
+        //        if (result == null)
+        //        {
+        //            TempData["error"] = "User has not been updated";
+        //            return View(result);
+        //        }
 
-            //        HttpContext.Session.SetString("SearchList", result.ToString());
-            //        HttpContext.Session.SetInt32("SearchRoleId", RoleId);
-            //        HttpContext.Session.SetInt32("SearchUserId", UserId);
-            //    }
-            //    catch(Exception ex)
-            //    {
-            //        ModelState.AddModelError("", ex.ToString());
-            //    }
-            //    return RedirectToAction("Index");
-            //}
-
-
-            //public void bindRoleDropdown()
-            //{
-            //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
-            //                          select new SelectListItem()
-            //                          {
-            //                              Text = menu.Controller,
-            //                              Value = menu.Controller.ToString(),
-            //                          }).ToList();
-            //    ControllerList.Insert(0, new SelectListItem()
-            //    {
-            //        Text = "----Select----",
-            //        Value = string.Empty
-            //    });
-            //    ViewBag.ControllerList = ControllerList;
+        //        HttpContext.Session.SetString("SearchList", result.ToString());
+        //        HttpContext.Session.SetInt32("SearchRoleId", RoleId);
+        //        HttpContext.Session.SetInt32("SearchUserId", UserId);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        ModelState.AddModelError("", ex.ToString());
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
 
-            //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
-            //                    select new SelectListItem()
-            //                    {
-            //                        Text = role.RoleName,
-            //                        Value = role.RoleID.ToString(),
-            //                    }).ToList();
-            //    RoleList.Insert(0, new SelectListItem()
-            //    {
-            //        Text = "----Select----",
-            //        Value = string.Empty
-            //    });
+        //public void bindRoleDropdown()
+        //{
+        //    var ControllerList = (from menu in _menuService.GetAllMenuAsync().Result
+        //                          select new SelectListItem()
+        //                          {
+        //                              Text = menu.Controller,
+        //                              Value = menu.Controller.ToString(),
+        //                          }).ToList();
+        //    ControllerList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    ViewBag.ControllerList = ControllerList;
 
-            //    ViewBag.RoleList = RoleList;
 
-            //    var GetButtonList = (from button in _buttonService.GetAllButton().Result
-            //                         select new SelectListItem()
-            //                         {
-            //                             Text = button.ButtonName,
-            //                             Value = button.ButtonId.ToString(),
-            //                         }).ToList();
-            //    //GetButtonList.Insert(0, new SelectListItem()
-            //    //{
-            //    //    Text = "----Select----",
-            //    //    Value = string.Empty
-            //    //});
+        //    var RoleList = (from role in _roleService.GetAllRoleAsync().Result
+        //                    select new SelectListItem()
+        //                    {
+        //                        Text = role.RoleName,
+        //                        Value = role.RoleID.ToString(),
+        //                    }).ToList();
+        //    RoleList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
 
-            //    ViewBag.GetButtonList = GetButtonList;
-            //}
-            //public void bindUserDropdown(int RoleId)
-            //{
+        //    ViewBag.RoleList = RoleList;
 
-            //    var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
-            //                       select new SelectListItem()
-            //                       {
-            //                           Text = user.UserName,
-            //                           Value = user.UserID.ToString(),
-            //                       }).ToList();
-            //    GetUserList.Insert(0, new SelectListItem()
-            //    {
-            //        Text = "----Select----",
-            //        Value = string.Empty
-            //    });
-            //    ViewBag.GetUserList = GetUserList;
-            //}
-            //Create Get Action Method
-            [AuthorizeContext(ViewAction.Add)]
+        //    var GetButtonList = (from button in _buttonService.GetAllButton().Result
+        //                         select new SelectListItem()
+        //                         {
+        //                             Text = button.ButtonName,
+        //                             Value = button.ButtonId.ToString(),
+        //                         }).ToList();
+        //    //GetButtonList.Insert(0, new SelectListItem()
+        //    //{
+        //    //    Text = "----Select----",
+        //    //    Value = string.Empty
+        //    //});
+
+        //    ViewBag.GetButtonList = GetButtonList;
+        //}
+        //public void bindUserDropdown(int RoleId)
+        //{
+
+        //    var GetUserList = (from user in _buttonPermissionService.GetAllUsersAsync(RoleId).Result
+        //                       select new SelectListItem()
+        //                       {
+        //                           Text = user.UserName,
+        //                           Value = user.UserID.ToString(),
+        //                       }).ToList();
+        //    GetUserList.Insert(0, new SelectListItem()
+        //    {
+        //        Text = "----Select----",
+        //        Value = string.Empty
+        //    });
+        //    ViewBag.GetUserList = GetUserList;
+        //}
+        //Create Get Action Method
+        [AuthorizeContext(ViewAction.Add)]
         public async Task<ActionResult> CreateAsync()
         {
 
@@ -209,8 +207,8 @@ namespace CoreLayout.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-            //Create Post Action Method
-            [HttpPost]
+        //Create Post Action Method
+        [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeContext(ViewAction.Add)]
         public async Task<IActionResult> Create(ButtonPermissionModel buttonPermissionModel)
@@ -385,7 +383,7 @@ namespace CoreLayout.Controllers
 
         [HttpGet]
         [AuthorizeContext(ViewAction.Delete)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int MenuId)
         {
 
             if (HttpContext.Session.GetString("Name") != null)
@@ -393,7 +391,10 @@ namespace CoreLayout.Controllers
                 try
                 {
 
-                    var value = await _buttonPermissionService.GetButtonPermissionByIdAsync(id);
+                    //var value = await _buttonPermissionService.GetButtonPermissionByIdAsync(menuid);
+
+                    var value = await _buttonPermissionService.GetButtonPermissionByMenuIdAsync(MenuId);
+
                     if (value != null)
                     {
                         var res = await _buttonPermissionService.DeleteButtonPermissionAsync(value);
@@ -425,6 +426,63 @@ namespace CoreLayout.Controllers
 
             }
         }
+
+
+        //new logic update in index page
+        //[HttpGet]
+        //[AuthorizeContext(ViewAction.Edit)]
+        //public async Task<IActionResult> EditNew(int MenuId, ButtonPermissionModel buttonPermissionModel)
+        //{
+        //    if (HttpContext.Session.GetString("Name") != null)
+        //    {
+        //        try
+        //        {
+        //            //var value = await _buttonPermissionService.GetButtonPermissionByIdAsync(menuid);
+        //            var value = await _buttonPermissionService.GetButtonPermissionByMenuIdAsync(MenuId);
+
+        //            if (value != null)
+        //            {
+        //                buttonPermissionModel.ModifiedBy = HttpContext.Session.GetInt32("UserId");
+        //                buttonPermissionModel.IPAddress = HttpContext.Session.GetString("IPAddress");
+
+        //                int buttons = 0;
+        //                foreach (var buttonid in buttonPermissionModel.ButtonList)
+        //                {
+        //                    int result = _commonController.AlreadyExitsButtonPermission(Convert.ToInt32(buttonid), (int)buttonPermissionModel.ModifiedBy, buttonPermissionModel.RoleId, buttonPermissionModel.Controller, buttonPermissionModel.Action);
+        //                    if (result > 0)
+        //                    {
+        //                        buttons = 1;
+        //                    }
+        //                }
+
+        //                value.UserId = (int)HttpContext.Session.GetInt32("Id");
+        //                var res = await _buttonPermissionService.UpdateButtonPermissionAsync(value);
+        //                if (res.ToString().Equals("1"))
+        //                {
+        //                    TempData["success"] = "ButtonPermission has been updated";
+        //                }
+        //                else
+        //                {
+        //                    TempData["error"] = "ButtonPermission has not been updated";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                TempData["error"] = "Some thing went wrong!";
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ModelState.AddModelError("", ex.ToString());
+        //        }
+
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //}
 
     }
 }

@@ -26,6 +26,11 @@ namespace CoreLayout.Services.UserManagement.ButtonPermission
             return await _buttonPermissionRepository.GetByIdAsync(id);
         }
 
+        public async Task<ButtonPermissionModel> GetButtonPermissionByMenuIdAsync(int menuid)
+        {
+            return await _buttonPermissionRepository.GetButtonPermissionByMenuIdAsync(menuid);
+        }
+
         public async Task<int> CreateButtonPermissionAsync(ButtonPermissionModel buttonPermissionModel)
         {
             return await _buttonPermissionRepository.CreateAsync(buttonPermissionModel);

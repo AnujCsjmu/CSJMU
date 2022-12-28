@@ -6,6 +6,8 @@ using CoreLayout.Models.UserManagement;
 using CoreLayout.Repositories.Audit;
 using CoreLayout.Repositories.Circular;
 using CoreLayout.Repositories.Common;
+using CoreLayout.Repositories.Common.OTPVerification;
+using CoreLayout.Repositories.Common.SequenceGenerate;
 using CoreLayout.Repositories.Exam.ExamCourseMapping;
 using CoreLayout.Repositories.Exam.ExamMaster;
 using CoreLayout.Repositories.Exam.Student;
@@ -55,9 +57,12 @@ using CoreLayout.Repositories.UserManagement.ParentMenu;
 using CoreLayout.Repositories.UserManagement.Registration;
 using CoreLayout.Repositories.UserManagement.RoleToRoleMapping;
 using CoreLayout.Repositories.UserManagement.SubMenu;
+using CoreLayout.Repositories.WRN;
 using CoreLayout.Services.Audit;
 using CoreLayout.Services.Circular;
 using CoreLayout.Services.Common;
+using CoreLayout.Services.Common.OTPVerification;
+using CoreLayout.Services.Common.SequenceGenerate;
 using CoreLayout.Services.Exam.ExamCourseMapping;
 using CoreLayout.Services.Exam.ExamMaster;
 using CoreLayout.Services.Exam.Student;
@@ -106,6 +111,7 @@ using CoreLayout.Services.UserManagement.Menu;
 using CoreLayout.Services.UserManagement.ParentMenu;
 using CoreLayout.Services.UserManagement.RoleToRoleMapping;
 using CoreLayout.Services.UserManagement.SubMenu;
+using CoreLayout.Services.WRN;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -404,6 +410,18 @@ namespace CoreLayout
             //subject Profile
             services.AddScoped<ISubjectProfileService, SubjectProfileService>();
             services.AddScoped<ISubjectProfileRepository, SubjectProfileRepository>();
+
+            //WRN Registration
+            services.AddScoped<IWRNRegistrationService, WRNRegistrationService>();
+            services.AddScoped<IWRNRegistrationRepository, WRNRegistrationRepository>();
+
+            //Sequrnce Generate
+            services.AddScoped<ISequenceGenerateService, SequenceGenerateService>();
+            services.AddScoped<ISequenceGenerateRepository, SequenceGenerateRepository>();
+
+            //otp verification
+            services.AddScoped<IOTPVerificationService, OTPVerificationService>();
+            services.AddScoped<IOTPVerificationRepository, OTPVerificationRepository>();
 
             //add for encrypt value
             services.AddDataProtection();
