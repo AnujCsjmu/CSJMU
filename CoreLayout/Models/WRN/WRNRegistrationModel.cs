@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using CoreLayout.Models.Masters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
@@ -24,6 +25,8 @@ namespace CoreLayout.Models.WRN
         public string ApplicationNo { get; set; }
 
         [Display(Name = "Registration No.")]
+        [Required(ErrorMessage = "Please enter registration no")]
+        [StringLength(15)]
         public string RegistrationNo { get; set; }
 
         [Display(Name = "First Name")]
@@ -102,6 +105,8 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select category")]
         public int CategoryId { get; set; }
 
+        public List<CategoryModel> CategoryList { get; set; }
+
         [Display(Name = "Nationality")]
         [Required(ErrorMessage = "Please select nationality")]
         public string Nationality { get; set; }
@@ -109,6 +114,8 @@ namespace CoreLayout.Models.WRN
         [Display(Name = "Religion")]
         [Required(ErrorMessage = "Please select religion")]
         public int ReligionId { get; set; }
+
+        public List<ReligionModel> ReligionList { get; set; }
 
         [Display(Name = "Physical Disabled")]
         [Required(ErrorMessage = "Please select physical disabled")]
@@ -123,13 +130,17 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select permanent state")]
         public int PermanentStateId { get; set; }
 
+        public List<StateModel> StateList { get; set; }
+
         [Display(Name = "Permanent District")]
         [Required(ErrorMessage = "Please select permanent district")]
         public int PermanentDistrictId { get; set; }
 
+        public List<DistrictModel> DistrictList { get; set; }
+
         [Display(Name = "Permanent Pincode")]
         [Required(ErrorMessage = "Please enter permanent pincode")]
-        [StringLength(6)]
+        [StringLength(6,MinimumLength =6)]
         public string PermanentPincode { get; set; }
 
         [Display(Name = "Communication Address")]
@@ -147,7 +158,7 @@ namespace CoreLayout.Models.WRN
 
         [Display(Name = "Communication Pincode")]
         [Required(ErrorMessage = "Please enter communication pincode")]
-        [StringLength(6)]
+        [StringLength(6, MinimumLength = 6)]
         public string CommunicationPincode { get; set; }
 
         [Display(Name = "I accept the above terms and conditions.")]

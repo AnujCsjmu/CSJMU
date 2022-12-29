@@ -1,0 +1,164 @@
+﻿@addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers
+@model CoreLayout.Models.WRN.WRNRegistrationModel
+@{
+    Layout = null;
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+<link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+@if (TempData["success"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Success!", '@TempData["success"]', "success");
+            };
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Failed!", '@TempData["error"]', "error");
+            };
+    </script>
+}
+@if (TempData["warning"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Warning!", '@TempData["warning"]', "warning");
+            };
+    </script>
+}
+
+<style>
+
+    .note {
+        text-align: center;
+        height: 80px;
+        background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+        color: #fff;
+        font-weight: bold;
+        line-height: 80px;
+        font-size: x-large;
+    }
+
+    .form-content {
+        padding: 5%;
+        border: 1px solid #ced4da;
+        margin-bottom: 2%;
+    }
+
+    .form-control {
+        border-radius: 1.5rem;
+    }
+
+    .btnSubmit {
+        border: none;
+        border-radius: 1.5rem;
+        padding: 1%;
+        width: 20%;
+        cursor: pointer;
+        background: #0062cc;
+        color: #fff;
+    }
+</style>
+
+<!------ Include the above in your HEAD tag ---------->
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+    </div>
+    <div class="container register-form">
+        <div class="form">
+            <div class="note">
+                <p>Chhatrapati Shahu Ji Maharaj University, Kanpur</p>
+            </div>
+
+            <div class="form-content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div style="background-color:blue; color:white; font-size:large; font-weight:bold;text-align:center">
+                            <p>WRN  Login</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="background-color:blue; color:white; font-size:large; font-weight:bold;text-align:center">
+                            <label>Notifications</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" asp-for="RegistrationNo" placeholder="Registration No *" value="" tabindex="5" />
+                            <span style="font:bold; color:red; font-size:small" asp-validation-for="RegistrationNo"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Notification-1</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" asp-for="MobileNo" placeholder="Mobile Number *" value="" tabindex="4" />
+                            <span style="font:bold; color:red; font-size:small" asp-validation-for="MobileNo"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Notification-2</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="date" class="form-control" asp-for="DOB" placeholder="Date of Birth *" tabindex="6" />
+                            <span style="font:bold; color:red; font-size:small" asp-validation-for="DOB"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Notification-3</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit" tabindex="8" onclick="return validateData();">Login</button>
+                    </div>
+                    <hr />
+                    <div class="col-12" style="text-align:center">
+                        <div class="small"><a asp-action="Registration" tabindex="9" asp-controller="WRNRegistration">Have not account? Go to registration</a></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </div>
+</form>
+
+@*//for validation*@
+<script src="~/assets/lib/jquery/dist/jquery.js"></script>
+<script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@*upper case*@
+<script type="text/javascript">
+    function upperCaseF(a) {
+        setTimeout(function () {
+            a.value = a.value.toUpperCase();
+        }, 1);
+    }
+</script>

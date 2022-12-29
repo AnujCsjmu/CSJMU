@@ -254,7 +254,7 @@ namespace CoreLayout.Repositories.WRN
                         parameters.Add("IsActive", entity.IsActive, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
-                        var res = await SqlMapper.ExecuteAsync(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                        var res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {
                             tran.Commit();
