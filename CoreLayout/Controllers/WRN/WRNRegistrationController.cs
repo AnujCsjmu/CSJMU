@@ -63,7 +63,7 @@ namespace CoreLayout.Controllers.WRN
         #region Login
         public IActionResult Login()
         {
-            return View();
+            return View("~/Views/WRN/WRNRegistration/Login.cshtml");
         }
 
         [HttpPost]
@@ -98,7 +98,7 @@ namespace CoreLayout.Controllers.WRN
                         HttpContext.Session.SetString("SessionMobileNo", res.MobileNo);
                         HttpContext.Session.SetString("SessionEmailId", res.EmailId);
                         HttpContext.Session.SetString("SessionRegistrationNo", res.RegistrationNo);
-                        return View("~/Views/WRNDashboard/Dashboard.cshtml");
+                        return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml");
                     }
                 }
                 else
@@ -120,7 +120,7 @@ namespace CoreLayout.Controllers.WRN
         [HttpGet]
         public IActionResult Registration()
         {
-            return View();
+            return View("~/Views/WRN/WRNRegistration/Registration.cshtml");
         }
 
         [HttpPost]
@@ -383,32 +383,36 @@ namespace CoreLayout.Controllers.WRN
         }
 
         #region Complete Registration
+        [HttpGet]
         public async Task<IActionResult> CompleteRegistrationAsync()
         {
             if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
             {
+                #region bind data after update
                 WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
                 wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                wRNRegistrationModel.FirstName = HttpContext.Session.GetString("SessionFirstName");
-                wRNRegistrationModel.MiddleName = HttpContext.Session.GetString("SessionMiddleName");
-                wRNRegistrationModel.LastName = HttpContext.Session.GetString("SessionLastName");
-                wRNRegistrationModel.FatherName = HttpContext.Session.GetString("SessionFatherName");
-                wRNRegistrationModel.MotherName = HttpContext.Session.GetString("SessionMotherName");
                 wRNRegistrationModel.DOB = HttpContext.Session.GetString("SessionDOB");
                 wRNRegistrationModel.MobileNo = HttpContext.Session.GetString("SessionMobileNo");
-                wRNRegistrationModel.EmailId = HttpContext.Session.GetString("SessionEmailId");
-                wRNRegistrationModel.CategoryList = await _categoryService.GetAllCategory();
-                wRNRegistrationModel.ReligionList = await _religionService.GetAllReligion();
-                wRNRegistrationModel.StateList = await _stateService.GetAllState();
-                wRNRegistrationModel.DistrictList = await _districtService.GetAllDistrict();
-
-                #region bind data after update
                 var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
                 if (data == null)
                 {
+                    TempData["success"] = "Data not found !";
                 }
                 else
                 {
+                    wRNRegistrationModel.FirstName = HttpContext.Session.GetString("SessionFirstName");
+                    wRNRegistrationModel.MiddleName = HttpContext.Session.GetString("SessionMiddleName");
+                    wRNRegistrationModel.LastName = HttpContext.Session.GetString("SessionLastName");
+                    wRNRegistrationModel.FatherName = HttpContext.Session.GetString("SessionFatherName");
+                    wRNRegistrationModel.MotherName = HttpContext.Session.GetString("SessionMotherName");
+                    wRNRegistrationModel.EmailId = HttpContext.Session.GetString("SessionEmailId");
+                    wRNRegistrationModel.CategoryList = await _categoryService.GetAllCategory();
+                    wRNRegistrationModel.ReligionList = await _religionService.GetAllReligion();
+                    wRNRegistrationModel.StateList = await _stateService.GetAllState();
+                    wRNRegistrationModel.DistrictList = await _districtService.GetAllDistrict();
+                    wRNRegistrationModel.AcademicSession = "2022-23";//change
+
+                    wRNRegistrationModel.ApplicationNo = data.ApplicationNo;
                     wRNRegistrationModel.ModeOfAdmission = data.ModeOfAdmission;
                     wRNRegistrationModel.HindiName = data.HindiName;
                     wRNRegistrationModel.Gender = data.Gender;
@@ -417,18 +421,22 @@ namespace CoreLayout.Controllers.WRN
                     wRNRegistrationModel.Nationality = data.Nationality;
                     wRNRegistrationModel.ReligionId = data.ReligionId;
                     wRNRegistrationModel.PhysicalDisabled = data.PhysicalDisabled;
+
                     wRNRegistrationModel.PermanentAddress = data.PermanentAddress;
                     wRNRegistrationModel.PermanentStateId = data.PermanentStateId;
                     wRNRegistrationModel.PermanentDistrictId = data.PermanentDistrictId;
                     wRNRegistrationModel.PermanentPincode = data.PermanentPincode;
+
                     wRNRegistrationModel.CommunicationAddress = data.CommunicationAddress;
                     wRNRegistrationModel.CommunicationStateId = data.CommunicationStateId;
                     wRNRegistrationModel.CommunicationDistrictId = data.CommunicationDistrictId;
                     wRNRegistrationModel.CommunicationPincode = data.CommunicationPincode;
+                    wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
                 }
 
                 #endregion
-                return View(wRNRegistrationModel);
+                //return View(wRNRegistrationModel);
+                return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
             }
             else
             {
@@ -441,20 +449,36 @@ namespace CoreLayout.Controllers.WRN
         {
             try
             {
-                string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
-                wRNRegistrationModel.IPAddress = ipAddress;
-                wRNRegistrationModel.Id = (int)HttpContext.Session.GetInt32("SessionId");
-                wRNRegistrationModel.ApplicationNo = "01/2022/2022-23/" + wRNRegistrationModel.Id;
-                var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
-                if (data.Equals(1))
+                //wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                if (checkFinalSubmit.FinalSubmit == 0)
                 {
-                    TempData["success"] = "Data has been updated !";
+                    string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                    wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
+                    wRNRegistrationModel.IPAddress = ipAddress;
+                    wRNRegistrationModel.Id = (int)HttpContext.Session.GetInt32("SessionId");
+                    wRNRegistrationModel.ApplicationNo = "01/2022/2022-23/" + wRNRegistrationModel.Id;
+                    wRNRegistrationModel.FinalSubmit = 0;
+                    //if (ModelState.IsValid)
+                    //{
+                        var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
+                        if (data.Equals(1))
+                        {
+                            TempData["success"] = "Data has been updated !";
+                        }
+                        else
+                        {
+                            TempData["warning"] = "Data has not been updated !";
+                        }
+                    //}
+                    //else
+                    //{
+                    //    TempData["warning"] = "Some thing went wrong !";
+                    //}
                 }
                 else
                 {
-                    TempData["warning"] = "Data has not been updated !";
+                    TempData["warning"] = "Data has been final submitted, you can't any changes !";
                 }
             }
             catch (Exception ex)
@@ -462,6 +486,7 @@ namespace CoreLayout.Controllers.WRN
                 TempData["error"] = ex.ToString();
             }
             return RedirectToAction("CompleteRegistration", "WRNRegistration");
+            //return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
         }
         #endregion
 
@@ -508,178 +533,41 @@ namespace CoreLayout.Controllers.WRN
             });
             return Json(DistrictList);
         }
-        //public async Task<IActionResult> Report()
-        //{
-        //    var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-        //    if (data == null)
-        //    {
-        //    }
-        //    else
-        //    {
-        //        Document document = new Document(PageSize.A4, 88f, 88f, 10f, 10f);
-        //        Font NormalFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, Color.BLACK);
-        //        using (System.IO.MemoryStream memoryStream = new System.IO.MemoryStream())
-        //        {
-        //            PdfWriter writer = PdfWriter.GetInstance(document, memoryStream);
-        //            Phrase phrase = null;
-        //            PdfPCell cell = null;
-        //            PdfPTable table = null;
-        //            Color color = null;
-
-        //            document.Open();
-
-        //            //Header Table
-        //            table = new PdfPTable(2);
-        //            table.TotalWidth = 500f;
-        //            table.LockedWidth = true;
-        //            table.SetWidths(new float[] { 0.3f, 0.7f });
-
-        //            //Company Logo
-        //            cell = ImageCell("~/images/northwindlogo.gif", 30f, PdfPCell.ALIGN_CENTER);
-        //            table.AddCell(cell);
-
-        //            //Company Name and Address
-        //            phrase = new Phrase();
-        //            phrase.Add(new Chunk("Microsoft Northwind Traders Company\n\n", FontFactory.GetFont("Arial", 16, Font.BOLD, Color.RED)));
-        //            phrase.Add(new Chunk("107, Park site,\n", FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            phrase.Add(new Chunk("Salt Lake Road,\n", FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            phrase.Add(new Chunk("Seattle, USA", FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            cell = PhraseCell(phrase, PdfPCell.ALIGN_LEFT);
-        //            cell.VerticalAlignment = PdfCell.ALIGN_TOP;
-        //            table.AddCell(cell);
-
-        //            //Separater Line
-        //            color = new Color(System.Drawing.ColorTranslator.FromHtml("#A9A9A9"));
-        //            DrawLine(writer, 25f, document.Top - 79f, document.PageSize.Width - 25f, document.Top - 79f, color);
-        //            DrawLine(writer, 25f, document.Top - 80f, document.PageSize.Width - 25f, document.Top - 80f, color);
-        //            document.Add(table);
-
-        //            table = new PdfPTable(2);
-        //            table.HorizontalAlignment = Element.ALIGN_LEFT;
-        //            table.SetWidths(new float[] { 0.3f, 1f });
-        //            table.SpacingBefore = 20f;
-
-        //            //Employee Details
-        //            cell = PhraseCell(new Phrase("Employee Record", FontFactory.GetFont("Arial", 12, Font.UNDERLINE, Color.BLACK)), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            table.AddCell(cell);
-        //            cell = PhraseCell(new Phrase(), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            cell.PaddingBottom = 30f;
-        //            table.AddCell(cell);
-
-        //            //Photo
-        //            cell = ImageCell(string.Format("~/photos/{0}.jpg", dr["EmployeeId"]), 25f, PdfPCell.ALIGN_CENTER);
-        //            table.AddCell(cell);
-
-        //            //Name
-        //            phrase = new Phrase();
-        //            phrase.Add(new Chunk(dr["TitleOfCourtesy"] + " " + dr["FirstName"] + " " + dr["LastName"] + "\n", FontFactory.GetFont("Arial", 10, Font.BOLD, Color.BLACK)));
-        //            phrase.Add(new Chunk("(" + dr["Title"].ToString() + ")", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)));
-        //            cell = PhraseCell(phrase, PdfPCell.ALIGN_LEFT);
-        //            cell.VerticalAlignment = PdfPCell.ALIGN_MIDDLE;
-        //            table.AddCell(cell);
-        //            document.Add(table);
-
-        //            DrawLine(writer, 160f, 80f, 160f, 690f, Color.BLACK);
-        //            DrawLine(writer, 115f, document.Top - 200f, document.PageSize.Width - 100f, document.Top - 200f, Color.BLACK);
-
-        //            table = new PdfPTable(2);
-        //            table.SetWidths(new float[] { 0.5f, 2f });
-        //            table.TotalWidth = 340f;
-        //            table.LockedWidth = true;
-        //            table.SpacingBefore = 20f;
-        //            table.HorizontalAlignment = Element.ALIGN_RIGHT;
-
-        //            //Employee Id
-        //            table.AddCell(PhraseCell(new Phrase("Employee code:", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            table.AddCell(PhraseCell(new Phrase("000" + dr["EmployeeId"], FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            cell = PhraseCell(new Phrase(), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            cell.PaddingBottom = 10f;
-        //            table.AddCell(cell);
 
 
-        //            //Address
-        //            table.AddCell(PhraseCell(new Phrase("Address:", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            phrase = new Phrase(new Chunk(dr["Address"] + "\n", FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            phrase.Add(new Chunk(dr["City"] + "\n", FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            phrase.Add(new Chunk(dr["Region"] + " " + dr["Country"] + " " + dr["PostalCode"], FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)));
-        //            table.AddCell(PhraseCell(phrase, PdfPCell.ALIGN_LEFT));
-        //            cell = PhraseCell(new Phrase(), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            cell.PaddingBottom = 10f;
-        //            table.AddCell(cell);
-
-        //            //Date of Birth
-        //            table.AddCell(PhraseCell(new Phrase("Date of Birth:", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            table.AddCell(PhraseCell(new Phrase(Convert.ToDateTime(dr["BirthDate"]).ToString("dd MMMM, yyyy"), FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            cell = PhraseCell(new Phrase(), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            cell.PaddingBottom = 10f;
-        //            table.AddCell(cell);
-
-        //            //Phone
-        //            table.AddCell(PhraseCell(new Phrase("Phone Number:", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            table.AddCell(PhraseCell(new Phrase(dr["HomePhone"] + " Ext: " + dr["Extension"], FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            cell = PhraseCell(new Phrase(), PdfPCell.ALIGN_CENTER);
-        //            cell.Colspan = 2;
-        //            cell.PaddingBottom = 10f;
-        //            table.AddCell(cell);
-
-        //            //Addtional Information
-        //            table.AddCell(PhraseCell(new Phrase("Addtional Information:", FontFactory.GetFont("Arial", 8, Font.BOLD, Color.BLACK)), PdfPCell.ALIGN_LEFT));
-        //            table.AddCell(PhraseCell(new Phrase(dr["Notes"].ToString(), FontFactory.GetFont("Arial", 8, Font.NORMAL, Color.BLACK)), PdfPCell.ALIGN_JUSTIFIED));
-        //            document.Add(table);
-        //            document.Close();
-        //            byte[] bytes = memoryStream.ToArray();
-        //            memoryStream.Close();
-        //            Response.Clear();
-        //            Response.ContentType = "application/pdf";
-        //            Response.AddHeader("Content-Disposition", "attachment; filename=Employee.pdf");
-        //            Response.ContentType = "application/pdf";
-        //            Response.Buffer = true;
-        //            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-        //            Response.BinaryWrite(bytes);
-        //            Response.End();
-        //            Response.Close();
-        //        }
-
-
-
-        //    }
-        //    return RedirectToAction("CompleteRegistration", "WRNRegistration");
-        //}
-        //private static void DrawLine(PdfWriter writer, float x1, float y1, float x2, float y2, Color color)
-        //{
-        //    PdfContentByte contentByte = writer.DirectContent;
-        //    contentByte.SetColorStroke(color);
-        //    contentByte.MoveTo(x1, y1);
-        //    contentByte.LineTo(x2, y2);
-        //    contentByte.Stroke();
-        //}
-        //private static PdfPCell PhraseCell(Phrase phrase, int align)
-        //{
-        //    PdfPCell cell = new PdfPCell(phrase);
-        //    cell.BorderColor = Color.WHITE;
-        //    cell.VerticalAlignment = PdfCell.ALIGN_TOP;
-        //    cell.HorizontalAlignment = align;
-        //    cell.PaddingBottom = 2f;
-        //    cell.PaddingTop = 0f;
-        //    return cell;
-        //}
-        //private static PdfPCell ImageCell(string path, float scale, int align)
-        //{
-        //    iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(HttpContext.Current.Server.MapPath(path));
-        //    image.ScalePercent(scale);
-        //    PdfPCell cell = new PdfPCell(image);
-        //    cell.BorderColor = Color.WHITE;
-        //    cell.VerticalAlignment = PdfCell.ALIGN_TOP;
-        //    cell.HorizontalAlignment = align;
-        //    cell.PaddingBottom = 0f;
-        //    cell.PaddingTop = 0f;
-        //    return cell;
-        //}
+        #region final submit
+        [HttpPost]
+        public async Task<IActionResult> FinalSubmit(WRNRegistrationModel wRNRegistrationModel)
+        {
+            try
+            {
+                var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                if (checkFinalSubmit.FinalSubmit == 0)
+                {
+                    wRNRegistrationModel.FinalSubmit = 1;
+                    wRNRegistrationModel.Id = checkFinalSubmit.Id;
+                    var data = await _wRNRegistrationService.UpdateFinalSubmitAsync(wRNRegistrationModel);
+                    if (data.Equals(1))
+                    {
+                        TempData["success"] = "Data has been final submitted !";
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Data has not been final submitted !";
+                    }
+                }
+                else
+                {
+                    TempData["warning"] = "Data already final submitted !";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return RedirectToAction("CompleteRegistration", "WRNRegistration");
+        }
+        #endregion
     }
 
 }

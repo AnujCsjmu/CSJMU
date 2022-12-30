@@ -253,7 +253,85 @@ namespace CoreLayout.Repositories.WRN
                         parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("IsActive", entity.IsActive, DbType.Int32);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                        parameters.Add("AcademicSession", entity.AcademicSession, DbType.String);
+                        parameters.Add("FinalSubmit", entity.FinalSubmit, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
+                        var res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
+
+        public async Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        entity.IsActive = true;
+                        entity.IsRecordDeleted = 0;
+                        var query = "Usp_WRNRegistration";
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("Id", entity.Id, DbType.Int32);
+                        parameters.Add("ModeOfAdmission", entity.ModeOfAdmission, DbType.String);
+                        parameters.Add("ApplicationNo", entity.ApplicationNo, DbType.String);
+                        parameters.Add("RegistrationNo", entity.RegistrationNo, DbType.String);
+                        parameters.Add("FirstName", entity.FirstName, DbType.String);
+                        parameters.Add("MiddleName", entity.MiddleName, DbType.String);
+                        parameters.Add("LastName", entity.LastName, DbType.String);
+                        parameters.Add("HindiName", entity.HindiName, DbType.String);
+                        parameters.Add("FatherName", entity.FatherName, DbType.String);
+                        parameters.Add("MotherName", entity.MotherName, DbType.String);
+                        parameters.Add("MobileNo", entity.MobileNo, DbType.String);
+                        parameters.Add("EmailId", entity.EmailId, DbType.String);
+                        parameters.Add("AadharNumber", entity.AadharNumber, DbType.String);
+                        parameters.Add("Gender", entity.Gender, DbType.String);
+                        parameters.Add("DOB", entity.DOB, DbType.String);
+                        parameters.Add("CategoryId", entity.CategoryId, DbType.Int32);
+                        parameters.Add("Nationality", entity.Nationality, DbType.String);
+                        parameters.Add("ReligionId", entity.ReligionId, DbType.Int32);
+                        parameters.Add("PhysicalDisabled", entity.PhysicalDisabled, DbType.String);
+                        parameters.Add("PermanentAddress", entity.PermanentAddress, DbType.String);
+                        parameters.Add("PermanentStateId", entity.PermanentStateId, DbType.Int32);
+                        parameters.Add("PermanentDistrictId", entity.PermanentDistrictId, DbType.Int32);
+                        parameters.Add("PermanentPincode", entity.PermanentPincode, DbType.String);
+                        parameters.Add("CommunicationAddress", entity.CommunicationAddress, DbType.String);
+                        parameters.Add("CommunicationStateId", entity.CommunicationStateId, DbType.Int32);
+                        parameters.Add("CommunicationDistrictId", entity.CommunicationDistrictId, DbType.Int32);
+                        parameters.Add("CommunicationPincode", entity.CommunicationPincode, DbType.String);
+                        parameters.Add("TermsConditions", entity.TermsConditions, DbType.Boolean);
+                        parameters.Add("IPAddress", entity.IPAddress, DbType.String);
+                        parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
+                        parameters.Add("IsActive", entity.IsActive, DbType.Int32);
+                        parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
+                        parameters.Add("AcademicSession", entity.AcademicSession, DbType.String);
+                        parameters.Add("FinalSubmit", entity.FinalSubmit, DbType.Int32);
+                        parameters.Add("@Query", 8, DbType.Int32);
                         var res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         if (res == 1)
                         {

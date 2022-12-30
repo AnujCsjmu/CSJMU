@@ -403,7 +403,10 @@ namespace CoreLayout.Controllers
         {
             return View();
         }
-
+        public IActionResult WRNLogin()
+        {
+            return RedirectToAction("Login", "WRNRegistration");
+        }
 
     }
 }

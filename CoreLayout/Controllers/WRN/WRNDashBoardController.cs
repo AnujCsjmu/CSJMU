@@ -38,7 +38,7 @@ namespace CoreLayout.Controllers
         [HttpGet]
         public IActionResult DashBoard()
         {
-            return View("~/Views/WRNDashboard/Dashboard.cshtml");
+            return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml");
         }
 
 

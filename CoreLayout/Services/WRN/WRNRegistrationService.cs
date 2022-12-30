@@ -49,5 +49,9 @@ namespace CoreLayout.Services.WRN
         {
             return await _wRNRegistrationRepository.DeleteAsync(wRNRegistrationModel);
         }
+        public async Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel wRNRegistrationModel)
+        {
+            return await _wRNRegistrationRepository.UpdateFinalSubmitAsync(wRNRegistrationModel);
+        }
     }
 }

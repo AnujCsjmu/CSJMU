@@ -14,5 +14,6 @@ namespace CoreLayout.Services.WRN
         public Task<int> CreateWRNRegistrationAsync(WRNRegistrationModel wRNRegistrationModel);
         public Task<int> UpdateWRNRegistrationAsync(WRNRegistrationModel wRNRegistrationModel);
         public Task<int> DeleteWRNRegistrationAsync(WRNRegistrationModel wRNRegistrationModel);
+        public Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel wRNRegistrationModel);
     }
 }

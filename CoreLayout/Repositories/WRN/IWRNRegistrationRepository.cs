@@ -10,7 +10,8 @@ namespace CoreLayout.Repositories.WRN
 {
     public interface IWRNRegistrationRepository : IRepository<WRNRegistrationModel>
     {
-       Task<WRNRegistrationModel> GetWRNRegistrationByLoginAsync(string RegistrationNo, string MobileNo, string DOB);
+        Task<WRNRegistrationModel> GetWRNRegistrationByLoginAsync(string RegistrationNo, string MobileNo, string DOB);
         Task<WRNRegistrationModel> GetWRNRegistrationByMobileAsync(string MobileNo);
+        Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel entity);
     }
 }

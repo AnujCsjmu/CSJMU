@@ -21,7 +21,7 @@ namespace CoreLayout.Models.WRN
 
         [Display(Name = "Application No.")]
         [Required(ErrorMessage = "Please enter application no")]
-        [StringLength(10)]
+        [StringLength(20)]
         public string ApplicationNo { get; set; }
 
         [Display(Name = "Registration No.")]
@@ -165,6 +165,13 @@ namespace CoreLayout.Models.WRN
         [CheckBoxRequired(ErrorMessage = "Please accept the terms and condition.")]
         public bool TermsConditions { get; set; }
         public bool IsActive { get; set; }
+
+        public int? FinalSubmit { get; set; }
+
+        [Display(Name = "Academic Session")]
+        [Required(ErrorMessage = "Please enter academic session")]
+        [StringLength(10)]
+        public string AcademicSession { get; set; }
     }
     public class CheckBoxRequired : ValidationAttribute, IClientModelValidator
     {
