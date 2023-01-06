@@ -76,7 +76,7 @@
                                 <!--change to offline or busy as needed-->
                             </div>
                             <div class="nav-profile-text d-flex flex-column">
-                                <span class="font-weight-bold mb-2">@HttpContextAccessor.HttpContext.Session.GetString("SessionFirstName") @HttpContextAccessor.HttpContext.Session.GetString("SessionMiddleName") @HttpContextAccessor.HttpContext.Session.GetString("SessionLastName")</span>
+                                <span class="font-weight-bold mb-2">@HttpContextAccessor.HttpContext.Session.GetString("SessionFirstName") &nbsp; @HttpContextAccessor.HttpContext.Session.GetString("SessionMiddleName") &nbsp; @HttpContextAccessor.HttpContext.Session.GetString("SessionLastName")</span>
                                 <!-- <span class="text-secondary text-small">Project Manager</span>-->
                             </div>
                         </a>
@@ -94,35 +94,37 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" asp-action="#" asp-controller="#">
+                            <span class="menu-title">Add Course</span>
+                            <i class="mdi mdi-file-document-box menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                            <span class="menu-title">Add Qualification</span>
+                            <i class="mdi mdi-file-document-box menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="#" asp-controller="#">
+                            <span class="menu-title">Upload Photo And Signature</span>
+                            <i class="mdi mdi-file-document-box menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span class="menu-title">Fee Payment</span>
                             <i class="mdi mdi-currency-inr menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span class="menu-title">Edit Registration</span>
-                            <i class="mdi mdi-lead-pencil menu-icon"></i>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                             <span class="menu-title">Print Registration</span>
                             <i class="mdi mdi-printer menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span class="menu-title">Find Secret Code</span>
-                            <i class="mdi mdi-settings menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span class="menu-title">Manage Profile</span>
-                            <i class="mdi mdi-face menu-icon"></i>
-                        </a>
-                    </li>
+
                 </ul>
             </nav>
             @RenderBody()
@@ -204,5 +206,22 @@
             };
         </script>
     }
+
+
+    @*grid view*@
+
+    <!--<script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
+    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="~/assets/js/table-data.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>-->
 </body>
 </html>

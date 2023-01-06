@@ -3,7 +3,7 @@ using CoreLayout.Models.WRN;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Services.WRN
+namespace CoreLayout.Services.WRN.WRNRegistration
 {
     public interface IWRNRegistrationService
     {

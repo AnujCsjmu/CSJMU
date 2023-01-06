@@ -26,7 +26,6 @@
         }
     </style>
 </head>
-
 <div class="container-scroller">
     <div class="container-fluid">
         <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -112,3 +111,36 @@
 <script src="~/assets/lib/jquery/dist/jquery.js"></script>
 <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@*sweet alert*@
+<link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
+<link media="screen" rel="stylesheet" href='https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.css' />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />*@
+<script type="text/javascript" src="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.js"></script>
+@if (TempData["success"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Success!", '@TempData["success"]', "success");
+            };
+    </script>
+}
+@if (TempData["error"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Failed!", '@TempData["error"]', "error");
+            };
+    </script>
+}
+@if (TempData["warning"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("Warning!", '@TempData["warning"]', "warning");
+            };
+    </script>
+}

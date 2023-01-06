@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CoreLayout.Models.WRN.WRNRegistrationModel
+@{
     Layout = "~/Views/Shared/_LayoutWRN.cshtml";
 }
 
@@ -14,7 +15,7 @@
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                        <span></span><b>Registration No:-</b> <input class="bx-label" asp-for="RegistrationNo" readonly /> <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                     </li>
                 </ul>
             </nav>
@@ -27,8 +28,11 @@
                         <h4 class="font-weight-bold mb-2 ts">
                             STEP: 1 <i class="mdi mdi-file-document-box mdi-24px float-right"></i>
                         </h4>
-                        <h3 class="font-weight-bold mb-2 ts" asp-action="CompleteRegistration" asp-controller="WRNRegistration">COMPLETE REGISTRATION </h3>
-                        <h5 class="card-text font-weight-bold ts">पंजीकरण पूरा करें</h5>
+
+                        <h3 class="font-weight-bold mb-2 ts" asp-controller="WRNDashBoard" asp-action="CompleteRegistration">COMPLETE REGISTRATION </h3>
+                        <h5 class="card-text font-weight-bold ts">
+                            पंजीकरण पूरा करें
+                        </h5>
                     </div>
                 </div>
             </div>
@@ -37,6 +41,36 @@
                     <div class="card-body">
                         <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
                         <h4 class="font-weight-bold mb-2 ts">STEP: 2 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
+                        <h3 class="font-weight-bold mb-2 ts">ADD COURSE</h3>
+                        <h5 class="card-text font-weight-bold ts">पाठ्यक्रम जोड़ें</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-bold mb-2 ts">STEP: 3 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
+                        <h3 class="font-weight-bold mb-2 ts">ADD QUALIFICATION</h3>
+                        <h5 class="card-text font-weight-bold ts">योग्यता जोड़ें</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-bold mb-2 ts">STEP: 4 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
+                        <h3 class="font-weight-bold mb-2 ts">UPLOAD PHOTO AND SIGNATURE</h3>
+                        <h5 class="card-text font-weight-bold ts">फोटो और हस्ताक्षर अपलोड करें</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-bold mb-2 ts">STEP: 5 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
                         <h3 class="font-weight-bold mb-2 ts">FEE PAYMENT</h3>
                         <h5 class="card-text font-weight-bold ts">शुल्क भुगतान करें</h5>
                     </div>
@@ -46,45 +80,45 @@
                 <div class="card bg-gradient-warning card-img-holder text-white">
                     <div class="card-body">
                         <img src="~/assets/WRN/images/dashboard/print.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 3 <i class="mdi mdi-printer mdi-24px float-right"></i></h4>
+                        <h4 class="font-weight-bold mb-2 ts">STEP: 6 <i class="mdi mdi-printer mdi-24px float-right"></i></h4>
                         <h3 class="font-weight-bold mb-2 ts">PRINT REGISTRATION</h3>
                         <h5 class="card-text font-weight-bold ts">पंजीकरण प्रिंट करें</h5>
                     </div>
                 </div>
             </div>
             @*<div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-danger card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/reg.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">
-                            STEP: 3 <i class="mdi mdi-lead-pencil mdi-24px float-right"></i>
-                        </h4>
-                        <h3 class="font-weight-bold mb-2 ts">EDIT REGISTRATION</h3>
-                        <h5 class="card-text font-weight-bold ts">पंजीकरण संपादित करें</h5>
-                    </div>
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/WRN/images/dashboard/reg.png" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-bold mb-2 ts">
+                        STEP: 3 <i class="mdi mdi-lead-pencil mdi-24px float-right"></i>
+                    </h4>
+                    <h3 class="font-weight-bold mb-2 ts">EDIT REGISTRATION</h3>
+                    <h5 class="card-text font-weight-bold ts">पंजीकरण संपादित करें</h5>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-info card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/sec.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 5<i class="mdi mdi-settings mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">FIND SECRET CODE</h3>
-                        <h5 class="card-text font-weight-bold ts">सीक्रेट कोड खोजें </h5>
-                    </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/WRN/images/dashboard/sec.png" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-bold mb-2 ts">STEP: 5<i class="mdi mdi-settings mdi-24px float-right"></i></h4>
+                    <h3 class="font-weight-bold mb-2 ts">FIND SECRET CODE</h3>
+                    <h5 class="card-text font-weight-bold ts">सीक्रेट कोड खोजें </h5>
                 </div>
             </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-primary card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/profile.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">PROFILE <i class="mdi mdi-face mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">MANAGE PROFILE</h3>
-                        <h5 class="card-text font-weight-bold ts">प्रोफ़ाइल प्रबंधित करें</h5>
-                    </div>
+        </div>
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-primary card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/WRN/images/dashboard/profile.png" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-bold mb-2 ts">PROFILE <i class="mdi mdi-face mdi-24px float-right"></i></h4>
+                    <h3 class="font-weight-bold mb-2 ts">MANAGE PROFILE</h3>
+                    <h5 class="card-text font-weight-bold ts">प्रोफ़ाइल प्रबंधित करें</h5>
                 </div>
-            </div>*@
+            </div>
+        </div>*@
         </div>
     </div>
     <!-- content-wrapper ends -->

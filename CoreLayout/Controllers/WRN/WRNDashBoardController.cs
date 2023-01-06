@@ -1,6 +1,7 @@
 ﻿using CoreLayout.Enum;
 using CoreLayout.Filters;
 using CoreLayout.Models.Masters;
+using CoreLayout.Models.WRN;
 using CoreLayout.Services.Circular;
 using CoreLayout.Services.Masters.Dashboard;
 using CoreLayout.Services.PCP.PCPAssignedQP;
@@ -38,10 +39,26 @@ namespace CoreLayout.Controllers
         [HttpGet]
         public IActionResult DashBoard()
         {
-            return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml");
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml", wRNRegistrationModel);
         }
 
+        [HttpGet]
+        public IActionResult CompleteRegistration()
+        {
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
+        }
 
+        [HttpGet]
+        public IActionResult Qualification()
+        {
+            WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
+            wRNQualificationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
+        }
     }
 
 }

@@ -20,7 +20,7 @@ namespace CoreLayout.Models.WRN
         public string ModeOfAdmission { get; set; }
 
         [Display(Name = "Application No.")]
-        [Required(ErrorMessage = "Please enter application no")]
+        //[Required(ErrorMessage = "Please enter application no")]
         [StringLength(20)]
         public string ApplicationNo { get; set; }
 
@@ -42,7 +42,7 @@ namespace CoreLayout.Models.WRN
         public string MiddleName { get; set; }
 
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Please enter last name")]
+        //[Required(ErrorMessage = "Please enter last name")]
         [StringLength(50)]
         [RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         public string LastName { get; set; }

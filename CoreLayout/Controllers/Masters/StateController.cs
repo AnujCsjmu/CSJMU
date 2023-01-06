@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using CoreLayout.Filters;
 using CoreLayout.Enum;
+using System.Text;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace CoreLayout.Controllers
 {
@@ -287,6 +290,97 @@ namespace CoreLayout.Controllers
                 result = 2;
             }
             return result;
+        }
+
+
+        public FileResult CreatePdf()
+        {
+            //var stateData = _stateService.GetAllState().Result;
+            MemoryStream workStream = new MemoryStream();
+            StringBuilder status = new StringBuilder("");
+            DateTime dTime = DateTime.Now;
+            string strPDFFileName = string.Format("CustomerDetailPdf" + dTime.ToString("yyyyMMdd") + "-" + ".pdf");
+            Document doc = new Document();
+            doc.SetMargins(0, 0, 0, 0);
+            PdfPTable pdfPTable = new PdfPTable(4);
+            doc.SetMargins(10, 10, 10, 0);
+            PdfWriter.GetInstance(doc, workStream).CloseStream = false;
+            doc.Open();
+            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font fontInvoice = new iTextSharp.text.Font(bf, 20, iTextSharp.text.Font.UNDERLINE);
+            iTextSharp.text.Font fontInvoice1 = new iTextSharp.text.Font(bf, 10, iTextSharp.text.Font.ITALIC);
+            Paragraph paragraph = new Paragraph("State Detail", fontInvoice);
+            Paragraph paragraph1 = new Paragraph("Basic Detail", fontInvoice1);
+            paragraph.Alignment = Element.ALIGN_CENTER;
+            paragraph1.Alignment = Element.ALIGN_CENTER;
+            doc.Add(paragraph);
+            doc.Add(paragraph1);
+            Paragraph p3 = new Paragraph();
+            p3.SpacingAfter = 6;
+            doc.Add(p3);
+            doc.Add(Add_Content_To_PDF(pdfPTable));
+            doc.Close();
+            byte[] byteInfo = workStream.ToArray();
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+            return File(workStream, "application/pdf", strPDFFileName);
+        }
+        protected PdfPTable Add_Content_To_PDF(PdfPTable pdfPTable)
+        {
+            float[] headers = { 24, 45, 20, 35 }; //Header Widths  
+            pdfPTable.SetWidths(headers); //Set the pdf headers  
+            pdfPTable.WidthPercentage = 100; //Set the PDF File witdh percentage  
+            pdfPTable.HeaderRows = 1;
+            var count = 1;
+            //Add header  
+            AddCellToHeader(pdfPTable, "CountryName");
+            AddCellToHeader(pdfPTable, "StateName");
+            AddCellToHeader(pdfPTable, "CreatedBy");
+            AddCellToHeader(pdfPTable, "CreatedDate");
+            var customerData = _stateService.GetAllState().Result;
+            foreach (var state in customerData)
+            {
+                if (count >= 1)
+                {
+                    //Add body  
+                    AddCellToBody(pdfPTable, state.CountryName.ToString(), count);
+                    AddCellToBody(pdfPTable, state.StateName.ToString(), count);
+                    AddCellToBody(pdfPTable, state.CreatedBy.ToString(), count);
+                    AddCellToBody(pdfPTable, state.CreatedDate.ToString(), count);
+                    count++;
+                }
+            }
+            return pdfPTable;
+        }
+        private static void AddCellToHeader(PdfPTable tableLayout, string cellText)
+        {
+            tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(Font.HELVETICA, 8, 1, BaseColor.Black)))
+            {
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                Padding = 8,
+                BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255)
+            });
+        }
+        private static void AddCellToBody(PdfPTable tableLayout, string cellText, int count)
+        {
+            if (count % 2 == 0)
+            {
+                tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(Font.HELVETICA, 8, 1, iTextSharp.text.BaseColor.Black)))
+                {
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    Padding = 8,
+                    BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255)
+                });
+            }
+            else
+            {
+                tableLayout.AddCell(new PdfPCell(new Phrase(cellText, new Font(Font.HELVETICA, 8, 1, iTextSharp.text.BaseColor.Black)))
+                {
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    Padding = 8,
+                    BackgroundColor = new iTextSharp.text.BaseColor(211, 211, 211)
+                });
+            }
         }
     }
 }

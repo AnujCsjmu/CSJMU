@@ -14,7 +14,7 @@
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <span></span><i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                        <span></span>Registration No:- <input asp-for="RegistrationNo" readonly /> <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
                     </li>
                 </ul>
             </nav>
@@ -24,9 +24,9 @@
                 <div class="card custom-card">
                     <div class="card-body">
                         @*<div>
-                                <h6 class="card-title mb-1">Create State</h6>
-                                <hr>
-                            </div>*@
+                            <h6 class="card-title mb-1">Create State</h6>
+                            <hr>
+                        </div>*@
 
                         <form asp-action="CompleteRegistration" method="post">
                             <div class="row">
@@ -280,14 +280,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    @if (Model.FinalSubmit == 0)
+                                    @if (Model.FinalSubmit != 1)
                                     {
                                         <input type="submit" class="btn btn-gradient-primary me-2" value="Update" />
                                     }
                                     <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
                                     @*<input name="hdnFinalSubmit" id="hdnFinalSubmit" type="hidden" value=@Model.FinalSubmit>*@
                                     @if (Model.ApplicationNo != null && Model.RegistrationNo != null && Model.MobileNo != null && Model.EmailId != null
-                                      && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
+                                     && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
                                     {
                                         <input type="submit" class="btn btn-gradient-primary me-2" value="Final Submit" asp-action="FinalSubmit" />
                                     }

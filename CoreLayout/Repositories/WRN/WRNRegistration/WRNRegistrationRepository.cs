@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Repositories.WRN
+namespace CoreLayout.Repositories.WRN.WRNRegistration
 {
     public class WRNRegistrationRepository : BaseRepository, IWRNRegistrationRepository
     {

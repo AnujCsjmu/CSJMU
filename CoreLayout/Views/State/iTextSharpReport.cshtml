@@ -1,0 +1,41 @@
+﻿@model List<CoreLayout.Models.Masters.StateModel>
+<style>
+    .text-align-center {
+        text-align: center;
+    }
+
+    .text-align-right {
+        text-align: right;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <h5 class="text-align-center">State Detail</h5>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>CountryName</th>
+                    <th>StateName</th>
+                    <th>CreatedBy</th>
+                    <th>CreatedDate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CountryName</td>
+                        <td>@item.StateName</td>
+                        <td>@item.CreatedBy</td>
+                        <td>@item.CreatedDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-align-right">
+        <button class="btn btn-success" type="button">@Html.ActionLink("Create PDF", "CreatePdf", "State", null)</button>
+    </div>
+</div>

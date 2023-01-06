@@ -3,10 +3,11 @@ using CoreLayout.Models.WRN;
 using CoreLayout.Repositories.UserManagement.Menu;
 using CoreLayout.Repositories.UserManagement.ParentMenu;
 using CoreLayout.Repositories.WRN;
+using CoreLayout.Repositories.WRN.WRNRegistration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CoreLayout.Services.WRN
+namespace CoreLayout.Services.WRN.WRNRegistration
 {
     public class WRNRegistrationService : IWRNRegistrationService
     {

@@ -7,6 +7,7 @@ using CoreLayout.Services.Masters.District;
 using CoreLayout.Services.Masters.Religion;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.WRN;
+using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
@@ -76,7 +77,7 @@ namespace CoreLayout.Controllers.WRN
                     var res = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistration.RegistrationNo, wRNRegistration.MobileNo, wRNRegistration.DOB);
                     if (res == null)
                     {
-                        //TempData["error"] = "Invalid details!";
+                        TempData["error"] = "Invalid details!";
                         ModelState.AddModelError("", "Invalid details!");
                     }
                     else
@@ -98,21 +99,21 @@ namespace CoreLayout.Controllers.WRN
                         HttpContext.Session.SetString("SessionMobileNo", res.MobileNo);
                         HttpContext.Session.SetString("SessionEmailId", res.EmailId);
                         HttpContext.Session.SetString("SessionRegistrationNo", res.RegistrationNo);
-                        return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml");
+                        return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml", wRNRegistration);
                     }
                 }
                 else
                 {
-                    //TempData["error"] = "Enter all fields!";
+                    TempData["error"] = "Enter all fields!";
                     ModelState.AddModelError("", "Enter all fields!");
                 }
             }
             catch (Exception ex)
             {
-                //TempData["error"] = ex.ToString();
+                TempData["error"] = ex.ToString();
                 ModelState.AddModelError("", ex.ToString());
             }
-            return View();
+            return View("~/Views/WRN/WRNRegistration/Login.cshtml");
         }
         #endregion
 
@@ -265,7 +266,8 @@ namespace CoreLayout.Controllers.WRN
                         {
                             #region email code
                             StringBuilder sbSMS = new StringBuilder();
-                            sbSMS.Append("Dear, " + wRNRegistrationModel.FirstName);//+ wRNRegistration.FirstName
+                            sbSMS.Append("Dear " + wRNRegistrationModel.FirstName + wRNRegistrationModel.MiddleName + wRNRegistrationModel.LastName + ",");//+ wRNRegistration.FirstName
+                            sbSMS.Append("<br>");
                             sbSMS.Append("<br>");
                             sbSMS.Append(otp);
                             sbSMS.Append(" is the OTP for verification. Please do not share with anyone.");
@@ -353,17 +355,20 @@ namespace CoreLayout.Controllers.WRN
             //return new JsonResult(msg);
             return Json(new { res, msg });
         }
-        public bool SendEmail(WRNRegistrationModel wRNRegistration)
+        public bool SendEmail(WRNRegistrationModel wRNRegistrationModel)
         {
             #region email code
             bool result = false;
             StringBuilder sbSMS = new StringBuilder();
-            sbSMS.Append("Dear, " + wRNRegistration.FirstName);
+            sbSMS.Append("Dear " + wRNRegistrationModel.FirstName + wRNRegistrationModel.MiddleName + wRNRegistrationModel.LastName + ",");//+ wRNRegistration.FirstName
             sbSMS.Append("<br>");
-            sbSMS.Append(wRNRegistration.RegistrationNo);
+            sbSMS.Append("<br>");
+            sbSMS.Append(wRNRegistrationModel.RegistrationNo);
             sbSMS.Append(" is the WRN Registration Number. Please do not share with anyone.");
+            sbSMS.Append("<br>");
+            sbSMS.Append("<br>");
             sbSMS.Append("CHHATRAPATI SHAHU JI MAHARAJ UNIVERSITY.");
-            result = _commonController.SendMail_Fromcsjmusms(wRNRegistration.EmailId, "WRN Registraion", sbSMS.ToString());
+            result = _commonController.SendMail_Fromcsjmusms(wRNRegistrationModel.EmailId, "WRN Registraion", sbSMS.ToString());
             return result;
             #endregion
         }
@@ -451,7 +456,7 @@ namespace CoreLayout.Controllers.WRN
             {
                 //wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
                 var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-                if (checkFinalSubmit.FinalSubmit == 0)
+                if (checkFinalSubmit.FinalSubmit != 1)
                 {
                     string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                     wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
@@ -461,15 +466,15 @@ namespace CoreLayout.Controllers.WRN
                     wRNRegistrationModel.FinalSubmit = 0;
                     //if (ModelState.IsValid)
                     //{
-                        var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
-                        if (data.Equals(1))
-                        {
-                            TempData["success"] = "Data has been updated !";
-                        }
-                        else
-                        {
-                            TempData["warning"] = "Data has not been updated !";
-                        }
+                    var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
+                    if (data.Equals(1))
+                    {
+                        TempData["success"] = "Data has been updated !";
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Data has not been updated !";
+                    }
                     //}
                     //else
                     //{
@@ -542,7 +547,7 @@ namespace CoreLayout.Controllers.WRN
             try
             {
                 var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-                if (checkFinalSubmit.FinalSubmit == 0)
+                if (checkFinalSubmit.FinalSubmit != 1)
                 {
                     wRNRegistrationModel.FinalSubmit = 1;
                     wRNRegistrationModel.Id = checkFinalSubmit.Id;
@@ -568,6 +573,8 @@ namespace CoreLayout.Controllers.WRN
             return RedirectToAction("CompleteRegistration", "WRNRegistration");
         }
         #endregion
+
+        
     }
 
 }
