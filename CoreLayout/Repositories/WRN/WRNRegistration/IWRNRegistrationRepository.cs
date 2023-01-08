@@ -13,5 +13,6 @@ namespace CoreLayout.Repositories.WRN.WRNRegistration
         Task<WRNRegistrationModel> GetWRNRegistrationByLoginAsync(string RegistrationNo, string MobileNo, string DOB);
         Task<WRNRegistrationModel> GetWRNRegistrationByMobileAsync(string MobileNo);
         Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel entity);
+        Task<int> UpdatePhotoSignatureAsync(WRNRegistrationModel entity);
     }
 }

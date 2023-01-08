@@ -1,134 +1,258 @@
 ﻿@model CoreLayout.Models.WRN.WRNRegistrationModel
 @{
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutWRN.cshtml";
 }
+<div class="main-container container-fluid">
 
-<!-- partial -->
-<div class="main-panel">
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title">
-                <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="mdi mdi-home"></i>
-                </span> Dashboard
-            </h3>
-            <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <span></span><b>Registration No:-</b> <input class="bx-label" asp-for="RegistrationNo" readonly /> <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="row">
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-primary card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/reg.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">
-                            STEP: 1 <i class="mdi mdi-file-document-box mdi-24px float-right"></i>
-                        </h4>
-
-                        <h3 class="font-weight-bold mb-2 ts" asp-controller="WRNDashBoard" asp-action="CompleteRegistration">COMPLETE REGISTRATION </h3>
-                        <h5 class="card-text font-weight-bold ts">
-                            पंजीकरण पूरा करें
-                        </h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 2 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">ADD COURSE</h3>
-                        <h5 class="card-text font-weight-bold ts">पाठ्यक्रम जोड़ें</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 3 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">ADD QUALIFICATION</h3>
-                        <h5 class="card-text font-weight-bold ts">योग्यता जोड़ें</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 4 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">UPLOAD PHOTO AND SIGNATURE</h3>
-                        <h5 class="card-text font-weight-bold ts">फोटो और हस्ताक्षर अपलोड करें</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-success card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/fee.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 5 <i class="mdi mdi-currency-inr mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">FEE PAYMENT</h3>
-                        <h5 class="card-text font-weight-bold ts">शुल्क भुगतान करें</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 stretch-card grid-margin">
-                <div class="card bg-gradient-warning card-img-holder text-white">
-                    <div class="card-body">
-                        <img src="~/assets/WRN/images/dashboard/print.png" class="card-img-absolute" alt="circle-image" />
-                        <h4 class="font-weight-bold mb-2 ts">STEP: 6 <i class="mdi mdi-printer mdi-24px float-right"></i></h4>
-                        <h3 class="font-weight-bold mb-2 ts">PRINT REGISTRATION</h3>
-                        <h5 class="card-text font-weight-bold ts">पंजीकरण प्रिंट करें</h5>
-                    </div>
-                </div>
-            </div>
-            @*<div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-danger card-img-holder text-white">
-                <div class="card-body">
-                    <img src="~/assets/WRN/images/dashboard/reg.png" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-bold mb-2 ts">
-                        STEP: 3 <i class="mdi mdi-lead-pencil mdi-24px float-right"></i>
-                    </h4>
-                    <h3 class="font-weight-bold mb-2 ts">EDIT REGISTRATION</h3>
-                    <h5 class="card-text font-weight-bold ts">पंजीकरण संपादित करें</h5>
-                </div>
-            </div>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2 class="main-content-title tx-24 mg-b-5">Welcome To Dashboard</h2>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
         </div>
 
-        <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-info card-img-holder text-white">
-                <div class="card-body">
-                    <img src="~/assets/WRN/images/dashboard/sec.png" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-bold mb-2 ts">STEP: 5<i class="mdi mdi-settings mdi-24px float-right"></i></h4>
-                    <h3 class="font-weight-bold mb-2 ts">FIND SECRET CODE</h3>
-                    <h5 class="card-text font-weight-bold ts">सीक्रेट कोड खोजें </h5>
+        <div class="d-flex">
+            <div class="me-2">
+                <a class="btn ripple btn-outline-primary dropdown-toggle mb-0" href="#"
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <i class="fe fe-external-link"></i> Export <i class="fa fa-caret-down ms-1"></i>
+                </a>
+                <div class="dropdown-menu tx-13">
+                    <a class="dropdown-item" href="#"><i class="fa fa-file-pdf me-2"></i>Export as Pdf</a>
+                    <a class="dropdown-item" href="#"><i class="fa fa-image me-2"></i>Export as Image</a>
+                    <a class="dropdown-item" href="#">
+                        <i class="fa fa-file-excel me-2"></i>Export as
+                        Excel
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-primary card-img-holder text-white">
-                <div class="card-body">
-                    <img src="~/assets/WRN/images/dashboard/profile.png" class="card-img-absolute" alt="circle-image" />
-                    <h4 class="font-weight-bold mb-2 ts">PROFILE <i class="mdi mdi-face mdi-24px float-right"></i></h4>
-                    <h3 class="font-weight-bold mb-2 ts">MANAGE PROFILE</h3>
-                    <h5 class="card-text font-weight-bold ts">प्रोफ़ाइल प्रबंधित करें</h5>
-                </div>
+            <div class="">
+                <a href="#" class="btn ripple btn-secondary navresponsive-toggler mb-0"
+                   data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                   aria-controls="navbarSupportedContent" aria-expanded="false"
+                   aria-label="Toggle navigation">
+                    <i class="fe fe-filter me-1"></i> Filter <i class="fa fa-caret-down ms-1"></i>
+                </a>
             </div>
-        </div>*@
         </div>
     </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html -->
-    <footer class="footer">
-        <div class="container-fluid d-flex justify-content-between">
-            <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © CSJMU 2022-2023</span>
-            <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Official Website <a href="csjmu.ac.in" target="_blank">CSJMU, KIanpur</a></span>
+    <!-- End Page Header -->
+    <!--Navbar-->
+    <div class="responsive-background">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="advanced-search br-3">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-xl-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">From :</label>
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <i class="fe fe-calendar lh--9 op-6"></i>
+                                        </div><input class="form-control fc-datepicker"
+                                                     placeholder="11/01/2019" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-lg-0">
+                                    <label class="">To :</label>
+                                    <div class="input-group">
+                                        <div class="input-group-text">
+                                            <i class="fe fe-calendar lh--9 op-6"></i>
+                                        </div><input class="form-control fc-datepicker"
+                                                     placeholder="11/08/2019" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="form-group mb-lg-0">
+                            <label class="">Sales By Country :</label>
+                            <select class="form-control select2-flag-search"
+                                    data-placeholder="Select Contry">
+                                <option value="YE">Yemen</option>
+                                <option value="ZM">Zambia</option>
+                                <option value="ZW">Zimbabwe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+                        <div class="form-group mb-lg-0">
+                            <label class="">Products :</label>
+                            <select multiple="multiple" class="group-filter">
+                                <optgroup label="Mens">
+                                    <option value="1">Foot wear</option>
+                                    <option value="2">Top wear</option>
+                                    <option value="3">Bootom wear</option>
+                                    <option value="4">Men's Groming</option>
+                                    <option value="5">Accessories</option>
+                                </optgroup>
+                                <optgroup label="Women">
+                                    <option value="1">Western wear</option>
+                                    <option value="2">Foot wear</option>
+                                    <option value="3">Top wear</option>
+                                    <option value="4">Bootom wear</option>
+                                    <option value="5">Beuty Groming</option>
+                                    <option value="6">Accessories</option>
+                                    <option value="7">Jewellery</option>
+                                </optgroup>
+                                <optgroup label="Baby & Kids">
+                                    <option value="1">Boys clothing</option>
+                                    <option value="2">Girls Clothing</option>
+                                    <option value="3">Toys</option>
+                                    <option value="4">Baby Care</option>
+                                    <option value="5">Kids footwear</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xl-2">
+                        <div class="form-group mb-lg-0">
+                            <label class="">Sales Type :</label>
+                            <select multiple="multiple" class="multi-select">
+                                <option value="1">Online</option>
+                                <option value="2">Offline</option>
+                                <option value="3">Reseller</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-end">
+                    <a href="#" class="btn btn-primary" data-bs-toggle="collapse"
+                       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                       aria-expanded="false" aria-label="Toggle navigation">Apply</a>
+                    <a href="#" class="btn btn-secondary" data-bs-toggle="collapse"
+                       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                       aria-expanded="false" aria-label="Toggle navigation">Reset</a>
+                </div>
+            </div>
         </div>
-    </footer>
-    <!-- partial -->
+    </div>
+    <!--End Navbar -->
+    <!-- Row -->
+    <!-- Row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered border-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Task</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td scope="row">Complete Registration</td>
+                        <td>
+                            @if (ViewBag.registrationdata == null)
+                            {
+                                <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Pending</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Closed</span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td scope="row">Add Course</td>
+                        <td>
+                            @if (Enumerable.Count(ViewBag.coursedata) == 0)
+                            {
+                                <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
+                                    <span class="menu-title">Pending</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
+                                    <span class="menu-title">Closed</span>
+                                </a>
+                            }
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td scope="row">Add Qualification</td>
+                        <td>
+                            @if (Enumerable.Count(ViewBag.qualificationdata) == 0)
+                            {
+                                <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                                    <span class="menu-title">Pending</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                                    <span class="menu-title">Closed</span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td scope="row">Upload Photo & Signature</td>
+                        <td>
+                            @if (Enumerable.Count(ViewBag.photosignaturedata) == 0)
+                            {
+                                <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Pending</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Closed</span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td scope="row">Fee Payment</td>
+                        <td>
+                            @if (Enumerable.Count(ViewBag.paymentdata) == 0)
+                            {
+                                <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
+                                    <span class="menu-title">Non Paid</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
+                                    <span class="menu-title">Paid</span>
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">6</th>
+                        <td scope="row">Print Registration</td>
+                        <td>
+                            <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
+                                <span class="menu-title">Pending</span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
-<!-- main-panel ends -->

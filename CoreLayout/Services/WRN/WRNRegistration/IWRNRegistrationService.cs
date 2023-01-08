@@ -15,5 +15,6 @@ namespace CoreLayout.Services.WRN.WRNRegistration
         public Task<int> UpdateWRNRegistrationAsync(WRNRegistrationModel wRNRegistrationModel);
         public Task<int> DeleteWRNRegistrationAsync(WRNRegistrationModel wRNRegistrationModel);
         public Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel wRNRegistrationModel);
+        public Task<int> UpdatePhotoSignatureAsync(WRNRegistrationModel wRNRegistrationModel);
     }
 }

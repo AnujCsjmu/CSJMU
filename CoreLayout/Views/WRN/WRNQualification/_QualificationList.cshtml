@@ -1,0 +1,113 @@
+﻿@model CoreLayout.Models.WRN.WRNQualificationModel
+
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Qualification Details</h4>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+
+                    <form asp-action="#" method="get" id="formid">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="RegistrationNo"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="RegistrationNo" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="RegistrationNo"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="QualificationId"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="Qualification" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="QualificationId"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="QualificationType"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="QualificationType" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="QualificationType"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="BoardUniversityId"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="University" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="BoardUniversityId"></span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="OtherUniversity"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="OtherUniversity" class="form-control" readonly />
+                                    <span class="error" asp-validation-for="OtherUniversity"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="ResultStatus"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="ResultStatus" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="ResultStatus"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="PassingYear"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="PassingYear" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="PassingYear"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="PassingMonth"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="PassingMonth" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="PassingMonth"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="MarksCriteria"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="MarksCriteria" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="MarksCriteria"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="PercentagOfMarksObtained"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="PercentagOfMarksObtained" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="PercentagOfMarksObtained"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="DivisionClassGrade"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="DivisionClassGrade" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="DivisionClassGrade"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="Subjects"> </label><span class="tx-danger"> *</span>
+                                    <input asp-for="Subjects" class="form-control" readonly />
+                                    <span class="parsley-errors-list filled" asp-validation-for="Subjects"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+</div>

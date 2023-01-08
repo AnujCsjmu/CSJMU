@@ -1,5 +1,6 @@
 ﻿using CoreLayout.Models.Common;
 using CoreLayout.Models.Masters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
@@ -172,6 +173,24 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please enter academic session")]
         [StringLength(10)]
         public string AcademicSession { get; set; }
+
+        //upload photo and signature
+        [Display(Name = "Photo")]
+        [Required(ErrorMessage = "Please upload photo")]
+        public string PhotoPath { get; set; }
+
+        [Display(Name = "Photo")]
+        [Required(ErrorMessage = "Please upload photo")]
+        public IFormFile Photo { get; set; }
+
+        [Display(Name = "Signature")]
+        [Required(ErrorMessage = "Please upload Signature")]
+        public string SignaturePath { get; set; }
+
+        [Display(Name = "Signature")]
+        [Required(ErrorMessage = "Please upload Signature")]
+        public IFormFile Signature { get; set; }
+
     }
     public class CheckBoxRequired : ValidationAttribute, IClientModelValidator
     {

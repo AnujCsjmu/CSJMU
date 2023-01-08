@@ -1,311 +1,304 @@
 ﻿@model CoreLayout.Models.WRN.WRNRegistrationModel
 @{
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_LayoutWRN.cshtml";
 }
 <!-- partial -->
-<div class="main-panel">
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title">
-                <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="mdi mdi-home"></i>
-                </span> Complete Registration
-            </h3>
-            <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Registration No:- <input asp-for="RegistrationNo" readonly /> <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12">
-                <div class="card custom-card">
-                    <div class="card-body">
-                        @*<div>
-                            <h6 class="card-title mb-1">Create State</h6>
-                            <hr>
-                        </div>*@
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2 class="main-content-title tx-24 mg-b-5">Complete Registration</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">CompleteRegistration</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create</li>
+        </ol>
+    </div>
 
-                        <form asp-action="CompleteRegistration" method="post">
-                            <div class="row">
-                                <div asp-validation-summary="ModelOnly" class="error">
+</div>
+<!-- End Page Header -->
+<!-- Conetnt Start-->
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="card custom-card">
+            <div class="card-body">
 
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="RegistrationNo"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="RegistrationNo" class="form-control" readonly />
-                                        <span class="error" asp-validation-for="RegistrationNo"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="ApplicationNo"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="ApplicationNo" class="form-control" readonly />
-                                        <span class="error" asp-validation-for="ApplicationNo"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="AcademicSession"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="AcademicSession" class="form-control" readonly />
-                                        <span class="error" asp-validation-for="AcademicSession"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="FirstName"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="FirstName" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="FirstName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="MiddleName"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="MiddleName" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="MiddleName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="LastName"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="LastName" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="LastName"></span>
-                                    </div>
-                                </div>
+                <form asp-action="CompleteRegistration" method="post">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="FatherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="FatherName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="MotherName"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="MotherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="MotherName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="MobileNo"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="MobileNo" class="form-control" readonly />
-                                        <span class="error" asp-validation-for="MobileNo"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="EmailId"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="EmailId" class="form-control" onkeydown="upperCaseF(this)" readonly />
-                                        <span class="error" asp-validation-for="EmailId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="DOB"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="DOB" class="form-control" readonly />
-                                        <span class="error" asp-validation-for="DOB"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="ModeOfAdmission"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="ModeOfAdmission" class="form-control">
-                                            <option value="">--Please Select--</option>
-                                            <option value="Mode-1">Mode-1</option>
-                                            <option value="Mode-2">Mode-2</option>
-                                            <option value="Mode-3">Mode-3</option>
-
-                                        </select>
-                                        <span class="error" asp-validation-for="ModeOfAdmission"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
-                                        <input id="HindiName" asp-for="HindiName" class="form-control" onkeydown="upperCaseF(this)" />
-                                        <span class="error" asp-validation-for="HindiName"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Gender"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="Gender" class="form-control">
-                                            <option value="">--Please Select--</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                        <span class="error" asp-validation-for="Gender"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="AadharNumber"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="AadharNumber" class="form-control" title="Hello I'm the tool-tip" />
-                                        <span class="error" asp-validation-for="AadharNumber"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="CategoryId"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.CategoryList,"CategoryId","Name"))">
-                                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                        </select>
-                                        <span class="error" asp-validation-for="CategoryId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Nationality"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="Nationality" class="form-control">
-                                            <option value="">--Please Select--</option>
-                                            <option value="Indian" selected>Indian</option>
-                                            <option value="Foreigner">Foreigner</option>
-                                        </select>
-                                        <span class="error" asp-validation-for="Nationality"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="ReligionId"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="ReligionId" class="form-control" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
-                                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                        </select>
-                                        <span class="error" asp-validation-for="ReligionId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="PhysicalDisabled"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="PhysicalDisabled" class="form-control">
-                                            <option value="">--Please Select--</option>
-                                            <option value="Yes">Yes</option>
-                                            <option value="No" selected>No</option>
-                                        </select>
-                                        <span class="error" asp-validation-for="PhysicalDisabled"></span>
-                                    </div>
-                                </div>
-                                <div style="background-color:teal;">
-                                    <h4 style="color: white; font-size: 15px">Permanent Address</h4>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="PermanentAddress"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="PermanentAddress" class="form-control" onkeydown="upperCaseF(this)" />
-                                        <span class="error" asp-validation-for="PermanentAddress"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="PermanentStateId"> </label><span class="tx-danger"> *</span>
-                                        <select id="PermanentStateId" asp-for="PermanentStateId" class="form-control" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
-                                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                        </select>
-                                        <span class="error" asp-validation-for="PermanentStateId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="PermanentDistrictId"> </label><span class="tx-danger"> *</span>
-                                        @if (Model.CommunicationDistrictId == 0)
-                                        {
-                                            <select asp-for="PermanentDistrictId" class="form-control" asp-items="@(new SelectList(String.Empty, "DistrictId", "DistrictName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                        }
-                                        else
-                                        {
-                                            <select asp-for="PermanentDistrictId" class="form-control" asp-items="@(new SelectList(Model.DistrictList, "DistrictId", "DistrictName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                        }
-                                        <span class="error" asp-validation-for="PermanentDistrictId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="PermanentPincode"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="PermanentPincode" type="number" class="form-control" />
-                                        <span class="error" asp-validation-for="PermanentPincode"></span>
-                                    </div>
-                                </div>
-                                <div style="background-color:teal;">
-                                    <h4 style="color: white; font-size: 15px">If ommunication Address Same As Permanent Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h4>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="CommunicationAddress"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="CommunicationAddress" class="form-control" onkeydown="upperCaseF(this)" />
-                                        <span class="error" asp-validation-for="CommunicationAddress"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="CommunicationStateId"> </label><span class="tx-danger"> *</span>
-                                        <select asp-for="CommunicationStateId" class="form-control" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
-                                            <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                        </select>
-                                        <span class="error" asp-validation-for="CommunicationStateId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="CommunicationDistrictId"> </label><span class="tx-danger"> *</span>
-                                        @if (Model.CommunicationDistrictId == 0)
-                                        {
-                                            <select id="CommunicationDistrictId" asp-for="CommunicationDistrictId" class="form-control" asp-items="@(new SelectList(String.Empty,"DistrictId","DistrictName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                        }
-                                        else
-                                        {
-                                            <select id="CommunicationDistrictId" asp-for="CommunicationDistrictId" class="form-control" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
-                                                <option selected="selected" disabled="disabled" value="">--Select-- </option>
-                                            </select>
-                                        }
-                                        <span class="error" asp-validation-for="CommunicationDistrictId"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="CommunicationPincode"> </label><span class="tx-danger"> *</span>
-                                        <input asp-for="CommunicationPincode" type="number" class="form-control" />
-                                        <span class="error" asp-validation-for="CommunicationPincode"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    @if (Model.FinalSubmit != 1)
-                                    {
-                                        <input type="submit" class="btn btn-gradient-primary me-2" value="Update" />
-                                    }
-                                    <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
-                                    @*<input name="hdnFinalSubmit" id="hdnFinalSubmit" type="hidden" value=@Model.FinalSubmit>*@
-                                    @if (Model.ApplicationNo != null && Model.RegistrationNo != null && Model.MobileNo != null && Model.EmailId != null
-                                     && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
-                                    {
-                                        <input type="submit" class="btn btn-gradient-primary me-2" value="Final Submit" asp-action="FinalSubmit" />
-                                    }
-                                </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="RegistrationNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="RegistrationNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="RegistrationNo"></span>
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="ApplicationNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ApplicationNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="ApplicationNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="AcademicSession"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AcademicSession" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="AcademicSession"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="FirstName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FirstName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="FirstName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MiddleName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MiddleName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MiddleName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="LastName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="LastName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
 
-                        </form>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FatherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="FatherName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MotherName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MotherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MotherName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="MobileNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MobileNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MobileNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="EmailId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="EmailId" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="EmailId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="DOB"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="DOB" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="DOB"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="ModeOfAdmission"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="ModeOfAdmission" class="form-control">
+                                    <option value="">--Please Select--</option>
+                                    <option value="Mode-1">Mode-1</option>
+                                    <option value="Mode-2">Mode-2</option>
+                                    <option value="Mode-3">Mode-3</option>
 
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="ModeOfAdmission"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
+                                <input id="HindiName" asp-for="HindiName" class="form-control" onkeydown="upperCaseF(this)" />
+                                <span class="parsley-errors-list filled" asp-validation-for="HindiName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Gender"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="Gender" class="form-control">
+                                    <option value="">--Please Select--</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="Gender"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="AadharNumber"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AadharNumber" class="form-control" title="Hello I'm the tool-tip" />
+                                <span class="error" asp-validation-for="AadharNumber"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CategoryId"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.CategoryList,"CategoryId","Name"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="CategoryId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Nationality"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="Nationality" class="form-control">
+                                    <option value="">--Please Select--</option>
+                                    <option value="Indian" selected>Indian</option>
+                                    <option value="Foreigner">Foreigner</option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="Nationality"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="ReligionId"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="ReligionId" class="form-control" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="ReligionId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="PhysicalDisabled"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="PhysicalDisabled" class="form-control">
+                                    <option value="">--Please Select--</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No" selected>No</option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="PhysicalDisabled"></span>
+                            </div>
+                        </div>
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">Permanent Address</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="PermanentAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentAddress" class="form-control" onkeydown="upperCaseF(this)" />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentAddress"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="PermanentStateId"> </label><span class="tx-danger"> *</span>
+                                <select id="PermanentStateId" asp-for="PermanentStateId" class="form-control select" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentStateId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="PermanentDistrictId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.CommunicationDistrictId == 0)
+                                {
+                                    <select asp-for="PermanentDistrictId" class="form-control select" asp-items="@(new SelectList(String.Empty, "DistrictId", "DistrictName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select asp-for="PermanentDistrictId" class="form-control" asp-items="@(new SelectList(Model.DistrictList, "DistrictId", "DistrictName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentDistrictId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="PermanentPincode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentPincode" type="number" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentPincode"></span>
+                            </div>
+                        </div>
+                        <div style="background-color:teal;">
+                            <h4 style="color: white; font-size: 15px">If ommunication Address Same As Permanent Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h4>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CommunicationAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationAddress" class="form-control" onkeydown="upperCaseF(this)" />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationAddress"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CommunicationStateId"> </label><span class="tx-danger"> *</span>
+                                <select asp-for="CommunicationStateId" class="form-control select" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
+                                    <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                </select>
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationStateId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CommunicationDistrictId"> </label><span class="tx-danger"> *</span>
+                                @if (Model.CommunicationDistrictId == 0)
+                                {
+                                    <select id="CommunicationDistrictId" asp-for="CommunicationDistrictId" class="form-control select" asp-items="@(new SelectList(String.Empty,"DistrictId","DistrictName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                else
+                                {
+                                    <select id="CommunicationDistrictId" asp-for="CommunicationDistrictId" class="form-control" asp-items="@(new SelectList(Model.DistrictList,"DistrictId","DistrictName"))">
+                                        <option selected="selected" disabled="disabled" value="">--Select-- </option>
+                                    </select>
+                                }
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationDistrictId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CommunicationPincode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationPincode" type="number" class="form-control" />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationPincode"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @*@if (Model.FinalSubmit != 1)
+                            {*@
+                                <input type="submit" class="btn btn-primary" value="Update" />
+                            @*}*@
+                            <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
+                            @*<input name="hdnFinalSubmit" id="hdnFinalSubmit" type="hidden" value=@Model.FinalSubmit>*@
+                            @*@if (Model.ApplicationNo != null && Model.RegistrationNo != null && Model.MobileNo != null && Model.EmailId != null
+                         && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
+                            {
+                                <input type="submit" class="btn btn-primary2" value="Final Submit" asp-action="FinalSubmit" />
+                            }*@
+                        </div>
                     </div>
-                </div>
+
+                </form>
+
             </div>
         </div>
     </div>
 </div>
 
-<script src="~/assets/lib/jquery/dist/jquery.js"></script>
-@*bind Permanent District*@
-<script type="text/javascript">
+@section Scripts{
+    <script src="~/assets/lib/jquery/dist/jquery.js"></script>
+    @*bind Permanent District*@
+    <script type="text/javascript">
             $(document).ready(function () {
                 $("#PermanentStateId").on("change", function () {
                     $("#PermanentDistrictId").empty();
@@ -323,9 +316,9 @@
                 });
             });
 
-</script>
-@*bind Communication District*@
-<script type="text/javascript">
+    </script>
+    @*bind Communication District*@
+    <script type="text/javascript">
             $(document).ready(function () {
                 $("#CommunicationStateId").on("change", function () {
                     $("#CommunicationDistrictId").empty();
@@ -343,82 +336,83 @@
                 });
             });
 
-</script>
+    </script>
 
-@*fill address if both are same*@
-<script>
-    function filladdress() {
-        var caddress = $('#PermanentAddress').val();
-        var cstate = $('#PermanentStateId').val();
-        var cdistrict = $('#PermanentDistrictId').val();
-        var cpincode = $('#PermanentPinCode').val();
-        alert(cpincode);
-        if (caddress != '' && cdistrict != null && cpincode != '') {
-            var st = '';
-            $('#PermanentStateId option').each(function () {
-                let vl = $(this).val();
-                let ht = $(this).html();
+    @*fill address if both are same*@
+    <script>
+        function filladdress() {
+            var caddress = $('#PermanentAddress').val();
+            var cstate = $('#PermanentStateId').val();
+            var cdistrict = $('#PermanentDistrictId').val();
+            var cpincode = $('#PermanentPinCode').val();
+            alert(cpincode);
+            if (caddress != '' && cdistrict != null && cpincode != '') {
+                var st = '';
+                $('#PermanentStateId option').each(function () {
+                    let vl = $(this).val();
+                    let ht = $(this).html();
 
-                if (cstate == vl) {
-                    st += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    if (cstate == vl) {
+                        st += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    } else {
+                        st += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    }
+                });
+
+                var dt = '';
+                $('#PermanentDistrictId option').each(function () {
+                    let vl = $(this).val();
+                    let ht = $(this).html();
+
+                    if (cdistrict == vl) {
+                        dt += '<option value="' + vl + '" selected> ' + ht + ' </option>';
+                    } else {
+                        dt += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    }
+                });
+
+                var pad = $('#CommunicationAddress').val();
+                var pstate = $('#CommunicationStateId').val();
+                var pdis = $('#CommunicationDistrictId').val();
+                var ppin = $('#CommunicationPinCode').val();
+
+                if ($("#chkaddress").prop('checked') == true) {
+                    $('#CommunicationAddress').val(caddress);
+                    $('#CommunicationStateId').html(st);//.select2().html(st).trigger('change')
+                    $('#CommunicationDistrictId').html(dt);//.select2().html(dt).trigger('change')
+                    $('#CommunicationPinCode').val(cpincode);
                 } else {
-                    st += '<option value="' + vl + '"> ' + ht + ' </option>';
+                    $('#CommunicationAddress').val('');
+                    $('#CommunicationStateId').val(0);
+                    $('#CommunicationDistrictId').val('');
+                    $('#CommunicationPinCode').val('');
                 }
-            });
-
-            var dt = '';
-            $('#PermanentDistrictId option').each(function () {
-                let vl = $(this).val();
-                let ht = $(this).html();
-
-                if (cdistrict == vl) {
-                    dt += '<option value="' + vl + '" selected> ' + ht + ' </option>';
-                } else {
-                    dt += '<option value="' + vl + '"> ' + ht + ' </option>';
-                }
-            });
-
-            var pad = $('#CommunicationAddress').val();
-            var pstate = $('#CommunicationStateId').val();
-            var pdis = $('#CommunicationDistrictId').val();
-            var ppin = $('#CommunicationPinCode').val();
-
-            if ($("#chkaddress").prop('checked') == true) {
-                $('#CommunicationAddress').val(caddress);
-                $('#CommunicationStateId').html(st);//.select2().html(st).trigger('change')
-                $('#CommunicationDistrictId').html(dt);//.select2().html(dt).trigger('change')
-                $('#CommunicationPinCode').val(cpincode);
-            } else {
-                $('#CommunicationAddress').val('');
-                $('#CommunicationStateId').val(0);
-                $('#CommunicationDistrictId').val('');
-                $('#CommunicationPinCode').val('');
+            }
+            else {
+                $('#chkaddress').prop('checked', false); // Unchecks it
+                alert('Please fill complete communication address!');
             }
         }
-        else {
-            $('#chkaddress').prop('checked', false); // Unchecks it
-            alert('Please fill complete communication address!');
+    </script>
+    @*Convert english to hindi*@
+    <script src="~/assets/js/google_translate.js"></script>
+    <script type="text/javascript">
+        google.load("elements", "1", { packages: "transliteration" });
+        var control;
+        function onLoad() {
+            var options = {
+                //Source Language
+                sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
+                // Destination language to Transliterate
+                destinationLanguage: [google.elements.transliteration.LanguageCode.HINDI],
+                shortcutKey: 'ctrl+g',
+                transliterationEnabled: true
+            };
+            control = new google.elements.transliteration.TransliterationControl(options);
+            control.makeTransliteratable(['HindiName']);
         }
-    }
-</script>
-@*Convert english to hindi*@
-<script src="~/assets/js/google_translate.js"></script>
-<script type="text/javascript">
-    google.load("elements", "1", { packages: "transliteration" });
-    var control;
-    function onLoad() {
-        var options = {
-            //Source Language
-            sourceLanguage: google.elements.transliteration.LanguageCode.ENGLISH,
-            // Destination language to Transliterate
-            destinationLanguage: [google.elements.transliteration.LanguageCode.HINDI],
-            shortcutKey: 'ctrl+g',
-            transliterationEnabled: true
-        };
-        control = new google.elements.transliteration.TransliterationControl(options);
-        control.makeTransliteratable(['HindiName']);
-    }
-    google.setOnLoadCallback(onLoad);
-</script>
+        google.setOnLoadCallback(onLoad);
+    </script>
 
 
+    }

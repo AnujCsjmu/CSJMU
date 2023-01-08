@@ -359,5 +359,50 @@ namespace CoreLayout.Repositories.WRN.WRNRegistration
                 }
             }
         }
+
+        public async Task<int> UpdatePhotoSignatureAsync(WRNRegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        entity.IsActive = true;
+                        entity.IsRecordDeleted = 0;
+                        var query = "Usp_WRNRegistration";
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("PhotoPath", entity.PhotoPath, DbType.String);
+                        parameters.Add("SignaturePath", entity.SignaturePath, DbType.String);
+                        parameters.Add("RegistrationNo", entity.RegistrationNo, DbType.String);
+                        parameters.Add("@Query", 9, DbType.Int32);
+                        var res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
     }
 }

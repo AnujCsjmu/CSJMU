@@ -1,178 +1,360 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json
+@using CoreLayout.Models.Masters
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>WRN- Chhatrapati Shahu Ji Maharaj University, Kanpur</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="~/assets/WRN/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="~/assets/WRN/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="~/assets/WRN/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="~/assets/WRN/images/logo-mini.png" />
-    <style>
-        .ts {
-            text-shadow: -1px 1px 2px #000
-        }
-    </style>
-</head>
-<body>
-    <div class="container-scroller">
-        <!-- partial:partials/_navbar.html -->
-        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="index.html"><img src="~/assets/WRN/images/logo.png" alt="logo" /></a>
-                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="~/assets/WRN/images/logo-mini.png" alt="logo" /></a>
-            </div>
-            <div class="navbar-menu-wrapper d-flex align-items-stretch">
-                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                    <span class="mdi mdi-menu"></span>
-                </button>
-                <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
 
-                            <div class="nav-profile-text">
-                                <p class="mb-1 text-black"> <i class="mdi mdi-settings menu-icon"></i>Account</p>
-                            </div>
-                        </a>
-                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item" href="#">
-                                <i class="mdi mdi-cached me-2 text-primary"></i> Activity Log
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" asp-action="Logout" asp-controller="WRNRegistration">
-                                <i class="mdi mdi-logout me-2 text-primary"></i> Signout
-                            </a>
+<head>
+
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="description" content="Dashlead -  Admin Panel HTML Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords"
+          content="sales dashboard, admin dashboard, bootstrap 4 admin template, html admin template, admin panel design, admin panel design, bootstrap 4 dashboard, admin panel template, html dashboard template, bootstrap admin panel, sales dashboard design, best sales dashboards, sales performance dashboard, html5 template, dashboard template">
+    @*for alert message*@
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/assets/img/brand/favicon.ico" type="image/x-icon" />
+
+    <!-- Title -->
+    <title>@ViewData["Title"] CSJMU</title>
+
+    <!---bootstrap css-->
+    <link id="style" href="~/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--- FONT-ICONS CSS -->
+    <link href="~/assets/css/icons.css" rel="stylesheet">
+
+    <!---Falg-icons css-->
+    <link href="~/assets/plugins/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+
+    <!---Style css-->
+    <link href="~/assets/css/style.css" rel="stylesheet">
+    <link href="~/assets/css/skins.css" rel="stylesheet">
+    <link href="~/assets/css/dark-style.css" rel="stylesheet">
+    <link href="~/assets/css/transparent-style.css" rel="stylesheet">
+    <link href="~/assets/css/boxed.css" rel="stylesheet">
+
+</head>
+
+<body class="ltr">
+
+    <!-- Loader -->
+    <div id="global-loader">
+        <img src="~/assets/img/loader.svg" class="loader-img" alt="Loader">
+    </div>
+    <!-- End Loader -->
+    <!-- Page -->
+    <div class="page">
+
+        <!-- Main Header-->
+        <div class="main-header side-header sticky">
+            <div class="container-fluid main-container">
+                <div class="main-header-left sidemenu">
+                    <a class="main-header-menu-icon" href="" id="mainSidebarToggle"><span></span></a>
+                    <div>
+                        <span style="font-weight:bold">Registraion No:- @HttpContextAccessor.HttpContext.Session.GetString("SessionRegistrationNo")</span>
+                    </div>
+                </div>
+                <a class="main-header-menu-icon  horizontal  d-lg-none" href="" id="mainNavShow"><span></span></a>
+
+                <div class="main-header-left horizontal">
+                    <a class="main-logo" asp-controller="WRNDashboard" asp-action="Dashboard">
+                        <img src="~/assets/img/brand/logo.png" class="header-brand-img desktop-logo" alt="logo">
+                        <img src="~/assets/img/brand/logo-light.png" class="header-brand-img desktop-logo theme-logo" alt="logo">
+                    </a>
+                </div>
+
+                <div class="main-header-right">
+                    <button class="navbar-toggler navresponsive-toggler d-lg-none ms-auto collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent-4"
+                            aria-controls="navbarSupportedContent-4" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon fe fe-more-vertical "></span>
+                    </button>
+                    <div class="navbar navbar-expand-lg navbar-collapse responsive-navbar p-0">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+                            <ul class="nav nav-item header-icons navbar-nav-right ms-auto">
+                                <!-- Theme-Layout -->
+                                <div class="dropdown  d-flex">
+                                    <a class="nav-link icon theme-layout nav-link-bg layout-setting">
+                                        <span class="dark-layout"><i class="fe fe-moon"></i></span>
+                                        <span class="light-layout"><i class="fe fe-sun"></i></span>
+                                    </a>
+                                </div>
+                                <!-- Theme-Layout -->
+                                <li class="dropdown header-search">
+                                    <a class="nav-link icon header-search">
+                                        <i class="fe fe-search"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="main-form-search p-2">
+                                            <input class="form-control" placeholder="Search" type="search">
+                                            <button class="btn"><i class="fe fe-search"></i></button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown">
+                                    <a class="nav-link icon full-screen-link">
+                                        <i class="fe fe-maximize fullscreen-button"></i>
+                                    </a>
+                                </li>
+                                <li class="dropdown main-header-notification">
+                                    <a class="nav-link icon" href="">
+                                        <i class="fe fe-bell"></i>
+                                        <span class="pulse bg-danger"></span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="header-navheading">
+                                            <p class="main-notification-text">
+                                                You have 1 unread notification<span class="badge bg-pill badge-primary ms-3">View all</span>
+                                            </p>
+                                        </div>
+                                        <div class="main-notification-list">
+                                            <a href="view-mail.html" class="media new">
+                                                <div class="main-img-user online">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/5.jpg">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p>
+                                                        Congratulate <strong>Olivia James</strong> for New template
+                                                        start
+                                                    </p>
+                                                    <span>Oct 15 12:32pm</span>
+                                                </div>
+                                            </a>
+                                            <a href="view-mail.html" class="media">
+                                                <div class="main-img-user">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/2.jpg">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p><strong>Joshua Gray</strong> New Message Received</p>
+                                                    <span>
+                                                        Oct 13
+                                                        02:56am
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <a href="view-mail.html" class="media">
+                                                <div class="main-img-user online">
+                                                    <img alt="avatar"
+                                                         src="~/assets/img/users/3.jpg">
+                                                </div>
+                                                <div class="media-body">
+                                                    <p>
+                                                        <strong>Elizabeth Lewis</strong> added new schedule realease
+                                                    </p><span>
+                                                        Oct
+                                                        12 10:40pm
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-footer">
+                                            <a href="mail-inbox.html">View All Notifications</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="dropdown main-profile-menu">
+                                    <a class="main-img-user" href="">
+                                        <img alt="avatar"
+                                             src="~/assets/img/users/1.jpg">
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="header-navheading">
+                                            <h6 class="main-notification-title">@HttpContextAccessor.HttpContext.Session.GetString("SessionFirstName")&nbsp;@HttpContextAccessor.HttpContext.Session.GetString("SessionMiddleName")&nbsp;@HttpContextAccessor.HttpContext.Session.GetString("SessionLastName")</h6>
+                                            <p class="main-notification-text">Student</p>
+                                        </div>
+                                        <a class="dropdown-item border-top text-wrap" href="#">
+                                            <i class="fe fe-user"></i> My Profile
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-edit"></i> Edit Profile
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-settings"></i> Settings
+                                        </a>
+                                        <a class="dropdown-item text-wrap" href="#">
+                                            <i class="fe fe-activity"></i> Activity
+                                        </a>
+                                        <a class="dropdown-item text-wrap" asp-action="Logout" asp-controller="WRNRegistration">
+                                            <i class="fe fe-power"></i> Sign Out
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                    </li>
-                </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="mdi mdi-menu"></span>
-                </button>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <!-- partial -->
-        <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                <ul class="nav">
-                    <li class="nav-item nav-profile">
-                        <a href="#" class="nav-link">
-                            <div class="nav-profile-image">
-                                <img src="~/assets/WRN/images/faces/face1.jpg" alt="profile">
-                                <span class="login-status online"></span>
-                                <!--change to offline or busy as needed-->
-                            </div>
-                            <div class="nav-profile-text d-flex flex-column">
-                                <span class="font-weight-bold mb-2">@HttpContextAccessor.HttpContext.Session.GetString("SessionFirstName") &nbsp; @HttpContextAccessor.HttpContext.Session.GetString("SessionMiddleName") &nbsp; @HttpContextAccessor.HttpContext.Session.GetString("SessionLastName")</span>
-                                <!-- <span class="text-secondary text-small">Project Manager</span>-->
-                            </div>
-                        </a>
-                    </li>
+        </div>
+
+        <!-- End Main Header-->
+        <!-- Sidemenu -->
+        <div class="main-sidebar main-sidemenu main-sidebar-sticky side-menu">
+            <div class="sidemenu-logo">
+                <a class="main-logo" asp-action="Dashboard" asp-controller="WRNDashboard">
+                    <img src="~/assets/img/brand/logo.png" class="header-brand-img desktop-logo" alt="logo">
+                    <img src="~/assets/img/brand/icon.png" class="header-brand-img icon-logo" alt="logo">
+                    <img src="~/assets/img/brand/logo-light.png" class="header-brand-img desktop-logo theme-logo"
+                         alt="logo">
+                    <img src="~/assets/img/brand/icon-light.png" class="header-brand-img icon-logo theme-logo"
+                         alt="logo">
+                </a>
+            </div>
+            <div class="main-sidebar-body">
+                <div class="slide-left disabled" id="slide-left">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" />
+                    </svg>
+                </div>
+                <ul class="nav hor-menu">
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="WRNDashboard" asp-action="Dashboard">
                             <span class="menu-title">Dashboard</span>
                             <i class="mdi mdi-home menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
-                            <span class="menu-title">Complet Registration</span>
-                            <i class="mdi mdi-file-document-box menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="#" asp-controller="#">
-                            <span class="menu-title">Add Course</span>
-                            <i class="mdi mdi-file-document-box menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
-                            <span class="menu-title">Add Qualification</span>
-                            <i class="mdi mdi-file-document-box menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="#" asp-controller="#">
-                            <span class="menu-title">Upload Photo And Signature</span>
-                            <i class="mdi mdi-file-document-box menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span class="menu-title">Fee Payment</span>
-                            <i class="mdi mdi-currency-inr menu-icon"></i>
-                        </a>
-                    </li>
+                    @*<li class="nav-item">
+                            <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
+                                <span class="menu-title">Complet Registration</span>
+                                <i class="mdi mdi-file-document-box menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="#" asp-controller="#">
+                                <span class="menu-title">Add Course</span>
+                                <i class="mdi mdi-file-document-box menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                                <span class="menu-title">Add Qualification</span>
+                                <i class="mdi mdi-file-document-box menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
+                                <span class="menu-title">Upload Photo & Sign</span>
+                                <i class="mdi mdi-file-document-box menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="menu-title">Fee Payment</span>
+                                <i class="mdi mdi-currency-inr menu-icon"></i>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span class="menu-title">Print Registration</span>
-                            <i class="mdi mdi-printer menu-icon"></i>
-                        </a>
-                    </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="menu-title">Print Registration</span>
+                                <i class="mdi mdi-printer menu-icon"></i>
+                            </a>
+                        </li>*@
                 </ul>
-            </nav>
-            @RenderBody()
+            </div>
         </div>
-        <!-- page-body-wrapper ends -->
+        <!-- End Sidemenu -->
+        <!-- Main Content-->
+        <div class="main-content side-content pt-0">
+            <div id="layoutSidenav_content" class="side-app">
+                <div class="main-container container-fluid" role="main">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <!-- End Main Content-->
+        <!-- Main Footer-->
+        <div class="main-footer text-center">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span>
+                            Copyright © 2022 @*<a href="#" class="text-primary">Dashlead</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="https://www.spruko.com/"
+                                class="text-primary">Spruko</a>*@
+                            All rights reserved.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Footer-->
+
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="~/assets/WRN/vendors/js/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="~/assets/WRN/vendors/chart.js/Chart.min.js"></script>
-    <script src="~/assets/WRN/js/jquery.cookie.js" type="text/javascript"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="~/assets/WRN/js/off-canvas.js"></script>
-    <script src="~/assets/WRN/js/hoverable-collapse.js"></script>
-    <script src="~/assets/WRN/js/misc.js"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="~/assets/WRN/js/dashboard.js"></script>
-    <script src="~/assets/WRN/js/todolist.js"></script>
-    <!-- End custom js for this page -->
-    @*//for validation*@
-    <script src="~/assets/lib/jquery/dist/jquery.js"></script>
-    <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <!-- End Page -->
+    <!-- Back-to-top -->
+    <a href="#top" id="back-to-top"><i class="fe fe-arrow-up"></i></a>
 
-    @*upper case*@
-    <script type="text/javascript">
-        function upperCaseF(a) {
-            setTimeout(function () {
-                a.value = a.value.toUpperCase();
-            }, 1);
-        }
-    </script>
+    <!-- Jquery js-->
+    <script src="~/assets/plugins/jquery/jquery.min.js"></script>
 
-    @*model validation css*@
-    <style type="text/css">
-        body {
-            font-family: Arial;
-            font-size: 10pt;
-        }
+    <!-- Bootstrap js-->
+    <script src="~/assets/plugins/bootstrap/popper.min.js"></script>
+    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
-        .error {
-            color: red;
-        }
-    </style>
+
+    <!-- Flot js-->
+    <script src="~/assets/plugins/jquery.flot/jquery.flot.js"></script>
+    <script src="~/assets/plugins/jquery.flot/jquery.flot.resize.js"></script>
+    <script src="~/assets/js/chart.flot.sampledata.js"></script>
+
+    <!-- Chart.Bundle js-->
+    <script src="~/assets/plugins/chart.js/Chart.bundle.min.js"></script>
+
+    <!-- Peity js-->
+    <script src="~/assets/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Jquery-Ui js-->
+    <script src="~/assets/plugins/jquery-ui/ui/widgets/datepicker.js"></script>
+
+    <!-- Select2 js-->
+    <script src="~/assets/plugins/select2/js/select2.min.js"></script>
+
+    <!--MutipleSelect js-->
+    <script src="~/assets/plugins/multipleselect/multiple-select.js"></script>
+    <script src="~/assets/plugins/multipleselect/multi-select.js"></script>
+
+    <!-- Perfect-scrollbar js-->
+    <script src="~/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+    <!-- Sidemenu js-->
+    <script src="~/assets/plugins/sidemenu/sidemenu.js"></script>
+
+    <!-- Sidebar js-->
+    <script src="~/assets/plugins/sidebar/sidebar.js"></script>
+
+    <!-- Sticky js-->
+    <script src="~/assets/js/sticky.js"></script>
+
+    <!-- Dashboard js-->
+    <script src="~/assets/js/index.js"></script>
+
+    <!-- Themecolor js-->
+    <script src="~/assets/js/themeColors.js"></script>
+
+    <!-- Custom js-->
+    <script src="~/assets/js/custom.js"></script>
+
+
+
+    @*<script type="text/javascript" language="javascript">
+            function DisableBackButton() {
+                window.history.forward()
+            }
+            DisableBackButton();
+            window.onload = DisableBackButton;
+            window.onpageshow = function (evt) { if (evt.persisted) DisableBackButton() }
+            window.onunload = function () { void (0) }
+        </script>*@
+
 
     @*sweet alert*@
     <link media="screen" rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.8/sweetalert2.min.css" />
@@ -207,21 +389,42 @@
         </script>
     }
 
+    @*//for select2 dropdown*@
+    @section Scripts{
+        <!-- Custom js-->
+        <script src="~/assets/js/select2.js"></script>
+    }
 
-    @*grid view*@
+    @*//for validation*@
+    <script src="~/assets/lib/jquery/dist/jquery.js"></script>
+    <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-    <!--<script src="~/assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/dataTables.bootstrap5.js"></script>
-    <script src="~/assets/plugins/datatable/js/dataTables.buttons.min.js"></script>
-    <script src="~/assets/js/table-data.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.bootstrap5.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/jszip.min.js"></script>
-    <script src="~/assets/plugins/datatable/pdfmake/pdfmake.min.js"></script>
-    <script src="~/assets/plugins/datatable/pdfmake/vfs_fonts.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.html5.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.print.min.js"></script>
-    <script src="~/assets/plugins/datatable/js/buttons.colVis.min.js"></script>
-    <script src="~/assets/plugins/datatable/dataTables.responsive.min.js"></script>
-    <script src="~/assets/plugins/datatable/responsive.bootstrap5.min.js"></script>-->
+    @*select 2 dropdown script and css*@
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--These jQuery libraries for
+       chosen need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css" />
+
+    <!--These jQuery libraries for select2
+        need to be included-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" />
+    <script>
+        $(document).ready(function () {
+            //Select2
+            $(".select").select2({
+                maximumSelectionLength: 2,
+            });
+            //Chosen
+            $(".select1").chosen({
+                max_selected_options: 2,
+            });
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.Common;
+﻿using CoreLayout.Helper;
+using CoreLayout.Models.Common;
 using CoreLayout.Models.WRN;
 using CoreLayout.Services.Common.OTPVerification;
 using CoreLayout.Services.Common.SequenceGenerate;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -78,7 +80,7 @@ namespace CoreLayout.Controllers.WRN
                     if (res == null)
                     {
                         TempData["error"] = "Invalid details!";
-                        ModelState.AddModelError("", "Invalid details!");
+                        //ModelState.AddModelError("", "Invalid details!");
                     }
                     else
                     {
@@ -99,7 +101,8 @@ namespace CoreLayout.Controllers.WRN
                         HttpContext.Session.SetString("SessionMobileNo", res.MobileNo);
                         HttpContext.Session.SetString("SessionEmailId", res.EmailId);
                         HttpContext.Session.SetString("SessionRegistrationNo", res.RegistrationNo);
-                        return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml", wRNRegistration);
+                        //return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml", wRNRegistration);
+                        return RedirectToAction("DashBoard", "WRNDashBoard");
                     }
                 }
                 else
@@ -455,9 +458,9 @@ namespace CoreLayout.Controllers.WRN
             try
             {
                 //wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-                if (checkFinalSubmit.FinalSubmit != 1)
-                {
+                //var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+               // if (checkFinalSubmit.FinalSubmit != 1)
+               // {
                     string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                     wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
                     wRNRegistrationModel.IPAddress = ipAddress;
@@ -480,11 +483,11 @@ namespace CoreLayout.Controllers.WRN
                     //{
                     //    TempData["warning"] = "Some thing went wrong !";
                     //}
-                }
-                else
-                {
-                    TempData["warning"] = "Data has been final submitted, you can't any changes !";
-                }
+                //}
+                //else
+               // {
+               //     TempData["warning"] = "Data has been final submitted, you can't any changes !";
+               // }
             }
             catch (Exception ex)
             {
@@ -574,7 +577,136 @@ namespace CoreLayout.Controllers.WRN
         }
         #endregion
 
-        
-    }
+        #region upload photo and sign
 
+        public async Task<IActionResult> UploadPhotoSignature()
+        {
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            try
+            {
+                if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
+                {
+                    wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                    wRNRegistrationModel.DOB = HttpContext.Session.GetString("SessionDOB");
+                    wRNRegistrationModel.MobileNo = HttpContext.Session.GetString("SessionMobileNo");
+                    var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                    if (data == null)
+                    {
+                        return NotFound();
+                    }
+                    wRNRegistrationModel.PhotoPath = data.PhotoPath;
+                    wRNRegistrationModel.SignaturePath = data.SignaturePath;
+                }
+                else
+                {
+                    return RedirectToAction("Login");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.ToString();
+            }
+            return View("~/Views/WRN/WRNRegistration/UploadPhotoSignature.cshtml", wRNRegistrationModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadPhotoSignature(WRNRegistrationModel wRNRegistration)
+        {
+            FileHelper fileHelper = new FileHelper();
+            string photoPath = _configuration.GetSection("FilePaths:PreviousDocuments:WRNStudentPhoto").Value.ToString();
+            string signPath = _configuration.GetSection("FilePaths:PreviousDocuments:WRNStudentSignature").Value.ToString();
+            try
+            {
+                #region upload Photo
+                if (wRNRegistration.Photo != null)
+                {
+                    var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
+                    var circularExt = Path.GetExtension(wRNRegistration.Photo.FileName).Substring(1);
+                    if (supportedTypes.Contains(circularExt))
+                    {
+                        if (wRNRegistration.Photo.Length < 500000)
+                        {
+                            wRNRegistration.PhotoPath = fileHelper.SaveFile(photoPath, "", wRNRegistration.Photo);
+                        }
+                        else
+                        {
+                            //ModelState.AddModelError("", "photo size must be less than 500 kb");
+                            TempData["error"] = "photo size must be less than 500 kb";
+                            return RedirectToAction(nameof(UploadPhotoSignature));
+                        }
+                    }
+                    else
+                    {
+                        //ModelState.AddModelError("", "photo extension is invalid- accept only jpg,jpeg,png");//,jpg,jpeg,png
+                        TempData["error"] = "photo extension is invalid- accept only jpg,jpeg,png";
+                        return RedirectToAction(nameof(UploadPhotoSignature));
+                    }
+                }
+                else
+                {
+                    //ModelState.AddModelError("", "Please upload photo");
+                    TempData["warning"] = "Please upload photo";
+                    return RedirectToAction(nameof(UploadPhotoSignature));
+                }
+                #endregion
+                #region upload Sign
+                if (wRNRegistration.Signature != null)
+                {
+                    var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
+                    var signatureExt = Path.GetExtension(wRNRegistration.Signature.FileName).Substring(1);
+                    if (supportedTypes.Contains(signatureExt))
+                    {
+                        if (wRNRegistration.Signature.Length < 500000)
+                        {
+                            wRNRegistration.SignaturePath = fileHelper.SaveFile(signPath, "", wRNRegistration.Signature);
+                        }
+                        else
+                        {
+                            //ModelState.AddModelError("", "Signature size must be less than 500 kb");
+                            TempData["error"] = "Signature size must be less than 500 kb";
+                            return RedirectToAction(nameof(UploadPhotoSignature));
+                        }
+                    }
+                    else
+                    {
+                        //ModelState.AddModelError("", "Signature extension is invalid- accept only jpg,jpeg,png");//,jpg,jpeg,png
+                        TempData["error"] = "Signature extension is invalid- accept only jpg,jpeg,png";
+                        return RedirectToAction(nameof(UploadPhotoSignature));
+                    }
+                }
+                else
+                {
+                    //ModelState.AddModelError("", "Please upload signature");
+                    TempData["warning"] = "Please upload signature";
+                    return RedirectToAction(nameof(UploadPhotoSignature));
+                }
+                #endregion
+                if (wRNRegistration.PhotoPath != null && wRNRegistration.SignaturePath != null)
+                {
+                    var res = await _wRNRegistrationService.UpdatePhotoSignatureAsync(wRNRegistration);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Photo has been saved";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Photo has not been saved";
+                        fileHelper.DeleteFileAnyException(photoPath, wRNRegistration.PhotoPath);
+                        fileHelper.DeleteFileAnyException(signPath, wRNRegistration.SignaturePath);
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Photo/Signature can't blank";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.ToString();
+            }
+            //return View("~/Views/WRN/WRNRegistration/UploadPhotoSignature.cshtml", wRNRegistration);
+            return RedirectToAction(nameof(UploadPhotoSignature));
+        }
+        #endregion
+    }
 }

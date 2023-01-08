@@ -58,6 +58,8 @@ using CoreLayout.Repositories.UserManagement.Registration;
 using CoreLayout.Repositories.UserManagement.RoleToRoleMapping;
 using CoreLayout.Repositories.UserManagement.SubMenu;
 using CoreLayout.Repositories.WRN;
+using CoreLayout.Repositories.WRN.WRNCourseDetails;
+using CoreLayout.Repositories.WRN.WRNPayment;
 using CoreLayout.Repositories.WRN.WRNQualification;
 using CoreLayout.Repositories.WRN.WRNRegistration;
 using CoreLayout.Services.Audit;
@@ -114,6 +116,8 @@ using CoreLayout.Services.UserManagement.ParentMenu;
 using CoreLayout.Services.UserManagement.RoleToRoleMapping;
 using CoreLayout.Services.UserManagement.SubMenu;
 using CoreLayout.Services.WRN;
+using CoreLayout.Services.WRN.WRNCourseDetails;
+using CoreLayout.Services.WRN.WRNPayment;
 using CoreLayout.Services.WRN.WRNQualification;
 using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -423,6 +427,14 @@ namespace CoreLayout
             services.AddScoped<IWRNQualificationService, WRNQualificationService>();
             services.AddScoped<IWRNQualificationRepository, WRNQualificationRepository>();
 
+            //WRN Course Details
+            services.AddScoped<IWRNCourseDetailsService, WRNCourseDetailsService>();
+            services.AddScoped<IWRNCourseDetailsRepository, WRNCourseDetailsRepository>();
+
+            //WRN Payment
+            services.AddScoped<IWRNPaymentService, WRNPaymentService>();
+            services.AddScoped<IWRNPaymentRepository, WRNPaymentRepository>();
+
             //Sequrnce Generate
             services.AddScoped<ISequenceGenerateService, SequenceGenerateService>();
             services.AddScoped<ISequenceGenerateRepository, SequenceGenerateRepository>();
@@ -471,6 +483,16 @@ namespace CoreLayout
             {
                 FileProvider = new PhysicalFileProvider(@"E:\Core\StudentSignature\"),
                 RequestPath = "/StudentSignature"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\WRNStudentPhoto\"),
+                RequestPath = "/WRNStudentPhoto"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\WRNStudentSignature\"),
+                RequestPath = "/WRNStudentSignature"
             });
             app.UseRouting();
             app.UseAuthorization();

@@ -234,29 +234,31 @@ namespace CoreLayout.Controllers.WRN
             return Json(BoardUniversityList);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Details(string id)
-        {
-            var guid_id = _protector.Unprotect(id);
-            var data = await _wRNQualificationService.GetWRNQualificationByIdAsync(Convert.ToInt32(guid_id));
-            try
-            {
-                data.EncryptedId = id;
-                if (data == null)
-                {
-                    return NotFound();
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["error"] = ex.ToString();
-            }
-            return View("~/Views/WRN/WRNQualification/Qualification.cshtml", data);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Details(string id)
+        //{
+        //    var guid_id = _protector.Unprotect(id);
+        //    var data = await _wRNQualificationService.GetWRNQualificationByIdAsync(Convert.ToInt32(guid_id));
+        //    try
+        //    {
+        //        data.EncryptedId = id;
+        //        if (data == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TempData["error"] = ex.ToString();
+        //    }
+        //    //return View("~/Views/WRN/WRNQualification/Qualification.cshtml", data);
+        //    return RedirectToAction(nameof(Qualification));
+        //}
 
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
+            WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
             try
             {
                 var guid_id = _protector.Unprotect(id);
@@ -282,8 +284,30 @@ namespace CoreLayout.Controllers.WRN
             {
                 TempData["error"] = ex.ToString();
             }
+            //var binddata = await _wRNQualificationService.GetAllWRNQualificationAsync();
+            //wRNQualificationModel.DataList = binddata;
+            ////encryption
+            //foreach (var _data in binddata)
+            //{
+            //    var stringId = _data.Id.ToString();
+            //    _data.EncryptedId = _protector.Protect(stringId);
+            //}
+            return RedirectToAction(nameof(Qualification));
+            //return View("~/Views/WRN/WRNQualification/Qualification.cshtml");
+        }
 
-            return View("~/Views/WRN/WRNQualification/Qualification.cshtml");
+        public async Task<ActionResult> qualificationList(string id)
+        {
+            //ViewBag.type = 1;
+            var guid_id = _protector.Unprotect(id);
+            var data = await _wRNQualificationService.GetWRNQualificationByIdAsync(Convert.ToInt32(guid_id));
+            //var data = await _wRNQualificationService.GetAllByIdForDetailsAsync(Convert.ToInt32(guid_id));
+            if (data == null)
+            {
+                return NotFound();
+            }
+            return PartialView("~/Views/WRN/WRNQualification/_QualificationList.cshtml", data);
+
         }
     }
 

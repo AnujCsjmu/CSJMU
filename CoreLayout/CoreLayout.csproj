@@ -34,6 +34,7 @@
   <ItemGroup>
     <Folder Include="logs\" />
     <Folder Include="wwwroot\assets\WRN\" />
+    <Folder Include="wwwroot\assets\WRN\" />
     <Folder Include="wwwroot\MailUploads\" />
   </ItemGroup>
 

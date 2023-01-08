@@ -1,24 +1,13 @@
-﻿using CoreLayout.Enum;
-using CoreLayout.Filters;
-using CoreLayout.Models.Masters;
-using CoreLayout.Models.WRN;
-using CoreLayout.Services.Circular;
-using CoreLayout.Services.Masters.Dashboard;
-using CoreLayout.Services.PCP.PCPAssignedQP;
-using CoreLayout.Services.PCP.PCPRegistration;
-using CoreLayout.Services.PCP.PCPSendPaper;
-using CoreLayout.Services.PCP.PCPUploadPaper;
-using Microsoft.AspNetCore.Authorization;
+﻿using CoreLayout.Models.WRN;
+using CoreLayout.Services.WRN.WRNCourseDetails;
+using CoreLayout.Services.WRN.WRNPayment;
+using CoreLayout.Services.WRN.WRNQualification;
+using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,25 +19,92 @@ namespace CoreLayout.Controllers
         private readonly IDataProtector _protector;
         private readonly ILogger<DashBoardController> _logger;
         public IConfiguration _configuration;
-        public WRNDashBoardController(ILogger<DashBoardController> logger, IDataProtectionProvider provider, IConfiguration configuration)
+        public readonly IWRNRegistrationService _wRNRegistrationService;
+        public readonly IWRNQualificationService _wRNQualificationService;
+        public readonly IWRNCourseDetailsService _wRNCourseDetailsService;
+        public readonly IWRNPaymentService _wRNPaymentService;
+        public WRNDashBoardController(ILogger<DashBoardController> logger, IDataProtectionProvider provider, 
+            IConfiguration configuration, IWRNRegistrationService wRNRegistrationService, 
+            IWRNQualificationService wRNQualificationService, IWRNCourseDetailsService wRNCourseDetailsService,
+            IWRNPaymentService wRNPaymentService)
         {
             _logger = logger;
             _configuration = configuration;
             _protector = provider.CreateProtector("WRNDashBoard.WRNDashBoardController");
+            _wRNRegistrationService = wRNRegistrationService;
+            _wRNQualificationService = wRNQualificationService;
+            _wRNCourseDetailsService = wRNCourseDetailsService;
+            _wRNPaymentService = wRNPaymentService;
         }
         [HttpGet]
-        public IActionResult DashBoard()
+        public async Task<IActionResult> DashBoardAsync()
         {
             WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
-            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            string regno = HttpContext.Session.GetString("SessionRegistrationNo");
+            string dob = HttpContext.Session.GetString("SessionDOB");
+            string mobile = HttpContext.Session.GetString("SessionMobileNo");
+            if (regno != null && dob != null && mobile != null)
+            {
+                var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
+                                         where s.RegistrationNo == regno
+                                         select s).Distinct().ToList();
+                var coursedata = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
+                                         where s.RegistrationNo == regno
+                                         select s).Distinct().ToList();
+                var photosignaturedata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                  where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                  && s.PhotoPath !=null && s.SignaturePath !=null
+                                  select s).Distinct().ToList();
+                var paymentdata = (from s in await _wRNPaymentService.GetAllWRNPaymentAsync()
+                                          where s.RegistrationNo == regno
+                                          select s).Distinct().ToList();
+
+                wRNRegistrationModel.RegistrationNo = regno;
+                wRNRegistrationModel.DOB = dob;
+                wRNRegistrationModel.MobileNo = mobile;
+
+                ViewBag.registrationdata = registrationdata;
+                ViewBag.qualificationdata = qualificationdata;
+                ViewBag.coursedata = coursedata;
+                ViewBag.photosignaturedata = photosignaturedata;
+                ViewBag.paymentdata = paymentdata;
+                //wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                //wRNRegistrationModel.PhotoPath = data.PhotoPath;
+                //wRNRegistrationModel.SignaturePath = data.SignaturePath;
+            }
+            else
+            {
+                return RedirectToAction("Logout", "WRNRegistration");
+            }
             return View("~/Views/WRN/WRNDashboard/Dashboard.cshtml", wRNRegistrationModel);
         }
 
         [HttpGet]
-        public IActionResult CompleteRegistration()
+        public async Task<IActionResult> CompleteRegistrationAsync()
         {
             WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
-            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            string regno = HttpContext.Session.GetString("SessionRegistrationNo");
+            string dob = HttpContext.Session.GetString("SessionDOB");
+            string mobile = HttpContext.Session.GetString("SessionMobileNo");
+            if (regno != null && dob != null && mobile != null)
+            {
+                var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                if (data == null)
+                {
+                    return RedirectToAction("Logout", "WRNRegistration");
+                }
+                wRNRegistrationModel.RegistrationNo = regno;
+                wRNRegistrationModel.DOB = dob;
+                wRNRegistrationModel.MobileNo = mobile;
+                wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                wRNRegistrationModel.PhotoPath = data.PhotoPath;
+                wRNRegistrationModel.SignaturePath = data.SignaturePath;
+            }
+            else
+            {
+                return RedirectToAction("Logout", "WRNRegistration");
+            }
             return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
         }
 
@@ -57,7 +113,25 @@ namespace CoreLayout.Controllers
         {
             WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
             wRNQualificationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            //var data = await _wRNQualificationService.GetWRNQualificationByIdAsync(regno, mobile, dob);
+            //if (data == null)
+            //{
+            //    return RedirectToAction("Logout", "WRNRegistration");
+            //}
             return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
+        }
+
+        public IActionResult UploadPhotoSignature()
+        {
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNRegistration/UploadPhotoSignature.cshtml", wRNRegistrationModel);
+        }
+        public IActionResult WRNCourse()
+        {
+            WRNCourseDetailsModel wRNCourseDetailsModel = new WRNCourseDetailsModel();
+            wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNCourseDetails/WRNCourse.cshtml", wRNCourseDetailsModel);
         }
     }
 

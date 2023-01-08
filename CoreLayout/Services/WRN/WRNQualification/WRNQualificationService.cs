@@ -55,5 +55,9 @@ namespace CoreLayout.Services.WRN.WRNQualification
         {
             return await _wRNQualificationRepository.GetAllBoardUniversityType();
         }
+        public async Task<List<WRNQualificationModel>> GetAllByIdForDetailsAsync(int id)
+        {
+            return await _wRNQualificationRepository.GetAllByIdForDetailsAsync(id);
+        }
     }
 }

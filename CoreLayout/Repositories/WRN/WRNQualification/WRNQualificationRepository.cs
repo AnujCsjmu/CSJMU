@@ -288,5 +288,26 @@ namespace CoreLayout.Repositories.WRN.WRNQualification
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public async Task<List<WRNQualificationModel>> GetAllByIdForDetailsAsync(int id)
+        {
+            try
+            {
+                var query = "Usp_WRNQualification";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@Id", id, DbType.Int32);
+                    parameters.Add("@Query", 5, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<WRNQualificationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<WRNQualificationModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

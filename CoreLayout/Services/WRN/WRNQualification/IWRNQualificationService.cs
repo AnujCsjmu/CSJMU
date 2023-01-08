@@ -16,5 +16,7 @@ namespace CoreLayout.Services.WRN.WRNQualification
         public Task<List<EducationalQualificationModel>> GetAllEducationalQualification();
         public Task<List<BoardUniversityModel>> GetAllBoardUniversityByType(string type);
         public Task<List<BoardUniversityModel>> GetAllBoardUniversityType();
+
+        public Task<List<WRNQualificationModel>> GetAllByIdForDetailsAsync(int id);
     }
 }
