@@ -27,6 +27,7 @@ namespace CoreLayout.Models.WRN
 
         [Display(Name = "Institute Name")]
         public string InstituteName { get; set; }
+        public string InstituteCodeWithName { get; set; }
         public List<InstituteModel> InstituteList { get; set; }
 
         [Display(Name = "Course Name")]
@@ -35,6 +36,8 @@ namespace CoreLayout.Models.WRN
 
         [Display(Name = "Course Name")]
         public string CourseName { get; set; }
+        public string CourseCodeWithName { get; set; }
+        public int? CourseCount { get; set; }
         public List<CourseModel> CourseList { get; set; }
 
         [Display(Name = "Registration No")]

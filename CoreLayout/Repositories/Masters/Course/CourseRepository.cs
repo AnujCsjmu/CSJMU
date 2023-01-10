@@ -184,5 +184,24 @@ namespace CoreLayout.Repositories.Masters.Course
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<CourseModel>> GetAllCourseByInstitute(int instituteId)
+        {
+            try
+            {
+                var query = "SP_InsertUpdateDelete_Course";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@@InstituteId", instituteId, DbType.Int32);
+                    parameters.Add("@Query", 7, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<CourseModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return (List<CourseModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

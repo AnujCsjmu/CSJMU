@@ -404,5 +404,48 @@ namespace CoreLayout.Repositories.WRN.WRNRegistration
                 }
             }
         }
+
+        public async Task<int> UpdatePrintRegistration(WRNRegistrationModel entity)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                using (var tran = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        entity.PrintStatus = 1;
+                        var query = "Usp_WRNRegistration";
+                        DynamicParameters parameters = new DynamicParameters();
+                        parameters.Add("PrintStatus", entity.PrintStatus, DbType.Int32);
+                        parameters.Add("RegistrationNo", entity.RegistrationNo, DbType.String);
+                        parameters.Add("@Query", 10, DbType.Int32);
+                        var res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
+                        if (res == 1)
+                        {
+                            tran.Commit();
+                        }
+                        else
+                        {
+                            tran.Rollback();
+                        }
+                        return res;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        // roll the transaction back
+                        tran.Rollback();
+
+                        // handle the error however you need to.
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+        }
     }
 }

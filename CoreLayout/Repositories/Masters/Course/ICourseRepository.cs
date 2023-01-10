@@ -9,5 +9,6 @@ namespace CoreLayout.Repositories.Masters.Course
     public interface ICourseRepository : IRepository<CourseModel>
     {
         Task<List<CourseTypeModel>> GetAllCourseType();
+        Task<List<CourseModel>> GetAllCourseByInstitute(int instituteId);
     }
 }

@@ -13,6 +13,8 @@ namespace CoreLayout.Services.WRN.WRNCourseDetails
         public Task<int> UpdateWRNCourseDetailsAsync(WRNCourseDetailsModel wRNCourseDetailsModel);
         public Task<int> DeleteWRNCourseDetailsAsync(WRNCourseDetailsModel wRNCourseDetailsModel);
 
+        public Task<List<WRNCourseDetailsModel>> Check3CourseListAsync(string RegistrationNo);
+        public Task<WRNCourseDetailsModel> Check3CourseCountAsync(string RegistrationNo);
         //public Task<List<EducationalQualificationModel>> GetAllEducationalQualification();
         //public Task<List<BoardUniversityModel>> GetAllBoardUniversityByType(string type);
         //public Task<List<BoardUniversityModel>> GetAllBoardUniversityType();

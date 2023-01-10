@@ -43,5 +43,9 @@ namespace CoreLayout.Services.Masters.Course
         {
             return await _courseRepository.GetAllCourseType();
         }
+        public async Task<List<CourseModel>> GetAllCourseByInstitute(int instituteId)
+        {
+            return await _courseRepository.GetAllCourseByInstitute(instituteId);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CoreLayout.Models.Common;
+﻿using CoreLayout.Helper;
+using CoreLayout.Models.Common;
 using CoreLayout.Models.WRN;
 using CoreLayout.Services.Common.OTPVerification;
 using CoreLayout.Services.Common.SequenceGenerate;
@@ -20,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -140,6 +142,41 @@ namespace CoreLayout.Controllers.WRN
                                          select s).Distinct().ToList();
                     if (IsAlreadyExit.Count == 0)
                     {
+                        #region upload marksheet
+                        FileHelper fileHelper = new FileHelper();
+                        string uploadpath = _configuration.GetSection("FilePaths:PreviousDocuments:WRNMarksheet").Value.ToString();
+                        if (wRNQualificationModel.MarksheetAttachment != null)
+                        {
+                            var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
+                            var circularExt = Path.GetExtension(wRNQualificationModel.MarksheetAttachment.FileName).Substring(1);
+                            if (supportedTypes.Contains(circularExt))
+                            {
+                                if (wRNQualificationModel.MarksheetAttachment.Length < 500000)
+                                {
+                                    wRNQualificationModel.MarksheetAttachmentPath = fileHelper.SaveFile(uploadpath, "", wRNQualificationModel.MarksheetAttachment);
+                                }
+                                else
+                                {
+                                    //ModelState.AddModelError("", "photo size must be less than 500 kb");
+                                    TempData["error"] = "marksheet size must be less than 500 kb";
+                                    //return RedirectToAction(nameof(Qualification));
+                                }
+                            }
+                            else
+                            {
+                                //ModelState.AddModelError("", "photo extension is invalid- accept only jpg,jpeg,png");//,jpg,jpeg,png
+                                TempData["error"] = "marksheet extension is invalid- accept only jpg,jpeg,png";
+                                //return RedirectToAction(nameof(Qualification));
+                            }
+                        }
+                        else
+                        {
+                            //ModelState.AddModelError("", "Please upload photo");
+                            TempData["warning"] = "Please upload marksheet";
+                            //return RedirectToAction(nameof(Qualification));
+                        }
+                        #endregion
+
                         var data = await _wRNQualificationService.CreateWRNQualificationAsync(wRNQualificationModel);
                         if (data.Equals(1))
                         {
@@ -168,7 +205,8 @@ namespace CoreLayout.Controllers.WRN
             List<WRNQualificationModel> dataLst = new List<WRNQualificationModel>();
             var binddata = await _wRNQualificationService.GetAllWRNQualificationAsync();
             wRNQualificationModel.DataList = binddata;
-            return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
+            //return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
+            return RedirectToAction(nameof(Qualification));
         }
         #endregion
 
@@ -214,6 +252,10 @@ namespace CoreLayout.Controllers.WRN
                 else if (wRNQualificationModel.Subjects == null)
                 {
                     msg = "Please enter subjects";
+                }
+                else if (wRNQualificationModel.MarksheetAttachment == null)
+                {
+                    msg = "Please upload scan marksheet";
                 }
             }
             return msg;

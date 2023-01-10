@@ -106,6 +106,9 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select category")]
         public int CategoryId { get; set; }
 
+        [Display(Name = "Category")]
+        public string CategoryName { get; set; }
+
         public List<CategoryModel> CategoryList { get; set; }
 
         [Display(Name = "Nationality")]
@@ -116,6 +119,8 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select religion")]
         public int ReligionId { get; set; }
 
+        [Display(Name = "Religion")]
+        public string ReligionName { get; set; }
         public List<ReligionModel> ReligionList { get; set; }
 
         [Display(Name = "Physical Disabled")]
@@ -131,12 +136,16 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select permanent state")]
         public int PermanentStateId { get; set; }
 
+        [Display(Name = "Permanent State")]
+        public string PermanentStateName { get; set; }
         public List<StateModel> StateList { get; set; }
 
         [Display(Name = "Permanent District")]
         [Required(ErrorMessage = "Please select permanent district")]
         public int PermanentDistrictId { get; set; }
 
+        [Display(Name = "Permanent District")]
+        public string PermanentDistrictName { get; set; }
         public List<DistrictModel> DistrictList { get; set; }
 
         [Display(Name = "Permanent Pincode")]
@@ -153,9 +162,15 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select communication state")]
         public int CommunicationStateId { get; set; }
 
+        [Display(Name = "Communication State")]
+        public string CommunicationStateName { get; set; }
+
         [Display(Name = "Communication District")]
         [Required(ErrorMessage = "Please select communication district")]
         public int CommunicationDistrictId { get; set; }
+
+        [Display(Name = "Communication District")]
+        public string CommunicationDistrictName { get; set; }
 
         [Display(Name = "Communication Pincode")]
         [Required(ErrorMessage = "Please enter communication pincode")]
@@ -190,6 +205,8 @@ namespace CoreLayout.Models.WRN
         [Display(Name = "Signature")]
         [Required(ErrorMessage = "Please upload Signature")]
         public IFormFile Signature { get; set; }
+        public DateTime? PhotoDate { get; set; }
+        public int? PrintStatus { get; set; }
 
     }
     public class CheckBoxRequired : ValidationAttribute, IClientModelValidator

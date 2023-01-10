@@ -44,13 +44,16 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="OtherUniversity"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="OtherUniversity" class="form-control" readonly />
-                                    <span class="error" asp-validation-for="OtherUniversity"></span>
+                            @if (Model.OtherUniversity != null)
+                            {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="OtherUniversity"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="OtherUniversity" class="form-control" readonly />
+                                        <span class="error" asp-validation-for="OtherUniversity"></span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label asp-for="ResultStatus"> </label><span class="tx-danger"> *</span>
@@ -99,6 +102,13 @@
                                     <label asp-for="Subjects"> </label><span class="tx-danger"> *</span>
                                     <input asp-for="Subjects" class="form-control" readonly />
                                     <span class="parsley-errors-list filled" asp-validation-for="Subjects"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="MarksheetAttachment"> </label><span class="tx-danger"> *</span>
+                                    <img src="~/WRNMarksheet/@Model.MarksheetAttachmentPath" alt="Image" height="120" width="120" />
+                                    <span asp-validation-for="MarksheetAttachment" class="parsley-errors-list filled"></span>
                                 </div>
                             </div>
                         </div>

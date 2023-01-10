@@ -1,4 +1,5 @@
 ﻿using CoreLayout.Models.Common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -81,6 +82,9 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please select qualification type")]
         public string QualificationType { get; set; }
 
+        [Display(Name = "Upload Sacn Copy of Marksheet")]
+        public IFormFile MarksheetAttachment { get; set; }
+        public string MarksheetAttachmentPath { get; set; }
         public List<WRNQualificationModel> DataList { get; set; }
 
         public List<EducationalQualificationModel> EducationalQualificationList { get; set; }

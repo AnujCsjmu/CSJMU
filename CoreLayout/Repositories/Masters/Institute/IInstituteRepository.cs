@@ -11,5 +11,6 @@ namespace CoreLayout.Repositories.Masters.Institute
     {
         Task<List<InstituteModel>> AffiliationInstituteIntakeData();
         Task<List<InstituteModel>> All_AffiliationInstituteIntakeData();
+        Task<List<InstituteModel>> DistinctAffiliationInstituteIntakeData();
     }
 }

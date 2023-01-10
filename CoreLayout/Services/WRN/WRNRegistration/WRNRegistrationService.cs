@@ -58,5 +58,9 @@ namespace CoreLayout.Services.WRN.WRNRegistration
         {
             return await _wRNRegistrationRepository.UpdatePhotoSignatureAsync(wRNRegistrationModel);
         }
+        public async Task<int> UpdatePrintRegistration(WRNRegistrationModel wRNRegistrationModel)
+        {
+            return await _wRNRegistrationRepository.UpdatePrintRegistration(wRNRegistrationModel);
+        }
     }
 }

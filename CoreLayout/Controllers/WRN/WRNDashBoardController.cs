@@ -59,6 +59,10 @@ namespace CoreLayout.Controllers
                 var paymentdata = (from s in await _wRNPaymentService.GetAllWRNPaymentAsync()
                                           where s.RegistrationNo == regno
                                           select s).Distinct().ToList();
+                var printregistration = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                         where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                         && s.PrintStatus != null
+                                         select s).Distinct().ToList();
 
                 wRNRegistrationModel.RegistrationNo = regno;
                 wRNRegistrationModel.DOB = dob;
@@ -69,9 +73,7 @@ namespace CoreLayout.Controllers
                 ViewBag.coursedata = coursedata;
                 ViewBag.photosignaturedata = photosignaturedata;
                 ViewBag.paymentdata = paymentdata;
-                //wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
-                //wRNRegistrationModel.PhotoPath = data.PhotoPath;
-                //wRNRegistrationModel.SignaturePath = data.SignaturePath;
+                ViewBag.printregistration = printregistration;
             }
             else
             {
@@ -132,6 +134,18 @@ namespace CoreLayout.Controllers
             WRNCourseDetailsModel wRNCourseDetailsModel = new WRNCourseDetailsModel();
             wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
             return View("~/Views/WRN/WRNCourseDetails/WRNCourse.cshtml", wRNCourseDetailsModel);
+        }
+        public IActionResult Payment()
+        {
+            WRNPaymentModel wRNPaymentModel = new WRNPaymentModel();
+            wRNPaymentModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNPayment/Payment.cshtml", wRNPaymentModel);
+        }
+        public IActionResult PrintRegistration()
+        {
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+            return View("~/Views/WRN/WRNRegistration/Print.cshtml", wRNRegistrationModel);
         }
     }
 

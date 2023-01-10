@@ -8,6 +8,9 @@ using CoreLayout.Services.Masters.District;
 using CoreLayout.Services.Masters.Religion;
 using CoreLayout.Services.Masters.State;
 using CoreLayout.Services.WRN;
+using CoreLayout.Services.WRN.WRNCourseDetails;
+using CoreLayout.Services.WRN.WRNPayment;
+using CoreLayout.Services.WRN.WRNQualification;
 using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -42,12 +45,17 @@ namespace CoreLayout.Controllers.WRN
         private readonly IReligionService _religionService;
         private readonly IStateService _stateService;
         private readonly IDistrictService _districtService;
+        public readonly IWRNQualificationService _wRNQualificationService;
+        public readonly IWRNCourseDetailsService _wRNCourseDetailsService;
+        public readonly IWRNPaymentService _wRNPaymentService;
         public WRNRegistrationController(ILogger<WRNRegistrationController> logger,
             IDataProtectionProvider provider, IConfiguration configuration,
             IWRNRegistrationService wRNRegistrationService, IHttpContextAccessor httpContextAccessor,
             CommonController commonController, ISequenceGenerateService sequenceGenerateService,
             IOTPVerificationService oTPVerificationService, ICategoryService categoryService,
-            IReligionService religionService, IStateService stateService, IDistrictService districtService)
+            IReligionService religionService, IStateService stateService, IDistrictService districtService,
+            IWRNQualificationService wRNQualificationService, IWRNCourseDetailsService wRNCourseDetailsService,
+            IWRNPaymentService wRNPaymentService)
         {
             _logger = logger;
             _protector = provider.CreateProtector("WRNRegistration.WRNRegistrationController");
@@ -61,6 +69,9 @@ namespace CoreLayout.Controllers.WRN
             _religionService = religionService;
             _stateService = stateService;
             _districtService = districtService;
+            _wRNQualificationService = wRNQualificationService;
+            _wRNCourseDetailsService = wRNCourseDetailsService;
+            _wRNPaymentService = wRNPaymentService;
         }
 
         #region Login
@@ -178,9 +189,136 @@ namespace CoreLayout.Controllers.WRN
             }
             return View();
         }
+
         #endregion
 
+        #region Complete Registration
+        [HttpGet]
+        public async Task<IActionResult> CompleteRegistrationAsync()
+        {
+            if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
+            {
+                #region bind data after update
+                WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+                wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                wRNRegistrationModel.DOB = HttpContext.Session.GetString("SessionDOB");
+                wRNRegistrationModel.MobileNo = HttpContext.Session.GetString("SessionMobileNo");
+                var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                if (data == null)
+                {
+                    TempData["success"] = "Data not found !";
+                }
+                else
+                {
+                    wRNRegistrationModel.FirstName = HttpContext.Session.GetString("SessionFirstName");
+                    wRNRegistrationModel.MiddleName = HttpContext.Session.GetString("SessionMiddleName");
+                    wRNRegistrationModel.LastName = HttpContext.Session.GetString("SessionLastName");
+                    wRNRegistrationModel.FatherName = HttpContext.Session.GetString("SessionFatherName");
+                    wRNRegistrationModel.MotherName = HttpContext.Session.GetString("SessionMotherName");
+                    wRNRegistrationModel.EmailId = HttpContext.Session.GetString("SessionEmailId");
+                    wRNRegistrationModel.CategoryList = await _categoryService.GetAllCategory();
+                    wRNRegistrationModel.ReligionList = await _religionService.GetAllReligion();
+                    wRNRegistrationModel.StateList = await _stateService.GetAllState();
+                    wRNRegistrationModel.DistrictList = await _districtService.GetAllDistrict();
+                    wRNRegistrationModel.AcademicSession = "2022-23";//change
 
+                    wRNRegistrationModel.ApplicationNo = data.ApplicationNo;
+                    wRNRegistrationModel.ModeOfAdmission = data.ModeOfAdmission;
+                    wRNRegistrationModel.HindiName = data.HindiName;
+                    wRNRegistrationModel.Gender = data.Gender;
+                    wRNRegistrationModel.AadharNumber = data.AadharNumber;
+                    wRNRegistrationModel.CategoryId = data.CategoryId;
+                    wRNRegistrationModel.Nationality = data.Nationality;
+                    wRNRegistrationModel.ReligionId = data.ReligionId;
+                    wRNRegistrationModel.PhysicalDisabled = data.PhysicalDisabled;
+
+                    wRNRegistrationModel.PermanentAddress = data.PermanentAddress;
+                    wRNRegistrationModel.PermanentStateId = data.PermanentStateId;
+                    wRNRegistrationModel.PermanentDistrictId = data.PermanentDistrictId;
+                    wRNRegistrationModel.PermanentPincode = data.PermanentPincode;
+
+                    wRNRegistrationModel.CommunicationAddress = data.CommunicationAddress;
+                    wRNRegistrationModel.CommunicationStateId = data.CommunicationStateId;
+                    wRNRegistrationModel.CommunicationDistrictId = data.CommunicationDistrictId;
+                    wRNRegistrationModel.CommunicationPincode = data.CommunicationPincode;
+                    wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                }
+
+                #endregion
+                //return View(wRNRegistrationModel);
+                return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompleteRegistrationAsync(WRNRegistrationModel wRNRegistrationModel)
+        {
+            try
+            {
+                //wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                //var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                // if (checkFinalSubmit.FinalSubmit != 1)
+                // {
+                string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
+                wRNRegistrationModel.IPAddress = ipAddress;
+                wRNRegistrationModel.Id = (int)HttpContext.Session.GetInt32("SessionId");
+                wRNRegistrationModel.ApplicationNo = "01/2022/2022-23/" + wRNRegistrationModel.Id;
+                wRNRegistrationModel.FinalSubmit = 0;
+                //if (ModelState.IsValid)
+                //{
+                var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
+                if (data.Equals(1))
+                {
+                    TempData["success"] = "Data has been updated !";
+                }
+                else
+                {
+                    TempData["warning"] = "Data has not been updated !";
+                }
+                //}
+                //else
+                //{
+                //    TempData["warning"] = "Some thing went wrong !";
+                //}
+                //}
+                //else
+                // {
+                //     TempData["warning"] = "Data has been final submitted, you can't any changes !";
+                // }
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.ToString();
+            }
+            return RedirectToAction("CompleteRegistration", "WRNRegistration");
+            //return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
+        }
+
+        public async Task<JsonResult> GetDistrict(int StateId)
+        {
+            var DistrictList = (from district in await _districtService.GetAllDistrict()
+                                where district.StateId == StateId
+                                select new SelectListItem()
+                                {
+                                    Text = district.DistrictName,
+                                    Value = district.DistrictId.ToString(),
+                                }).ToList();
+
+            DistrictList.Insert(0, new SelectListItem()
+            {
+                Text = "----Select----",
+                Value = string.Empty
+            });
+            return Json(DistrictList);
+        }
+        #endregion
+
+        #region common code
         private bool IsEmailValid(string email)
         {
             var valid = true;
@@ -389,113 +527,6 @@ namespace CoreLayout.Controllers.WRN
             return Serialno;
 
         }
-
-        #region Complete Registration
-        [HttpGet]
-        public async Task<IActionResult> CompleteRegistrationAsync()
-        {
-            if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
-            {
-                #region bind data after update
-                WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
-                wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                wRNRegistrationModel.DOB = HttpContext.Session.GetString("SessionDOB");
-                wRNRegistrationModel.MobileNo = HttpContext.Session.GetString("SessionMobileNo");
-                var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-                if (data == null)
-                {
-                    TempData["success"] = "Data not found !";
-                }
-                else
-                {
-                    wRNRegistrationModel.FirstName = HttpContext.Session.GetString("SessionFirstName");
-                    wRNRegistrationModel.MiddleName = HttpContext.Session.GetString("SessionMiddleName");
-                    wRNRegistrationModel.LastName = HttpContext.Session.GetString("SessionLastName");
-                    wRNRegistrationModel.FatherName = HttpContext.Session.GetString("SessionFatherName");
-                    wRNRegistrationModel.MotherName = HttpContext.Session.GetString("SessionMotherName");
-                    wRNRegistrationModel.EmailId = HttpContext.Session.GetString("SessionEmailId");
-                    wRNRegistrationModel.CategoryList = await _categoryService.GetAllCategory();
-                    wRNRegistrationModel.ReligionList = await _religionService.GetAllReligion();
-                    wRNRegistrationModel.StateList = await _stateService.GetAllState();
-                    wRNRegistrationModel.DistrictList = await _districtService.GetAllDistrict();
-                    wRNRegistrationModel.AcademicSession = "2022-23";//change
-
-                    wRNRegistrationModel.ApplicationNo = data.ApplicationNo;
-                    wRNRegistrationModel.ModeOfAdmission = data.ModeOfAdmission;
-                    wRNRegistrationModel.HindiName = data.HindiName;
-                    wRNRegistrationModel.Gender = data.Gender;
-                    wRNRegistrationModel.AadharNumber = data.AadharNumber;
-                    wRNRegistrationModel.CategoryId = data.CategoryId;
-                    wRNRegistrationModel.Nationality = data.Nationality;
-                    wRNRegistrationModel.ReligionId = data.ReligionId;
-                    wRNRegistrationModel.PhysicalDisabled = data.PhysicalDisabled;
-
-                    wRNRegistrationModel.PermanentAddress = data.PermanentAddress;
-                    wRNRegistrationModel.PermanentStateId = data.PermanentStateId;
-                    wRNRegistrationModel.PermanentDistrictId = data.PermanentDistrictId;
-                    wRNRegistrationModel.PermanentPincode = data.PermanentPincode;
-
-                    wRNRegistrationModel.CommunicationAddress = data.CommunicationAddress;
-                    wRNRegistrationModel.CommunicationStateId = data.CommunicationStateId;
-                    wRNRegistrationModel.CommunicationDistrictId = data.CommunicationDistrictId;
-                    wRNRegistrationModel.CommunicationPincode = data.CommunicationPincode;
-                    wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
-                }
-
-                #endregion
-                //return View(wRNRegistrationModel);
-                return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
-            }
-            else
-            {
-                return RedirectToAction("Login");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CompleteRegistrationAsync(WRNRegistrationModel wRNRegistrationModel)
-        {
-            try
-            {
-                //wRNRegistrationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                //var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-               // if (checkFinalSubmit.FinalSubmit != 1)
-               // {
-                    string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
-                    wRNRegistrationModel.ModifiedBy = (int)HttpContext.Session.GetInt32("SessionCreatedBy");
-                    wRNRegistrationModel.IPAddress = ipAddress;
-                    wRNRegistrationModel.Id = (int)HttpContext.Session.GetInt32("SessionId");
-                    wRNRegistrationModel.ApplicationNo = "01/2022/2022-23/" + wRNRegistrationModel.Id;
-                    wRNRegistrationModel.FinalSubmit = 0;
-                    //if (ModelState.IsValid)
-                    //{
-                    var data = await _wRNRegistrationService.UpdateWRNRegistrationAsync(wRNRegistrationModel);
-                    if (data.Equals(1))
-                    {
-                        TempData["success"] = "Data has been updated !";
-                    }
-                    else
-                    {
-                        TempData["warning"] = "Data has not been updated !";
-                    }
-                    //}
-                    //else
-                    //{
-                    //    TempData["warning"] = "Some thing went wrong !";
-                    //}
-                //}
-                //else
-               // {
-               //     TempData["warning"] = "Data has been final submitted, you can't any changes !";
-               // }
-            }
-            catch (Exception ex)
-            {
-                TempData["error"] = ex.ToString();
-            }
-            return RedirectToAction("CompleteRegistration", "WRNRegistration");
-            //return View("~/Views/WRN/WRNRegistration/CompleteRegistration.cshtml", wRNRegistrationModel);
-        }
         #endregion
 
         #region LogOut
@@ -523,25 +554,6 @@ namespace CoreLayout.Controllers.WRN
             return RedirectToAction("Login");
         }
         #endregion
-
-        public async Task<JsonResult> GetDistrict(int StateId)
-        {
-            var DistrictList = (from district in await _districtService.GetAllDistrict()
-                                where district.StateId == StateId
-                                select new SelectListItem()
-                                {
-                                    Text = district.DistrictName,
-                                    Value = district.DistrictId.ToString(),
-                                }).ToList();
-
-            DistrictList.Insert(0, new SelectListItem()
-            {
-                Text = "----Select----",
-                Value = string.Empty
-            });
-            return Json(DistrictList);
-        }
-
 
         #region final submit
         [HttpPost]
@@ -578,7 +590,6 @@ namespace CoreLayout.Controllers.WRN
         #endregion
 
         #region upload photo and sign
-
         public async Task<IActionResult> UploadPhotoSignature()
         {
             WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
@@ -706,6 +717,122 @@ namespace CoreLayout.Controllers.WRN
             }
             //return View("~/Views/WRN/WRNRegistration/UploadPhotoSignature.cshtml", wRNRegistration);
             return RedirectToAction(nameof(UploadPhotoSignature));
+        }
+        #endregion
+
+        #region Print
+        [HttpGet]
+        public async Task<IActionResult> PrintRegistration()
+        {
+            WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+            string regno = HttpContext.Session.GetString("SessionRegistrationNo");
+            string dob = HttpContext.Session.GetString("SessionDOB");
+            string mobile = HttpContext.Session.GetString("SessionMobileNo");
+            if (regno != null && dob != null && mobile != null)
+            {
+                var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
+                                         where s.RegistrationNo == regno
+                                         select s).Distinct().ToList();
+                var coursedata = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
+                                  where s.RegistrationNo == regno
+                                  select s).Distinct().ToList();
+                var photosignaturedata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                          where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                          && s.PhotoPath != null && s.SignaturePath != null
+                                          select s).Distinct().ToList();
+                var paymentdata = (from s in await _wRNPaymentService.GetAllWRNPaymentAsync()
+                                   where s.RegistrationNo == regno
+                                   select s).Distinct().ToList();
+                var printregistration = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                         where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                         && s.PrintStatus != null
+                                         select s).Distinct().ToList();
+                #region fill registration data in model
+                wRNRegistrationModel.RegistrationNo = regno;
+                wRNRegistrationModel.DOB = dob;
+                wRNRegistrationModel.MobileNo = mobile;
+                wRNRegistrationModel.FirstName = registrationdata.FirstName;
+                wRNRegistrationModel.MiddleName = registrationdata.MiddleName;
+                wRNRegistrationModel.LastName = registrationdata.LastName;
+                wRNRegistrationModel.FatherName = registrationdata.FatherName;
+                wRNRegistrationModel.MotherName = registrationdata.MotherName;
+                wRNRegistrationModel.EmailId = registrationdata.EmailId;
+                wRNRegistrationModel.AcademicSession = registrationdata.AcademicSession;
+                wRNRegistrationModel.ApplicationNo = registrationdata.ApplicationNo;
+                wRNRegistrationModel.ModeOfAdmission = registrationdata.ModeOfAdmission;
+                wRNRegistrationModel.HindiName = registrationdata.HindiName;
+                wRNRegistrationModel.Gender = registrationdata.Gender;
+                wRNRegistrationModel.AadharNumber = registrationdata.AadharNumber;
+                wRNRegistrationModel.CategoryName = registrationdata.CategoryName;
+                wRNRegistrationModel.Nationality = registrationdata.Nationality;
+                wRNRegistrationModel.ReligionName = registrationdata.ReligionName;
+                wRNRegistrationModel.PhysicalDisabled = registrationdata.PhysicalDisabled;
+
+                wRNRegistrationModel.PermanentAddress = registrationdata.PermanentAddress;
+                wRNRegistrationModel.PermanentStateName = registrationdata.PermanentStateName;
+                wRNRegistrationModel.PermanentDistrictName = registrationdata.PermanentDistrictName;
+                wRNRegistrationModel.PermanentPincode = registrationdata.PermanentPincode;
+
+                wRNRegistrationModel.CommunicationAddress = registrationdata.CommunicationAddress;
+                wRNRegistrationModel.CommunicationStateName = registrationdata.CommunicationStateName;
+                wRNRegistrationModel.CommunicationDistrictName = registrationdata.CommunicationDistrictName;
+                wRNRegistrationModel.CommunicationPincode = registrationdata.CommunicationPincode;
+                wRNRegistrationModel.FinalSubmit = registrationdata.FinalSubmit;
+                #endregion
+
+                ViewBag.registrationdata = registrationdata;
+                ViewBag.qualificationdata = qualificationdata;
+                ViewBag.coursedata = coursedata;
+                ViewBag.photosignaturedata = photosignaturedata;
+                ViewBag.paymentdata = paymentdata;
+                ViewBag.printregistration = printregistration;
+                //wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                //wRNRegistrationModel.PhotoPath = data.PhotoPath;
+                //wRNRegistrationModel.SignaturePath = data.SignaturePath;
+            }
+            else
+            {
+                return RedirectToAction("Logout", "WRNRegistration");
+            }
+            return View("~/Views/WRN/WRNRegistration/PrintRegistration.cshtml", wRNRegistrationModel);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PrintRegistration(WRNRegistrationModel wRNRegistrationModel)
+        {
+            try
+            {
+                //WRNRegistrationModel wRNRegistrationModel = new WRNRegistrationModel();
+                string regno = HttpContext.Session.GetString("SessionRegistrationNo");
+                string dob = HttpContext.Session.GetString("SessionDOB");
+                string mobile = HttpContext.Session.GetString("SessionMobileNo");
+                if (regno != null && dob != null && mobile != null)
+                {
+                    var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                    wRNRegistrationModel.RegistrationNo = registrationdata.RegistrationNo;
+                    var res = await _wRNRegistrationService.UpdatePrintRegistration(wRNRegistrationModel);
+                    if (res.Equals(1))
+                    {
+                        TempData["success"] = "Print has been saved";
+                    }
+                    else
+                    {
+                        TempData["error"] = "Print has not been saved";
+                    }
+                }
+                else
+                {
+                    TempData["error"] = "Data not found";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = ex.ToString();
+            }
+            //return View("~/Views/WRN/WRNRegistration/UploadPhotoSignature.cshtml", wRNRegistration);
+            return RedirectToAction(nameof(PrintRegistration));
         }
         #endregion
     }

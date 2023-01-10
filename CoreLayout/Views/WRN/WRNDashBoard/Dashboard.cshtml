@@ -245,9 +245,18 @@
                         <th scope="row">6</th>
                         <td scope="row">Print Registration</td>
                         <td>
-                            <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
-                                <span class="menu-title">Pending</span>
-                            </a>
+                            @if (Enumerable.Count(ViewBag.printregistration) == 0)
+                            {
+                                <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Pending</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
+                                    <span class="menu-title">Closed</span>
+                                </a>
+                            }
                         </td>
                     </tr>
                 </tbody>

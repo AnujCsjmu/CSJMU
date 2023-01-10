@@ -22,7 +22,7 @@
                 <div class="card custom-card">
                     <div class="card-body">
 
-                        <form asp-action="Qualification" method="post" id="formid">
+                        <form asp-action="WRNCourse" method="post" id="formid">
                             <div class="row">
                                 <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
@@ -48,7 +48,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label asp-for="CourseId"> </label><span class="tx-danger"> *</span>
-                                        <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(Model.CourseList, "CourseID", "CourseName"))">
+                                        <select class="form-control select" asp-for="CourseId" asp-items="@(new SelectList(string.Empty, "CourseID", "CourseName"))">
                                             <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                         </select>
                                         <span class="parsley-errors-list filled" asp-validation-for="CourseId"></span>
@@ -113,11 +113,11 @@
                                                 </td>
                                                 <td>@item.RegistrationNo</td>
                                                 <td>@item.DistrictName</td>
-                                                <td>@item.InstituteName</td>
-                                                <td>@item.CourseName</td>
+                                                <td>@item.InstituteCodeWithName</td>
+                                                <td>@item.CourseCodeWithName</td>
                                                 <td>
                                                     <div class="table-actions text-center">
-                                                        <a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>
+                                                        @*<a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>*@
                                                         <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
                                                     </div>
                                                 </td>
@@ -161,8 +161,7 @@
 
     <script src="~/assets/lib/jquery/dist/jquery.js"></script>
 
-    @*bind board/university on base of type*@
-
+    @*bind institute on base of type*@
     <script type="text/javascript">
             $(document).ready(function () {
                 $("#DistrictId").on("change", function () {
@@ -176,6 +175,25 @@
                             items += "<option value ='" + inst.value + "'>" + inst.text + "</option>";
                     });
                         $('#InstituteId').html(items);
+                });
+                });
+            });
+
+    </script>
+    @*bind course on base of type*@
+    <script type="text/javascript">
+            $(document).ready(function () {
+                $("#InstituteId").on("change", function () {
+                    $("#CourseId").empty();
+                    var ddlsource = "#InstituteId";
+                    var url = '@Url.Content("~/")' + "WRNCourseDetails/GetCourse?InstituteId="+$(ddlsource).val();
+
+                    $.getJSON(url, function (data) {
+                    var items = '';
+                        $.each(data, function (i, course) {
+                            items += "<option value ='" + course.value + "'>" + course.text + "</option>";
+                    });
+                        $('#CourseId').html(items);
                 });
                 });
             });

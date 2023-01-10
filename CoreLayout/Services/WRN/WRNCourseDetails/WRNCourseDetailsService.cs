@@ -43,7 +43,14 @@ namespace CoreLayout.Services.WRN.WRNCourseDetails
         {
             return await _wRNCourseDetailsRepository.DeleteAsync(wRNCourseDetailsModel);
         }
-
+        public async Task<List<WRNCourseDetailsModel>> Check3CourseListAsync(string RegistrationNo)
+        {
+            return await _wRNCourseDetailsRepository.Check3CourseListAsync(RegistrationNo);
+        }
+        public async Task<WRNCourseDetailsModel> Check3CourseCountAsync(string RegistrationNo)
+        {
+            return await _wRNCourseDetailsRepository.Check3CourseCountAsync(RegistrationNo);
+        }
         //public async Task<List<EducationalQualificationModel>> GetAllEducationalQualification()
         //{
         //    return await _wRNQualificationRepository.GetAllEducationalQualification();

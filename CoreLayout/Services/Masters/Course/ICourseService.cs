@@ -14,5 +14,7 @@ namespace CoreLayout.Services.Masters.Course
         public Task<int> UpdateCourseAsync(CourseModel courseModel);
         public Task<int> DeleteCourseAsync(CourseModel courseModel);
         public Task<List<CourseTypeModel>> GetAllCourseType();
+
+        public Task<List<CourseModel>> GetAllCourseByInstitute(int instituteId);
     }
 }

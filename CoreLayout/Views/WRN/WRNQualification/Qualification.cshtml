@@ -21,7 +21,7 @@
                 <div class="card custom-card">
                     <div class="card-body">
 
-                        <form asp-action="Qualification" method="post" id="formid">
+                        <form asp-action="Qualification" method="post" id="formid" enctype="multipart/form-data">
                             <div class="row">
                                 <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
@@ -47,7 +47,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label asp-for="BoardUniversityId"> </label><span class="tx-danger"> *</span>
-                                        <select class="form-control select" asp-for="BoardUniversityId" asp-items="@(new SelectList(string.Empty, "Id", "University"))">
+                                        <select class="form-control select2" asp-for="BoardUniversityId" asp-items="@(new SelectList(string.Empty, "Id", "University"))">
                                             <option selected="selected" disabled="disabled" value="">--Select-- </option>
                                         </select>
                                         <span class="parsley-errors-list filled" asp-validation-for="BoardUniversityId"></span>
@@ -124,6 +124,13 @@
                                         <label asp-for="Subjects"> </label><span class="tx-danger"> *</span>
                                         <input asp-for="Subjects" class="form-control" onkeydown="upperCaseF(this)" />
                                         <span class="parsley-errors-list filled" asp-validation-for="Subjects"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3" id="divMarksheetAttachment">
+                                    <div class="form-group">
+                                        <label asp-for="MarksheetAttachment"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="MarksheetAttachment" class="form-control" />
+                                        <span class="parsley-errors-list filled" asp-validation-for="MarksheetAttachment"></span>
                                     </div>
                                 </div>
                                 @*<div class="col-md-4">
@@ -203,33 +210,43 @@
                                     @{
                                         int sno = 0;
                                     }
-
-                                    @foreach (var item in Model.DataList)
+                                    @if (Model.DataList.Count == 0)
                                     {
                                         <tr>
-                                            <td>
-                                                @{ sno++; }
-                                                @sno
-                                            </td>
-                                            <td>@item.RegistrationNo</td>
-                                            <td>@item.Qualification</td>
-                                            <td>@item.University</td>
-                                            @*<td>@item.PassingYear</td>
-                                                <td>@item.PassingMonth</td>
-                                                <td>@item.PercentagOfMarksObtained</td>
-                                                <td>@item.DivisionClassGrade</td>
-                                                <td>@item.Subjects</td>
-                                                <td>@item.ResultCriteria</td>*@
-                                            <td>
-                                                <div class="table-actions text-center">
-                                                    @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
-                                                    @*<a asp-action="Details" class="anchorDetail" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>*@
-                                                    <a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>
-                                                    <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
-                                                </div>
+                                            <td colspan="6" style="text-align:center">
+                                                <span style="font-weight:bold;color:red">No Record Found</span>
                                             </td>
                                         </tr>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var item in Model.DataList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @{ sno++; }
+                                                    @sno
+                                                </td>
+                                                <td>@item.RegistrationNo</td>
+                                                <td>@item.Qualification</td>
+                                                <td>@item.University</td>
+                                                @*<td>@item.PassingYear</td>
+                                                    <td>@item.PassingMonth</td>
+                                                    <td>@item.PercentagOfMarksObtained</td>
+                                                    <td>@item.DivisionClassGrade</td>
+                                                    <td>@item.Subjects</td>
+                                                    <td>@item.ResultCriteria</td>*@
+                                                <td>
+                                                    <div class="table-actions text-center">
+                                                        @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
+                                                        @*<a asp-action="Details" class="anchorDetail" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>*@
+                                                        <a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>
+                                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
+                                        }
                                     }
                                 </tbody>
                             </table>
@@ -295,6 +312,7 @@
                     $('#divDivisionClassGrade').css('visibility', 'visible');
                     $('#divSubjects').css('visibility', 'visible');
                     $('#divMarksCriteria').css('visibility', 'visible');
+                    $('#divMarksheetAttachment').css('visibility', 'visible');
                 }
                 else {
                     $('#divPassingYear').css('visibility', 'hidden');
@@ -303,6 +321,7 @@
                     $('#divDivisionClassGrade').css('visibility', 'hidden');
                     $('#divSubjects').css('visibility', 'hidden');
                     $('#divMarksCriteria').css('visibility', 'hidden');
+                    $('#divMarksheetAttachment').css('visibility', 'hidden');
 
                     $('#PassingYear').val('');
                     $('#PassingMonth').val('');
@@ -310,6 +329,7 @@
                     $('#DivisionClassGrade').val('');
                     $('#Subjects').val('');
                     $('#MarksCriteria').val('');
+                    $('#MarksheetAttachment').val('');
                 }
             });
         });

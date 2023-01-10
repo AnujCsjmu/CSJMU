@@ -25,6 +25,7 @@ namespace CoreLayout.Models.Masters
         //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]
         [StringLength(100)]
         public string CourseName { get; set; }
+        public string CourseCodeWithName { get; set; }
 
         [Display(Name = "Hindi Name")]
         //[RegularExpression(@"[a-zA-Z ]*$", ErrorMessage = "Use onle character")]

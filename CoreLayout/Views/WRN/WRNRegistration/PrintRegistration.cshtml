@@ -1,0 +1,539 @@
+﻿@model CoreLayout.Models.WRN.WRNRegistrationModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutWRN.cshtml";
+}
+<div id="PrintDiv">
+    <!-- partial -->
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h2 class="main-content-title tx-24 mg-b-5">Registration Details</h2>
+        </div>
+        <div style="text-align:right">
+            <b>Print DateTime :-</b>  @System.DateTime.Now
+        </div>
+    </div>
+    <!-- End Page Header -->
+    @*view Registration*@
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    @*<form method="post" asp-action="PrintRegistration">*@
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="RegistrationNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="RegistrationNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="RegistrationNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ApplicationNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ApplicationNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="ApplicationNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="AcademicSession"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AcademicSession" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="AcademicSession"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FirstName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FirstName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="FirstName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MiddleName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MiddleName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MiddleName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="LastName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="LastName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="LastName"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="FatherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="FatherName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MotherName"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MotherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MotherName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MobileNo"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="MobileNo" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="MobileNo"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="EmailId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="EmailId" class="form-control" onkeydown="upperCaseF(this)" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="EmailId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="DOB"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="DOB" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="DOB"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ModeOfAdmission"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ModeOfAdmission" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="ModeOfAdmission"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
+                                <input id="HindiName" asp-for="HindiName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="HindiName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Gender"> </label><span class="tx-danger"> *</span>
+                                <input id="HindiName" asp-for="Gender" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="Gender"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="AadharNumber"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="AadharNumber" class="form-control" readonly />
+                                <span class="error" asp-validation-for="AadharNumber"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CategoryId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CategoryName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="CategoryId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Nationality"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="Nationality" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="Nationality"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="ReligionId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="ReligionName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="ReligionId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PhysicalDisabled"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PhysicalDisabled" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="PhysicalDisabled"></span>
+                            </div>
+                        </div>
+                    </div>
+                    @*</form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    @*view Registration Permanent Address*@
+    <h4>Permanent Address</h4>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PermanentAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentAddress" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentAddress"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PermanentStateId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentStateName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentStateId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PermanentDistrictId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentDistrictName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentDistrictId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="PermanentPincode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="PermanentPincode" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="PermanentPincode"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*view Registration communication Address*@
+    <h4>Communication Address</h4>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CommunicationAddress"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationAddress" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationAddress"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CommunicationStateId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationStateName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationStateId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CommunicationDistrictId"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationDistrictName" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationDistrictId"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="CommunicationPincode"> </label><span class="tx-danger"> *</span>
+                                <input asp-for="CommunicationPincode" class="form-control" readonly />
+                                <span class="parsley-errors-list filled" asp-validation-for="CommunicationPincode"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*view Qualification*@
+    <h4>Qualification Details</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.RegistrationNo)
+                                    </th>
+                                    <th>
+                                        Qualification
+                                    </th>
+                                    <th>
+                                        Board /<br />University
+                                    </th>
+                                    <th>
+                                        Result<br />Subjects
+                                    </th>
+                                    <th>
+                                        Month<br />Year
+                                    </th>
+                                    <th>
+                                        Percentage<br />Division
+                                    </th>
+                                    <th>
+                                        Attachment
+                                    </th>
+                                    <th>
+                                        Entry Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int sno = 0;
+                                }
+                                @if (Enumerable.Count(ViewBag.qualificationdata) == 0)
+                                {
+                                    <tr>
+                                        <td colspan="9" style="text-align:center">
+                                            <span style="font-weight:bold;color:red">No Record Found</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+
+                                    @foreach (var item in ViewBag.qualificationdata)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{ sno++; }
+                                                @sno
+                                            </td>
+                                            <td>@item.RegistrationNo</td>
+                                            <td>@item.Qualification</td>
+                                            <td>@item.University</td>
+                                            <td>@item.ResultStatus<br />@item.Subjects</td>
+                                            <td>@item.PassingMonth<br />@item.PassingYear</td>
+                                            <td>@item.PercentagOfMarksObtained<br />@item.DivisionClassGrade</td>
+                                            <td><img src="~/WRNMarksheet/@item.MarksheetAttachmentPath" alt="Image" height="50" width="50" /></td>
+                                            <td>@item.CreatedDate</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*view course*@
+    <h4>Course Details</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.RegistrationNo)
+                                    </th>
+                                    <th>
+                                        District
+                                    </th>
+                                    <th>
+                                        Institue
+                                    </th>
+                                    <th>
+                                        Course
+                                    </th>
+                                    <th>
+                                        Entry Date
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int sno1 = 0;
+                                }
+                                @if (Enumerable.Count(ViewBag.coursedata) == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align:center">
+                                            <span style="font-weight:bold;color:red">No Record Found</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in ViewBag.coursedata)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{ sno1++; }
+                                                @sno1
+                                            </td>
+                                            <td>@item.RegistrationNo</td>
+                                            <td>@item.DistrictName</td>
+                                            <td>@item.InstituteCodeWithName</td>
+                                            <td>@item.CourseCodeWithName</td>
+                                            <td>@item.CreatedDate</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*view photo*@
+    <h4>Photo & Signature Details</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.RegistrationNo)
+                                    </th>
+                                    <th>
+                                        Photo
+                                    </th>
+                                    <th>
+                                        Signature
+                                    </th>
+                                    <th>
+                                        Upload Date
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int sno2 = 0;
+                                }
+                                @if (Enumerable.Count(ViewBag.photosignaturedata) == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align:center">
+                                            <span style="font-weight:bold;color:red">No Record Found</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in ViewBag.photosignaturedata)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{ sno2++; }
+                                                @sno2
+                                            </td>
+                                            <td>@item.RegistrationNo</td>
+                                            <td><img src="~/WRNStudentPhoto/@item.PhotoPath" alt="Image" height="50" width="50" /></td>
+                                            <td><img src="~/WRNStudentSignature/@item.SignaturePath" alt="Image" height="50" width="50" /></td>
+                                            <td>@item.PhotoDate</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*view payment*@
+    <h4>Payment Details</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card custom-card overflow-hidden">
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>
+                                        @Html.DisplayNameFor(c => c.RegistrationNo)
+                                    </th>
+                                    <th>
+                                        Payment Amount
+                                    </th>
+                                    <th>
+                                        Payment Date
+                                    </th>
+                                    <th>
+                                        Payment Mode
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int sno3 = 0;
+                                }
+                                @if (Enumerable.Count(ViewBag.paymentdata) == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align:center">
+                                            <span style="font-weight:bold;color:red">No Record Found</span>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in ViewBag.paymentdata)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{ sno3++; }
+                                                @sno3
+                                            </td>
+                                            <td>@item.RegistrationNo</td>
+                                            <td>@item.PaymentAmount</td>
+                                            <td>@item.PaymentDate</td>
+                                            <td>@item.PaymentMode</td>
+                                        </tr>
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form method="post" asp-action="PrintRegistration">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Print" onclick="printDiv('PrintDiv')" />
+                <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script language="javascript">
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+}

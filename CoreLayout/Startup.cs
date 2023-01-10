@@ -494,6 +494,11 @@ namespace CoreLayout
                 FileProvider = new PhysicalFileProvider(@"E:\Core\WRNStudentSignature\"),
                 RequestPath = "/WRNStudentSignature"
             });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(@"E:\Core\WRNMarksheet\"),
+                RequestPath = "/WRNMarksheet"
+            });
             app.UseRouting();
             app.UseAuthorization();
            

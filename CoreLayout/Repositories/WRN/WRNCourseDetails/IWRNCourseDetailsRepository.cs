@@ -10,9 +10,10 @@ namespace CoreLayout.Repositories.WRN.WRNCourseDetails
 {
     public interface IWRNCourseDetailsRepository : IRepository<WRNCourseDetailsModel>
     {
-       //Task<List<WRNCourseDetailsModel>> GetAllCourseDetail();
-       //Task<List<WRNCourseDetailsModel>> GetAllCourseDetailByType(string Type);
-       //Task<List<WRNCourseDetailsModel>> GetAllBoardUniversityType();
-       // Task<List<WRNCourseDetailsModel>> GetAllByIdForDetailsAsync(int id);
+       Task<List<WRNCourseDetailsModel>> Check3CourseListAsync(string RegistrationNo);
+        Task<WRNCourseDetailsModel> Check3CourseCountAsync(string RegistrationNo);
+        //Task<List<WRNCourseDetailsModel>> GetAllCourseDetailByType(string Type);
+        //Task<List<WRNCourseDetailsModel>> GetAllBoardUniversityType();
+        // Task<List<WRNCourseDetailsModel>> GetAllByIdForDetailsAsync(int id);
     }
 }

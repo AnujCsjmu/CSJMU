@@ -50,9 +50,10 @@ namespace CoreLayout.Repositories.WRN.WRNQualification
                         parameters.Add("ResultCriteria", entity.ResultCriteria, DbType.String);
                         parameters.Add("OtherUniversity", entity.OtherUniversity, DbType.String);
                         parameters.Add("QualificationType", entity.QualificationType, DbType.String);
+                        parameters.Add("MarksheetAttachmentPath", entity.MarksheetAttachmentPath, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.String);
+                        parameters.Add("CreatedBy", entity.CreatedBy, DbType.Int32);
                         parameters.Add("@Query", 1, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         //if (res == 1)
@@ -186,9 +187,10 @@ namespace CoreLayout.Repositories.WRN.WRNQualification
                         parameters.Add("ResultCriteria", entity.ResultCriteria, DbType.String);
                         parameters.Add("OtherUniversity", entity.OtherUniversity, DbType.String);
                         parameters.Add("QualificationType", entity.QualificationType, DbType.String);
+                        parameters.Add("MarksheetAttachmentPath", entity.MarksheetAttachmentPath, DbType.String);
                         parameters.Add("IsRecordDeleted", entity.IsRecordDeleted, DbType.Int32);
                         parameters.Add("IPAddress", entity.IPAddress, DbType.String);
-                        parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.String);
+                        parameters.Add("ModifiedBy", entity.ModifiedBy, DbType.Int32);
                         parameters.Add("@Query", 2, DbType.Int32);
                         res = await SqlMapper.ExecuteAsync(connection, query, parameters, tran, commandType: CommandType.StoredProcedure);
                         //if (res == 1)

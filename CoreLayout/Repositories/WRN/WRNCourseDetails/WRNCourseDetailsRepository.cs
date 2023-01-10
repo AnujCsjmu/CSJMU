@@ -193,5 +193,45 @@ namespace CoreLayout.Repositories.WRN.WRNCourseDetails
                 }
             }
         }
+
+        public async Task<List<WRNCourseDetailsModel>> Check3CourseListAsync(string RegistrationNo)
+        {
+            try
+            {
+                var query = "Usp_WRNCourseDetails";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@RegistrationNo", RegistrationNo, DbType.String);
+                    parameters.Add("@Query", 6, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<WRNCourseDetailsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<WRNCourseDetailsModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+        public async Task<WRNCourseDetailsModel> Check3CourseCountAsync(string RegistrationNo)
+        {
+            try
+            {
+                var query = "Usp_WRNCourseDetails";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@RegistrationNo", RegistrationNo, DbType.String);
+                    parameters.Add("@Query", 7, DbType.Int32);
+                    var lst = await SqlMapper.QueryAsync<WRNCourseDetailsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+                    return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
