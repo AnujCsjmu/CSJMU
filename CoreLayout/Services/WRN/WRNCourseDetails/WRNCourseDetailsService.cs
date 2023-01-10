@@ -24,7 +24,10 @@ namespace CoreLayout.Services.WRN.WRNCourseDetails
         {
             return await _wRNCourseDetailsRepository.GetAllAsync();
         }
-
+        public async Task<List<WRNCourseDetailsModel>> GetAllWRNCourseByRegistrationsAsync(string RegistrationNo)
+        {
+            return await _wRNCourseDetailsRepository.GetAllWRNCourseByRegistrationsAsync(RegistrationNo);
+        }
         public async Task<WRNCourseDetailsModel> GetWRNCourseDetailsByIdAsync(int id)
         {
             return await _wRNCourseDetailsRepository.GetByIdAsync(id);

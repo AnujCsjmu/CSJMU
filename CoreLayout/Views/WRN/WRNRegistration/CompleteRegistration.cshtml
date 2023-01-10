@@ -234,7 +234,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PermanentPincode"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="PermanentPincode" type="number" class="form-control" />
+                                <input asp-for="PermanentPincode" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="PermanentPincode"></span>
                             </div>
                         </div>
@@ -243,7 +243,8 @@
             </div>
         </div>
     </div>
-    <h4>Communication Address</h4>
+    <h4>Communication Address <h5>If Same As Permanent Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h5></h4>
+    
     <div class="row">
         <div class="col-lg-12 col-md-12">
             <div class="card custom-card">
@@ -286,7 +287,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CommunicationPincode"> </label><span class="tx-danger"> *</span>
-                                <input asp-for="CommunicationPincode" type="number" class="form-control" />
+                                <input asp-for="CommunicationPincode" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="CommunicationPincode"></span>
                             </div>
                         </div>
@@ -363,8 +364,7 @@
             var caddress = $('#PermanentAddress').val();
             var cstate = $('#PermanentStateId').val();
             var cdistrict = $('#PermanentDistrictId').val();
-            var cpincode = $('#PermanentPinCode').val();
-            alert(cpincode);
+            var cpincode = $('#PermanentPincode').val();
             if (caddress != '' && cdistrict != null && cpincode != '') {
                 var st = '';
                 $('#PermanentStateId option').each(function () {

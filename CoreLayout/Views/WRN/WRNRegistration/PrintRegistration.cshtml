@@ -312,7 +312,14 @@
                                             <td>@item.ResultStatus<br />@item.Subjects</td>
                                             <td>@item.PassingMonth<br />@item.PassingYear</td>
                                             <td>@item.PercentagOfMarksObtained<br />@item.DivisionClassGrade</td>
-                                            <td><img src="~/WRNMarksheet/@item.MarksheetAttachmentPath" alt="Image" height="50" width="50" /></td>
+                                            @if (item.MarksheetAttachmentPath != null)
+                                            {
+                                                <td><img src="~/WRNMarksheet/@item.MarksheetAttachmentPath" alt="Image" height="50" width="50" /></td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
                                             <td>@item.CreatedDate</td>
                                         </tr>
                                     }

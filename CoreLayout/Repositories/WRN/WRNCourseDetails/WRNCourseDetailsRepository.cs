@@ -122,6 +122,7 @@ namespace CoreLayout.Repositories.WRN.WRNCourseDetails
             }
         }
 
+
         public async Task<WRNCourseDetailsModel> GetByIdAsync(int id)
         {
             try
@@ -226,6 +227,26 @@ namespace CoreLayout.Repositories.WRN.WRNCourseDetails
                     parameters.Add("@Query", 7, DbType.Int32);
                     var lst = await SqlMapper.QueryAsync<WRNCourseDetailsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
                     return lst.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+        public async Task<List<WRNCourseDetailsModel>> GetAllWRNCourseByRegistrationsAsync(string RegistrationNo)
+        {
+            try
+            {
+                var query = "Usp_WRNCourseDetails";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@RegistrationNo", RegistrationNo, DbType.String);
+                    parameters.Add("@Query", 8, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<WRNCourseDetailsModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<WRNCourseDetailsModel>)list;
                 }
             }
             catch (Exception ex)

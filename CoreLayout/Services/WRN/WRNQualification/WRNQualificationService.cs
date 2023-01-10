@@ -23,7 +23,10 @@ namespace CoreLayout.Services.WRN.WRNQualification
         {
             return await _wRNQualificationRepository.GetAllAsync();
         }
-
+        public async Task<List<WRNQualificationModel>> GetAllWRNQualificationByRegistration(string RegistrationNo)
+        {
+            return await _wRNQualificationRepository.GetAllWRNQualificationByRegistration(RegistrationNo);
+        }
         public async Task<WRNQualificationModel> GetWRNQualificationByIdAsync(int id)
         {
             return await _wRNQualificationRepository.GetByIdAsync(id);

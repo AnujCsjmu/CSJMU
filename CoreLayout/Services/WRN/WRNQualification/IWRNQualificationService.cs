@@ -8,6 +8,8 @@ namespace CoreLayout.Services.WRN.WRNQualification
     public interface IWRNQualificationService
     {
         public Task<List<WRNQualificationModel>> GetAllWRNQualificationAsync();
+
+        public Task<List<WRNQualificationModel>> GetAllWRNQualificationByRegistration(string RegistrationNo);
         public Task<WRNQualificationModel> GetWRNQualificationByIdAsync(int id);
         public Task<int> CreateWRNQualificationAsync(WRNQualificationModel wRNQualificationModel);
         public Task<int> UpdateWRNQualificationAsync(WRNQualificationModel wRNQualificationModel);

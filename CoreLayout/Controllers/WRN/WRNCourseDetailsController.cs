@@ -54,31 +54,56 @@ namespace CoreLayout.Controllers.WRN
         [HttpGet]
         public async Task<IActionResult> WRNCourse()
         {
-            WRNCourseDetailsModel wRNCourseDetailsModel = new WRNCourseDetailsModel();
-            try
+            if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
             {
-                wRNCourseDetailsModel.FinalSubmit =Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
-                wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                wRNCourseDetailsModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
-                wRNCourseDetailsModel.DistrictList = await _districtService.Get7DistrictAsync();
-                wRNCourseDetailsModel.CourseList = await _courseService.GetAllCourse();
-
-                //List<WRNCourseDetailsModel> dataLst = new List<WRNCourseDetailsModel>();
-                var data = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
-                wRNCourseDetailsModel.WRNCourseDataList = data;
-              
-                //encryption
-                foreach (var _data in data)
+                WRNCourseDetailsModel wRNCourseDetailsModel = new WRNCourseDetailsModel();
+                try
                 {
-                    var stringId = _data.Id.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
+                    string dob = HttpContext.Session.GetString("SessionDOB");
+                    string mobile = HttpContext.Session.GetString("SessionMobileNo");
+                    wRNCourseDetailsModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
+                    wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                    wRNCourseDetailsModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
+                    wRNCourseDetailsModel.DistrictList = await _districtService.Get7DistrictAsync();
+                    wRNCourseDetailsModel.CourseList = await _courseService.GetAllCourse();
+
+                    #region check step-1 is completed or not
+                    var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                            where s.RegistrationNo == wRNCourseDetailsModel.RegistrationNo
+                                            && s.DOB == dob && s.MobileNo == mobile
+                                            && s.ApplicationNo != null && s.RegistrationNo != null
+                                            select s).Distinct().ToList();
+                    #endregion
+                    if (registrationdata.Count == 0)
+                    {
+                        TempData["warning"] = "First Complete previous steps !";  
+                       return RedirectToAction("DashBoard", "WRNDashBoard");
+                    }
+                    else
+                    {
+                        var data = await _wRNCourseDetailsService.GetAllWRNCourseByRegistrationsAsync(wRNCourseDetailsModel.RegistrationNo);
+                        wRNCourseDetailsModel.WRNCourseDataList = data;
+
+                        //encryption
+                        foreach (var _data in data)
+                        {
+                            var stringId = _data.Id.ToString();
+                            _data.EncryptedId = _protector.Protect(stringId);
+                        }
+                    }
+                    
                 }
+                catch (Exception ex)
+                {
+                    TempData["error"] = ex.ToString();
+                  
+                }
+                return View("~/Views/WRN/WRNCourseDetails/WRNCourse.cshtml", wRNCourseDetailsModel);
             }
-            catch (Exception ex)
+            else
             {
-                TempData["error"] = ex.ToString();
+                return RedirectToAction("Logout", "WRNRegistration");
             }
-            return View("~/Views/WRN/WRNCourseDetails/WRNCourse.cshtml", wRNCourseDetailsModel);
         }
 
         [HttpPost]
@@ -177,9 +202,9 @@ namespace CoreLayout.Controllers.WRN
                 TempData["error"] = ex.ToString();
             }
             //bind data
-            List<WRNCourseDetailsModel> dataLst = new List<WRNCourseDetailsModel>();
-            var binddata = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
-            wRNCourseDetailsModel.WRNCourseDataList = binddata;
+            // List<WRNCourseDetailsModel> dataLst = new List<WRNCourseDetailsModel>();
+            //var binddata = await _wRNCourseDetailsService.GetAllWRNCourseByRegistrationsAsync(wRNCourseDetailsModel.RegistrationNo);
+            //wRNCourseDetailsModel.WRNCourseDataList = binddata;
             return RedirectToAction("WRNCourse");
             //return View("~/Views/WRN/WRNCourseDetails/WRNCourse.cshtml", wRNCourseDetailsModel);
         }

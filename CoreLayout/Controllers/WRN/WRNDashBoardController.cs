@@ -46,7 +46,10 @@ namespace CoreLayout.Controllers
             string mobile = HttpContext.Session.GetString("SessionMobileNo");
             if (regno != null && dob != null && mobile != null)
             {
-                var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                        where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                        && s.ApplicationNo != null && s.RegistrationNo != null
+                                        select s).Distinct().ToList();
                 var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
                                          where s.RegistrationNo == regno
                                          select s).Distinct().ToList();
@@ -96,9 +99,15 @@ namespace CoreLayout.Controllers
                     if (regno != null && dob != null && mobile != null)
                     {
                         #region check validation that all steps are completed
-                        var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
-                        if (registrationdata.FinalSubmit == false)
+                       
+                        var data= await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                        if (data.FinalSubmit == false)
                         {
+                            var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                                    where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                                    && s.ApplicationNo != null && s.RegistrationNo !=null
+                                                    select s).Distinct().ToList();
+
                             var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
                                                      where s.RegistrationNo == regno
                                                      select s).Distinct().ToList();
@@ -117,7 +126,7 @@ namespace CoreLayout.Controllers
                                                      && s.PrintStatus != null
                                                      select s).Distinct().ToList();
                             #endregion
-                            if (registrationdata == null || qualificationdata.Count == 0 ||
+                            if (registrationdata.Count == 0 || qualificationdata.Count == 0 ||
                                 coursedata.Count == 0 || photosignaturedata.Count == 0 ||
                                 paymentdata.Count == 0 || printregistration.Count == 0)
                             {
@@ -126,12 +135,12 @@ namespace CoreLayout.Controllers
                             else
                             {
                                 wRNRegistrationModel.FinalSubmit = true;
-                                wRNRegistrationModel.Id = registrationdata.Id;
-                                wRNRegistrationModel.MobileNo = registrationdata.MobileNo;
-                                wRNRegistrationModel.DOB = registrationdata.DOB;
-                                wRNRegistrationModel.RegistrationNo = registrationdata.RegistrationNo;
-                                var data = await _wRNRegistrationService.UpdateFinalSubmitAsync(wRNRegistrationModel);
-                                if (data.Equals(1))
+                                wRNRegistrationModel.Id = data.Id;
+                                wRNRegistrationModel.MobileNo = data.MobileNo;
+                                wRNRegistrationModel.DOB = data.DOB;
+                                wRNRegistrationModel.RegistrationNo = data.RegistrationNo;
+                                var result = await _wRNRegistrationService.UpdateFinalSubmitAsync(wRNRegistrationModel);
+                                if (result.Equals(1))
                                 {
                                     TempData["success"] = "Data has been final submitted !";
                                 }

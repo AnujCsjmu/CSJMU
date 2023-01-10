@@ -1,17 +1,9 @@
 ﻿using CoreLayout.Helper;
-using CoreLayout.Models.Common;
 using CoreLayout.Models.WRN;
-using CoreLayout.Services.Common.OTPVerification;
-using CoreLayout.Services.Common.SequenceGenerate;
-using CoreLayout.Services.Masters.Category;
-using CoreLayout.Services.Masters.District;
-using CoreLayout.Services.Masters.Religion;
-using CoreLayout.Services.Masters.State;
-using CoreLayout.Services.WRN;
+using CoreLayout.Services.WRN.WRNCourseDetails;
 using CoreLayout.Services.WRN.WRNQualification;
 using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CoreLayout.Controllers.WRN
@@ -37,12 +25,13 @@ namespace CoreLayout.Controllers.WRN
         public readonly IConfiguration _configuration;
         public readonly IWRNRegistrationService _wRNRegistrationService;
         public readonly IWRNQualificationService _wRNQualificationService;
+        public readonly IWRNCourseDetailsService _wRNCourseDetailsService;
         private IHttpContextAccessor _httpContextAccessor;
 
         public WRNQualificationController(ILogger<WRNQualificationController> logger,
             IDataProtectionProvider provider, IConfiguration configuration,
             IWRNRegistrationService wRNRegistrationService, IHttpContextAccessor httpContextAccessor,
-           IWRNQualificationService wRNQualificationService)
+           IWRNQualificationService wRNQualificationService,IWRNCourseDetailsService wRNCourseDetailsService)
         {
             _logger = logger;
             _protector = provider.CreateProtector("WRNQualification.WRNQualificationController");
@@ -50,55 +39,83 @@ namespace CoreLayout.Controllers.WRN
             _wRNRegistrationService = wRNRegistrationService;
             _httpContextAccessor = httpContextAccessor;
             _wRNQualificationService = wRNQualificationService;
+            _wRNCourseDetailsService = wRNCourseDetailsService;
         }
 
         #region Add Qualification
         [HttpGet]
         public async Task<IActionResult> QualificationAsync()
         {
-            WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
-            try
+            if (HttpContext.Session.GetString("SessionRegistrationNo") != null)
             {
-                wRNQualificationModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
-                wRNQualificationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
-                wRNQualificationModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
-                wRNQualificationModel.EducationalQualificationList = await _wRNQualificationService.GetAllEducationalQualification();
-                //wRNQualificationModel.BoardUniversityList = await _wRNQualificationService.GetAllBoardUniversity();
-                wRNQualificationModel.BoardUniversityTypeList = await _wRNQualificationService.GetAllBoardUniversityType();
-                List<WRNQualificationModel> dataLst = new List<WRNQualificationModel>();
-                var data = await _wRNQualificationService.GetAllWRNQualificationAsync();
-                wRNQualificationModel.DataList = data;
-                //encryption
-                foreach (var _data in data)
+                WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
+                try
                 {
-                    var stringId = _data.Id.ToString();
-                    _data.EncryptedId = _protector.Protect(stringId);
+                    string dob = HttpContext.Session.GetString("SessionDOB");
+                    string mobile = HttpContext.Session.GetString("SessionMobileNo");
+                    wRNQualificationModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
+                    wRNQualificationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
+                    wRNQualificationModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
+                    wRNQualificationModel.EducationalQualificationList = await _wRNQualificationService.GetAllEducationalQualification();
+                    //wRNQualificationModel.BoardUniversityList = await _wRNQualificationService.GetAllBoardUniversity();
+                    wRNQualificationModel.BoardUniversityTypeList = await _wRNQualificationService.GetAllBoardUniversityType();
+                    #region check step-1 and step-2 is completed or not
+                    var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                            where s.RegistrationNo == wRNQualificationModel.RegistrationNo
+                                            && s.DOB == dob && s.MobileNo == mobile
+                                            && s.ApplicationNo != null && s.RegistrationNo != null
+                                            select s).Distinct().ToList();
+                    var coursedata = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
+                                      where s.RegistrationNo == wRNQualificationModel.RegistrationNo
+                                      select s).Distinct().ToList();
+                    #endregion
+                    if (registrationdata.Count == 0 && coursedata.Count == 0)
+                    {
+                        TempData["warning"] = "First Complete previous steps !";
+                        return RedirectToAction("DashBoard", "WRNDashBoard");
+                    }
+                    else
+                    {
+                        //List<WRNQualificationModel> dataLst = new List<WRNQualificationModel>();
+                        var data = await _wRNQualificationService.GetAllWRNQualificationByRegistration(wRNQualificationModel.RegistrationNo);
+                        wRNQualificationModel.DataList = data;
+                        //encryption
+                        foreach (var _data in data)
+                        {
+                            var stringId = _data.Id.ToString();
+                            _data.EncryptedId = _protector.Protect(stringId);
+                        }
+
+                        //bind year
+                        int currentYear = Convert.ToInt32(DateTime.Now.Year);
+                        List<int> yrs = new List<int>();
+
+                        for (int i = 1980; i <= currentYear; i++)
+                        {
+                            yrs.Add(i);
+                        }
+                        wRNQualificationModel.PassingYearList = yrs;
+
+                        //bind month
+                        List<int> mon = new List<int>();
+                        //var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+                        for (int i = 1; i < 13; i++)
+                        {
+                            mon.Add(i);
+                        }
+                        wRNQualificationModel.PassingMonthList = mon;
+                    }
                 }
-
-                //bind year
-                int currentYear = Convert.ToInt32(DateTime.Now.Year);
-                List<int> yrs = new List<int>();
-
-                for (int i = 1980; i <= currentYear; i++)
+                catch (Exception ex)
                 {
-                    yrs.Add(i);
+                    TempData["error"] = ex.ToString();
                 }
-                wRNQualificationModel.PassingYearList = yrs;
-
-                //bind month
-                List<int> mon = new List<int>();
-                //var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-                for (int i = 1; i < 13; i++)
-                {
-                    mon.Add(i);
-                }
-                wRNQualificationModel.PassingMonthList = mon;
+                return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
             }
-            catch (Exception ex)
+            else
             {
-                TempData["error"] = ex.ToString();
+                return RedirectToAction("Logout", "WRNRegistration");
             }
-            return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
         }
 
         [HttpPost]
@@ -171,12 +188,6 @@ namespace CoreLayout.Controllers.WRN
                                     //return RedirectToAction(nameof(Qualification));
                                 }
                             }
-                            else
-                            {
-                                //ModelState.AddModelError("", "Please upload photo");
-                                TempData["warning"] = "Please upload marksheet";
-                                //return RedirectToAction(nameof(Qualification));
-                            }
                             #endregion
 
                             var data = await _wRNQualificationService.CreateWRNQualificationAsync(wRNQualificationModel);
@@ -209,9 +220,9 @@ namespace CoreLayout.Controllers.WRN
                 TempData["error"] = ex.ToString();
             }
             //bind data
-            List<WRNQualificationModel> dataLst = new List<WRNQualificationModel>();
-            var binddata = await _wRNQualificationService.GetAllWRNQualificationAsync();
-            wRNQualificationModel.DataList = binddata;
+            //List<WRNQualificationModel> dataLst = new List<WRNQualificationModel>();
+            //var binddata = await _wRNQualificationService.GetAllWRNQualificationByRegistration(wRNQualificationModel.RegistrationNo);
+            //wRNQualificationModel.DataList = binddata;
             //return View("~/Views/WRN/WRNQualification/Qualification.cshtml", wRNQualificationModel);
             return RedirectToAction(nameof(Qualification));
         }

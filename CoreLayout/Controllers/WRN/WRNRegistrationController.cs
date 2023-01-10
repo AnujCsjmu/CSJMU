@@ -578,13 +578,34 @@ namespace CoreLayout.Controllers.WRN
                     //}
                     //wRNRegistrationModel.PhotoPath = data.PhotoPath;
                     //wRNRegistrationModel.SignaturePath = data.SignaturePath;
-                    var data = await _wRNRegistrationService.GetPhotoUploadByRegistrationAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
-                    wRNRegistrationModel.WRNUploadDataList = data;
-                    //encryption
-                    foreach (var _data in data)
+                    #region check step-1 and step-2 is completed or not
+                    var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                            where s.RegistrationNo == wRNRegistrationModel.RegistrationNo
+                                            && s.DOB == wRNRegistrationModel.DOB && s.MobileNo == wRNRegistrationModel.MobileNo
+                                            && s.ApplicationNo != null && s.RegistrationNo != null
+                                            select s).Distinct().ToList();
+                    var coursedata = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
+                                      where s.RegistrationNo == wRNRegistrationModel.RegistrationNo
+                                      select s).Distinct().ToList();
+                    var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
+                                             where s.RegistrationNo == wRNRegistrationModel.RegistrationNo
+                                             select s).Distinct().ToList();
+                    #endregion
+                    if (registrationdata.Count == 0 && coursedata.Count == 0 && qualificationdata.Count == 0)
                     {
-                        var stringId = _data.Id.ToString();
-                        _data.EncryptedId = _protector.Protect(stringId);
+                        TempData["warning"] = "First Complete previous steps !";
+                        return RedirectToAction("DashBoard", "WRNDashBoard");
+                    }
+                    else
+                    {
+                        var data = await _wRNRegistrationService.GetPhotoUploadByRegistrationAsync(wRNRegistrationModel.RegistrationNo, wRNRegistrationModel.MobileNo, wRNRegistrationModel.DOB);
+                        wRNRegistrationModel.WRNUploadDataList = data;
+                        //encryption
+                        foreach (var _data in data)
+                        {
+                            var stringId = _data.Id.ToString();
+                            _data.EncryptedId = _protector.Protect(stringId);
+                        }
                     }
                 }
                 else
@@ -754,7 +775,10 @@ namespace CoreLayout.Controllers.WRN
             string mobile = HttpContext.Session.GetString("SessionMobileNo");
             if (regno != null && dob != null && mobile != null)
             {
-                var registrationdata = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                var registrationdata = (from s in await _wRNRegistrationService.GetAllWRNRegistrationAsync()
+                                        where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
+                                        && s.ApplicationNo != null && s.RegistrationNo != null
+                                        select s).Distinct().ToList();
                 var qualificationdata = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
                                          where s.RegistrationNo == regno
                                          select s).Distinct().ToList();
@@ -772,48 +796,58 @@ namespace CoreLayout.Controllers.WRN
                                          where s.RegistrationNo == regno && s.DOB == dob && s.MobileNo == mobile
                                          && s.PrintStatus != null
                                          select s).Distinct().ToList();
-                #region fill registration data in model
-                wRNRegistrationModel.RegistrationNo = regno;
-                wRNRegistrationModel.DOB = dob;
-                wRNRegistrationModel.MobileNo = mobile;
-                wRNRegistrationModel.FirstName = registrationdata.FirstName;
-                wRNRegistrationModel.MiddleName = registrationdata.MiddleName;
-                wRNRegistrationModel.LastName = registrationdata.LastName;
-                wRNRegistrationModel.FatherName = registrationdata.FatherName;
-                wRNRegistrationModel.MotherName = registrationdata.MotherName;
-                wRNRegistrationModel.EmailId = registrationdata.EmailId;
-                wRNRegistrationModel.AcademicSession = registrationdata.AcademicSession;
-                wRNRegistrationModel.ApplicationNo = registrationdata.ApplicationNo;
-                wRNRegistrationModel.ModeOfAdmission = registrationdata.ModeOfAdmission;
-                wRNRegistrationModel.HindiName = registrationdata.HindiName;
-                wRNRegistrationModel.Gender = registrationdata.Gender;
-                wRNRegistrationModel.AadharNumber = registrationdata.AadharNumber;
-                wRNRegistrationModel.CategoryName = registrationdata.CategoryName;
-                wRNRegistrationModel.Nationality = registrationdata.Nationality;
-                wRNRegistrationModel.ReligionName = registrationdata.ReligionName;
-                wRNRegistrationModel.PhysicalDisabled = registrationdata.PhysicalDisabled;
+                //check all steps are completed
+                if (registrationdata.Count == 0 && coursedata.Count == 0 && qualificationdata.Count == 0 && photosignaturedata.Count == 0 && paymentdata.Count == 0)
+                {
+                    TempData["warning"] = "First Complete previous steps !";
+                    return RedirectToAction("DashBoard", "WRNDashBoard");
+                }
+                else
+                {
+                    var data = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(regno, mobile, dob);
+                    #region fill registration data in model
+                    wRNRegistrationModel.RegistrationNo = regno;
+                    wRNRegistrationModel.DOB = dob;
+                    wRNRegistrationModel.MobileNo = mobile;
+                    wRNRegistrationModel.FirstName = data.FirstName;
+                    wRNRegistrationModel.MiddleName = data.MiddleName;
+                    wRNRegistrationModel.LastName = data.LastName;
+                    wRNRegistrationModel.FatherName = data.FatherName;
+                    wRNRegistrationModel.MotherName = data.MotherName;
+                    wRNRegistrationModel.EmailId = data.EmailId;
+                    wRNRegistrationModel.AcademicSession = data.AcademicSession;
+                    wRNRegistrationModel.ApplicationNo = data.ApplicationNo;
+                    wRNRegistrationModel.ModeOfAdmission = data.ModeOfAdmission;
+                    wRNRegistrationModel.HindiName = data.HindiName;
+                    wRNRegistrationModel.Gender = data.Gender;
+                    wRNRegistrationModel.AadharNumber = data.AadharNumber;
+                    wRNRegistrationModel.CategoryName = data.CategoryName;
+                    wRNRegistrationModel.Nationality = data.Nationality;
+                    wRNRegistrationModel.ReligionName = data.ReligionName;
+                    wRNRegistrationModel.PhysicalDisabled = data.PhysicalDisabled;
 
-                wRNRegistrationModel.PermanentAddress = registrationdata.PermanentAddress;
-                wRNRegistrationModel.PermanentStateName = registrationdata.PermanentStateName;
-                wRNRegistrationModel.PermanentDistrictName = registrationdata.PermanentDistrictName;
-                wRNRegistrationModel.PermanentPincode = registrationdata.PermanentPincode;
+                    wRNRegistrationModel.PermanentAddress = data.PermanentAddress;
+                    wRNRegistrationModel.PermanentStateName = data.PermanentStateName;
+                    wRNRegistrationModel.PermanentDistrictName = data.PermanentDistrictName;
+                    wRNRegistrationModel.PermanentPincode = data.PermanentPincode;
 
-                wRNRegistrationModel.CommunicationAddress = registrationdata.CommunicationAddress;
-                wRNRegistrationModel.CommunicationStateName = registrationdata.CommunicationStateName;
-                wRNRegistrationModel.CommunicationDistrictName = registrationdata.CommunicationDistrictName;
-                wRNRegistrationModel.CommunicationPincode = registrationdata.CommunicationPincode;
-                wRNRegistrationModel.FinalSubmit = registrationdata.FinalSubmit;
-                #endregion
+                    wRNRegistrationModel.CommunicationAddress = data.CommunicationAddress;
+                    wRNRegistrationModel.CommunicationStateName = data.CommunicationStateName;
+                    wRNRegistrationModel.CommunicationDistrictName = data.CommunicationDistrictName;
+                    wRNRegistrationModel.CommunicationPincode = data.CommunicationPincode;
+                    wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                    #endregion
 
-                ViewBag.registrationdata = registrationdata;
-                ViewBag.qualificationdata = qualificationdata;
-                ViewBag.coursedata = coursedata;
-                ViewBag.photosignaturedata = photosignaturedata;
-                ViewBag.paymentdata = paymentdata;
-                ViewBag.printregistration = printregistration;
-                //wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
-                //wRNRegistrationModel.PhotoPath = data.PhotoPath;
-                //wRNRegistrationModel.SignaturePath = data.SignaturePath;
+                    ViewBag.registrationdata = registrationdata;
+                    ViewBag.qualificationdata = qualificationdata;
+                    ViewBag.coursedata = coursedata;
+                    ViewBag.photosignaturedata = photosignaturedata;
+                    ViewBag.paymentdata = paymentdata;
+                    ViewBag.printregistration = printregistration;
+                    //wRNRegistrationModel.FinalSubmit = data.FinalSubmit;
+                    //wRNRegistrationModel.PhotoPath = data.PhotoPath;
+                    //wRNRegistrationModel.SignaturePath = data.SignaturePath;
+                }
             }
             else
             {

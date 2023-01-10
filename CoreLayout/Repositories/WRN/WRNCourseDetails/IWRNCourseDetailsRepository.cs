@@ -12,6 +12,7 @@ namespace CoreLayout.Repositories.WRN.WRNCourseDetails
     {
        Task<List<WRNCourseDetailsModel>> Check3CourseListAsync(string RegistrationNo);
         Task<WRNCourseDetailsModel> Check3CourseCountAsync(string RegistrationNo);
+        Task<List<WRNCourseDetailsModel>> GetAllWRNCourseByRegistrationsAsync(string RegistrationNo);
         //Task<List<WRNCourseDetailsModel>> GetAllCourseDetailByType(string Type);
         //Task<List<WRNCourseDetailsModel>> GetAllBoardUniversityType();
         // Task<List<WRNCourseDetailsModel>> GetAllByIdForDetailsAsync(int id);

@@ -8,6 +8,8 @@ namespace CoreLayout.Services.WRN.WRNCourseDetails
     public interface IWRNCourseDetailsService
     {
         public Task<List<WRNCourseDetailsModel>> GetAllWRNCourseDetailsAsync();
+
+        public Task<List<WRNCourseDetailsModel>> GetAllWRNCourseByRegistrationsAsync(string RegistrationNo);
         public Task<WRNCourseDetailsModel> GetWRNCourseDetailsByIdAsync(int id);
         public Task<int> CreateWRNCourseDetailsAsync(WRNCourseDetailsModel wRNCourseDetailsModel);
         public Task<int> UpdateWRNCourseDetailsAsync(WRNCourseDetailsModel wRNCourseDetailsModel);

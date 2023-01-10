@@ -61,56 +61,59 @@
                                     <span class="parsley-errors-list filled" asp-validation-for="ResultStatus"></span>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="PassingYear"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="PassingYear" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="PassingYear"></span>
+                            @if (Model.ResultStatus == "PASSED")
+                            {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PassingYear"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="PassingYear" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="PassingYear"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="PassingMonth"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="PassingMonth" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="PassingMonth"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PassingMonth"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="PassingMonth" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="PassingMonth"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="MarksCriteria"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="MarksCriteria" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="MarksCriteria"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="MarksCriteria"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="MarksCriteria" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="MarksCriteria"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="PercentagOfMarksObtained"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="PercentagOfMarksObtained" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="PercentagOfMarksObtained"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="PercentagOfMarksObtained"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="PercentagOfMarksObtained" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="PercentagOfMarksObtained"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="DivisionClassGrade"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="DivisionClassGrade" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="DivisionClassGrade"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="DivisionClassGrade"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="DivisionClassGrade" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="DivisionClassGrade"></span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="Subjects"> </label><span class="tx-danger"> *</span>
-                                    <input asp-for="Subjects" class="form-control" readonly />
-                                    <span class="parsley-errors-list filled" asp-validation-for="Subjects"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Subjects"> </label><span class="tx-danger"> *</span>
+                                        <input asp-for="Subjects" class="form-control" readonly />
+                                        <span class="parsley-errors-list filled" asp-validation-for="Subjects"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label asp-for="MarksheetAttachment"> </label><span class="tx-danger"> *</span>
-                                    <img src="~/WRNMarksheet/@Model.MarksheetAttachmentPath" alt="Image" height="120" width="120" />
-                                    <span asp-validation-for="MarksheetAttachment" class="parsley-errors-list filled"></span>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="MarksheetAttachment"> </label><span class="tx-danger"> *</span>
+                                        <img src="~/WRNMarksheet/@Model.MarksheetAttachmentPath" alt="Image" height="120" width="120" />
+                                        <span asp-validation-for="MarksheetAttachment" class="parsley-errors-list filled"></span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </div>
                     </form>
                 </div>

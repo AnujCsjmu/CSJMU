@@ -311,5 +311,25 @@ namespace CoreLayout.Repositories.WRN.WRNQualification
                 throw new Exception(ex.Message, ex);
             }
         }
+        public async Task<List<WRNQualificationModel>> GetAllWRNQualificationByRegistration(string RegistrationNo)
+        {
+            try
+            {
+                var query = "Usp_WRNQualification";
+                using (var connection = CreateConnection())
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@RegistrationNo", RegistrationNo, DbType.String);
+                    parameters.Add("@Query", 9, DbType.Int32);
+                    var list = await SqlMapper.QueryAsync<WRNQualificationModel>(connection, query, parameters, commandType: CommandType.StoredProcedure);
+
+                    return (List<WRNQualificationModel>)list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
