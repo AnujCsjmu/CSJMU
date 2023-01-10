@@ -139,129 +139,181 @@
     <!--End Navbar -->
     <!-- Row -->
     <!-- Row -->
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-bordered border-primary">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Task</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td scope="row">Complete Registration</td>
-                        <td>
-                            @if (ViewBag.registrationdata == null)
-                            {
-                                <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Pending</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Closed</span>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td scope="row">Add Course</td>
-                        <td>
-                            @if (Enumerable.Count(ViewBag.coursedata) == 0)
-                            {
-                                <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
-                                    <span class="menu-title">Pending</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
-                                    <span class="menu-title">Closed</span>
-                                </a>
-                            }
-                        </td>
 
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td scope="row">Add Qualification</td>
-                        <td>
-                            @if (Enumerable.Count(ViewBag.qualificationdata) == 0)
-                            {
-                                <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
-                                    <span class="menu-title">Pending</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
-                                    <span class="menu-title">Closed</span>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td scope="row">Upload Photo & Signature</td>
-                        <td>
-                            @if (Enumerable.Count(ViewBag.photosignaturedata) == 0)
-                            {
-                                <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Pending</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Closed</span>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td scope="row">Fee Payment</td>
-                        <td>
-                            @if (Enumerable.Count(ViewBag.paymentdata) == 0)
-                            {
-                                <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
-                                    <span class="menu-title">Non Paid</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
-                                    <span class="menu-title">Paid</span>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">6</th>
-                        <td scope="row">Print Registration</td>
-                        <td>
-                            @if (Enumerable.Count(ViewBag.printregistration) == 0)
-                            {
-                                <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Pending</span>
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
-                                    <span class="menu-title">Closed</span>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <form asp-action="FinalSubmit" method="post">
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="students">
+                    <thead>
+                        <tr>
+                            <th>Step No.</th>
+                            <th>Step Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Complete Registration</td>
+                            <td>
+                                @if (ViewBag.registrationdata == null)
+                                {
+                                    <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Pending</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="CompleteRegistration" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Closed</span>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Add Course</td>
+                            <td>
+                                @if (Enumerable.Count(ViewBag.coursedata) == 0)
+                                {
+                                    <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
+                                        <span class="menu-title">Pending</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="WRNCourse" asp-controller="WRNCourseDetails">
+                                        <span class="menu-title">Closed</span>
+                                    </a>
+                                }
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Add Qualification</td>
+                            <td>
+                                @if (Enumerable.Count(ViewBag.qualificationdata) == 0)
+                                {
+                                    <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                                        <span class="menu-title">Pending</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="Qualification" asp-controller="WRNQualification">
+                                        <span class="menu-title">Closed</span>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Upload Photo & Signature</td>
+                            <td>
+                                @if (Enumerable.Count(ViewBag.photosignaturedata) == 0)
+                                {
+                                    <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Pending</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="UploadPhotoSignature" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Closed</span>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Fee Payment</td>
+                            <td>
+                                @if (Enumerable.Count(ViewBag.paymentdata) == 0)
+                                {
+                                    <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
+                                        <span class="menu-title">Non Paid</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="Payment" asp-controller="WRNPayment">
+                                        <span class="menu-title">Paid</span>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Print Registration</td>
+                            <td>
+                                @if (Enumerable.Count(ViewBag.printregistration) == 0)
+                                {
+                                    <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Pending</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link" asp-action="PrintRegistration" asp-controller="WRNRegistration">
+                                        <span class="menu-title">Closed</span>
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="col-md-12">
+                    <div>
+                        <input type="checkbox" asp-for="FinalSubmit">
+                        &nbsp;&nbsp;&nbsp; <label class="form-check-label" asp-for="FinalSubmit">
+                        </label><br />
+                        <span asp-validation-for="FinalSubmit" class="error"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Final Submit" />
+                        <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
+    </form>
 </div>
+
+@section Scripts{
+    <style>
+        #students {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            font-weight: bold;
+        }
+
+            #students td, #students th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #students tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            #students tr:hover {
+                background-color: #ddd;
+            }
+
+            #students th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: left;
+                background-color: #04AA6D;
+                color: white;
+            }
+    </style>
+
+    @*//for validation*@
+    <script src="~/assets/lib/jquery/dist/jquery.js"></script>
+    <script src="~/assets/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/assets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

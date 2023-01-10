@@ -182,7 +182,9 @@ namespace CoreLayout.Models.WRN
         public bool TermsConditions { get; set; }
         public bool IsActive { get; set; }
 
-        public int? FinalSubmit { get; set; }
+        [Display(Name = "I hereby declare that all the information provided by me is correct. The University will not be responsible for any incorrect information provided by me.")]
+        [CheckBoxRequired(ErrorMessage = "Please accept the terms and condition.")]
+        public bool FinalSubmit { get; set; }
 
         [Display(Name = "Academic Session")]
         [Required(ErrorMessage = "Please enter academic session")]
@@ -206,8 +208,10 @@ namespace CoreLayout.Models.WRN
         [Required(ErrorMessage = "Please upload Signature")]
         public IFormFile Signature { get; set; }
         public DateTime? PhotoDate { get; set; }
+        public DateTime? SignatureDate { get; set; }
         public int? PrintStatus { get; set; }
 
+        public List<WRNRegistrationModel> WRNUploadDataList { get; set; }
     }
     public class CheckBoxRequired : ValidationAttribute, IClientModelValidator
     {

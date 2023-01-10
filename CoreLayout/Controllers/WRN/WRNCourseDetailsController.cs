@@ -3,6 +3,7 @@ using CoreLayout.Services.Masters.Course;
 using CoreLayout.Services.Masters.District;
 using CoreLayout.Services.Masters.Institute;
 using CoreLayout.Services.WRN.WRNCourseDetails;
+using CoreLayout.Services.WRN.WRNRegistration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +30,12 @@ namespace CoreLayout.Controllers.WRN
         public readonly IDistrictService _districtService;
         public readonly IInstituteService _instituteService;
         public readonly ICourseService _courseService;
+        public readonly IWRNRegistrationService _wRNRegistrationService;
         public WRNCourseDetailsController(ILogger<WRNCourseDetailsController> logger,
             IDataProtectionProvider provider, IConfiguration configuration,
             IHttpContextAccessor httpContextAccessor, IWRNCourseDetailsService wRNCourseDetailsService,
             IDistrictService districtService, IInstituteService instituteService,
-            ICourseService courseService)
+            ICourseService courseService, IWRNRegistrationService wRNRegistrationService)
         {
             _logger = logger;
             _protector = provider.CreateProtector("WRNCourseDetails.WRNCourseDetailsController");
@@ -45,6 +47,7 @@ namespace CoreLayout.Controllers.WRN
             _districtService = districtService;
             _instituteService = instituteService;
             _courseService = courseService;
+            _wRNRegistrationService = wRNRegistrationService;
         }
 
         #region Add Course
@@ -54,15 +57,16 @@ namespace CoreLayout.Controllers.WRN
             WRNCourseDetailsModel wRNCourseDetailsModel = new WRNCourseDetailsModel();
             try
             {
-
+                wRNCourseDetailsModel.FinalSubmit =Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
                 wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
                 wRNCourseDetailsModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
                 wRNCourseDetailsModel.DistrictList = await _districtService.Get7DistrictAsync();
                 wRNCourseDetailsModel.CourseList = await _courseService.GetAllCourse();
 
-                List<WRNCourseDetailsModel> dataLst = new List<WRNCourseDetailsModel>();
+                //List<WRNCourseDetailsModel> dataLst = new List<WRNCourseDetailsModel>();
                 var data = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
                 wRNCourseDetailsModel.WRNCourseDataList = data;
+              
                 //encryption
                 foreach (var _data in data)
                 {
@@ -83,78 +87,89 @@ namespace CoreLayout.Controllers.WRN
             try
             {
                 string ipAddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+                wRNCourseDetailsModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
                 wRNCourseDetailsModel.CreatedBy = HttpContext.Session.GetInt32("SessionCreatedBy");
                 wRNCourseDetailsModel.IPAddress = ipAddress;
                 wRNCourseDetailsModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
                 wRNCourseDetailsModel.WRNCourseDataList = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
+                string DOB = HttpContext.Session.GetString("SessionDOB");
+                string MobileNo = HttpContext.Session.GetString("SessionMobileNo");
                 //wRNCourseDetailsModel.DistrictList = await _districtService.Get7DistrictAsync();
                 //wRNCourseDetailsModel.CourseList = await _courseService.GetAllCourse();
-                string result = CheckValidation(wRNCourseDetailsModel);
-                if (result == "")
+                //var checkFinalSubmit = await _wRNRegistrationService.GetWRNRegistrationByLoginAsync(wRNCourseDetailsModel.RegistrationNo, MobileNo, DOB);
+                if (wRNCourseDetailsModel.FinalSubmit == false)
                 {
-                    //check total 10 record check
-                    var check10record = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
-                    if (check10record.Count <= 10)
+                    string result = CheckValidation(wRNCourseDetailsModel);
+                    if (result == "")
                     {
-                        //check add only 3 course same type
-                        var Check3CourseCount = await _wRNCourseDetailsService.Check3CourseCountAsync(wRNCourseDetailsModel.RegistrationNo);
-                                                //where s.RegistrationNo == wRNCourseDetailsModel.RegistrationNo
-                                                //select s.CourseId).Distinct().ToList();
-                        if (Check3CourseCount.CourseCount <= 2)
+                        //check total 10 record check
+                        var check10record = await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync();
+                        if (check10record.Count <= 10)
                         {
-                            var Check3CourseList = await _wRNCourseDetailsService.Check3CourseListAsync(wRNCourseDetailsModel.RegistrationNo);
-                            int i = 0;
-                            foreach (var _data in Check3CourseList)
+                            //check add only 3 course same type
+                            var Check3CourseCount = await _wRNCourseDetailsService.Check3CourseCountAsync(wRNCourseDetailsModel.RegistrationNo);
+                            //where s.RegistrationNo == wRNCourseDetailsModel.RegistrationNo
+                            //select s.CourseId).Distinct().ToList();
+                            if (Check3CourseCount.CourseCount <= 2)
                             {
-                                if (wRNCourseDetailsModel.CourseId == _data.CourseId)
+                                var Check3CourseList = await _wRNCourseDetailsService.Check3CourseListAsync(wRNCourseDetailsModel.RegistrationNo);
+                                int i = 0;
+                                foreach (var _data in Check3CourseList)
                                 {
-                                    i = 1;
-                                }
-                            }
-                            if (i == 1 || Check3CourseList.Count==0)
-                            {
-                                //check already exit
-                                var IsAlreadyExit = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
-                                                     where s.RegistrationNo == wRNCourseDetailsModel.RegistrationNo
-                                                     && s.DistrictId == wRNCourseDetailsModel.DistrictId
-                                                     && s.CourseId == wRNCourseDetailsModel.CourseId
-                                                     && s.InstituteId == wRNCourseDetailsModel.InstituteId
-                                                     select s).Distinct().ToList();
-                                if (IsAlreadyExit.Count == 0)
-                                {
-                                    var data = await _wRNCourseDetailsService.CreateWRNCourseDetailsAsync(wRNCourseDetailsModel);
-                                    if (data.Equals(1))
+                                    if (wRNCourseDetailsModel.CourseId == _data.CourseId)
                                     {
-                                        TempData["success"] = "Course has add successfully !";
+                                        i = 1;
+                                    }
+                                }
+                                if (i == 0)
+                                {
+                                    //check already exit
+                                    var IsAlreadyExit = (from s in await _wRNCourseDetailsService.GetAllWRNCourseDetailsAsync()
+                                                         where s.RegistrationNo == wRNCourseDetailsModel.RegistrationNo
+                                                         && s.DistrictId == wRNCourseDetailsModel.DistrictId
+                                                         && s.CourseId == wRNCourseDetailsModel.CourseId
+                                                         && s.InstituteId == wRNCourseDetailsModel.InstituteId
+                                                         select s).Distinct().ToList();
+                                    if (IsAlreadyExit.Count == 0)
+                                    {
+                                        var data = await _wRNCourseDetailsService.CreateWRNCourseDetailsAsync(wRNCourseDetailsModel);
+                                        if (data.Equals(1))
+                                        {
+                                            TempData["success"] = "Course has add successfully !";
+                                        }
+                                        else
+                                        {
+                                            TempData["error"] = "Course has not add successfully !";
+                                        }
                                     }
                                     else
                                     {
-                                        TempData["error"] = "Course has not add successfully !";
+                                        TempData["warning"] = "Course has already added !";
                                     }
                                 }
                                 else
                                 {
-                                    TempData["warning"] = "Course has already added !";
+                                    TempData["warning"] = "You can add only 3 course !";
                                 }
                             }
                             else
                             {
-                                TempData["warning"] = "You can add only 3 course !";
+                                TempData["warning"] = "You can add only 3 course same type !";
                             }
                         }
                         else
                         {
-                            TempData["warning"] = "You can add only 3 course same type !";
+                            TempData["warning"] = "You can add only 10 courses !";
                         }
                     }
                     else
                     {
-                        TempData["warning"] = "You can add only 10 courses !";
+                        TempData["warning"] = result;
                     }
                 }
                 else
                 {
-                    TempData["warning"] = result;
+                    TempData["warning"] = "Data has been final submitted, you can't any changes !";
                 }
             }
             catch (Exception ex)

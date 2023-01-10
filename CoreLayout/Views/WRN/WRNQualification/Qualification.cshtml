@@ -148,7 +148,10 @@
                                         </div>
                                     </div>*@
                                 <div class="form-group">
-                                    <input type="submit" class="btn btn-primary" value="Add Qualification" />
+                                    @if (Model.FinalSubmit == false)
+                                    {
+                                        <input type="submit" class="btn btn-primary" value="Add Qualification" />
+                                    }
                                     <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
                                 </div>
                             </div>
@@ -162,7 +165,7 @@
                 <div class="card custom-card overflow-hidden">
                     <div class="card-body">
                         <div class="table-responsive-sm">
-                            <table id="exportexample" class="table table-sm table-bordered key-buttons text-nowrap w-100">
+                            <table id="exportexample" class="table table-sm table-bordered key-buttons text-wrap w-100">
                                 <thead>
                                     <tr>
                                         <th>S.No</th>
@@ -170,37 +173,14 @@
                                             @Html.DisplayNameFor(c => c.RegistrationNo)
                                         </th>
                                         <th>
-                                            @*@Html.DisplayNameFor(c => c.QualificationId)*@
                                             Qualification
                                         </th>
                                         <th>
-                                            @*@Html.DisplayNameFor(c => c.BoardUniversityId)*@
                                             Board/ <br /> University
                                         </th>
-                                        <!--<th>
-                                        Passing<br />/Year-->
-                                        @*@Html.DisplayNameFor(c => c.PassingYear)*@
-                                        <!--</th>
                                         <th>
-                                            Passing<br />/Month-->
-                                        @*@Html.DisplayNameFor(c => c.PassingMonth)*@
-                                        <!--</th>
-                                        <th>
-                                            Percentage-->
-                                        @*@Html.DisplayNameFor(c => c.PercentagOfMarksObtained)*@
-                                        <!--</th>
-                                        <th>
-                                            Division-->
-                                        @*@Html.DisplayNameFor(c => c.DivisionClassGrade)*@
-                                        <!--</th>
-                                        <th>
-                                            @Html.DisplayNameFor(c => c.Subjects)
+                                            Created Date
                                         </th>
-
-                                        <th>
-                                            Result-->
-                                        @*@Html.DisplayNameFor(c => c.ResultCriteria)*@
-                                        <!--</th>-->
                                         <th>
                                             Action
                                         </th>
@@ -230,18 +210,14 @@
                                                 <td>@item.RegistrationNo</td>
                                                 <td>@item.Qualification</td>
                                                 <td>@item.University</td>
-                                                @*<td>@item.PassingYear</td>
-                                                    <td>@item.PassingMonth</td>
-                                                    <td>@item.PercentagOfMarksObtained</td>
-                                                    <td>@item.DivisionClassGrade</td>
-                                                    <td>@item.Subjects</td>
-                                                    <td>@item.ResultCriteria</td>*@
+                                                <td>@item.CreatedDate</td>
                                                 <td>
                                                     <div class="table-actions text-center">
-                                                        @*<a asp-action="Edit" id="edit" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Edit"><i class="fe fe-edit fs-16 mr-30 text-success"></i></a>*@
-                                                        @*<a asp-action="Details" class="anchorDetail" id="details" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="View"><i class="fe fe-eye fs-16 mr-30 text-warning"></i></a>*@
                                                         <a href="javascript:void(0);" class="anchorDetail" data-id="@item.EncryptedId">Details</a>
-                                                        <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                        @if (Model.FinalSubmit == false)
+                                                        {
+                                                            <a asp-action="Delete" id="delete" asp-route-id=@item.EncryptedId data-bs-toggle="tooltip" title="" data-bs-placement="top" data-bs-original-title="Delete" onclick="return confirm('Are you sure you want to delete this?')"><i class="fe fe-trash fs-16 text-danger"></i></a>
+                                                        }
                                                     </div>
                                                 </td>
                                             </tr>

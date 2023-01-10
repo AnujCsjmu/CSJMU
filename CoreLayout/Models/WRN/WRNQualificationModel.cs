@@ -90,5 +90,7 @@ namespace CoreLayout.Models.WRN
         public List<EducationalQualificationModel> EducationalQualificationList { get; set; }
         //public List<BoardUniversityModel> BoardUniversityList { get; set; }
         public List<BoardUniversityModel> BoardUniversityTypeList { get; set; }
+
+        public bool FinalSubmit { get; set; }
     }
 }

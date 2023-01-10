@@ -347,14 +347,16 @@
                 // Increase or decrease the current tab by 1:
                 // 3 tab is send email and 4 tab is verify otp
                 //console.log(currentTab, n)
-                if (currentTab == 1 && n > 0) {
+                if (currentTab == 0 && n > 0) {
+                    alert(n);
                     let res = await sendEmail()
                     if (res.res == true) {
                         currentTab = currentTab + n;
                     } else {
                         currentTab = currentTab;
                     }
-                } else if (currentTab == 2 && n > 0) {
+                } else if (currentTab == 1 && n > 0) {
+                    alert(n);
                     let res = await validateOtp()
                     if (res.res == true) {
                         currentTab = currentTab + n;

@@ -50,6 +50,10 @@ namespace CoreLayout.Services.WRN.WRNRegistration
         {
             return await _wRNRegistrationRepository.DeleteAsync(wRNRegistrationModel);
         }
+        public async Task<int> DeleteUploadPhotoSignatureAsync(WRNRegistrationModel wRNRegistrationModel)
+        {
+            return await _wRNRegistrationRepository.DeleteUploadPhotoSignatureAsync(wRNRegistrationModel);
+        }
         public async Task<int> UpdateFinalSubmitAsync(WRNRegistrationModel wRNRegistrationModel)
         {
             return await _wRNRegistrationRepository.UpdateFinalSubmitAsync(wRNRegistrationModel);
@@ -61,6 +65,10 @@ namespace CoreLayout.Services.WRN.WRNRegistration
         public async Task<int> UpdatePrintRegistration(WRNRegistrationModel wRNRegistrationModel)
         {
             return await _wRNRegistrationRepository.UpdatePrintRegistration(wRNRegistrationModel);
+        }
+        public async Task<List<WRNRegistrationModel>> GetPhotoUploadByRegistrationAsync(string RegistrationNo, string MobileNo, string DOB)
+        {
+            return await _wRNRegistrationRepository.GetPhotoUploadByRegistrationAsync(RegistrationNo, MobileNo, DOB);
         }
     }
 }

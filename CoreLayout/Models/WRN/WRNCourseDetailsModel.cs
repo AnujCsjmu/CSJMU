@@ -42,7 +42,7 @@ namespace CoreLayout.Models.WRN
 
         [Display(Name = "Registration No")]
         public string RegistrationNo { get; set; }
-
+        public bool FinalSubmit { get; set; }
         public List<WRNCourseDetailsModel> WRNCourseDataList { get; set; }
     }
 }

@@ -18,6 +18,8 @@ namespace CoreLayout.Models.Common
         public int? ButtonMasterId { get; set; }
         public string IPAddress { get; set; }
         public int IsRecordDeleted { get; set; }
+
+        public int? IsPhotoSignatureDeleted { get; set; }
         //public int UserId { get; set; }
 
     }

@@ -59,7 +59,7 @@ namespace CoreLayout.Controllers.WRN
             WRNQualificationModel wRNQualificationModel = new WRNQualificationModel();
             try
             {
-
+                wRNQualificationModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
                 wRNQualificationModel.RegistrationNo = HttpContext.Session.GetString("SessionRegistrationNo");
                 wRNQualificationModel.CreatedBy = HttpContext.Session.GetInt32("SessionId");
                 wRNQualificationModel.EducationalQualificationList = await _wRNQualificationService.GetAllEducationalQualification();
@@ -113,88 +113,95 @@ namespace CoreLayout.Controllers.WRN
                 wRNQualificationModel.EducationalQualificationList = await _wRNQualificationService.GetAllEducationalQualification();
                 //wRNQualificationModel.BoardUniversityList = await _wRNQualificationService.GetAllBoardUniversity();
                 wRNQualificationModel.BoardUniversityTypeList = await _wRNQualificationService.GetAllBoardUniversityType();
-
-                //bind year
-                int currentYear = Convert.ToInt32(DateTime.Now.Year);
-                List<int> yrs = new List<int>();
-
-                for (int i = 1980; i <= currentYear; i++)
+                wRNQualificationModel.FinalSubmit = Convert.ToBoolean(HttpContext.Session.GetInt32("SessionFinalSubmit"));
+                if (wRNQualificationModel.FinalSubmit ==false)
                 {
-                    yrs.Add(i);
-                }
-                wRNQualificationModel.PassingYearList = yrs;
+                    //bind year
+                    int currentYear = Convert.ToInt32(DateTime.Now.Year);
+                    List<int> yrs = new List<int>();
 
-                //bind month
-                List<int> mon = new List<int>();
-                //var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-                for (int i = 1; i < 13; i++)
-                {
-                    mon.Add(i);
-                }
-                wRNQualificationModel.PassingMonthList = mon;
-                //validation
-                string result = CheckValidation(wRNQualificationModel);
-                if (result == "")
-                {
-                    //check already exit
-                    var IsAlreadyExit = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
-                                         where s.RegistrationNo == wRNQualificationModel.RegistrationNo && s.QualificationId == wRNQualificationModel.QualificationId
-                                         select s).Distinct().ToList();
-                    if (IsAlreadyExit.Count == 0)
+                    for (int i = 1980; i <= currentYear; i++)
                     {
-                        #region upload marksheet
-                        FileHelper fileHelper = new FileHelper();
-                        string uploadpath = _configuration.GetSection("FilePaths:PreviousDocuments:WRNMarksheet").Value.ToString();
-                        if (wRNQualificationModel.MarksheetAttachment != null)
+                        yrs.Add(i);
+                    }
+                    wRNQualificationModel.PassingYearList = yrs;
+
+                    //bind month
+                    List<int> mon = new List<int>();
+                    //var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
+                    for (int i = 1; i < 13; i++)
+                    {
+                        mon.Add(i);
+                    }
+                    wRNQualificationModel.PassingMonthList = mon;
+                    //validation
+                    string result = CheckValidation(wRNQualificationModel);
+                    if (result == "")
+                    {
+                        //check already exit
+                        var IsAlreadyExit = (from s in await _wRNQualificationService.GetAllWRNQualificationAsync()
+                                             where s.RegistrationNo == wRNQualificationModel.RegistrationNo && s.QualificationId == wRNQualificationModel.QualificationId
+                                             select s).Distinct().ToList();
+                        if (IsAlreadyExit.Count == 0)
                         {
-                            var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
-                            var circularExt = Path.GetExtension(wRNQualificationModel.MarksheetAttachment.FileName).Substring(1);
-                            if (supportedTypes.Contains(circularExt))
+                            #region upload marksheet
+                            FileHelper fileHelper = new FileHelper();
+                            string uploadpath = _configuration.GetSection("FilePaths:PreviousDocuments:WRNMarksheet").Value.ToString();
+                            if (wRNQualificationModel.MarksheetAttachment != null)
                             {
-                                if (wRNQualificationModel.MarksheetAttachment.Length < 500000)
+                                var supportedTypes = new[] { "jpg", "JPG", "jpeg", "JPEG", "png", "PNG" };// "jpg", "JPG", "jpeg", "JPEG", "png", "PNG"
+                                var circularExt = Path.GetExtension(wRNQualificationModel.MarksheetAttachment.FileName).Substring(1);
+                                if (supportedTypes.Contains(circularExt))
                                 {
-                                    wRNQualificationModel.MarksheetAttachmentPath = fileHelper.SaveFile(uploadpath, "", wRNQualificationModel.MarksheetAttachment);
+                                    if (wRNQualificationModel.MarksheetAttachment.Length < 500000)
+                                    {
+                                        wRNQualificationModel.MarksheetAttachmentPath = fileHelper.SaveFile(uploadpath, "", wRNQualificationModel.MarksheetAttachment);
+                                    }
+                                    else
+                                    {
+                                        //ModelState.AddModelError("", "photo size must be less than 500 kb");
+                                        TempData["error"] = "marksheet size must be less than 500 kb";
+                                        //return RedirectToAction(nameof(Qualification));
+                                    }
                                 }
                                 else
                                 {
-                                    //ModelState.AddModelError("", "photo size must be less than 500 kb");
-                                    TempData["error"] = "marksheet size must be less than 500 kb";
+                                    //ModelState.AddModelError("", "photo extension is invalid- accept only jpg,jpeg,png");//,jpg,jpeg,png
+                                    TempData["error"] = "marksheet extension is invalid- accept only jpg,jpeg,png";
                                     //return RedirectToAction(nameof(Qualification));
                                 }
                             }
                             else
                             {
-                                //ModelState.AddModelError("", "photo extension is invalid- accept only jpg,jpeg,png");//,jpg,jpeg,png
-                                TempData["error"] = "marksheet extension is invalid- accept only jpg,jpeg,png";
+                                //ModelState.AddModelError("", "Please upload photo");
+                                TempData["warning"] = "Please upload marksheet";
                                 //return RedirectToAction(nameof(Qualification));
+                            }
+                            #endregion
+
+                            var data = await _wRNQualificationService.CreateWRNQualificationAsync(wRNQualificationModel);
+                            if (data.Equals(1))
+                            {
+                                TempData["success"] = "Qualification has add successfully !";
+                            }
+                            else
+                            {
+                                TempData["error"] = "Qualification has not add successfully !";
                             }
                         }
                         else
                         {
-                            //ModelState.AddModelError("", "Please upload photo");
-                            TempData["warning"] = "Please upload marksheet";
-                            //return RedirectToAction(nameof(Qualification));
-                        }
-                        #endregion
-
-                        var data = await _wRNQualificationService.CreateWRNQualificationAsync(wRNQualificationModel);
-                        if (data.Equals(1))
-                        {
-                            TempData["success"] = "Qualification has add successfully !";
-                        }
-                        else
-                        {
-                            TempData["error"] = "Qualification has not add successfully !";
+                            TempData["warning"] = "Qualification has already added !";
                         }
                     }
                     else
                     {
-                        TempData["warning"] = "Qualification has already added !";
+                        TempData["warning"] = result;
                     }
                 }
                 else
                 {
-                    TempData["warning"] = result;
+                    TempData["warning"] = "Data has been final submitted, you can't any changes !";
                 }
             }
             catch (Exception ex)

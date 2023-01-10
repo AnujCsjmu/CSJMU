@@ -17,95 +17,94 @@
 </div>
 <!-- End Page Header -->
 <!-- Conetnt Start-->
-<div class="row">
-    <div class="col-lg-12 col-md-12">
-        <div class="card custom-card">
-            <div class="card-body">
-
-                <form asp-action="CompleteRegistration" method="post">
+<form asp-action="CompleteRegistration" method="post">
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    @*<form asp-action="CompleteRegistration" method="post">*@
                     <div class="row">
                         <div asp-validation-summary="ModelOnly" class="parsley-errors-list filled">
 
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="RegistrationNo"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="RegistrationNo" class="form-control" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="RegistrationNo"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ApplicationNo"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="ApplicationNo" class="form-control" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="ApplicationNo"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="AcademicSession"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="AcademicSession" class="form-control" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="AcademicSession"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FirstName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FirstName" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="FirstName"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="MiddleName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="MiddleName" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="MiddleName"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="LastName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="LastName" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="LastName"></span>
                             </div>
                         </div>
-
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="FatherName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="FatherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="FatherName"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="MotherName"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="MotherName" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="MotherName"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="MobileNo"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="MobileNo" class="form-control" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="MobileNo"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="EmailId"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="EmailId" class="form-control" onkeydown="upperCaseF(this)" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="EmailId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="DOB"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="DOB" class="form-control" readonly />
                                 <span class="parsley-errors-list filled" asp-validation-for="DOB"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ModeOfAdmission"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="ModeOfAdmission" class="form-control">
@@ -118,14 +117,14 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="ModeOfAdmission"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="HindiName"> </label><span class="tx-danger"> *</span>
                                 <input id="HindiName" asp-for="HindiName" class="form-control" onkeydown="upperCaseF(this)" />
                                 <span class="parsley-errors-list filled" asp-validation-for="HindiName"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="Gender"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="Gender" class="form-control">
@@ -137,14 +136,14 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="Gender"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="AadharNumber"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="AadharNumber" class="form-control" title="Hello I'm the tool-tip" />
                                 <span class="error" asp-validation-for="AadharNumber"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CategoryId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="CategoryId" class="form-control" asp-items="@(new SelectList(Model.CategoryList,"CategoryId","Name"))">
@@ -153,7 +152,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="CategoryId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="Nationality"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="Nationality" class="form-control">
@@ -164,7 +163,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="Nationality"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="ReligionId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="ReligionId" class="form-control" asp-items="@(new SelectList(Model.ReligionList,"ReligionID","ReligionName"))">
@@ -173,7 +172,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="ReligionId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PhysicalDisabled"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="PhysicalDisabled" class="form-control">
@@ -184,17 +183,28 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="PhysicalDisabled"></span>
                             </div>
                         </div>
-                        <div style="background-color:teal;">
-                            <h4 style="color: white; font-size: 15px">Permanent Address</h4>
-                        </div>
-                        <div class="col-md-4">
+                    </div>
+
+                    @*</form>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>Permanent Address</h4>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PermanentAddress"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="PermanentAddress" class="form-control" onkeydown="upperCaseF(this)" />
                                 <span class="parsley-errors-list filled" asp-validation-for="PermanentAddress"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PermanentStateId"> </label><span class="tx-danger"> *</span>
                                 <select id="PermanentStateId" asp-for="PermanentStateId" class="form-control select" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
@@ -203,7 +213,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="PermanentStateId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PermanentDistrictId"> </label><span class="tx-danger"> *</span>
                                 @if (Model.CommunicationDistrictId == 0)
@@ -221,25 +231,32 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="PermanentDistrictId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="PermanentPincode"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="PermanentPincode" type="number" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="PermanentPincode"></span>
                             </div>
                         </div>
-                        <div style="background-color:teal;">
-                            <h4 style="color: white; font-size: 15px">If ommunication Address Same As Permanent Address then <span>&#10003;</span> the check box <input onclick="filladdress()" type="checkbox" id="chkaddress" /></h4>
-                        </div>
-
-                        <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>Communication Address</h4>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card custom-card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CommunicationAddress"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="CommunicationAddress" class="form-control" onkeydown="upperCaseF(this)" />
                                 <span class="parsley-errors-list filled" asp-validation-for="CommunicationAddress"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CommunicationStateId"> </label><span class="tx-danger"> *</span>
                                 <select asp-for="CommunicationStateId" class="form-control select" asp-items="@(new SelectList(Model.StateList,"StateId","StateName"))">
@@ -248,7 +265,7 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="CommunicationStateId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CommunicationDistrictId"> </label><span class="tx-danger"> *</span>
                                 @if (Model.CommunicationDistrictId == 0)
@@ -266,35 +283,37 @@
                                 <span class="parsley-errors-list filled" asp-validation-for="CommunicationDistrictId"></span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label asp-for="CommunicationPincode"> </label><span class="tx-danger"> *</span>
                                 <input asp-for="CommunicationPincode" type="number" class="form-control" />
                                 <span class="parsley-errors-list filled" asp-validation-for="CommunicationPincode"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            @*@if (Model.FinalSubmit != 1)
-                            {*@
-                                <input type="submit" class="btn btn-primary" value="Update" />
-                            @*}*@
-                            <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
-                            @*<input name="hdnFinalSubmit" id="hdnFinalSubmit" type="hidden" value=@Model.FinalSubmit>*@
-                            @*@if (Model.ApplicationNo != null && Model.RegistrationNo != null && Model.MobileNo != null && Model.EmailId != null
-                         && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
-                            {
-                                <input type="submit" class="btn btn-primary2" value="Final Submit" asp-action="FinalSubmit" />
-                            }*@
-                        </div>
                     </div>
-
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                @if (Model.FinalSubmit == false)
+                {
+                    <input type="submit" class="btn btn-primary" value="Update" />
+                }
+                <a asp-action="Dashboard" asp-controller="WRNDashboard" class="btn btn-success">Back to List</a>
+                @*<input name="hdnFinalSubmit" id="hdnFinalSubmit" type="hidden" value=@Model.FinalSubmit>*@
+                @*@if (Model.ApplicationNo != null && Model.RegistrationNo != null && Model.MobileNo != null && Model.EmailId != null
+                    && Model.AadharNumber != null && Model.FirstName != null && Model.Gender != null && Model.FinalSubmit != 1)
+                       {
+                           <input type="submit" class="btn btn-primary2" value="Final Submit" asp-action="FinalSubmit" />
+                       }*@
+            </div>
+        </div>
+    </div>
+</form>
 @section Scripts{
     <script src="~/assets/lib/jquery/dist/jquery.js"></script>
     @*bind Permanent District*@
@@ -415,4 +434,4 @@
     </script>
 
 
-    }
+}
